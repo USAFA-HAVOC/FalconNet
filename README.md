@@ -1,6 +1,6 @@
 # FalconNet
 
-## Descriptoin
+## Description
 
 ## Overview
 
