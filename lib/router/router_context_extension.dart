@@ -20,9 +20,9 @@ extension RouterContextExtension on BuildContext {
     );
   }
 
-  void pushDetailPage(args) {
+  void pushDashboardPage(args) {
     return GoRouter.of(this).pushNamed(
-      RouteNames.detail,
+      RouteNames.dashboard,
       extra: args,
     );
   }

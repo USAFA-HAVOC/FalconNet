@@ -9,7 +9,6 @@ import 'package:hive_flutter/hive_flutter.dart';
 import 'providers/providers_logger.dart';
 import 'providers/services_providers.dart';
 import 'router/app_router.dart';
-import 'services/device_info/device_info_service.dart';
 import 'services/storage/hive_storage_service.dart';
 import 'theme/theme.dart';
 
@@ -25,9 +24,6 @@ Future<void> main() async {
   final hiveStorageService = HiveStorageService();
   await hiveStorageService.openBox('falcon_net');
 
-  final deviceInfoService = DeviceInfoService();
-  await deviceInfoService.initProperInfo();
-
   /// Initialize Firebase
   // await Firebase.initializeApp(
   //   options: DefaultFirebaseOptions.currentPlatform,
@@ -39,7 +35,6 @@ Future<void> main() async {
       observers: [ProvidersLogger()],
       overrides: [
         storageServiceProvider.overrideWithValue(hiveStorageService),
-        deviceInfoServiceProvider.overrideWithValue(deviceInfoService),
       ],
       child: const FalconNetApp(),
     ),
@@ -63,8 +58,7 @@ class FalconNetApp extends StatelessWidget {
               debugShowCheckedModeBanner: false,
               routerDelegate: router.appRouter.routerDelegate,
               routeInformationParser: router.appRouter.routeInformationParser,
-              routeInformationProvider:
-                  router.appRouter.routeInformationProvider,
+              routeInformationProvider: router.appRouter.routeInformationProvider,
               theme: AppThemes.primary(),
             );
           },

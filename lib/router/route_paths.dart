@@ -1,4 +1,4 @@
 class RoutePaths {
-  static const String home = '/';
-  static const String detail = 'detail';
+  static const String home = '/home';
+  static const String dashboard = '/dashboard';
 }
