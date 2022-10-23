@@ -43,6 +43,7 @@ dependencies:
   google_fonts: 3.0.1
   cached_network_image: ^3.2.2
   shimmer: ^2.0.0
+  page_transition: ^2.0.9
 
   # Riverpod
   riverpod: ^2.0.2

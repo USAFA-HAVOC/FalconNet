@@ -1,8 +1,12 @@
+import 'package:falconnet/features/profile/pages/profile_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:page_transition/page_transition.dart';
 
 import '../features/dashboard/pages/dashboard_page.dart';
+import '../features/food/pages/food_page.dart';
+import '../features/grades/pages/grades_page.dart';
 import '../features/home/pages/home_page.dart';
 import '../shared/falcon_navigation_bar.dart';
 import 'route_names.dart';
@@ -39,6 +43,9 @@ class AppRouter {
               GoRoute(
                 path: RoutePaths.home,
                 name: RouteNames.home,
+                builder: (context, state) => HomePage(
+                  key: state.pageKey,
+                ),
                 pageBuilder: (context, state) => buildPageWithDefaultTransition<void>(
                   context: context,
                   state: state,
@@ -54,6 +61,42 @@ class AppRouter {
                   context: context,
                   state: state,
                   child: DashboardPage(
+                    key: state.pageKey,
+                  ),
+                ),
+                builder: (context, state) => DashboardPage(
+                  key: state.pageKey,
+                ),
+              ),
+              GoRoute(
+                path: RoutePaths.grades,
+                name: RouteNames.grades,
+                pageBuilder: (context, state) => buildPageWithDefaultTransition<void>(
+                  context: context,
+                  state: state,
+                  child: GradesPage(
+                    key: state.pageKey,
+                  ),
+                ),
+              ),
+              GoRoute(
+                path: RoutePaths.food,
+                name: RouteNames.food,
+                pageBuilder: (context, state) => buildPageWithDefaultTransition<void>(
+                  context: context,
+                  state: state,
+                  child: FoodPage(
+                    key: state.pageKey,
+                  ),
+                ),
+              ),
+              GoRoute(
+                path: RoutePaths.profile,
+                name: RouteNames.profile,
+                pageBuilder: (context, state) => buildPageWithDefaultTransition<void>(
+                  context: context,
+                  state: state,
+                  child: ProfilePage(
                     key: state.pageKey,
                   ),
                 ),

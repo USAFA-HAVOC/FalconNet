@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
 
 class FalconNavigationBar extends StatelessWidget {
@@ -19,7 +20,7 @@ class FalconNavigationBar extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const SizedBox(width: 20),
+            const SizedBox(width: 30),
             SizedBox(
               width: 200,
               child: Row(
@@ -31,7 +32,6 @@ class FalconNavigationBar extends StatelessWidget {
                       color: const Color(0xffD9D9D9),
                       child: InkWell(
                         onTap: () => GoRouter.of(context).go('/profile'),
-                        // overlayColor: MaterialStateProperty.all(Colors.black),
                         splashColor: Colors.grey[500],
                         borderRadius: BorderRadius.circular(100),
                         child: Container(
@@ -57,27 +57,44 @@ class FalconNavigationBar extends StatelessWidget {
               ),
             ),
             Expanded(
-              child: BottomNavigationBar(
-                showSelectedLabels: false,
-                showUnselectedLabels: false,
-                unselectedFontSize: 1,
-                selectedFontSize: 1,
-                items: const <BottomNavigationBarItem>[
-                  BottomNavigationBarItem(
-                    icon: Icon(Icons.home),
-                    label: '',
-                  ),
-                  BottomNavigationBarItem(
-                    icon: Icon(Icons.check_box_outlined),
-                    label: '',
-                  ),
-                  BottomNavigationBarItem(
-                    icon: Icon(Icons.settings_outlined),
-                    label: '',
-                  ),
-                ],
-                currentIndex: _calculateSelectedIndex(context),
-                onTap: (int idx) => _onItemTapped(idx, context),
+              child: Container(
+                color: Colors.red,
+                width: double.infinity,
+                height: 120,
+                child: BottomNavigationBar(
+                  showSelectedLabels: false,
+                  showUnselectedLabels: false,
+                  unselectedFontSize: 1,
+                  selectedFontSize: 1,
+                  elevation: 2,
+                  items: <BottomNavigationBarItem>[
+                    BottomNavigationBarItem(
+                      backgroundColor: Colors.white,
+                      icon: SvgPicture.asset(
+                        'assets/icons/home.svg',
+                        height: 25,
+                      ),
+                      label: 'Home',
+                    ),
+                    BottomNavigationBarItem(
+                      icon: Image.asset(
+                        'assets/icons/pen.png',
+                        height: 25,
+                      ),
+                      label: 'Dashboard',
+                    ),
+                    BottomNavigationBarItem(
+                      icon: Image.asset('assets/icons/exam.png'),
+                      label: 'Grades',
+                    ),
+                    BottomNavigationBarItem(
+                      icon: SvgPicture.asset('assets/icons/food.svg'),
+                      label: 'Food',
+                    ),
+                  ],
+                  currentIndex: _calculateSelectedIndex(context),
+                  onTap: (int idx) => _onItemTapped(idx, context),
+                ),
               ),
             ),
           ],
@@ -96,8 +113,11 @@ class FalconNavigationBar extends StatelessWidget {
     if (location.startsWith('/dashboard')) {
       return 1;
     }
-    if (location.startsWith('/settings')) {
+    if (location.startsWith('/grades')) {
       return 2;
+    }
+    if (location.startsWith('/food')) {
+      return 3;
     }
     return 0;
   }
@@ -111,7 +131,10 @@ class FalconNavigationBar extends StatelessWidget {
         GoRouter.of(context).go('/dashboard');
         break;
       case 2:
-        GoRouter.of(context).go('/settings');
+        GoRouter.of(context).go('/grades');
+        break;
+      case 3:
+        GoRouter.of(context).go('/food');
         break;
     }
   }

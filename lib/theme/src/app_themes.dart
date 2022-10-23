@@ -16,12 +16,12 @@ class AppThemes {
       scaffoldBackgroundColor: AppColors.background,
       backgroundColor: AppColors.background,
       cardColor: AppColors.white,
-      pageTransitionsTheme: const PageTransitionsTheme(
-        builders: {
-          TargetPlatform.android: FadeUpwardsPageTransitionsBuilder(),
-          TargetPlatform.iOS: CupertinoPageTransitionsBuilder(),
-        },
-      ),
+      // pageTransitionsTheme: const PageTransitionsTheme(
+      //   builders: {
+      //     TargetPlatform.android: FadeUpwardsPageTransitionsBuilder(),
+      //     TargetPlatform.iOS: CupertinoPageTransitionsBuilder(),
+      //   },
+      // ),
       textTheme: TextTheme(
         headline1: AppTextStyles.h1,
         headline2: AppTextStyles.h2,
