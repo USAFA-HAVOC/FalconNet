@@ -2,18 +2,16 @@ import 'package:falconnet/features/profile/pages/profile_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:page_transition/page_transition.dart';
 
 import '../features/dashboard/pages/dashboard_page.dart';
+import '../features/dashboard/pages/unit_page.dart';
 import '../features/food/pages/food_page.dart';
 import '../features/grades/pages/grades_page.dart';
 import '../features/home/pages/home_page.dart';
+import '../shared/dashboard_wrapper.dart';
 import '../shared/falcon_navigation_bar.dart';
 import 'route_names.dart';
 import 'route_paths.dart';
-
-final GlobalKey<NavigatorState> _rootNavigatorKey = GlobalKey<NavigatorState>();
-final GlobalKey<NavigatorState> _shellNavigatorKey = GlobalKey<NavigatorState>();
 
 class AppRouter {
   AppRouter(WidgetRef ref) {
@@ -29,13 +27,11 @@ class AppRouter {
   static String initialLocation = RoutePaths.home;
 
   GoRouter _getAppRouter(WidgetRef ref) => GoRouter(
-        navigatorKey: _rootNavigatorKey,
         initialLocation: initialLocation,
         debugLogDiagnostics: true,
         routerNeglect: true,
         routes: [
           ShellRoute(
-            navigatorKey: _shellNavigatorKey,
             builder: (context, state, child) {
               return FalconNavigationBar(child: child);
             },
@@ -54,19 +50,40 @@ class AppRouter {
                   ),
                 ),
               ),
-              GoRoute(
-                path: RoutePaths.dashboard,
-                name: RouteNames.dashboard,
-                pageBuilder: (context, state) => buildPageWithDefaultTransition<void>(
-                  context: context,
-                  state: state,
-                  child: DashboardPage(
-                    key: state.pageKey,
+              ShellRoute(
+                builder: (context, state, child) {
+                  return DashboardWrapper(child: child);
+                },
+                routes: [
+                  GoRoute(
+                    path: RoutePaths.dashboard,
+                    name: RouteNames.dashboard,
+                    pageBuilder: (context, state) => buildPageWithDefaultTransition<void>(
+                      context: context,
+                      state: state,
+                      child: DashboardPage(
+                        key: state.pageKey,
+                      ),
+                    ),
+                    builder: (context, state) => DashboardPage(
+                      key: state.pageKey,
+                    ),
                   ),
-                ),
-                builder: (context, state) => DashboardPage(
-                  key: state.pageKey,
-                ),
+                  GoRoute(
+                    path: RoutePaths.unit,
+                    name: RouteNames.unit,
+                    pageBuilder: (context, state) => buildPageWithDefaultTransition<void>(
+                      context: context,
+                      state: state,
+                      child: UnitPage(
+                        key: state.pageKey,
+                      ),
+                    ),
+                    builder: (context, state) => UnitPage(
+                      key: state.pageKey,
+                    ),
+                  ),
+                ],
               ),
               GoRoute(
                 path: RoutePaths.grades,
