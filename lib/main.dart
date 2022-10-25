@@ -1,15 +1,16 @@
 // ignore_for_file: depend_on_referenced_packages
 
+import 'package:falconnet/api/api.dart';
+import 'package:falconnet/api/models.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter/foundation.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart' as riverpod;
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_web_plugins/url_strategy.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:provider/provider.dart';
 
-import 'providers/providers_logger.dart';
-import 'providers/services_providers.dart';
 import 'router/app_router.dart';
-import 'services/storage/hive_storage_service.dart';
 import 'theme/theme.dart';
 
 /// Function first called when running the project
@@ -17,12 +18,12 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   /// Removes hash from the Web routes
-  usePathUrlStrategy();
+  // usePathUrlStrategy();
 
   /// Initialize Hive
-  await Hive.initFlutter();
-  final hiveStorageService = HiveStorageService();
-  await hiveStorageService.openBox('falcon_net');
+  // await Hive.initFlutter();
+  // final hiveStorageService = HiveStorageService();
+  // await hiveStorageService.openBox('falcon_net');
 
   /// Initialize Firebase
   // await Firebase.initializeApp(
@@ -30,15 +31,7 @@ Future<void> main() async {
   // );
 
   /// Run the app
-  runApp(
-    ProviderScope(
-      observers: [ProvidersLogger()],
-      overrides: [
-        storageServiceProvider.overrideWithValue(hiveStorageService),
-      ],
-      child: const FalconNetApp(),
-    ),
-  );
+  runApp( const FalconNetApp());
 }
 
 /// Starting point of our Flutter application
@@ -49,17 +42,32 @@ class FalconNetApp extends StatelessWidget {
   Widget build(BuildContext context) => ScreenUtilInit(
         /// Size of the device the designer uses in their designs on Figma
         designSize: const Size(412, 732),
-        builder: (_, __) => Consumer(
+        builder: (_, __) => riverpod.Consumer(
           builder: (context, ref, child) {
             final router = AppRouter(ref);
 
-            return MaterialApp.router(
-              title: 'FalconNet',
-              debugShowCheckedModeBanner: false,
-              routerDelegate: router.appRouter.routerDelegate,
-              routeInformationParser: router.appRouter.routeInformationParser,
-              routeInformationProvider: router.appRouter.routeInformationProvider,
-              theme: AppThemes.primary(),
+            return MultiProvider(
+              providers: [
+                Provider(create: (_) => Cadet((b) => b
+                  ..id = ''
+                  ..first_name = ''
+                  ..last_name = ''
+                  ..room_num = ''
+                  ..accountability = false
+                  ..email = ''
+                  ..squadron = 0
+                  ..group = 0
+                  ..unit = ''
+                )),
+              ],
+              child: MaterialApp.router(
+                title: 'FalconNet',
+                debugShowCheckedModeBanner: false,
+                routerDelegate: router.appRouter.routerDelegate,
+                routeInformationParser: router.appRouter.routeInformationParser,
+                routeInformationProvider: router.appRouter.routeInformationProvider,
+                theme: AppThemes.primary(),
+              )
             );
           },
         ),

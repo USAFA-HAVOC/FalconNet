@@ -4,15 +4,25 @@ import 'package:go_router/go_router.dart';
 
 import '../../../theme/src/app_text_styles.dart';
 
+enum UnitType {
+  squadron,
+  group,
+  wing
+}
+
 class UnitStatsWidget extends StatelessWidget {
-  const UnitStatsWidget({Key? key}) : super(key: key);
+  final String name;
+  final double percent;
+  final int members;
+
+  const UnitStatsWidget(this.name, this.percent, this.members, {Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 10),
       child: ClipRRect(
-        borderRadius: BorderRadius.circular(20),
+          borderRadius: BorderRadius.circular(20),
         child: Material(
           color: const Color(0xffffffff),
           child: InkWell(
@@ -31,14 +41,14 @@ class UnitStatsWidget extends StatelessWidget {
                       fit: StackFit.expand,
                       alignment: Alignment.center,
                       children: [
-                        const CircularProgressIndicator(
-                          value: 0.4,
+                        CircularProgressIndicator(
+                          value: percent / 100,
                           strokeWidth: 12,
-                          backgroundColor: Color(0xffABCAF9),
-                          valueColor: AlwaysStoppedAnimation(Color(0xff3D8AFF)),
+                          backgroundColor: const Color(0xffABCAF9),
+                          valueColor: const AlwaysStoppedAnimation(Color(0xff3D8AFF)),
                         ),
                         Center(
-                          child: Text('90%', textAlign: TextAlign.center, style: AppTextStyles.h2),
+                          child: Text('$percent%', textAlign: TextAlign.center, style: AppTextStyles.h2),
                         ),
                       ],
                     ),
@@ -46,7 +56,7 @@ class UnitStatsWidget extends StatelessWidget {
                   const SizedBox(width: 20),
                   Column(
                     children: [
-                      const Text('Cadet Squadron 25'),
+                      Text(name),
                       const SizedBox(height: 10),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -56,7 +66,7 @@ class UnitStatsWidget extends StatelessWidget {
                             style: AppTextStyles.p5,
                           ),
                           const SizedBox(width: 15),
-                          Text('90', style: AppTextStyles.h2),
+                          Text('$members', style: AppTextStyles.h2),
                         ],
                       ),
                     ],

@@ -52,6 +52,8 @@ dependencies:
   # Hive
   hive: ^2.2.3
   hive_flutter: 1.1.0
+  built_value: ^8.4.1
+  provider: ^6.0.4
 
 dev_dependencies:
   flutter_test:
@@ -61,6 +63,7 @@ dev_dependencies:
   # Dev Dependencies
   ###
   build_runner: 2.3.0
+  built_value_generator:
   flutter_launcher_icons: 0.10.0
   flutter_native_splash: 2.2.8
   hive_generator: 1.1.3
