@@ -1,0 +1,4 @@
+enum Actions {
+  Preggo,
+  Die
+}
