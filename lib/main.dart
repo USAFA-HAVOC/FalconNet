@@ -5,11 +5,12 @@ import 'package:flutter_redux/flutter_redux.dart';
 import 'package:go_router/go_router.dart';
 import 'package:redux/redux.dart';
 
+import 'Model/Cadet.dart';
 import 'Router/FNRouter.dart';
 import 'Theme/FNTheme.dart';
 
 void main() {
-  final store = Store<GlobalState>(reducer, initialState: const GlobalState(name: "Rylie"));
+  final store = Store<GlobalState>(reducer, initialState: GlobalState(cadet: Cadet(name: "Rylie Anderson")));
   runApp(FalconNetApp(store: store));
 }
 

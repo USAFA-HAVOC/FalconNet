@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 import '../Shared/PaddedColumn.dart';
 
@@ -16,6 +17,8 @@ class FNDrawer extends StatelessWidget {
             GestureDetector(
               onTap: () {
                 print("Navigate to Dashboard");
+                Scaffold.of(context).closeDrawer();
+                context.go("/");
               },
               child: Text(
                   "Dashboard",
@@ -25,6 +28,7 @@ class FNDrawer extends StatelessWidget {
             GestureDetector(
               onTap: () {
                 print("Navigate to Grades");
+                Scaffold.of(context).closeDrawer();
               },
               child: Text(
                   "Grades",
@@ -34,6 +38,7 @@ class FNDrawer extends StatelessWidget {
             GestureDetector(
               onTap: () {
                 print("Navigate to Accountability");
+                Scaffold.of(context).closeDrawer();
               },
               child: Text(
                   "Acountability",
@@ -43,6 +48,7 @@ class FNDrawer extends StatelessWidget {
             GestureDetector(
               onTap: () {
                 print("Navigate to Ordering");
+                Scaffold.of(context).closeDrawer();
               },
               child: Text(
                   "Ordering",

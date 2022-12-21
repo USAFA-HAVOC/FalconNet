@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 ThemeData fnTheme = ThemeData(
   primaryColor: Colors.white,
   focusColor: const Color.fromARGB(255, 218, 230, 255),
+  indicatorColor: Colors.blue,
   textTheme: fnTextTheme,
   cardTheme: fnCardTheme,
   buttonTheme: const ButtonThemeData(

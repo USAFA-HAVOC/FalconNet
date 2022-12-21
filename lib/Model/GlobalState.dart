@@ -1,5 +1,7 @@
-class GlobalState {
-  final String name;
+import 'Cadet.dart';
 
-  const GlobalState({required this.name});
+class GlobalState {
+  final Cadet cadet;
+
+  const GlobalState({required this.cadet});
 }

@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 import '../Pages/Home.dart';
-import '../Pages/Profile.dart';
+import '../Pages/Profile/Profile.dart';
 import '../Structure/FNScaffold.dart';
 
 final GoRouter fnRouter = GoRouter(
