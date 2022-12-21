@@ -9,7 +9,7 @@ import 'Router/FNRouter.dart';
 import 'Theme/FNTheme.dart';
 
 void main() {
-  final store = Store<GlobalState>(reducer, initialState: const GlobalState(name: "fuck"));
+  final store = Store<GlobalState>(reducer, initialState: const GlobalState(name: "Rylie"));
   runApp(FalconNetApp(store: store));
 }
 
