@@ -1,9 +1,11 @@
 import 'package:falcon_net/Pages/Profile/CadetInfo.dart';
+import 'package:falcon_net/Pages/Profile/PassHistory.dart';
 import 'package:falcon_net/Shared/PaddedColumn.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 
 import '../../Model/GlobalState.dart';
+import 'Settings.dart';
 
 class Profile extends StatefulWidget {
   const Profile({super.key});
@@ -19,10 +21,7 @@ class ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
         text: "Info"
     ),
     Tab(
-        text: "Leave Locator"
-    ),
-    Tab(
-        text: "My Grades"
+        text: "Settings"
     ),
     Tab(
         text: "Pass History"
@@ -70,7 +69,7 @@ class ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
               ),
               TabBar(
                   controller: controller,
-                  isScrollable: true,
+                  labelPadding: EdgeInsets.zero,
                   tabs: tabs
               ),
               ConstrainedBox(
@@ -79,9 +78,8 @@ class ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
                   controller: controller,
                   children: [
                     CadetInfo(),
-                    Text("Leave"),
-                    Text("Grades"),
-                    Text("History"),
+                    Settings(),
+                    PassHistory(),
                   ],
                 ),
               )

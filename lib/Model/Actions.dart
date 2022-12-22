@@ -1,4 +1,0 @@
-enum Actions {
-  Preggo,
-  Die
-}

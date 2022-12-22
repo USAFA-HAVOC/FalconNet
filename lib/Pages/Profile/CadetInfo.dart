@@ -3,6 +3,8 @@ import 'package:falcon_net/Shared/PaddedColumn.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 
+import '../../Model/StateAction.dart';
+
 class CadetInfo extends StatelessWidget {
   const CadetInfo({super.key});
 
@@ -17,8 +19,10 @@ class CadetInfo extends StatelessWidget {
                   style: Theme.of(context).textTheme.titleSmall
               ),
               InputBlock(
-                onSubmit: (value) => {},
-                validator: (String? value) => (value ?? "").characters.length < 6,
+                onSubmit: (value) => {
+                  store.dispatch(StateAction.editInfo("name", value))
+                },
+                validator: (String? value) => (value ?? "").characters.length >= 6,
                 error: "Name must have at least six characters",
                 hint: "Jane Doe",
                 initial: store.state.cadet.name,
@@ -29,9 +33,11 @@ class CadetInfo extends StatelessWidget {
                   style: Theme.of(context).textTheme.titleSmall
               ),
               InputBlock(
-                onSubmit: (value) => {},
-                validator: (String? value) => (value ?? "").characters.length < 10,
-                error: "Name must have at least ten characters",
+                onSubmit: (value) => {
+                  store.dispatch(StateAction.editInfo("phone", value))
+                },
+                validator: (String? value) => (value ?? "").characters.length >= 10,
+                error: "Phone number must have at least ten characters",
                 hint: "(123) 456-789",
                 initial: store.state.cadet.phone,
               ),
@@ -41,8 +47,10 @@ class CadetInfo extends StatelessWidget {
                   style: Theme.of(context).textTheme.titleSmall
               ),
               InputBlock(
-                onSubmit: (value) => {},
-                validator: (String? value) => (value ?? "").characters.length < 3,
+                onSubmit: (value) => {
+                  store.dispatch(StateAction.editInfo("room", value))
+                },
+                validator: (String? value) => (value ?? "").characters.length >= 3,
                 error: "Room must have at least three characters",
                 hint: "room #",
                 initial: store.state.cadet.room,
@@ -53,12 +61,15 @@ class CadetInfo extends StatelessWidget {
                   style: Theme.of(context).textTheme.titleSmall
               ),
               InputBlock(
-                onSubmit: (value) => {},
-                validator: (String? value) => 0 < int.parse(value ?? "0") && int.parse(value ?? "0") < 41,
-                error: "Enter vlid squadron",
+                onSubmit: (value) => {
+                  store.dispatch(StateAction.editInfo("squadron", int.parse(value!)))
+                },
+                validator: (String? value) => 0 < (int.tryParse(value ?? "0") ?? 0) && (int.tryParse(value ?? "0") ?? 41) < 41,
+                error: "Enter a valid squadron",
                 hint: "squadron",
                 initial: store.state.cadet.squadron?.toString(),
               ),
+              SizedBox(height: 20,),
             ],
           );
         }
@@ -126,7 +137,7 @@ class InputBlockState extends State<InputBlock> {
             style: Theme.of(context).textTheme.bodyMedium,
             decoration: InputDecoration(
                 hintText: widget.hint,
-                errorText: validate(value) ? widget.error : null,
+                errorText: validate(value) ? null : widget.error,
                 errorBorder: OutlineInputBorder(
                     borderSide: BorderSide(
                         color: Theme.of(context).errorColor

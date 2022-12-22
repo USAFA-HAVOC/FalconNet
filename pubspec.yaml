@@ -38,6 +38,8 @@ dependencies:
   cupertino_icons: ^1.0.2
   flutter_redux: ^0.10.0
   go_router: ^6.0.0
+  badges: ^2.0.3
+  popover: ^0.2.7
 
 dev_dependencies:
   flutter_test:
