@@ -6,18 +6,20 @@ class UserNotification implements StateObject {
 
   const UserNotification({required this.message, required this.destination});
 
-  @override modified(String key, dynamic value) {
+  @override modified(Enum k, dynamic value) {
+    UserNotificationProperty key = k as UserNotificationProperty;
     switch (key) {
-      case "message": {
+      case UserNotificationProperty.message: {
         return UserNotification(message: value, destination: destination);
       }
-      case "destination": {
+      case UserNotificationProperty.destination: {
         return UserNotification(message: message, destination: value);
-      }
-      default: {
-        assert(false, "No such prperty");
-        return UserNotification(message: message, destination: destination);
       }
     }
   }
+}
+
+enum UserNotificationProperty {
+  message,
+  destination,
 }

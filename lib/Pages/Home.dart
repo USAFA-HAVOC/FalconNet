@@ -1,4 +1,5 @@
 import 'package:falcon_net/Model/GlobalState.dart';
+import 'package:falcon_net/Shared/PassForm.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
@@ -53,8 +54,14 @@ class Home extends StatelessWidget {
                 ))],
               ),
               ElevatedButton(
-                onPressed: () => {
-                  print("Open New Pass Dialog")
+                onPressed: () {
+                  print("Open New Pass Dialog");
+                  showDialog(context: context, builder: (context) => Dialog(
+                    child: Padding(
+                      padding: EdgeInsets.all(10),
+                      child: PassForm(),
+                    ),
+                  ));
                 },
                 child: const Padding(
                   padding: EdgeInsets.symmetric(vertical: 10),
@@ -63,7 +70,7 @@ class Home extends StatelessWidget {
               )
             ],
           ),
-        )
+        ),
 
       ],
     );

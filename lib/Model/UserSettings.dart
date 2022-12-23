@@ -16,27 +16,32 @@ class UserSettings implements StateObject {
   });
   
   @override
-  UserSettings modified(String key, dynamic value) {
+  UserSettings modified(Enum k, dynamic value) {
+    UserSettingsProperty key = k as UserSettingsProperty;
     switch (key) {
-      case "darkTheme": {
+      case UserSettingsProperty.darkTheme: {
         return UserSettings(darkTheme: value, pushNotifications: pushNotifications, diPush: diPush, passPush: passPush, taskPush: taskPush);
       }
-      case "pushNotifications": {
+      case UserSettingsProperty.pushNotifications: {
         return UserSettings(darkTheme: darkTheme, pushNotifications: value, diPush: diPush, passPush: passPush, taskPush: taskPush);
       }
-      case "diPush": {
+      case UserSettingsProperty.diPush: {
         return UserSettings(darkTheme: darkTheme, pushNotifications: pushNotifications, diPush: value, passPush: passPush, taskPush: taskPush);
       }
-      case "passPush": {
+      case UserSettingsProperty.passPush: {
         return UserSettings(darkTheme: darkTheme, pushNotifications: pushNotifications, diPush: diPush, passPush: value, taskPush: taskPush);
       }
-      case "taskPush": {
+      case UserSettingsProperty.taskPush: {
         return UserSettings(darkTheme: darkTheme, pushNotifications: pushNotifications, diPush: diPush, passPush: passPush, taskPush: value);
-      }
-      default: {
-        assert(false, "No such property");
-        return UserSettings(darkTheme: darkTheme, pushNotifications: pushNotifications, diPush: diPush, passPush: passPush, taskPush: taskPush);
       }
     }
   }
+}
+
+enum UserSettingsProperty {
+  darkTheme,
+  pushNotifications,
+  diPush,
+  passPush,
+  taskPush,
 }

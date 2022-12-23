@@ -10,20 +10,29 @@ import 'UserNotification.dart';
 GlobalState reducer(GlobalState state, dynamic act) {
   StateAction action = act as StateAction;
   switch (action.type) {
+
     case ActionType.editInfo: {
-      return state.modified("cadet", state.cadet.modified(action.subject! as String, action.value!));
+      //Database api call
+      return state.modified(GlobalStateProperty.cadet, state.cadet.modified(action.subject!, action.value!));
     }
+
     case ActionType.dismiss: {
+      //Local persistent storage api call
       List<UserNotification> mutated = state.notifications;
-      mutated.remove(action.subject as UserNotification);
-      return state.modified("notifications", mutated);
+      mutated.remove(action.value as UserNotification);
+      return state.modified(GlobalStateProperty.notifications, mutated);
     }
+
     case ActionType.dismissAll: {
-      return state.modified("notifications", <UserNotification>[]);
+      //Local persistent storage api call
+      return state.modified(GlobalStateProperty.notifications, <UserNotification>[]);
     }
+
     case ActionType.editSetting: {
-      return state.modified("settings", state.settings.modified(action.subject as String, action.value));
+      //Local persistent storage api call
+      return state.modified(GlobalStateProperty.settings, state.settings.modified(action.subject!, action.value));
     }
+
     default: {
       return GlobalState(
           cadet: Cadet(name: "Rylie Anderson"),
@@ -39,5 +48,4 @@ GlobalState reducer(GlobalState state, dynamic act) {
       );
     }
   }
-
 }

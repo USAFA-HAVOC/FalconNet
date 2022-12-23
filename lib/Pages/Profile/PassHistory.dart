@@ -13,6 +13,8 @@ class PassHistory extends StatelessWidget {
     return StoreBuilder<GlobalState>(
         builder: (context, store) {
           return ListView(
+            primary: false,
+            shrinkWrap: true,
             children: store.state.history.map((pass) => PassRecord(pass: pass)).toList(),
           );
         }

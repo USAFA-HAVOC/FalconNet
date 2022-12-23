@@ -1,11 +1,13 @@
 import 'package:falcon_net/Model/GlobalState.dart';
 import 'package:falcon_net/Model/StateAction.dart';
+import 'package:falcon_net/Model/UserSettings.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 
 class Settings extends StatefulWidget {
   const Settings({super.key});
 
+  @override
   State<Settings> createState() => SettingsState();
 }
 
@@ -39,6 +41,8 @@ class SettingsState extends State<Settings> with SingleTickerProviderStateMixin 
             controller.value = 1.0;
           }
           return ListView(
+            primary: false,
+            shrinkWrap: true,
             children: [
               Row(
                 children: [
@@ -54,7 +58,7 @@ class SettingsState extends State<Settings> with SingleTickerProviderStateMixin 
                       child: Switch(
                         value: store.state.settings.darkTheme,
                         onChanged: (value) {
-                          store.dispatch(StateAction.setSetting(id: "darkTheme", value: value));
+                          store.dispatch(StateAction.setSetting(property: UserSettingsProperty.darkTheme, value: value));
                         },
                       )
                   ),
@@ -74,7 +78,7 @@ class SettingsState extends State<Settings> with SingleTickerProviderStateMixin 
                       child: Switch(
                         value: store.state.settings.pushNotifications,
                         onChanged: (value) {
-                          store.dispatch(StateAction.setSetting(id: "pushNotifications", value: value));
+                          store.dispatch(StateAction.setSetting(property: UserSettingsProperty.pushNotifications, value: value));
                           controller.animateTo(value ? 1.0 : 0.0);
                         },
                       )
@@ -101,7 +105,7 @@ class SettingsState extends State<Settings> with SingleTickerProviderStateMixin 
                               child: Switch(
                                 value: store.state.settings.passPush,
                                 onChanged: (value) {
-                                  store.dispatch(StateAction.setSetting(id: "passPush", value: value));
+                                  store.dispatch(StateAction.setSetting(property: UserSettingsProperty.passPush, value: value));
                                 },
                               )
                           ),
@@ -121,7 +125,7 @@ class SettingsState extends State<Settings> with SingleTickerProviderStateMixin 
                               child: Switch(
                                 value: store.state.settings.diPush,
                                 onChanged: (value) {
-                                  store.dispatch(StateAction.setSetting(id: "diPush", value: value));
+                                  store.dispatch(StateAction.setSetting(property: UserSettingsProperty.diPush, value: value));
                                 },
                               )
                           ),
@@ -141,7 +145,7 @@ class SettingsState extends State<Settings> with SingleTickerProviderStateMixin 
                               child: Switch(
                                 value: store.state.settings.taskPush,
                                 onChanged: (value) {
-                                  store.dispatch(StateAction.setSetting(id: "taskPush", value: value));
+                                  store.dispatch(StateAction.setSetting(property: UserSettingsProperty.taskPush, value: value));
                                 },
                               )
                           ),

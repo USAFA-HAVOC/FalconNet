@@ -26,39 +26,48 @@ class Pass implements StateObject {
   });
 
   @override
-  Pass modified(String key, dynamic value) {
+  Pass modified(Enum k, dynamic value) {
+    PassProperty key = k as PassProperty;
     switch (key) {
-      case "start": {
+      case PassProperty.start: {
         return Pass(start: value, end: end, type: type, id: id, description: description, sca: sca, city: city, state: state, zip: zip);
       }
-      case "end": {
+      case PassProperty.end: {
         return Pass(start: start, end: value, type: type, id: id, description: description, sca: sca, city: city, state: state, zip: zip);
       }
-      case "type": {
+      case PassProperty.type: {
         return Pass(start: start, end: end, type: value, id: id, description: description, sca: sca, city: city, state: state, zip: zip);
       }
-      case "id": {
+      case PassProperty.id: {
         return Pass(start: start, end: end, type: type, id: value, description: description, sca: sca, city: city, state: state, zip: zip);
       }
-      case "description": {
+      case PassProperty.description: {
         return Pass(start: start, end: end, type: type, id: id, description: value, sca: sca, city: city, state: state, zip: zip);
       }
-      case "sca": {
+      case PassProperty.sca: {
         return Pass(start: start, end: end, type: type, id: id, description: description, sca: value, city: city, state: state, zip: zip);
       }
-      case "city": {
+      case PassProperty.city: {
         return Pass(start: start, end: end, type: type, id: id, description: description, sca: sca, city: value, state: state, zip: zip);
       }
-      case "state": {
+      case PassProperty.state: {
         return Pass(start: start, end: end, type: type, id: id, description: description, sca: sca, city: city, state: value, zip: zip);
       }
-      case "zip": {
+      case PassProperty.zip: {
         return Pass(start: start, end: end, type: type, id: id, description: description, sca: sca, city: city, state: state, zip: value);
-      }
-      default: {
-        assert(false, "No such property");
-        return Pass();
       }
     }
   }
+}
+
+enum PassProperty {
+  start,
+  end,
+  type,
+  id,
+  description,
+  sca,
+  city,
+  state,
+  zip
 }

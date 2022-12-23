@@ -1,3 +1,4 @@
+import 'package:falcon_net/Model/Cadet.dart';
 import 'package:falcon_net/Model/GlobalState.dart';
 import 'package:falcon_net/Shared/PaddedColumn.dart';
 import 'package:flutter/material.dart';
@@ -13,56 +14,47 @@ class CadetInfo extends StatelessWidget {
     return StoreBuilder<GlobalState>(
         builder: (context, store) {
           return ListView(
+            primary: false,
+            shrinkWrap: false,
             children: [
-              Text(
-                  "Name",
-                  style: Theme.of(context).textTheme.titleSmall
-              ),
+              SizedBox(height: 20,),
               InputBlock(
+                label: "Name",
                 onSubmit: (value) => {
-                  store.dispatch(StateAction.editInfo("name", value))
+                  store.dispatch(StateAction.editInfo(CadetProperty.name, value))
                 },
                 validator: (String? value) => (value ?? "").characters.length >= 6,
                 error: "Name must have at least six characters",
                 hint: "Jane Doe",
                 initial: store.state.cadet.name,
               ),
-              SizedBox(height: 10,),
-              Text(
-                  "Phone Number",
-                  style: Theme.of(context).textTheme.titleSmall
-              ),
+              SizedBox(height: 20,),
               InputBlock(
+                label: "Phone Number",
                 onSubmit: (value) => {
-                  store.dispatch(StateAction.editInfo("phone", value))
+                  store.dispatch(StateAction.editInfo(CadetProperty.phone, value))
                 },
                 validator: (String? value) => (value ?? "").characters.length >= 10,
                 error: "Phone number must have at least ten characters",
                 hint: "(123) 456-789",
                 initial: store.state.cadet.phone,
               ),
-              SizedBox(height: 10,),
-              Text(
-                  "Room Number",
-                  style: Theme.of(context).textTheme.titleSmall
-              ),
+              SizedBox(height: 20,),
               InputBlock(
+                label: "Room Number",
                 onSubmit: (value) => {
-                  store.dispatch(StateAction.editInfo("room", value))
+                  store.dispatch(StateAction.editInfo(CadetProperty.room, value))
                 },
                 validator: (String? value) => (value ?? "").characters.length >= 3,
                 error: "Room must have at least three characters",
                 hint: "room #",
                 initial: store.state.cadet.room,
               ),
-              SizedBox(height: 10,),
-              Text(
-                  "Squadron",
-                  style: Theme.of(context).textTheme.titleSmall
-              ),
+              SizedBox(height: 20,),
               InputBlock(
+                label: "Squadron",
                 onSubmit: (value) => {
-                  store.dispatch(StateAction.editInfo("squadron", int.parse(value!)))
+                  store.dispatch(StateAction.editInfo(CadetProperty.squadron, int.parse(value!)))
                 },
                 validator: (String? value) => 0 < (int.tryParse(value ?? "0") ?? 0) && (int.tryParse(value ?? "0") ?? 41) < 41,
                 error: "Enter a valid squadron",
@@ -83,7 +75,8 @@ class InputBlock extends StatefulWidget {
   final String? hint;
   final String? initial;
   final String? error;
-  const InputBlock({super.key, required this.onSubmit, this.validator, this.hint, this.error, this.initial});
+  final String? label;
+  const InputBlock({super.key, required this.onSubmit, this.validator, this.hint, this.error, this.initial, this.label});
 
   @override
   State<InputBlock> createState() => InputBlockState();
@@ -136,6 +129,8 @@ class InputBlockState extends State<InputBlock> {
             onSubmitted: (value) => attemptSubmit(value),
             style: Theme.of(context).textTheme.bodyMedium,
             decoration: InputDecoration(
+                labelText: widget.label,
+                labelStyle: Theme.of(context).textTheme.titleSmall,
                 hintText: widget.hint,
                 errorText: validate(value) ? null : widget.error,
                 errorBorder: OutlineInputBorder(

@@ -2,7 +2,7 @@ import 'package:falcon_net/Model/UserNotification.dart';
 
 class StateAction {
   final ActionType? type;
-  final dynamic subject;
+  final Enum? subject;
   final dynamic value;
 
   const StateAction.editInfo(this.subject, this.value) : type = ActionType.editInfo;
@@ -14,12 +14,12 @@ class StateAction {
 
   const StateAction.dismiss({required UserNotification notification}) :
         type = ActionType.dismiss,
-        subject = notification,
-        value = null;
+        subject = null,
+        value = notification;
 
-  const StateAction.setSetting({required String id, required this.value}) :
+  const StateAction.setSetting({required Enum property, required this.value}) :
         type = ActionType.editSetting,
-        subject = id;
+        subject = property;
 
 }
 

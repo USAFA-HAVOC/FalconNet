@@ -10,6 +10,6 @@ ThemeData fnTheme = ThemeData(
   cardTheme: fnCardTheme,
   buttonTheme: const ButtonThemeData(
     buttonColor: Colors.blue,
-    shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(10)))
+    shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(20)))
   )
 );

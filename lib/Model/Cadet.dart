@@ -22,33 +22,40 @@ class Cadet implements StateObject {
   });
 
   @override
-  Cadet modified(String key, dynamic value) {
+  Cadet modified(Enum k, dynamic value) {
+    CadetProperty key = k as CadetProperty;
     switch (key) {
-      case "email": {
+      case CadetProperty.email: {
         return Cadet(email: value, name: name, phone: phone, room: room, squadron: squadron, group: group, unit: unit);
       }
-      case "name": {
+      case CadetProperty.name: {
         return Cadet(email: email, name: value, phone: phone, room: room, squadron: squadron, group: group, unit: unit);
       }
-      case "phone": {
+      case CadetProperty.phone: {
         return Cadet(email: email, name: name, phone: value, room: room, squadron: squadron, group: group, unit: unit);
       }
-      case "room": {
+      case CadetProperty.room: {
         return Cadet(email: email, name: name, phone: phone, room: value, squadron: squadron, group: group, unit: unit);
       }
-      case "squadron": {
+      case CadetProperty.squadron: {
         return Cadet(email: email, name: name, phone: phone, room: room, squadron: value, group: group, unit: unit);
       }
-      case "group": {
+      case CadetProperty.group: {
         return Cadet(email: email, name: name, phone: phone, room: room, squadron: squadron, group: value, unit: unit);
       }
-      case "unit": {
+      case CadetProperty.unit: {
         return Cadet(email: email, name: name, phone: phone, room: room, squadron: squadron, group: group, unit: value);
-      }
-      default: {
-        assert(false, "No such property");
-        return Cadet();
       }
     }
   }
+}
+
+enum CadetProperty {
+  email,
+  name,
+  phone,
+  room,
+  squadron,
+  group,
+  unit
 }

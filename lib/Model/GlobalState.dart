@@ -1,13 +1,14 @@
 import 'dart:js_util';
 
 import 'package:falcon_net/Model/UserSettings.dart';
+import 'package:flutter/foundation.dart';
 
 import 'Cadet.dart';
 import 'Pass.dart';
 import 'UserNotification.dart';
 
 abstract class StateObject {
-  StateObject modified(String key, dynamic value);
+  StateObject modified(Enum key, dynamic value);
 }
 
 class GlobalState implements StateObject {
@@ -19,24 +20,28 @@ class GlobalState implements StateObject {
   const GlobalState({required this.cadet, required this.history, required this.notifications, required this.settings});
 
   @override
-  GlobalState modified(String key, value) {
+  GlobalState modified(Enum k, value) {
+    GlobalStateProperty key = k as GlobalStateProperty;
     switch (key) {
-      case "cadet": {
+      case GlobalStateProperty.cadet: {
         return GlobalState(cadet: value, history: history, notifications: notifications, settings: settings);
       }
-      case "history": {
+      case GlobalStateProperty.history: {
         return GlobalState(cadet: cadet, history: value, notifications: notifications, settings: settings);
       }
-      case "notifications": {
+      case GlobalStateProperty.notifications: {
         return GlobalState(cadet: cadet, history: history, notifications: value, settings: settings);
       }
-      case "settings": {
+      case GlobalStateProperty.settings: {
         return GlobalState(cadet: cadet, history: history, notifications: notifications, settings: value);
-      }
-      default: {
-        assert(false, "Does not contain key");
-        return GlobalState(cadet: cadet, history: history, notifications: notifications, settings: settings);
       }
     }
   }
+}
+
+enum GlobalStateProperty {
+  cadet,
+  history,
+  notifications,
+  settings
 }

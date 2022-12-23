@@ -72,7 +72,6 @@ class FNNavigationBar extends StatelessWidget {
                                           bodyBuilder: (context) => FNNotifications(
                                             notifications: store.state.notifications,
                                             onClick: (notification) {
-                                              print("attemtp");
                                               store.dispatch(StateAction.dismiss(notification: notification));
                                             },
                                           ),
