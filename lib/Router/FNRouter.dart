@@ -1,5 +1,6 @@
 import 'dart:html';
 import 'package:falcon_net/Pages/LeaveLocator/LeaveLocator.dart';
+import 'package:falcon_net/Pages/PassManagement/PassManagement.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
@@ -32,6 +33,10 @@ final GoRouter fnRouter = GoRouter(
                 GoRoute(
                   path: "leave_locator",
                   builder: (context, state) => LeaveLocator(),
+                ),
+                GoRoute(
+                  path: "pass_management",
+                  builder: (context, state) => const PassManagement(),
                 ),
               ]
           )

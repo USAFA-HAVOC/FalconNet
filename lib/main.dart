@@ -5,6 +5,7 @@ import 'package:go_router/go_router.dart';
 import 'package:redux/redux.dart';
 
 import 'Model/Cadet.dart';
+import 'Model/PassAllocation.dart';
 import 'Model/UserSettings.dart';
 import 'Router/FNRouter.dart';
 import 'Theme/FNTheme.dart';
@@ -117,6 +118,7 @@ void main() {
               )
             ],
           ),
+          allocation: PassAllocation(weekdayDay: 5, weekdayOvernight: 1, weekendOvernight: 1),
       )
   );
   runApp(FNApp(store: store));

@@ -51,11 +51,11 @@ class FNDrawer extends StatelessWidget {
             ),
             GestureDetector(
               onTap: () {
-                print("Navigate to Ordering");
+                context.go("/pass_management");
                 Scaffold.of(context).closeDrawer();
               },
               child: Text(
-                  "Ordering",
+                  "Pass Management",
                   style: Theme.of(context).textTheme.titleMedium
               ),
             ),

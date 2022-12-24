@@ -9,7 +9,9 @@ import 'LeaveLocatorForm.dart';
 class LeaveLocator extends StatelessWidget {
   LeaveLocator({super.key});
 
-  Leave test = Leave(
+
+  final Leave? test = null;
+  /*Leave? test = Leave(
     contactName: "Rylie Anderson",
     contactPhone: "(515) 782-5949",
     id: 'Fix',
@@ -28,7 +30,7 @@ class LeaveLocator extends StatelessWidget {
     returnMethod: VehicleMethod(
       vehicleType: VehicleType.uber,
     ),
-  );
+  );*/
 
   @override
   Widget build(BuildContext context) {

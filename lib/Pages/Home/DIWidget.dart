@@ -1,11 +1,15 @@
 import 'package:falcon_net/Model/StateAction.dart';
+import 'package:falcon_net/Shared/PageWidget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 
 import '../../Model/GlobalState.dart';
+import '../../Shared/PaddedColumn.dart';
 
-class DormitoryInspection extends StatelessWidget {
-  const DormitoryInspection({super.key});
+class DIWidget extends StatelessWidget {
+  final String title;
+
+  const DIWidget({super.key, this.title = "Dormitory Inspection"});
 
   @override
   Widget build(BuildContext context) {
@@ -69,29 +73,21 @@ class DormitoryInspection extends StatelessWidget {
 
           if (signable) {
             content.add(
-              Padding(
-                padding: EdgeInsets.only(top: 10),
-                child: ElevatedButton(
-                  onPressed: () {
-                    store.dispatch(StateAction.signDI());
-                  },
-                  child: Padding(
-                    padding: EdgeInsets.symmetric(vertical: 10),
-                    child: const Text('Sign'),
-                  ),
+              ElevatedButton(
+                onPressed: () {
+                  store.dispatch(StateAction.signDI());
+                },
+                child: Padding(
+                  padding: EdgeInsets.symmetric(vertical: 10),
+                  child: const Text('Sign'),
                 ),
               ),
             );
           }
 
-          return Card(
-              child: Padding(
-                padding: EdgeInsets.all(20),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: content,
-                ),
-              )
+          return PageWidget(
+              title: title,
+              children: content
           );
         }
     );

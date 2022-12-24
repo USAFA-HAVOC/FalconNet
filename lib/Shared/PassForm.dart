@@ -8,7 +8,7 @@ import 'package:falcon_net/Shared/TimeFormField.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 
-import '../../Model/GlobalState.dart';
+import '../Model/GlobalState.dart';
 
 class PassForm extends StatefulWidget {
   final void Function(Pass pass) onSubmit;

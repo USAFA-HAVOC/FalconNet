@@ -1,6 +1,7 @@
 import 'package:falcon_net/Model/Cadet.dart';
 import 'package:falcon_net/Model/Pass.dart';
 import 'package:falcon_net/Model/GlobalState.dart';
+import 'package:falcon_net/Model/PassAllocation.dart';
 import 'package:falcon_net/Model/UserGrades.dart';
 import 'package:falcon_net/Model/UserSettings.dart';
 
@@ -77,6 +78,7 @@ GlobalState reducer(GlobalState state, dynamic act) {
           settings: const UserSettings(),
           grades: UserGrades(),
           leave: null,
+          allocation: PassAllocation(weekdayDay: 5, weekdayOvernight: 1, weekendOvernight: 1),
       );
     }
   }

@@ -37,4 +37,13 @@ TextTheme fnTextTheme = const TextTheme(
     fontSize: 15,
     color: Colors.blue,
   ),
+  bodyLarge: TextStyle(
+    fontSize: 15,
+  ),
+  bodyMedium: TextStyle(
+    fontSize: 13,
+  ),
+  bodySmall: TextStyle(
+    fontSize: 10,
+  ),
 );
