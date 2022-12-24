@@ -1,4 +1,5 @@
 import 'package:falcon_net/Model/GlobalState.dart';
+import 'package:falcon_net/Pages/Home/DormitoryInspection.dart';
 import 'package:falcon_net/Pages/Home/PassForm.dart';
 import 'package:falcon_net/Pages/Home/PassManagement.dart';
 import 'package:flutter/cupertino.dart';
@@ -12,16 +13,25 @@ class Home extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return PaddedColumn(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      padding: EdgeInsets.only(bottom: 10),
+    return ListView(
+      primary: false,
+      shrinkWrap: true,
       children: [
-        Text(
-          "Dashboard",
-          style: Theme.of(context).textTheme.titleLarge,
+        Padding(
+          padding: EdgeInsets.only(bottom: 10),
+          child: Text(
+              "Dashboard",
+              style: Theme.of(context).textTheme.titleLarge
+          ),
         ),
-        PassManagement(),
-
+        Padding(
+          padding: EdgeInsets.symmetric(vertical: 10),
+          child: PassManagement(),
+        ),
+        Padding(
+          padding: EdgeInsets.symmetric(vertical: 10),
+          child: DormitoryInspection(),
+        )
       ],
     );
   }

@@ -80,7 +80,7 @@ class AirlineMethod extends LeaveMethod {
 
   @override
   String description() =>
-      "Flying on ${airline}'s flight number ${flightNumber}. Takes off at ${describeDate(flightDepartureTime)} ${describeTime(timeOf(flightDepartureTime))}. Takes off at ${describeDate(flightArrivalTime)} ${describeTime(timeOf(flightArrivalTime))}.";
+      "Flying on ${airline}'s flight number ${flightNumber}. Takes off at ${describeDate(flightDepartureTime)} ${describeTime(timeOf(flightDepartureTime))}. Lands at ${describeDate(flightArrivalTime)} ${describeTime(timeOf(flightArrivalTime))}.";
 }
 
 class VehicleMethod extends LeaveMethod {

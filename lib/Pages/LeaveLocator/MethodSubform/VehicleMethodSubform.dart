@@ -40,9 +40,11 @@ class VehicleMethodSubformState extends State<VehicleMethodSubform> with SingleT
       time = TextEditingController(text: operant.vehicleTravelTime?.toStringAsPrecision(1));
       name = TextEditingController(text: operant.vehicleDriverName);
     }
-    vehicleType = "Select";
-    time = TextEditingController();
-    name = TextEditingController();
+    else {
+      vehicleType = "Select";
+      time = TextEditingController();
+      name = TextEditingController();
+    }
     if (!requiresInfo(vehicleType)){
       animationController.value = 0;
     }

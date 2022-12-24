@@ -2,8 +2,8 @@ import 'package:falcon_net/Shared/TemporalFormatting.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 
-import '../Model/GlobalState.dart';
-import '../Model/Pass.dart';
+import '../../Model/GlobalState.dart';
+import '../../Model/Pass.dart';
 
 class PassStatus extends StatelessWidget {
   const PassStatus({super.key});
@@ -18,6 +18,7 @@ class PassStatus extends StatelessWidget {
               child: StoreBuilder<GlobalState>(
                   builder: (context, store) {
                     if (store.state.pass == null) {
+                      //Add logic for closed passes
                       return Card(
                           color: Theme.of(context).focusColor,
                           child: Padding(
@@ -34,8 +35,15 @@ class PassStatus extends StatelessWidget {
                                     ),
                                   ),
                                   Text(
-                                    "Passes are Open",
+                                    "Here",
                                     style: Theme.of(context).textTheme.headlineLarge,
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.only(top: 10),
+                                    child: Text(
+                                      "Passes are Open",
+                                      style: Theme.of(context).textTheme.headlineMedium,
+                                    ),
                                   ),
                                 ],
                               ),

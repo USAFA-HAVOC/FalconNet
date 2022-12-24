@@ -27,7 +27,6 @@ class AirlineMethodSubformState extends State<AirlineMethodSubform> implements S
   @override
   void initState() {
     if (widget.controller.value != null && widget.controller.value is AirlineMethod) {
-
       AirlineMethod operant = widget.controller.value! as AirlineMethod;
       airline = TextEditingController(text: operant.airline);
       number = TextEditingController(text: operant.flightNumber);

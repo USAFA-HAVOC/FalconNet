@@ -31,7 +31,7 @@ final GoRouter fnRouter = GoRouter(
                 ),
                 GoRoute(
                   path: "leave_locator",
-                  builder: (context, state) => const LeaveLocator(),
+                  builder: (context, state) => LeaveLocator(),
                 ),
               ]
           )

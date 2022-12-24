@@ -11,7 +11,11 @@ import 'package:flutter_redux/flutter_redux.dart';
 import '../../Model/GlobalState.dart';
 
 class PassForm extends StatefulWidget {
-  const PassForm({super.key});
+  final void Function(Pass pass) onSubmit;
+  final void Function() onCancel;
+  final Pass? existing;
+
+  const PassForm({super.key, required this.onSubmit, required this.onCancel, this.existing});
 
   @override
   State<PassForm> createState() => PassFormState();
@@ -19,14 +23,14 @@ class PassForm extends StatefulWidget {
 
 class PassFormState extends State<PassForm> with SingleTickerProviderStateMixin {
   final key = GlobalKey<FormState>();
-  final dateController = TextEditingController(text: describeDate(DateTime.now()));
-  final timeController = TextEditingController(text: describeTime(TimeOfDay(hour: 19, minute: 50)));
+  late TextEditingController dateController;
+  late TextEditingController timeController;
   late String type;
-  final scaController = TextEditingController();
-  final descriptionController = TextEditingController();
-  final state = "Colorado";
-  final cityController = TextEditingController(text: "Colorado Springs");
-  final zipController = TextEditingController(text: "80132");
+  late TextEditingController scaController;
+  late TextEditingController descriptionController;
+  late String state;
+  late TextEditingController cityController;
+  late TextEditingController zipController;
 
   late final AnimationController animationController = AnimationController(
     duration: const Duration(milliseconds: 500),
@@ -42,6 +46,21 @@ class PassFormState extends State<PassForm> with SingleTickerProviderStateMixin 
   void initState() {
     super.initState();
     type = DateTime.now().weekday < 5 ? "weekday" : "weekend";
+    
+    if (widget.existing != null) {
+      dateController = TextEditingController(text: describeDate(widget.existing!.end!));
+      timeController = TextEditingController(text: describeTime(TimeOfDay.fromDateTime(widget.existing!.end!)));
+    }
+    else {
+      dateController = TextEditingController(text: describeDate(DateTime.now()));
+      timeController = TextEditingController(text: describeTime(TimeOfDay(hour: 19, minute: 50)));
+    }
+    
+    scaController = TextEditingController(text: widget.existing?.sca);
+    descriptionController = TextEditingController(text: widget.existing?.description);
+    state = widget.existing?.state ?? "Colorado";
+    cityController = TextEditingController(text: widget.existing?.city ?? "Colorado Springs");
+    zipController = TextEditingController(text: widget.existing?.zip ?? "80841");
   }
 
   @override
@@ -65,7 +84,7 @@ class PassFormState extends State<PassForm> with SingleTickerProviderStateMixin 
     var endDate = parseDate(dateController.text);
     var endTime = parseTime(timeController.text);
     return Pass(
-      start: DateTime.now(),
+      start: widget.existing?.start ?? DateTime.now(),
       end: combineDate(endDate, endTime),
       type: type,
       description: descriptionController.text,
@@ -324,8 +343,7 @@ class PassFormState extends State<PassForm> with SingleTickerProviderStateMixin 
                               child: ElevatedButton(
                                 onPressed: () {
                                   if (key.currentState!.validate()) {
-                                    Navigator.of(context).pop();
-                                    store.dispatch(StateAction.openPass(pass: formatPass()));
+                                    widget.onSubmit(formatPass());
                                   }
                                 },
                                 child: Padding(
@@ -343,7 +361,7 @@ class PassFormState extends State<PassForm> with SingleTickerProviderStateMixin 
                               backgroundColor: MaterialStateColor.resolveWith((states) => Colors.grey),
                             ),
                             onPressed: () {
-                              Navigator.of(context).pop();
+                              widget.onCancel();
                             },
                             child: Padding(
                               padding: EdgeInsets.symmetric(vertical: 10),

@@ -26,7 +26,7 @@ class StateAction {
         type = ActionType.editSetting,
         subject = property;
 
-  const StateAction.openPass({required Pass pass}) :
+  const StateAction.openPass(Pass pass) :
       type = ActionType.openPass,
       subject = null,
       value = pass;
@@ -35,6 +35,11 @@ class StateAction {
         type = ActionType.closePass,
         subject = null,
         value = null;
+
+  const StateAction.updatePass(Pass pass) :
+        type = ActionType.updatePass,
+        subject = null,
+        value = pass;
 
   const StateAction.setLeave(Leave leave) :
         type = ActionType.setLeave,
@@ -45,6 +50,11 @@ class StateAction {
       type = ActionType.clearLeave,
       subject = null,
       value = null;
+
+  const StateAction.signDI() :
+        type = ActionType.signDI,
+        subject = null,
+        value = null;
 }
 
 enum ActionType {
@@ -54,6 +64,8 @@ enum ActionType {
   editSetting,
   openPass,
   closePass,
+  updatePass,
   setLeave,
   clearLeave,
+  signDI,
 }

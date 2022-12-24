@@ -26,7 +26,9 @@ class OtherMethodSubformState extends State<OtherMethodSubform> implements Speci
       OtherMethod operant = widget.controller.value! as OtherMethod;
       info = TextEditingController(text: operant.info);
     }
-    info = TextEditingController();
+    else {
+      info = TextEditingController();
+    }
     widget.controller.retrieve = buildLeaveMethod;
   }
 

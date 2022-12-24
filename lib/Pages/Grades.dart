@@ -24,24 +24,22 @@ class GradesState extends State<Grades> {
             child: Row(
               children: [
                 Expanded(
-                  flex: 10,
                   child: Text(
                     description,
+                    textAlign: TextAlign.start,
                     style: Theme.of(context).textTheme.titleSmall,
                   ),
                 ),
-                Expanded(
-                  flex: 1,
-                  child: Text(
-                    grade.score.toString(),
-                    style: Theme.of(context).textTheme.titleSmall,
-                  ),
+                Text(
+                  grade.score.toString(),
+                  textAlign: TextAlign.end,
+                  style: Theme.of(context).textTheme.titleSmall,
                 ),
               ],
             ),
         ),
         body: Padding(
-          padding: EdgeInsets.all(10),
+          padding: EdgeInsets.only(left: 10, bottom: 10, right: 10),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
@@ -70,9 +68,12 @@ class GradesState extends State<Grades> {
       shrinkWrap: true,
       padding: EdgeInsets.only(bottom: 10),
       children: [
-        Text(
-          "Grades",
-          style: Theme.of(context).textTheme.titleLarge,
+        Padding(
+          padding: EdgeInsets.only(bottom: 20),
+          child: Text(
+              "Grades",
+              style: Theme.of(context).textTheme.titleLarge
+          ),
         ),
         Card(
           child: StoreBuilder<GlobalState>(

@@ -44,13 +44,15 @@ class ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
-    return PaddedColumn(
-      padding: EdgeInsets.only(bottom: 10),
+    return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        Text(
-            "Profile",
-            style: Theme.of(context).textTheme.titleLarge
+        Padding(
+          padding: EdgeInsets.only(bottom: 20),
+          child: Text(
+              "Profile",
+              style: Theme.of(context).textTheme.titleLarge
+          ),
         ),
         Card(
           child: PaddedColumn(
