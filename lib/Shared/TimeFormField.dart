@@ -4,8 +4,9 @@ import 'package:flutter/material.dart';
 class TimeFormField extends StatefulWidget {
   final TextEditingController timeInput;
   final String? Function(String?)? validator;
+  final String? label;
 
-  const TimeFormField({super.key, required TextEditingController controller, this.validator}) : timeInput = controller;
+  const TimeFormField({super.key, required TextEditingController controller, this.validator, this.label}) : timeInput = controller;
 
   @override
   State<TimeFormField> createState() => TimeFormFieldState();
@@ -19,14 +20,14 @@ class TimeFormFieldState extends State<TimeFormField> {
       validator: widget.validator,
       controller: widget.timeInput,
       style: Theme.of(context).textTheme.bodyLarge,
-      decoration: const InputDecoration(
+      decoration: InputDecoration(
           suffixIcon: Icon(Icons.timer),
-          labelText: "Return Time"
+          labelText: widget.label
       ),
       readOnly: true,
       onTap: () async {
         TimeOfDay? pickedTime = await showTimePicker(
-            initialEntryMode: TimePickerEntryMode.input,
+            initialEntryMode: TimePickerEntryMode.dial,
             context: context,
             initialTime: parseTime(widget.timeInput.text)
         );

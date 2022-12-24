@@ -1,8 +1,8 @@
 import 'package:falcon_net/Model/Cadet.dart';
 import 'package:falcon_net/Model/Pass.dart';
 import 'package:falcon_net/Model/GlobalState.dart';
+import 'package:falcon_net/Model/UserGrades.dart';
 import 'package:falcon_net/Model/UserSettings.dart';
-import 'package:flutter/cupertino.dart';
 
 import 'StateAction.dart';
 import 'UserNotification.dart';
@@ -12,7 +12,7 @@ GlobalState reducer(GlobalState state, dynamic act) {
   switch (action.type) {
 
     case ActionType.editInfo: {
-      //Database api call
+      //Api call
       return state.modified(GlobalStateProperty.cadet, state.cadet.modified(action.subject!, action.value!));
     }
 
@@ -33,18 +33,31 @@ GlobalState reducer(GlobalState state, dynamic act) {
       return state.modified(GlobalStateProperty.settings, state.settings.modified(action.subject!, action.value));
     }
 
+    case ActionType.openPass: {
+      //Api call
+      return state.modified(GlobalStateProperty.history, <Pass>[action.value as Pass] + state.history);
+    }
+
+    case ActionType.setLeave: {
+      //Api call
+      print("set leave");
+      return state.modified(GlobalStateProperty.leave, action.value);
+    }
+
+    case ActionType.clearLeave: {
+      //Api call
+      print("cleared");
+      return state.modified(GlobalStateProperty.leave, null);
+    }
+
     default: {
       return GlobalState(
           cadet: Cadet(name: "Rylie Anderson"),
           history: <Pass>[],
           notifications: <UserNotification>[],
-          settings: const UserSettings(
-            darkTheme: false,
-            pushNotifications: false,
-            diPush: false,
-            passPush: false,
-            taskPush: false,
-          )
+          settings: const UserSettings(),
+          grades: UserGrades(),
+          leave: null,
       );
     }
   }

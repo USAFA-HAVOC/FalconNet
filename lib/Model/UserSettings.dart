@@ -8,11 +8,11 @@ class UserSettings implements StateObject {
   final bool taskPush;
   
   const UserSettings({
-    required this.darkTheme, 
-    required this.pushNotifications, 
-    required this.diPush, 
-    required this.passPush, 
-    required this.taskPush
+    this.darkTheme = false,
+    this.pushNotifications = false,
+    this.diPush = false,
+    this.passPush = false,
+    this.taskPush = false,
   });
   
   @override

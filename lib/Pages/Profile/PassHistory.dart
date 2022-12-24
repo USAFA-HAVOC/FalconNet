@@ -31,6 +31,17 @@ class PassRecord extends StatelessWidget {
     return "${date.month}/${date.day} ${date.hour}:${date.minute}";
   }
 
+  String formatType(String type) {
+    switch (type) {
+      case "discretionary": return "Discretionary";
+      case "weekend": return "Weekend Sign-Out Period";
+      case "weekday": return "Weekday Sign-Out Period";
+      case "sca": return "SCA";
+      case "esss": return "eSSS";
+      default: return type;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -75,7 +86,7 @@ class PassRecord extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                        pass.type ?? "No Type",
+                        pass.type == null ? "No Type" : formatType(pass.type!),
                         style: Theme.of(context).textTheme.bodySmall
                     ),
                     Text(

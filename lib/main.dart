@@ -1,3 +1,4 @@
+import 'package:falcon_net/Model/UserGrades.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:go_router/go_router.dart';
@@ -94,22 +95,37 @@ void main() {
                 destination: "/profile"
             )
           ],
-          settings: UserSettings(
-            darkTheme: false,
-            pushNotifications: false,
-            diPush: false,
-            passPush: false,
-            taskPush: false,
-          )
+          settings: UserSettings(),
+          grades: UserGrades(
+            amiScores: [
+              Grade(
+                  score: 97,
+                  description: "Disgusting",
+              ),
+              Grade(
+                score: 94,
+              ),
+              Grade(
+                score: 93,
+                description: "Homemade yogurt",
+              ),
+            ],
+            samiScores: [
+              Grade(
+                  score: 98,
+                  description: "dust",
+              )
+            ],
+          ),
       )
   );
-  runApp(FalconNetApp(store: store));
+  runApp(FNApp(store: store));
 }
 
-class FalconNetApp extends StatelessWidget {
+class FNApp extends StatelessWidget {
   final Store<GlobalState> store;
 
-  const FalconNetApp({super.key, required this.store});
+  const FNApp({super.key, required this.store});
 
   // This widget is the root of your application.
   @override

@@ -25,15 +25,15 @@ TextTheme fnTextTheme = const TextTheme(
     fontSize: 10,
     color: Colors.white,
   ),
-  displayLarge: TextStyle(
+  headlineLarge: TextStyle(
     fontSize: 25,
     color: Colors.blue,
   ),
-  displayMedium: TextStyle(
+  headlineMedium: TextStyle(
     fontSize: 20,
     color: Colors.blue,
   ),
-  displaySmall: TextStyle(
+  headlineSmall: TextStyle(
     fontSize: 15,
     color: Colors.blue,
   ),

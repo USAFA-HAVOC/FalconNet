@@ -1,10 +1,10 @@
 import 'package:falcon_net/Model/GlobalState.dart';
-import 'package:falcon_net/Shared/PassForm.dart';
+import 'package:falcon_net/Pages/Home/PassForm.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 
-import '../Shared/PaddedColumn.dart';
+import '../../Shared/PaddedColumn.dart';
 
 class Home extends StatelessWidget {
   const Home({super.key});
@@ -41,12 +41,12 @@ class Home extends StatelessWidget {
                             padding: const EdgeInsets.only(bottom: 10),
                             child: Text(
                               "Passes Are",
-                              style: Theme.of(context).textTheme.displayMedium,
+                              style: Theme.of(context).textTheme.headlineMedium,
                             ),
                           ),
                           Text(
                             "Open",
-                            style: Theme.of(context).textTheme.displayLarge,
+                            style: Theme.of(context).textTheme.headlineLarge,
                           ),
                         ],
                       ),
@@ -55,7 +55,6 @@ class Home extends StatelessWidget {
               ),
               ElevatedButton(
                 onPressed: () {
-                  print("Open New Pass Dialog");
                   showDialog(context: context, builder: (context) => Dialog(
                     child: Padding(
                       padding: EdgeInsets.all(10),

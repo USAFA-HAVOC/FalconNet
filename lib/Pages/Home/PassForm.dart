@@ -1,13 +1,14 @@
 import 'dart:core';
 
 import 'package:falcon_net/Model/Pass.dart';
+import 'package:falcon_net/Model/StateAction.dart';
 import 'package:falcon_net/Shared/DateFormField.dart';
 import 'package:falcon_net/Shared/TemporalFormatting.dart';
 import 'package:falcon_net/Shared/TimeFormField.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 
-import '../Model/GlobalState.dart';
+import '../../Model/GlobalState.dart';
 
 class PassForm extends StatefulWidget {
   const PassForm({super.key});
@@ -40,7 +41,7 @@ class PassFormState extends State<PassForm> with SingleTickerProviderStateMixin 
   @override
   void initState() {
     super.initState();
-    type = DateTime.now().weekday < 6 ? "weekday" : "weekend";
+    type = DateTime.now().weekday < 5 ? "weekday" : "weekend";
   }
 
   @override
@@ -60,12 +61,12 @@ class PassFormState extends State<PassForm> with SingleTickerProviderStateMixin 
     });
   }
 
-  void submitPass() {
+  Pass formatPass() {
     var endDate = parseDate(dateController.text);
     var endTime = parseTime(timeController.text);
-    Pass pass = Pass(
+    return Pass(
       start: DateTime.now(),
-      end: DateTime(endDate.year, endDate.month, endDate.day, endTime.hour, endTime.minute,),
+      end: combineDate(endDate, endTime),
       type: type,
       description: descriptionController.text,
       sca: scaController.text == "" ? null : scaController.text,
@@ -73,18 +74,23 @@ class PassFormState extends State<PassForm> with SingleTickerProviderStateMixin 
       state: state,
       zip: zipController.text,
     );
-
-    //Submit that to api and return result
   }
 
   List<DropdownMenuItem<String>> buildTypeOptions() {
-    Map<String, String> options = <String, String>{
+    Map<String, String> options = <String, String>{};
+
+    if (DateTime.now().weekday < 5) {
+      options.addAll({"Weekday Sign-Out Period" : "weekday"});
+    }
+    else {
+      options.addAll({"Weekend Sign-Out Period" : "weekend"});
+    }
+
+    options.addAll({
       "Discretionary" : "discretionary",
       "SCA" : "sca",
-      "Weekday Sign-Out Period" : "weekday",
-      "Weekend Sign-Out Period" : "weekend",
       "eSSS" : "esss",
-    };
+    });
 
     return options.map((key, value) => MapEntry(key, DropdownMenuItem<String>(
         value: value,
@@ -97,10 +103,21 @@ class PassFormState extends State<PassForm> with SingleTickerProviderStateMixin 
 
   List<DropdownMenuItem<String>> buildStateOptions() {
     List<String> options = <String>[
-      "Colorado",
-      "Iowa",
-      "Minnesota",
+      "Alaska", "Alabama", "Arkansas", "Arizona", "California",
+      "Colorado", "Connecticut", "District of Columbia", "Delaware", "Florida", "Georgia",
+      "Hawaii", "Iowa", "Idaho", "Illinois", "Indiana", "Kansas",
+      "Kentucky", "Louisiana", "Massachusetts", "Maryland",
+      "Maine", "Michigan", "Minnesota", "Missouri", "Mississippi",
+      "Montana", "North Carolina", "North Dakota", "Nebraska",
+      "New Hampshire", "New Jersey", "New Mexico", "Nevada",
+      "New York", "Ohio", "Oklahoma", "Oregon", "Pennsylvania",
+      "Rhode Island", "South Carolina", "South Dakota", "Tennessee",
+      "Texas", "Utah", "Virginia", "Vermont", "Washington", "Wisconsin",
+      "West Virginia", "Wyoming",
     ];
+
+    assert(options.length == 51);
+
     return options.map((key) => DropdownMenuItem<String>(
             value: key,
             child: Text(
@@ -250,6 +267,7 @@ class PassFormState extends State<PassForm> with SingleTickerProviderStateMixin 
                           flex: 4,
                           child: DateFormField(
                             controller: dateController,
+                            label: "Return Date",
                             validator: (content) {
                               if (content != null) {
                                 if (content.isNotEmpty) {
@@ -265,6 +283,7 @@ class PassFormState extends State<PassForm> with SingleTickerProviderStateMixin 
                           flex: 4,
                           child: TimeFormField(
                             controller: timeController,
+                            label: "Return Time",
                             validator: (content) {
                               if (content != null) {
                                 if (content.isNotEmpty) {
@@ -306,7 +325,7 @@ class PassFormState extends State<PassForm> with SingleTickerProviderStateMixin 
                                 onPressed: () {
                                   if (key.currentState!.validate()) {
                                     Navigator.of(context).pop();
-                                    submitPass();
+                                    store.dispatch(StateAction.openPass(pass: formatPass()));
                                   }
                                 },
                                 child: Padding(

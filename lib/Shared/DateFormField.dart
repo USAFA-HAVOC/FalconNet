@@ -4,7 +4,8 @@ import 'package:flutter/material.dart';
 class DateFormField extends StatefulWidget {
   final TextEditingController dateInput;
   final String? Function(String?)? validator;
-  const DateFormField({super.key, required TextEditingController controller, this.validator}) : dateInput = controller;
+  final String? label;
+  const DateFormField({super.key, required TextEditingController controller, this.validator, this.label}) : dateInput = controller;
 
   @override
   State<DateFormField> createState() => DateFormFieldState();
@@ -18,9 +19,9 @@ class DateFormFieldState extends State<DateFormField> {
       validator: widget.validator,
       controller: widget.dateInput,
       style: Theme.of(context).textTheme.bodyLarge,
-      decoration: const InputDecoration(
+      decoration: InputDecoration(
           suffixIcon: Icon(Icons.calendar_today),
-          labelText: "Return Date"
+          labelText: widget.label
       ),
       readOnly: true,
       onTap: () async {

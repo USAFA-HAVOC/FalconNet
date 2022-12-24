@@ -1,8 +1,10 @@
 import 'dart:html';
+import 'package:falcon_net/Pages/LeaveLocator/LeaveLocator.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
-import '../Pages/Home.dart';
+import '../Pages/Grades.dart';
+import '../Pages/Home/Home.dart';
 import '../Pages/Profile/Profile.dart';
 import '../Structure/FNScaffold.dart';
 
@@ -21,8 +23,16 @@ final GoRouter fnRouter = GoRouter(
               routes: [
                 GoRoute(
                   path: "profile",
-                  builder: (context, state) => const Profile()
-                )
+                  builder: (context, state) => const Profile(),
+                ),
+                GoRoute(
+                  path: "grades",
+                  builder: (context, state) => const Grades(),
+                ),
+                GoRoute(
+                  path: "leave_locator",
+                  builder: (context, state) => const LeaveLocator(),
+                ),
               ]
           )
         ]

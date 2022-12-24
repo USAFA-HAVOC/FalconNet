@@ -61,7 +61,6 @@ class CadetInfo extends StatelessWidget {
                 hint: "squadron",
                 initial: store.state.cadet.squadron?.toString(),
               ),
-              SizedBox(height: 20,),
             ],
           );
         }

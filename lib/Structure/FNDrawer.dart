@@ -10,9 +10,13 @@ class FNDrawer extends StatelessWidget {
   Widget build(BuildContext context) {
     return Drawer(
         child: PaddedColumn(
-          padding: EdgeInsets.all(20),
+          padding: EdgeInsets.only(
+            left: 50,
+            top: 20,
+            bottom: 20,
+          ),
           mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             GestureDetector(
               onTap: () {
@@ -27,7 +31,7 @@ class FNDrawer extends StatelessWidget {
             ),
             GestureDetector(
               onTap: () {
-                print("Navigate to Grades");
+                context.go("/grades");
                 Scaffold.of(context).closeDrawer();
               },
               child: Text(
@@ -37,11 +41,11 @@ class FNDrawer extends StatelessWidget {
             ),
             GestureDetector(
               onTap: () {
-                print("Navigate to Accountability");
+                context.go("/leave_locator");
                 Scaffold.of(context).closeDrawer();
               },
               child: Text(
-                  "Acountability",
+                  "Leave Locator",
                   style: Theme.of(context).textTheme.titleMedium
               ),
             ),

@@ -28,3 +28,11 @@ DateTime parseDate(String date) {
   var year = int.parse(parts[2]);
   return DateTime(year, month, day);
 }
+
+TimeOfDay timeOf(DateTime date) {
+  return TimeOfDay(hour: date.hour, minute: date.minute);
+}
+
+DateTime combineDate(DateTime date, TimeOfDay time) {
+  return DateTime(date.year, date.month, date.day, time.hour, time.minute);
+}

@@ -1,11 +1,16 @@
 import 'package:falcon_net/Model/UserNotification.dart';
+import 'package:flutter/cupertino.dart';
+
+import 'Leave.dart';
+import 'Pass.dart';
 
 class StateAction {
   final ActionType? type;
   final Enum? subject;
   final dynamic value;
 
-  const StateAction.editInfo(this.subject, this.value) : type = ActionType.editInfo;
+  const StateAction.editInfo(this.subject, this.value) :
+        type = ActionType.editInfo;
 
   const StateAction.dismissAll() :
         type = ActionType.dismissAll,
@@ -21,6 +26,20 @@ class StateAction {
         type = ActionType.editSetting,
         subject = property;
 
+  const StateAction.openPass({required Pass pass}) :
+      type = ActionType.openPass,
+      subject = null,
+      value = pass;
+
+  const StateAction.setLeave(Leave leave) :
+        type = ActionType.setLeave,
+        subject = null,
+        value = leave;
+
+  const StateAction.clearLeave() :
+      type = ActionType.clearLeave,
+      subject = null,
+      value = null;
 }
 
 enum ActionType {
@@ -28,4 +47,7 @@ enum ActionType {
   dismissAll,
   dismiss,
   editSetting,
+  openPass,
+  setLeave,
+  clearLeave,
 }

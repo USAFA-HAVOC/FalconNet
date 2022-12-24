@@ -1,8 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_redux/flutter_redux.dart';
 import 'package:go_router/go_router.dart';
-
-import '../Model/GlobalState.dart';
 import '../Model/UserNotification.dart';
 
 class FNNotifications extends StatelessWidget {
