@@ -133,7 +133,7 @@ class GradesState extends State<Grades> {
                     });
                   },
                   children: store.state.grades.amis.asMap().map(
-                          (key, value) => MapEntry(key, buildGradePanel("AMI #${key.toString()}", value, amiExtensions[key]))
+                          (key, value) => MapEntry(key, buildGradePanel("AMI #${(key + 1).toString()}", value, amiExtensions[key]))
                   ).values.toList(),
                 ),
                 Text(
@@ -149,7 +149,7 @@ class GradesState extends State<Grades> {
                     });
                   },
                   children: store.state.grades.samis.asMap().map(
-                          (key, value) => MapEntry(key, buildGradePanel("SAMI #${key.toString()}", value, samiExtensions[key]))
+                          (key, value) => MapEntry(key, buildGradePanel("SAMI #${(key + 1).toString()}", value, samiExtensions[key]))
                   ).values.toList(),
                 )
               ],

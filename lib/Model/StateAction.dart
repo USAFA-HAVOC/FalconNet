@@ -31,6 +31,11 @@ class StateAction {
       subject = null,
       value = pass;
 
+  const StateAction.closePass() :
+        type = ActionType.closePass,
+        subject = null,
+        value = null;
+
   const StateAction.setLeave(Leave leave) :
         type = ActionType.setLeave,
         subject = null,
@@ -48,6 +53,7 @@ enum ActionType {
   dismiss,
   editSetting,
   openPass,
+  closePass,
   setLeave,
   clearLeave,
 }

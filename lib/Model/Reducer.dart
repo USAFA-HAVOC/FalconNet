@@ -35,7 +35,14 @@ GlobalState reducer(GlobalState state, dynamic act) {
 
     case ActionType.openPass: {
       //Api call
-      return state.modified(GlobalStateProperty.history, <Pass>[action.value as Pass] + state.history);
+      return state
+          .modified(GlobalStateProperty.history, <Pass>[action.value as Pass] + state.history)
+          .modified(GlobalStateProperty.pass, action.value);
+    }
+
+    case ActionType.closePass: {
+      //Api calls
+      return state.modified(GlobalStateProperty.pass, null);
     }
 
     case ActionType.setLeave: {

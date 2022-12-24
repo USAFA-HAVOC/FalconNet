@@ -20,6 +20,7 @@ class GlobalState implements StateObject {
   final UserSettings settings;
   final UserGrades grades;
   final Leave? leave;
+  final Pass? pass;
 
   const GlobalState({
     required this.cadet,
@@ -28,6 +29,7 @@ class GlobalState implements StateObject {
     required this.settings,
     required this.grades,
     this.leave,
+    this.pass,
   });
 
   @override
@@ -35,22 +37,25 @@ class GlobalState implements StateObject {
     GlobalStateProperty key = k as GlobalStateProperty;
     switch (key) {
       case GlobalStateProperty.cadet: {
-        return GlobalState(cadet: value, history: history, notifications: notifications, settings: settings, grades: grades, leave: leave);
+        return GlobalState(cadet: value, history: history, notifications: notifications, settings: settings, grades: grades, leave: leave, pass: pass);
       }
       case GlobalStateProperty.history: {
-        return GlobalState(cadet: cadet, history: value, notifications: notifications, settings: settings, grades: grades, leave: leave);
+        return GlobalState(cadet: cadet, history: value, notifications: notifications, settings: settings, grades: grades, leave: leave, pass: pass);
       }
       case GlobalStateProperty.notifications: {
-        return GlobalState(cadet: cadet, history: history, notifications: value, settings: settings, grades: grades, leave: leave);
+        return GlobalState(cadet: cadet, history: history, notifications: value, settings: settings, grades: grades, leave: leave, pass: pass);
       }
       case GlobalStateProperty.settings: {
-        return GlobalState(cadet: cadet, history: history, notifications: notifications, settings: value, grades: grades, leave: leave);
+        return GlobalState(cadet: cadet, history: history, notifications: notifications, settings: value, grades: grades, leave: leave, pass: pass);
       }
       case GlobalStateProperty.grades: {
-        return GlobalState(cadet: cadet, history: history, notifications: notifications, settings: settings, grades: value, leave: leave);
+        return GlobalState(cadet: cadet, history: history, notifications: notifications, settings: settings, grades: value, leave: leave, pass: pass);
       }
       case GlobalStateProperty.leave: {
-        return GlobalState(cadet: cadet, history: history, notifications: notifications, settings: settings, grades: grades, leave: value);
+        return GlobalState(cadet: cadet, history: history, notifications: notifications, settings: settings, grades: grades, leave: value, pass: pass);
+      }
+      case GlobalStateProperty.pass: {
+        return GlobalState(cadet: cadet, history: history, notifications: notifications, settings: settings, grades: grades, leave: leave, pass: value);
       }
     }
   }
@@ -63,4 +68,5 @@ enum GlobalStateProperty {
   settings,
   grades,
   leave,
+  pass,
 }
