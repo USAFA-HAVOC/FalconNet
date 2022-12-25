@@ -1,4 +1,4 @@
-import 'package:falcon_net/Model/GlobalState.dart';
+import 'package:falcon_net/Model/Store/GlobalState.dart';
 
 class UserNotification {
   final String message;

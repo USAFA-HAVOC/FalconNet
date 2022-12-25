@@ -1,20 +1,28 @@
-import 'dart:js_util';
+import 'package:falcon_net/Model/Data/PassAllocation.dart';
+import 'package:falcon_net/Model/Data/UserGrades.dart';
+import 'package:falcon_net/Model/Data/UserSettings.dart';
 
-import 'package:falcon_net/Model/PassAllocation.dart';
-import 'package:falcon_net/Model/UserGrades.dart';
-import 'package:falcon_net/Model/UserSettings.dart';
-import 'package:flutter/foundation.dart';
+import '../Data/Cadet.dart';
+import '../Data/CadetDI.dart';
+import '../Data/Leave.dart';
+import '../Data/Pass.dart';
+import '../Data/UserNotification.dart';
 
-import 'Cadet.dart';
-import 'CadetDI.dart';
-import 'Leave.dart';
-import 'Pass.dart';
-import 'UserNotification.dart';
-
+///Required for modifiable state objects
+///Enum will be an enum of property types for each subclass
+///Value is dynamic and must match property type
 abstract class StateObject {
   StateObject modified(Enum key, dynamic value);
 }
 
+class NoSuchProperty implements Exception {
+  final String? cause;
+
+  const NoSuchProperty({this.cause});
+}
+
+///Global application state both for api and local data
+///Modified by dispatching actions to reducer
 class GlobalState implements StateObject {
   final Cadet cadet;
   final List<Pass> history;

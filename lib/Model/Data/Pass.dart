@@ -1,6 +1,6 @@
 import 'dart:core';
 
-import 'package:falcon_net/Model/GlobalState.dart';
+import 'package:falcon_net/Model/Store/GlobalState.dart';
 
 class Pass {
   final DateTime? start;

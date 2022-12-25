@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
-import '../Shared/PaddedColumn.dart';
+import 'Components/PaddedColumn.dart';
 
 class FNDrawer extends StatelessWidget {
   const FNDrawer({super.key});

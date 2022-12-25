@@ -1,4 +1,4 @@
-import 'package:falcon_net/Model/Pass.dart';
+import 'package:falcon_net/Model/Data/Pass.dart';
 
 class PassAllocation {
   final int weekdayOvernight;

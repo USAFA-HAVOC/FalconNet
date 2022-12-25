@@ -1,5 +1,5 @@
-import 'package:falcon_net/Model/GlobalState.dart';
-import 'package:falcon_net/Shared/TemporalFormatting.dart';
+import 'package:falcon_net/Model/Store/GlobalState.dart';
+import 'package:falcon_net/Utility/TemporalFormatting.dart';
 
 enum TransportType {
   airline,

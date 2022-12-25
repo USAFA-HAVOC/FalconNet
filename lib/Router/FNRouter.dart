@@ -1,22 +1,23 @@
-import 'dart:html';
-import 'package:falcon_net/Pages/LeaveLocator/LeaveLocator.dart';
-import 'package:falcon_net/Pages/PassManagement/PassManagement.dart';
-import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-
-import '../Pages/Grades.dart';
-import '../Pages/Home/Home.dart';
-import '../Pages/Profile/Profile.dart';
 import '../Structure/FNScaffold.dart';
+import '../Structure/Pages/Grades.dart';
+import '../Structure/Pages/Home/Home.dart';
+import '../Structure/Pages/LeaveLocator/LeaveLocator.dart';
+import '../Structure/Pages/PassManagement/PassManagement.dart';
+import '../Structure/Pages/Profile/Profile.dart';
 
 final GoRouter fnRouter = GoRouter(
     routes: [
+
+      //Shell route places contents of all sub-routes as child of the scaffold
       ShellRoute(
         builder: (context, state, child) {
           return FNScaffold(
             child: child
           );
         },
+
+        //Each route builds a page under the application scaffold
         routes: [
           GoRoute(
               path: "/",

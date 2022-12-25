@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 import 'FNNavigationBar.dart';
-import '../Shared/TapIcon.dart';
+import 'Components/TapIcon.dart';
 
 class FNScaffold extends StatelessWidget {
   final Widget child;

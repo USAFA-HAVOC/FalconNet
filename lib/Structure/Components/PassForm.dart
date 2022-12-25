@@ -1,14 +1,13 @@
 import 'dart:core';
 
-import 'package:falcon_net/Model/Pass.dart';
-import 'package:falcon_net/Model/StateAction.dart';
-import 'package:falcon_net/Shared/DateFormField.dart';
-import 'package:falcon_net/Shared/TemporalFormatting.dart';
-import 'package:falcon_net/Shared/TimeFormField.dart';
+import 'package:falcon_net/Model/Data/Pass.dart';
+import 'package:falcon_net/Structure/Components/DateFormField.dart';
+import 'package:falcon_net/Utility/TemporalFormatting.dart';
+import 'package:falcon_net/Structure/Components/TimeFormField.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 
-import '../Model/GlobalState.dart';
+import '../../Model/Store/GlobalState.dart';
 
 class PassForm extends StatefulWidget {
   final void Function(Pass pass) onSubmit;

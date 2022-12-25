@@ -1,9 +1,10 @@
-import 'package:falcon_net/Model/UserNotification.dart';
+import 'package:falcon_net/Model/Data/UserNotification.dart';
 import 'package:flutter/cupertino.dart';
+import '../Data/Leave.dart';
+import '../Data/Pass.dart';
 
-import 'Leave.dart';
-import 'Pass.dart';
-
+///Class for actions that can be dispatched against the data store
+///Each constructor represents a type of action
 class StateAction {
   final ActionType? type;
   final Enum? subject;

@@ -1,12 +1,12 @@
 import 'package:badges/badges.dart';
-import 'package:falcon_net/Model/StateAction.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:go_router/go_router.dart';
 import 'package:popover/popover.dart';
-import 'package:falcon_net/Model/GlobalState.dart';
-import '../Shared/TapIcon.dart';
+import 'package:falcon_net/Model/Store/GlobalState.dart';
+import '../Model/Store/StateAction.dart';
+import 'Components/TapIcon.dart';
 import 'FNNotifications.dart';
 
 class FNNavigationBar extends StatelessWidget {

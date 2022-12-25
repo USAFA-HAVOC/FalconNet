@@ -1,18 +1,18 @@
-import 'package:falcon_net/Model/UserGrades.dart';
+import 'package:falcon_net/Model/Data/UserGrades.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:go_router/go_router.dart';
 import 'package:redux/redux.dart';
 
-import 'Model/Cadet.dart';
-import 'Model/PassAllocation.dart';
-import 'Model/UserSettings.dart';
+import 'Model/Data/Cadet.dart';
+import 'Model/Data/PassAllocation.dart';
+import 'Model/Data/UserSettings.dart';
 import 'Router/FNRouter.dart';
 import 'Theme/FNTheme.dart';
-import 'Model/Pass.dart';
-import 'Model/GlobalState.dart';
-import 'Model/Reducer.dart';
-import 'Model/UserNotification.dart';
+import 'Model/Data/Pass.dart';
+import 'Model/Store/GlobalState.dart';
+import 'Model/Store/Reducer.dart';
+import 'Model/Data/UserNotification.dart';
 
 void main() {
   final store = Store<GlobalState>(

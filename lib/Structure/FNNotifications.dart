@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import '../Model/UserNotification.dart';
+import '../Model/Data/UserNotification.dart';
 
 class FNNotifications extends StatelessWidget {
   final List<UserNotification> notifications;

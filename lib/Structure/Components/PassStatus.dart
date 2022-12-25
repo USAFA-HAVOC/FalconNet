@@ -1,9 +1,9 @@
-import 'package:falcon_net/Shared/TemporalFormatting.dart';
+import 'package:falcon_net/Utility/TemporalFormatting.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 
-import '../Model/GlobalState.dart';
-import '../Model/Pass.dart';
+import '../../Model/Store/GlobalState.dart';
+import '../../Model/Data/Pass.dart';
 
 class PassStatus extends StatelessWidget {
   const PassStatus({super.key});

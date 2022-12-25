@@ -1,10 +1,10 @@
-import 'package:falcon_net/Model/Pass.dart';
-import 'package:falcon_net/Model/StateAction.dart';
-import 'package:falcon_net/Shared/PageWidget.dart';
+import 'package:falcon_net/Model/Data/Pass.dart';
+import 'package:falcon_net/Structure/Components/PageWidget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 
-import '../Model/GlobalState.dart';
+import '../../Model/Store/GlobalState.dart';
+import '../../Model/Store/StateAction.dart';
 import 'PaddedColumn.dart';
 import 'PassStatus.dart';
 import 'PassForm.dart';

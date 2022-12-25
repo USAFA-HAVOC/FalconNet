@@ -1,4 +1,4 @@
-import 'package:falcon_net/Shared/TemporalFormatting.dart';
+import 'package:falcon_net/Utility/TemporalFormatting.dart';
 import 'package:flutter/material.dart';
 
 class TimeFormField extends StatefulWidget {
