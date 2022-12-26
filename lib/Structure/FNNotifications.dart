@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import '../Model/Data/UserNotification.dart';
 
+///Notification widget contained in popover
 class FNNotifications extends StatelessWidget {
   final List<UserNotification> notifications;
   final void Function(UserNotification)? onClick;
@@ -9,6 +10,8 @@ class FNNotifications extends StatelessWidget {
   const FNNotifications({super.key, required this.notifications, this.onClick});
 
   @override build(BuildContext context) {
+
+    //Maps each notification to a notification bar
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: notifications.map((notification) => NotificationBar(
@@ -19,6 +22,9 @@ class FNNotifications extends StatelessWidget {
   }
 }
 
+///A Notification bar contained in the notifications widget
+///Navigates to the notifications destination on use interaction
+///Essentially text contained within a decorated box
 class NotificationBar extends StatelessWidget {
   final UserNotification notification;
   final void Function(UserNotification)? onClick;
@@ -28,6 +34,8 @@ class NotificationBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
+
+      //Calls the on click function, usually used to navigate to another page
       onTap: () {
         Navigator.of(context).pop();
         context.go(notification.destination);
@@ -35,6 +43,8 @@ class NotificationBar extends StatelessWidget {
           onClick!(notification);
         }
       },
+
+      //Important: Constained box is required to prevent size overflow and match to notification widget height
       child: ConstrainedBox(
         constraints: BoxConstraints.tightFor(height: 50),
         child: DecoratedBox(

@@ -3,6 +3,7 @@ import 'package:go_router/go_router.dart';
 
 import 'Components/PaddedColumn.dart';
 
+///Side menu for page navigation
 class FNDrawer extends StatelessWidget {
   const FNDrawer({super.key});
 
@@ -20,7 +21,6 @@ class FNDrawer extends StatelessWidget {
           children: [
             GestureDetector(
               onTap: () {
-                print("Navigate to Dashboard");
                 Scaffold.of(context).closeDrawer();
                 context.go("/");
               },
@@ -29,6 +29,7 @@ class FNDrawer extends StatelessWidget {
                   style: Theme.of(context).textTheme.titleMedium
               ),
             ),
+
             GestureDetector(
               onTap: () {
                 context.go("/grades");
@@ -39,6 +40,7 @@ class FNDrawer extends StatelessWidget {
                   style: Theme.of(context).textTheme.titleMedium
               ),
             ),
+
             GestureDetector(
               onTap: () {
                 context.go("/leave_locator");
@@ -49,6 +51,7 @@ class FNDrawer extends StatelessWidget {
                   style: Theme.of(context).textTheme.titleMedium
               ),
             ),
+
             GestureDetector(
               onTap: () {
                 context.go("/pass_management");
@@ -59,7 +62,6 @@ class FNDrawer extends StatelessWidget {
                   style: Theme.of(context).textTheme.titleMedium
               ),
             ),
-
           ],
         )
     );

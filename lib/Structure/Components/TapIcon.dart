@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 
+///Icon that performs action on tap
 class TapIcon extends StatelessWidget {
   final IconData icondata;
   final void Function() onTap;

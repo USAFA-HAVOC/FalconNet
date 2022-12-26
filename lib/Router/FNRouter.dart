@@ -6,6 +6,7 @@ import '../Structure/Pages/LeaveLocator/LeaveLocator.dart';
 import '../Structure/Pages/PassManagement/PassManagement.dart';
 import '../Structure/Pages/Profile/Profile.dart';
 
+///Defines page routes within the app and places each within the app scaffold
 final GoRouter fnRouter = GoRouter(
     routes: [
 

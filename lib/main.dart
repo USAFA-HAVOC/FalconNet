@@ -15,6 +15,9 @@ import 'Model/Store/Reducer.dart';
 import 'Model/Data/UserNotification.dart';
 
 void main() {
+
+  //Initialize a default store
+  //Replace the default global state with an api call
   final store = Store<GlobalState>(
       reducer,
       initialState: GlobalState(
@@ -121,6 +124,7 @@ void main() {
           allocation: PassAllocation(weekdayDay: 5, weekdayOvernight: 1, weekendOvernight: 1),
       )
   );
+
   runApp(FNApp(store: store));
 }
 
@@ -132,8 +136,12 @@ class FNApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
+
+    //Surrounds the app with a store provider so all child widgets can access global state
     return StoreProvider(
         store: store,
+
+        //Navigates to child pages based on path
         child: MaterialApp.router(
           theme: fnTheme,
           routerConfig: fnRouter,

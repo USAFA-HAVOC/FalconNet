@@ -2,6 +2,7 @@ import 'dart:core';
 
 import 'package:falcon_net/Model/Data/Pass.dart';
 import 'package:falcon_net/Structure/Components/DateFormField.dart';
+import 'package:falcon_net/Utility/InputValidation.dart';
 import 'package:falcon_net/Utility/TemporalFormatting.dart';
 import 'package:falcon_net/Structure/Components/TimeFormField.dart';
 import 'package:flutter/material.dart';
@@ -9,9 +10,14 @@ import 'package:flutter_redux/flutter_redux.dart';
 
 import '../../Model/Store/GlobalState.dart';
 
+///Form for submitting or editing a pass
 class PassForm extends StatefulWidget {
+
+  //Closures for submission and cancellation
   final void Function(Pass pass) onSubmit;
   final void Function() onCancel;
+
+  //Existing pass to be edited
   final Pass? existing;
 
   const PassForm({super.key, required this.onSubmit, required this.onCancel, this.existing});
@@ -21,7 +27,11 @@ class PassForm extends StatefulWidget {
 }
 
 class PassFormState extends State<PassForm> with SingleTickerProviderStateMixin {
+
+  //Key for maintaining access to form state across redraws
   final key = GlobalKey<FormState>();
+
+  //Controllers for containing form field contents
   late TextEditingController dateController;
   late TextEditingController timeController;
   late String type;
@@ -31,6 +41,7 @@ class PassFormState extends State<PassForm> with SingleTickerProviderStateMixin 
   late TextEditingController cityController;
   late TextEditingController zipController;
 
+  //Controllers for expansion animation
   late final AnimationController animationController = AnimationController(
     duration: const Duration(milliseconds: 500),
     vsync: this,
@@ -41,6 +52,7 @@ class PassFormState extends State<PassForm> with SingleTickerProviderStateMixin 
     curve: Curves.fastOutSlowIn,
   );
 
+  ///Initialize controller values from either existing pass or defaults
   @override
   void initState() {
     super.initState();
@@ -68,6 +80,7 @@ class PassFormState extends State<PassForm> with SingleTickerProviderStateMixin 
     super.dispose();
   }
 
+  ///Maximizes pass duration based on pass type and current time
   void maximizePass() {
 
     //Implement a model call to determine latest possible time
@@ -79,6 +92,9 @@ class PassFormState extends State<PassForm> with SingleTickerProviderStateMixin 
     });
   }
 
+  ///Format pass object based on form data
+  ///Requires valid inputs in all fields
+  ///Should only be called after form has been validated
   Pass formatPass() {
     var endDate = parseDate(dateController.text);
     var endTime = parseTime(timeController.text);
@@ -94,6 +110,7 @@ class PassFormState extends State<PassForm> with SingleTickerProviderStateMixin 
     );
   }
 
+  ///Builds type options based on current date
   List<DropdownMenuItem<String>> buildTypeOptions() {
     Map<String, String> options = <String, String>{};
 
@@ -119,6 +136,7 @@ class PassFormState extends State<PassForm> with SingleTickerProviderStateMixin 
     ))).values.toList();
   }
 
+  ///Builds state menu options
   List<DropdownMenuItem<String>> buildStateOptions() {
     List<String> options = <String>[
       "Alaska", "Alabama", "Arkansas", "Arizona", "California",
@@ -134,8 +152,10 @@ class PassFormState extends State<PassForm> with SingleTickerProviderStateMixin 
       "West Virginia", "Wyoming",
     ];
 
+    //Asserts there are still fifty of them (plus select)
     assert(options.length == 51);
 
+    //Map the strings to menu items
     return options.map((key) => DropdownMenuItem<String>(
             value: key,
             child: Text(
@@ -165,19 +185,30 @@ class PassFormState extends State<PassForm> with SingleTickerProviderStateMixin 
                           labelStyle: Theme.of(context).textTheme.bodyLarge,
                           labelText: "Pass Type"
                       ),
+
+                      //Called when a new type options is selected
                       onChanged: (value) {
+
+                        //If sca is selected, extend sca number option
                         if (value == "sca") {
                           animationController.animateTo(1.0);
                         }
+
+                        //Otherwise close sca field
                         else {
                           animationController.animateTo(0.0);
                           scaController.text = "";
                         }
+
+                        //Set value
                         type = value!;
                       },
                       items: buildTypeOptions(),
                     ),
+
                     SizedBox(height: 10,),
+
+                    //Animation for extending the sca form option
                     SizeTransition(
                       sizeFactor: animation,
                       child: Column(
@@ -191,14 +222,11 @@ class PassFormState extends State<PassForm> with SingleTickerProviderStateMixin 
                                 labelText: "SCA Number"
                             ),
                             style: Theme.of(context).textTheme.bodyLarge,
+
+                            //Requires input only if selected pass type is sca
                             validator: (content) {
                               if (type == "sca") {
-                                if (content != null) {
-                                  if (content.isNotEmpty) {
-                                    return null;
-                                  }
-                                }
-                                return "Please enter an SCA number";
+                                return InputValidation.stringLength(emptyMessage: "Please enter an SCA number")(content);
                               }
                             },
                           ),
@@ -206,6 +234,7 @@ class PassFormState extends State<PassForm> with SingleTickerProviderStateMixin 
                         ],
                       ),
                     ),
+
                     TextFormField(
                       controller: descriptionController,
                       decoration: InputDecoration(
@@ -213,16 +242,11 @@ class PassFormState extends State<PassForm> with SingleTickerProviderStateMixin 
                           labelText: "Description"
                       ),
                       style: Theme.of(context).textTheme.bodyLarge,
-                      validator: (content) {
-                        if (content != null) {
-                          if (content.characters.isNotEmpty) {
-                            return null;
-                          }
-                        }
-                        return "Please enter a description";
-                      },
+                      validator: InputValidation.stringLength(emptyMessage: "Please enter a description"),
                     ),
+
                     SizedBox(height: 10,),
+
                     DropdownButtonFormField(
                       value: state,
                       decoration: InputDecoration(
@@ -230,11 +254,16 @@ class PassFormState extends State<PassForm> with SingleTickerProviderStateMixin 
                           labelText: "State"
                       ),
                       onChanged: (value) {
-                        print("selected ${value}");
+                        setState(() {
+                          state = value!;
+                        });
                       },
+                      validator: InputValidation.dropdown(),
                       items: buildStateOptions(),
                     ),
+
                     SizedBox(height: 10,),
+
                     Row(
                       children: [
                         Expanded(
@@ -246,17 +275,12 @@ class PassFormState extends State<PassForm> with SingleTickerProviderStateMixin 
                                 labelText: "City"
                             ),
                             style: Theme.of(context).textTheme.bodyLarge,
-                            validator: (content) {
-                              if (content != null) {
-                                if (content.isNotEmpty) {
-                                  return null;
-                                }
-                              }
-                              return "Please enter a city";
-                            },
+                            validator: InputValidation.stringLength(emptyMessage: "Please enter a city"),
                           ),
                         ),
+
                         Spacer(flex: 1),
+
                         Expanded(
                           flex: 3,
                           child: TextFormField(
@@ -266,19 +290,14 @@ class PassFormState extends State<PassForm> with SingleTickerProviderStateMixin 
                                 labelText: "Zip"
                             ),
                             style: Theme.of(context).textTheme.bodyLarge,
-                            validator: (content) {
-                              if (content != null) {
-                                if (content.isNotEmpty) {
-                                  return null;
-                                }
-                              }
-                              return "Please enter a zip code";
-                            },
+                            validator: InputValidation.stringLength(emptyMessage: "Please enter a zip code"),
                           ),
                         ),
                       ],
                     ),
+
                     SizedBox(height: 10,),
+
                     Row(
                       children: [
                         Expanded(
@@ -286,42 +305,25 @@ class PassFormState extends State<PassForm> with SingleTickerProviderStateMixin 
                           child: DateFormField(
                             controller: dateController,
                             label: "Return Date",
-                            validator: (content) {
-                              if (content != null) {
-                                if (content.isNotEmpty) {
-                                  return null;
-                                }
-                              }
-                              return "Please enter a date";
-                            },
+                            validator: InputValidation.date(),
                           ),
                         ),
+
                         Spacer(flex: 1),
+
                         Expanded(
                           flex: 4,
                           child: TimeFormField(
                             controller: timeController,
                             label: "Return Time",
-                            validator: (content) {
-                              if (content != null) {
-                                if (content.isNotEmpty) {
-                                  TimeOfDay time = parseTime(timeController.text);
-                                  DateTime date = parseDate(dateController.text);
-                                  DateTime givenDate = DateTime(date.year, date.month, date.day, time.hour, time.minute);
-                                  DateTime present = DateTime.now();
-                                  if (givenDate.compareTo(present) < 1) {
-                                    return "Return time in past";
-                                  }
-                                  return null;
-                                }
-                              }
-                              return "Please enter a time";
-                            },
+                            validator: InputValidation.time(date: parseDate(dateController.text)),
                           ),
                         )
                       ],
                     ),
+
                     SizedBox(height: 10,),
+
                     ElevatedButton(
                       onPressed: () {
                         maximizePass();
@@ -331,7 +333,9 @@ class PassFormState extends State<PassForm> with SingleTickerProviderStateMixin 
                         child: const Text('Max Duration'),
                       ),
                     ),
+
                     SizedBox(height: 20,),
+
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
@@ -341,6 +345,8 @@ class PassFormState extends State<PassForm> with SingleTickerProviderStateMixin 
                               padding: EdgeInsets.symmetric(vertical: 20),
                               child: ElevatedButton(
                                 onPressed: () {
+
+                                  //If form entries are valid, call submission closure with formatted pass
                                   if (key.currentState!.validate()) {
                                     widget.onSubmit(formatPass());
                                   }
@@ -350,9 +356,11 @@ class PassFormState extends State<PassForm> with SingleTickerProviderStateMixin 
                                   child: const Text('Submit'),
                                 ),
                               ),
-                            )
+                            ),
                         ),
+
                         Spacer(flex: 1),
+
                         Expanded(
                           flex: 5,
                           child: ElevatedButton(
@@ -360,6 +368,8 @@ class PassFormState extends State<PassForm> with SingleTickerProviderStateMixin 
                               backgroundColor: MaterialStateColor.resolveWith((states) => Colors.grey),
                             ),
                             onPressed: () {
+
+                              //Perform cancellation closure
                               widget.onCancel();
                             },
                             child: Padding(

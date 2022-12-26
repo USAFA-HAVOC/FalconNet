@@ -9,6 +9,7 @@ import '../Model/Store/StateAction.dart';
 import 'Components/TapIcon.dart';
 import 'FNNotifications.dart';
 
+///Overhead navigation bar
 class FNNavigationBar extends StatelessWidget {
   const FNNavigationBar({super.key});
 
@@ -19,6 +20,7 @@ class FNNavigationBar extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
+
             Expanded(
                 child: Container(
                     alignment: AlignmentDirectional.centerStart,
@@ -27,56 +29,73 @@ class FNNavigationBar extends StatelessWidget {
                       child: TapIcon(
                         Icons.menu,
                         color: Colors.black,
+
+                        //Opens the side menu
                         onTap: () {
-                          print("navigate to menu");
                           Scaffold.of(context).openDrawer();
                         },
                       ),
                     )
                 )
             ),
+
             Expanded(
-                child: GestureDetector(
-                  onTap: () {
-                    print("navigate to home");
-                    context.go("/");
-                  },
-                  child: Image.asset(
-                    "aflogo.png",
-                    height: 50,
-                  ),
-                )
+
+              //Navigates to home
+              child: GestureDetector(
+                onTap: () {
+                  context.go("/");
+                },
+                child: Image.asset(
+                  "aflogo.png",
+                  height: 50,
+                ),
+              )
             ),
+
             Expanded(
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
+
                     Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
+
                           Expanded(
                               child: StoreBuilder<GlobalState>(
                                 builder: (context, store) {
+
+                                  //If there are notifications display a badge icon
                                   if (store.state.notifications.length > 0) {
                                     return GestureDetector(
                                       onTap: () {
-                                        print("Navigate to notifications");
+
+                                        //On tap, display a popover under the notification icon
                                         showPopover(
                                           context: context,
                                           width: constraints.maxWidth / 2,
                                           height: store.state.notifications.length * 50,
+
+                                          //On closing, dispatch dismiss all action
                                           onPop: () {
                                             store.dispatch(StateAction.dismissAll());
                                           },
+
+                                          //Display FNNotifications in popover
                                           bodyBuilder: (context) => FNNotifications(
                                             notifications: store.state.notifications,
+
+                                            //On click, dispatch dismiss action
                                             onClick: (notification) {
                                               store.dispatch(StateAction.dismiss(notification: notification));
                                             },
                                           ),
                                         );
                                       },
+
+                                      //Badge icon containing number of notifications
                                       child: Badge(
                                         badgeContent: Text(store.state.notifications.length.toString()),
                                         badgeColor: Theme.of(context).indicatorColor,
@@ -85,6 +104,8 @@ class FNNavigationBar extends StatelessWidget {
                                       ),
                                     );
                                   }
+
+                                  //If no notifications, don't include badge
                                   return GestureDetector(
                                     onTap: () {
                                       print("Implement negative feedback");
@@ -94,12 +115,13 @@ class FNNavigationBar extends StatelessWidget {
                                 }
                               )
                           ),
+
                           Expanded(
                               child: TapIcon(Icons.person_outline_rounded, onTap: () {
-                                print("navigate to profile");
                                 context.go("/profile");
                               })
                           ),
+
                         ]
                     )
                   ],

@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 
-/*
-Column subclass that wraps all children in a padding widget with the given edge insets
- */
+///Column subclass that wraps all children in a padding widget with the given edge insets
 class PaddedColumn extends Column {
   PaddedColumn({
     super.key,

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
 TextTheme fnTextTheme = const TextTheme(
+
+  //Title is used for page and widget titles
   titleLarge: TextStyle(
     fontSize: 25,
     fontWeight: FontWeight.bold,
@@ -13,6 +15,8 @@ TextTheme fnTextTheme = const TextTheme(
     fontSize: 15,
     fontWeight: FontWeight.bold
   ),
+
+  //Label is used for contrast against dark colors
   labelLarge: TextStyle(
     fontSize: 20,
     color: Colors.white,
@@ -25,6 +29,8 @@ TextTheme fnTextTheme = const TextTheme(
     fontSize: 10,
     color: Colors.white,
   ),
+
+  //Used on status widgets
   headlineLarge: TextStyle(
     fontSize: 25,
     color: Colors.blue,
@@ -37,6 +43,8 @@ TextTheme fnTextTheme = const TextTheme(
     fontSize: 15,
     color: Colors.blue,
   ),
+
+  //Used for textual information other than titles
   bodyLarge: TextStyle(
     fontSize: 15,
   ),

@@ -5,6 +5,7 @@ import 'package:flutter_redux/flutter_redux.dart';
 import '../../Model/Store/GlobalState.dart';
 import '../../Model/Data/Pass.dart';
 
+///Widget for displaying current pass status
 class PassStatus extends StatelessWidget {
   const PassStatus({super.key});
 
@@ -17,6 +18,8 @@ class PassStatus extends StatelessWidget {
               builder: (context, store) {
                 if (store.state.pass == null) {
                   //Add logic for closed passes
+
+                  //If there is no current pass, display blue passes are open message
                   return Card(
                       color: Theme.of(context).focusColor,
                       child: Padding(
@@ -25,6 +28,7 @@ class PassStatus extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.center,
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: [
+
                             Padding(
                               padding: const EdgeInsets.only(bottom: 10),
                               child: Text(
@@ -32,10 +36,12 @@ class PassStatus extends StatelessWidget {
                                 style: Theme.of(context).textTheme.headlineMedium,
                               ),
                             ),
+
                             Text(
                               "Here",
                               style: Theme.of(context).textTheme.headlineLarge,
                             ),
+
                             Padding(
                               padding: const EdgeInsets.only(top: 10),
                               child: Text(
@@ -43,12 +49,16 @@ class PassStatus extends StatelessWidget {
                                 style: Theme.of(context).textTheme.headlineMedium,
                               ),
                             ),
+
                           ],
                         ),
                       )
                   );
                 }
                 else {
+
+                  //If there is a current pass, display pass information
+                  //Determine expiration message
                   Pass pass = store.state.pass!;
                   String expiration;
                   if (pass.end!.difference(DateTime.now()).compareTo(Duration(hours: 24)) < 0 && pass.end!.weekday == DateTime.now().weekday) {
@@ -61,6 +71,7 @@ class PassStatus extends StatelessWidget {
                     expiration = "Expires: ${describeDate(pass.end!)}, ${describeTime(TimeOfDay.fromDateTime(pass.end!))}";
                   }
 
+                  //Display a gray card with expiration time/date
                   return Card(
                     color: Theme.of(context).canvasColor,
                     child: Padding(
@@ -69,6 +80,7 @@ class PassStatus extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.center,
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
+
                           Padding(
                             padding: const EdgeInsets.only(bottom: 10),
                             child: Text(
@@ -79,6 +91,7 @@ class PassStatus extends StatelessWidget {
                               ),
                             ),
                           ),
+
                           Text(
                             "Signed-Out",
                             style: TextStyle(
@@ -86,6 +99,7 @@ class PassStatus extends StatelessWidget {
                                 color: Colors.black
                             ),
                           ),
+
                           Padding(
                             padding: const EdgeInsets.only(top: 10),
                             child: Text(
