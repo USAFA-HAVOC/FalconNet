@@ -1,5 +1,6 @@
 import 'package:falcon_net/Model/Data/UserNotification.dart';
 import 'package:flutter/cupertino.dart';
+import '../Data/FormOne.dart';
 import '../Data/Leave.dart';
 import '../Data/Pass.dart';
 
@@ -56,6 +57,11 @@ class StateAction {
         type = ActionType.signDI,
         subject = null,
         value = null;
+
+  const StateAction.signForm(FormOne form) :
+        type = ActionType.signForm,
+        subject = null,
+        value = form;
 }
 
 enum ActionType {
@@ -69,4 +75,5 @@ enum ActionType {
   setLeave,
   clearLeave,
   signDI,
+  signForm,
 }

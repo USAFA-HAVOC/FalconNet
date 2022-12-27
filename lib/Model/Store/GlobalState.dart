@@ -4,6 +4,7 @@ import 'package:falcon_net/Model/Data/UserSettings.dart';
 
 import '../Data/Cadet.dart';
 import '../Data/CadetDI.dart';
+import '../Data/FormOne.dart';
 import '../Data/Leave.dart';
 import '../Data/Pass.dart';
 import '../Data/UserNotification.dart';
@@ -30,6 +31,7 @@ class GlobalState implements StateObject {
   final UserSettings settings;
   final UserGrades grades;
   final PassAllocation allocation;
+  final List<FormOne> forms;
   final Leave? leave;
   final Pass? pass;
   final CadetDI? di;
@@ -41,6 +43,7 @@ class GlobalState implements StateObject {
     required this.settings,
     required this.grades,
     required this.allocation,
+    required this.forms,
     this.leave,
     this.pass,
     this.di,
@@ -51,31 +54,44 @@ class GlobalState implements StateObject {
     GlobalStateProperty key = k as GlobalStateProperty;
     switch (key) {
       case GlobalStateProperty.cadet: {
-        return GlobalState(cadet: value, history: history, notifications: notifications, settings: settings, grades: grades, leave: leave, pass: pass, di: di, allocation: allocation);
+        return GlobalState(cadet: value, history: history, notifications: notifications, settings: settings,
+            grades: grades, leave: leave, pass: pass, di: di, allocation: allocation, forms: forms);
       }
       case GlobalStateProperty.history: {
-        return GlobalState(cadet: cadet, history: value, notifications: notifications, settings: settings, grades: grades, leave: leave, pass: pass, di: di, allocation: allocation);
+        return GlobalState(cadet: cadet, history: value, notifications: notifications, settings: settings,
+            grades: grades, leave: leave, pass: pass, di: di, allocation: allocation, forms: forms);
       }
       case GlobalStateProperty.notifications: {
-        return GlobalState(cadet: cadet, history: history, notifications: value, settings: settings, grades: grades, leave: leave, pass: pass, di: di, allocation: allocation);
+        return GlobalState(cadet: cadet, history: history, notifications: value, settings: settings,
+            grades: grades, leave: leave, pass: pass, di: di, allocation: allocation, forms: forms);
       }
       case GlobalStateProperty.settings: {
-        return GlobalState(cadet: cadet, history: history, notifications: notifications, settings: value, grades: grades, leave: leave, pass: pass, di: di, allocation: allocation);
+        return GlobalState(cadet: cadet, history: history, notifications: notifications, settings: value,
+            grades: grades, leave: leave, pass: pass, di: di, allocation: allocation, forms: forms);
       }
       case GlobalStateProperty.grades: {
-        return GlobalState(cadet: cadet, history: history, notifications: notifications, settings: settings, grades: value, leave: leave, pass: pass, di: di, allocation: allocation);
+        return GlobalState(cadet: cadet, history: history, notifications: notifications, settings: settings,
+            grades: value, leave: leave, pass: pass, di: di, allocation: allocation, forms: forms);
       }
       case GlobalStateProperty.leave: {
-        return GlobalState(cadet: cadet, history: history, notifications: notifications, settings: settings, grades: grades, leave: value, pass: pass, di: di, allocation: allocation);
+        return GlobalState(cadet: cadet, history: history, notifications: notifications, settings: settings,
+            grades: grades, leave: value, pass: pass, di: di, allocation: allocation, forms: forms);
       }
       case GlobalStateProperty.pass: {
-        return GlobalState(cadet: cadet, history: history, notifications: notifications, settings: settings, grades: grades, leave: leave, pass: value, di: di, allocation: allocation);
+        return GlobalState(cadet: cadet, history: history, notifications: notifications, settings: settings,
+            grades: grades, leave: leave, pass: value, di: di, allocation: allocation, forms: forms);
       }
       case GlobalStateProperty.di: {
-        return GlobalState(cadet: cadet, history: history, notifications: notifications, settings: settings, grades: grades, leave: leave, pass: pass, di: value, allocation: allocation);
+        return GlobalState(cadet: cadet, history: history, notifications: notifications, settings: settings,
+            grades: grades, leave: leave, pass: pass, di: value, allocation: allocation, forms: forms);
       }
       case GlobalStateProperty.allocation: {
-        return GlobalState(cadet: cadet, history: history, notifications: notifications, settings: settings, grades: grades, leave: leave, pass: pass, di: di, allocation: value);
+        return GlobalState(cadet: cadet, history: history, notifications: notifications, settings: settings,
+            grades: grades, leave: leave, pass: pass, di: di, allocation: value, forms: forms);
+      }
+      case GlobalStateProperty.forms: {
+        return GlobalState(cadet: cadet, history: history, notifications: notifications, settings: settings,
+            grades: grades, leave: leave, pass: pass, di: di, allocation: allocation, forms: value);
       }
     }
   }
@@ -91,4 +107,5 @@ enum GlobalStateProperty {
   pass,
   di,
   allocation,
+  forms,
 }

@@ -230,6 +230,7 @@ class PassFormState extends State<PassForm> with SingleTickerProviderStateMixin 
                               }
                             },
                           ),
+
                           SizedBox(height: 10,),
                         ],
                       ),

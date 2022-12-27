@@ -1,3 +1,4 @@
+import 'package:falcon_net/Model/Data/FormOne.dart';
 import 'package:falcon_net/Model/Data/UserGrades.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
@@ -122,6 +123,10 @@ void main() {
             ],
           ),
           allocation: PassAllocation(weekdayDay: 5, weekdayOvernight: 1, weekendOvernight: 1),
+          forms: [
+            FormOne(title: "Test", description: "READ CSND", signed: false),
+            FormOne(title: "Test Two", description: "bruh", signed: false),
+          ],
       )
   );
 

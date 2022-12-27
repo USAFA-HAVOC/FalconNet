@@ -6,6 +6,7 @@ import 'package:falcon_net/Model/Data/UserGrades.dart';
 import 'package:falcon_net/Model/Data/UserSettings.dart';
 
 import '../Data/CadetDI.dart';
+import '../Data/FormOne.dart';
 import '../Data/UserNotification.dart';
 import 'StateAction.dart';
 
@@ -80,6 +81,15 @@ GlobalState reducer(GlobalState state, dynamic act) {
       //Api call
       var di = CadetDI(signature: state.cadet.name!, date: DateTime.now());
       return state.modified(GlobalStateProperty.di, di);
+    }
+
+    //Signs a given form one
+    case ActionType.signForm: {
+      //Api call
+      var list = state.forms;
+      list.remove(action.value);
+      list.add((action.value as FormOne).sign());
+      return state.modified(GlobalStateProperty.forms, list);
     }
 
     //Default option is required, so return dummy data
