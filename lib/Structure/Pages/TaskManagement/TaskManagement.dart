@@ -1,4 +1,5 @@
 import 'package:falcon_net/Model/Store/GlobalState.dart';
+import 'package:falcon_net/Structure/Pages/TaskManagement/ExternalTaskWidget.dart';
 import 'package:falcon_net/Structure/Pages/TaskManagement/FormOneWidget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
@@ -15,6 +16,26 @@ class TaskManagement extends StatelessWidget {
   List<Widget> buildTasks(GlobalState state, BuildContext context) {
     var tasks = <Widget>[];
 
+    var sdo = true;
+    var jdo = true;
+
+    //Add role based tasks first to give precedence
+    if (sdo) {
+      tasks.add(ExternalTaskWidget(
+          path: "/task_management/sdo",
+          title: "SDO",
+          description: "Please perform DI for your squadron"
+      ));
+    }
+
+    if (jdo) {
+      tasks.add(ExternalTaskWidget(
+          path: "/task_management/ordering",
+          title: "JDO",
+          description: "Please order appropriate number of meals for your squadron"
+      ));
+    }
+
     //Add form one task widgets from state
     tasks.addAll(state.forms.where((f) => !f.signed).map((f) => FormOneWidget(form: f)));
 
@@ -29,7 +50,7 @@ class TaskManagement extends StatelessWidget {
         constraints: BoxConstraints.expand(height: height),
         child: Center(
           child: Text(
-            "No current tasks",
+            "No tasks right now",
             style: TextStyle(
                 fontSize: Theme.of(context).textTheme.titleSmall?.fontSize,
                 color: Colors.grey
@@ -59,14 +80,22 @@ class TaskManagement extends StatelessWidget {
             child: ListView(
               children: [
                 Padding(
-                  padding: EdgeInsets.only(bottom: 20),
-                  child: Text(
-                      "Task Management",
-                      style: Theme.of(context).textTheme.titleLarge
+                  padding: EdgeInsets.all(20),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Padding(
+                        padding: EdgeInsets.only(bottom: 20),
+                        child: Text(
+                            "Task Management",
+                            style: Theme.of(context).textTheme.titleLarge
+                        ),
+                      ),
+
+                      ...buildTasks(store.state, context),
+                    ],
                   ),
                 ),
-
-                ...buildTasks(store.state, context),
               ],
             ),
           );

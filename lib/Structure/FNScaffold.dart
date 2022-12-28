@@ -33,10 +33,7 @@ class FNScaffold extends StatelessWidget {
 
         drawer: const FNDrawer(),
 
-        body: Padding(
-          padding: const EdgeInsets.all(20),
-          child: child,
-        ),
+        body: child,
       ),
     );
   }

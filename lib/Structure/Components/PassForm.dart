@@ -32,8 +32,8 @@ class PassFormState extends State<PassForm> with SingleTickerProviderStateMixin 
   final key = GlobalKey<FormState>();
 
   //Controllers for containing form field contents
-  late TextEditingController dateController;
-  late TextEditingController timeController;
+  late String dateValue;
+  late String timeValue;
   late String type;
   late TextEditingController scaController;
   late TextEditingController descriptionController;
@@ -59,12 +59,12 @@ class PassFormState extends State<PassForm> with SingleTickerProviderStateMixin 
     type = DateTime.now().weekday < 5 ? "weekday" : "weekend";
     
     if (widget.existing != null) {
-      dateController = TextEditingController(text: describeDate(widget.existing!.end!));
-      timeController = TextEditingController(text: describeTime(TimeOfDay.fromDateTime(widget.existing!.end!)));
+      dateValue = describeDate(widget.existing!.end!);
+      timeValue = describeTime(TimeOfDay.fromDateTime(widget.existing!.end!));
     }
     else {
-      dateController = TextEditingController(text: describeDate(DateTime.now()));
-      timeController = TextEditingController(text: describeTime(TimeOfDay(hour: 19, minute: 50)));
+      dateValue = describeDate(DateTime.now());
+      timeValue = describeTime(TimeOfDay(hour: 19, minute: 50));
     }
     
     scaController = TextEditingController(text: widget.existing?.sca);
@@ -87,8 +87,8 @@ class PassFormState extends State<PassForm> with SingleTickerProviderStateMixin 
     var last = DateTime.now().toLocal();
 
     setState(() {
-      dateController.text = describeDate(last);
-      timeController.text = describeTime(TimeOfDay(hour: last.hour, minute: last.minute));
+      dateValue = describeDate(last);
+      timeValue = describeTime(TimeOfDay(hour: last.hour, minute: last.minute));
     });
   }
 
@@ -96,8 +96,8 @@ class PassFormState extends State<PassForm> with SingleTickerProviderStateMixin 
   ///Requires valid inputs in all fields
   ///Should only be called after form has been validated
   Pass formatPass() {
-    var endDate = parseDate(dateController.text);
-    var endTime = parseTime(timeController.text);
+    var endDate = parseDate(dateValue);
+    var endTime = parseTime(timeValue);
     return Pass(
       start: widget.existing?.start ?? DateTime.now(),
       end: combineDate(endDate, endTime),
@@ -304,9 +304,14 @@ class PassFormState extends State<PassForm> with SingleTickerProviderStateMixin 
                         Expanded(
                           flex: 4,
                           child: DateFormField(
-                            controller: dateController,
+                            initialValue: dateValue,
                             label: "Return Date",
                             validator: InputValidation.date(),
+                            onChanged: (change) {
+                              setState(() {
+                                dateValue = change;
+                              });
+                            },
                           ),
                         ),
 
@@ -315,9 +320,14 @@ class PassFormState extends State<PassForm> with SingleTickerProviderStateMixin 
                         Expanded(
                           flex: 4,
                           child: TimeFormField(
-                            controller: timeController,
+                            initialValue: timeValue,
                             label: "Return Time",
-                            validator: InputValidation.time(date: parseDate(dateController.text)),
+                            validator: InputValidation.time(date: parseDate(dateValue)),
+                            onChanged: (change) {
+                              setState(() {
+                                timeValue = change;
+                              });
+                            },
                           ),
                         )
                       ],

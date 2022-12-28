@@ -1,4 +1,6 @@
 import 'package:falcon_net/Structure/Pages/TaskManagement/TaskManagement.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import '../Structure/FNScaffold.dart';
 import '../Structure/Pages/Dashboard/Dashboard.dart';
@@ -6,8 +8,12 @@ import '../Structure/Pages/Grades.dart';
 import '../Structure/Pages/LeaveLocator/LeaveLocator.dart';
 import '../Structure/Pages/PassManagement/PassManagement.dart';
 import '../Structure/Pages/Profile/Profile.dart';
+import '../Structure/Pages/TaskManagement/Tasks/OrderingTask.dart';
+import '../Structure/Pages/TaskManagement/Tasks/SDOTask.dart';
 
 ///Defines page routes within the app and places each within the app scaffold
+///Contains each within the default background to prevent
+///transparency effects during transitions
 final GoRouter fnRouter = GoRouter(
     routes: [
 
@@ -23,31 +29,42 @@ final GoRouter fnRouter = GoRouter(
         routes: [
           GoRoute(
               path: "/",
-              builder: (context, state) => const Dashboard(),
+              builder: (context, state) => const FNBackground(child: Dashboard()),
               routes: [
                 GoRoute(
                   path: "profile",
-                  builder: (context, state) => const Profile(),
+                  builder: (context, state) => const FNBackground(child: Profile()),
                 ),
 
                 GoRoute(
                   path: "grades",
-                  builder: (context, state) => const Grades(),
+                  builder: (context, state) => const FNBackground(child: Grades()),
                 ),
 
                 GoRoute(
                   path: "leave_locator",
-                  builder: (context, state) => LeaveLocator(),
+                  builder: (context, state) => FNBackground(child: LeaveLocator()),
                 ),
 
                 GoRoute(
                   path: "pass_management",
-                  builder: (context, state) => const PassManagement(),
+                  builder: (context, state) => const FNBackground(child: PassManagement()),
                 ),
 
                 GoRoute(
                   path: "task_management",
-                  builder: (context, state) => const TaskManagement(),
+                  builder: (context, state) => const FNBackground(child: TaskManagement()),
+                  routes: [
+                    GoRoute(
+                      path: "sdo",
+                      builder: (context, state) => const FNBackground(child: SDOTask()),
+                    ),
+
+                    GoRoute(
+                      path: "ordering",
+                      builder: (context, state) => const FNBackground(child: OrderingTask()),
+                    ),
+                  ]
                 ),
               ]
           )
@@ -55,3 +72,19 @@ final GoRouter fnRouter = GoRouter(
       )
     ]
 );
+
+///Common background for all falcon net pages
+///Cannot be included in shell path to prevent transparency effects
+class FNBackground extends StatelessWidget {
+  final Widget child;
+
+  const FNBackground({super.key, required this.child});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      color: Colors.white54,
+      child: child,
+    );
+  }
+}

@@ -6,32 +6,40 @@ import 'package:flutter/material.dart';
 ///on user interaction. Output is formatted as a string and contained in
 ///the text field. Manual input is disabled.
 class DateFormField extends StatefulWidget {
-  //TextController for child text field
-  final TextEditingController dateInput;
+
   final String? Function(String?)? validator;
-
-  //Label on field decoration
   final String? label;
-
+  final void Function(String)? onChanged;
+  final String? initialValue;
 
   const DateFormField({
     super.key,
-    required TextEditingController controller,
     this.validator,
-    this.label
-  }) : dateInput = controller;
+    this.label,
+    this.onChanged,
+    this.initialValue,
+  });
 
   @override
   State<DateFormField> createState() => DateFormFieldState();
 }
 
 class DateFormFieldState extends State<DateFormField> {
+  late String value;
+  late TextEditingController controller;
+
+  @override
+  void initState() {
+    super.initState();
+    value = widget.initialValue ?? describeDate(DateTime.now());
+    controller = TextEditingController(text: value);
+  }
 
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      controller: controller,
       validator: widget.validator,
-      controller: widget.dateInput,
       style: Theme.of(context).textTheme.bodyLarge,
       decoration: InputDecoration(
           suffixIcon: Icon(Icons.calendar_today),
@@ -45,7 +53,7 @@ class DateFormFieldState extends State<DateFormField> {
         //Uses given input as initial value and present as earliest date
         DateTime? pickedDate = await showDatePicker(
           context: context,
-          initialDate: parseDate(widget.dateInput.text),
+          initialDate: parseDate(value),
           firstDate: DateTime.now(),
           lastDate: DateTime(2100),
         );
@@ -55,7 +63,11 @@ class DateFormFieldState extends State<DateFormField> {
           DateTime local = pickedDate.toLocal();
           String formattedDate = describeDate(local);
           setState(() {
-            widget.dateInput.text = formattedDate;
+            value = formattedDate;
+            controller.text = value;
+            if (widget.onChanged != null) {
+              widget.onChanged!(formattedDate);
+            }
           });
         }
       },

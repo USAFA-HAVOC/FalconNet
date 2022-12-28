@@ -23,7 +23,9 @@ class UserSettings implements StateObject {
         return UserSettings(darkTheme: value, pushNotifications: pushNotifications, diPush: diPush, passPush: passPush, taskPush: taskPush);
       }
       case UserSettingsProperty.pushNotifications: {
-        return UserSettings(darkTheme: darkTheme, pushNotifications: value, diPush: diPush, passPush: passPush, taskPush: taskPush);
+
+        //Turns off all push notification settings
+        return UserSettings(darkTheme: darkTheme, pushNotifications: value, diPush: value, passPush: value, taskPush: value);
       }
       case UserSettingsProperty.diPush: {
         return UserSettings(darkTheme: darkTheme, pushNotifications: pushNotifications, diPush: value, passPush: passPush, taskPush: taskPush);

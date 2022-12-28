@@ -8,28 +8,39 @@ import 'package:flutter/material.dart';
 class TimeFormField extends StatefulWidget {
 
   //Text controller for text field
-  final TextEditingController timeInput;
   final String? Function(String?)? validator;
   final String? label;
+  final void Function(String)? onChanged;
+  final String? initialValue;
 
   const TimeFormField({
     super.key,
-    required TextEditingController controller,
     this.validator,
-    this.label
-  }) : timeInput = controller;
+    this.label,
+    this.onChanged,
+    this.initialValue,
+  });
 
   @override
   State<TimeFormField> createState() => TimeFormFieldState();
 }
 
 class TimeFormFieldState extends State<TimeFormField> {
+  late String value;
+  late TextEditingController controller;
+
+  @override
+  void initState() {
+    super.initState();
+    value = widget.initialValue ?? describeTime(TimeOfDay.now());
+    controller = TextEditingController(text: value);
+  }
 
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      controller: controller,
       validator: widget.validator,
-      controller: widget.timeInput,
       style: Theme.of(context).textTheme.bodyLarge,
       decoration: InputDecoration(
           suffixIcon: Icon(Icons.timer),
@@ -42,14 +53,18 @@ class TimeFormFieldState extends State<TimeFormField> {
         TimeOfDay? pickedTime = await showTimePicker(
             initialEntryMode: TimePickerEntryMode.dial,
             context: context,
-            initialTime: parseTime(widget.timeInput.text)
+            initialTime: parseTime(value)
         );
 
         //If a time is picked, format it and set controller text
         if (pickedTime != null) {
           String formattedTime = describeTime(pickedTime);
           setState(() {
-            widget.timeInput.text = formattedTime;
+            value = formattedTime;
+            controller.text = value;
+            if (widget.onChanged != null) {
+              widget.onChanged!(value);
+            }
           });
         }
       },

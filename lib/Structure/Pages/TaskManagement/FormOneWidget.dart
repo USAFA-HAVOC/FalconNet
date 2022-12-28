@@ -35,7 +35,8 @@ class FormOneWidget extends StatelessWidget {
                     context: context,
                     builder: (context) => ConfirmationDialog(
                       title: "Confirm Signing",
-                      description: "Please confirm that you have read and understand this Form 1. This action cannot be reversed.",
+                      description: "Please confirm that you have read and understand this Form 1. "
+                          "This action cannot be reversed.",
 
                       //Dispatches signing action with own form one
                       onConfirm: () {
@@ -45,7 +46,10 @@ class FormOneWidget extends StatelessWidget {
                   );
                 },
 
-                child: Text("Sign"),
+                child: Padding(
+                  padding: EdgeInsets.symmetric(vertical: 10),
+                  child: Text("Sign"),
+                ),
               )
           )
         ],
