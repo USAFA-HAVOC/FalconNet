@@ -10,14 +10,14 @@ class DateFormField extends StatefulWidget {
   final String? Function(String?)? validator;
   final String? label;
   final void Function(String)? onChanged;
-  final String? initialValue;
+  final String? value;
 
   const DateFormField({
     super.key,
     this.validator,
     this.label,
     this.onChanged,
-    this.initialValue,
+    this.value,
   });
 
   @override
@@ -29,14 +29,9 @@ class DateFormFieldState extends State<DateFormField> {
   late TextEditingController controller;
 
   @override
-  void initState() {
-    super.initState();
-    value = widget.initialValue ?? describeDate(DateTime.now());
-    controller = TextEditingController(text: value);
-  }
-
-  @override
   Widget build(BuildContext context) {
+    value = widget.value ?? describeDate(DateTime.now());
+    controller = TextEditingController(text: value);
     return TextFormField(
       controller: controller,
       validator: widget.validator,

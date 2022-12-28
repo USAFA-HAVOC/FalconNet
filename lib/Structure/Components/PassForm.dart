@@ -84,7 +84,7 @@ class PassFormState extends State<PassForm> with SingleTickerProviderStateMixin 
   void maximizePass() {
 
     //Implement a model call to determine latest possible time
-    var last = DateTime.now().toLocal();
+    var last = DateTime.now().toLocal().add(Duration(days: 2, hours: 5));
 
     setState(() {
       dateValue = describeDate(last);
@@ -304,7 +304,7 @@ class PassFormState extends State<PassForm> with SingleTickerProviderStateMixin 
                         Expanded(
                           flex: 4,
                           child: DateFormField(
-                            initialValue: dateValue,
+                            value: dateValue,
                             label: "Return Date",
                             validator: InputValidation.date(),
                             onChanged: (change) {
@@ -320,7 +320,7 @@ class PassFormState extends State<PassForm> with SingleTickerProviderStateMixin 
                         Expanded(
                           flex: 4,
                           child: TimeFormField(
-                            initialValue: timeValue,
+                            value: timeValue,
                             label: "Return Time",
                             validator: InputValidation.time(date: parseDate(dateValue)),
                             onChanged: (change) {

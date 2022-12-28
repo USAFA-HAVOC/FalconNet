@@ -11,14 +11,14 @@ class TimeFormField extends StatefulWidget {
   final String? Function(String?)? validator;
   final String? label;
   final void Function(String)? onChanged;
-  final String? initialValue;
+  final String? value;
 
   const TimeFormField({
     super.key,
     this.validator,
     this.label,
     this.onChanged,
-    this.initialValue,
+    this.value,
   });
 
   @override
@@ -26,18 +26,21 @@ class TimeFormField extends StatefulWidget {
 }
 
 class TimeFormFieldState extends State<TimeFormField> {
+
+  //Looks like doesn't need to be stateful, but...
+  //Must remain a stateless widget in order to preserve state across own redraws
   late String value;
   late TextEditingController controller;
 
   @override
-  void initState() {
-    super.initState();
-    value = widget.initialValue ?? describeTime(TimeOfDay.now());
-    controller = TextEditingController(text: value);
-  }
-
-  @override
   Widget build(BuildContext context) {
+
+    /*
+    Overrides stateful properties according to present widget properties.
+    This is nessecary in order to allow ancestors to modify value.
+     */
+    var value = widget.value ?? describeTime(TimeOfDay.now());
+    var controller = TextEditingController(text: value);
     return TextFormField(
       controller: controller,
       validator: widget.validator,
