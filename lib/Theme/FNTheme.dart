@@ -8,6 +8,7 @@ ThemeData fnTheme = ThemeData(
   indicatorColor: Colors.blue,
   textTheme: fnTextTheme,
   cardTheme: fnCardTheme,
+  fontFamily: "Roboto",
   buttonTheme: const ButtonThemeData(
     buttonColor: Colors.blue,
     shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(20)))

@@ -15,6 +15,7 @@ class TapIcon extends StatelessWidget {
       child: Icon(
         icondata,
         color: color,
+        size: 25,
       )
     );
   }
