@@ -146,7 +146,7 @@ class FNNavigationBar extends StatelessWidget {
                             onTap: () => context.go("/profile"),
                             child: Padding(
                               padding: EdgeInsets.symmetric(vertical: 25),
-                              child: Icon(Icons.person_outline_rounded),
+                              child: Icon(Icons.person_rounded),
                             ),
                           )
                       ),
