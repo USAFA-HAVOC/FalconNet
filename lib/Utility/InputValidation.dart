@@ -70,4 +70,16 @@ class InputValidation {
     }
     return emptyMessage ?? "Please enter a number";
   };
+
+  ///Validates numeric fields
+  static String? Function(String?) optionalNumber({String? emptyMessage}) => (String? content) {
+    if (content != null) {
+      if (content.isNotEmpty) {
+        if (double.tryParse(content) != null) {
+          return null;
+        }
+        return emptyMessage ?? "Please enter a number";
+      }
+    }
+  };
 }

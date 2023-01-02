@@ -36,22 +36,20 @@ class ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
   ];
 
   int index = 0;
+  int previousIndex = 0;
 
-  late Widget current = CadetInfo();
-  late Widget previous = CadetInfo();
-
-  late TabController controller;
+  late TabController tabController;
 
   //Initializes tab controller
   @override
   void initState() {
     super.initState();
-    controller = TabController(length: tabs.length, vsync: this);
+    tabController = TabController(length: tabs.length, vsync: this);
   }
 
   @override
   void dispose() {
-    controller.dispose();
+    tabController.dispose();
     super.dispose();
   }
 
@@ -91,24 +89,23 @@ class ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
                     ),
 
                     TabBar(
-                        controller: controller,
+                        controller: tabController,
                         labelPadding: EdgeInsets.zero,
                         tabs: tabs,
                         onTap: (newIndex) {
                           setState(() {
+                            previousIndex = index;
                             index = newIndex;
-                            previous = current;
-                            current = pages[index];
                           });
                         },
                     ),
 
                     AnimatedCrossFade(
-                        firstChild: current,
-                        secondChild: previous,
+                        firstChild: pages[index],
+                        secondChild: pages[previousIndex],
                         crossFadeState: CrossFadeState.showFirst,
                         duration: Duration(milliseconds: 250),
-
+                        sizeCurve: Curves.ease,
                     ),
                   ],
                 ),

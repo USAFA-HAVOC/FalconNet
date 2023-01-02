@@ -8,8 +8,8 @@ import '../Structure/Pages/Grades.dart';
 import '../Structure/Pages/LeaveLocator/LeaveLocator.dart';
 import '../Structure/Pages/PassManagement/PassManagement.dart';
 import '../Structure/Pages/Profile/Profile.dart';
-import '../Structure/Pages/TaskManagement/Tasks/OrderingTask.dart';
-import '../Structure/Pages/TaskManagement/Tasks/SDOTask.dart';
+import '../Structure/Pages/TaskManagement/Tasks/Ordering/OrderingTask.dart';
+import '../Structure/Pages/TaskManagement/Tasks/SDO/SDOTask.dart';
 
 ///Defines page routes within the app and places each within the app scaffold
 ///Contains each within the default background to prevent
