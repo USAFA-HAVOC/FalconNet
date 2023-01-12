@@ -1,9 +1,9 @@
+import 'package:async_redux/async_redux.dart';
+import 'package:falcon_net/Model/Store/Actions/SettingsAction.dart';
 import 'package:falcon_net/Model/Store/GlobalState.dart';
 import 'package:falcon_net/Model/Data/UserSettings.dart';
+import 'package:falcon_net/Structure/Components/ViewModel.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_redux/flutter_redux.dart';
-
-import '../../../Model/Store/StateAction.dart';
 
 ///Settings page
 ///Modifies global state settings as values are changed
@@ -12,8 +12,9 @@ class Settings extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return StoreBuilder<GlobalState>(
-        builder: (context, store) {
+    return StoreConnector<GlobalState, ViewModel<UserSettings>>(
+        converter: (store) => ViewModel<UserSettings>(store: store, content: store.state.settings),
+        builder: (context, model) {
           return ListView(
             primary: false,
             shrinkWrap: true,
@@ -31,11 +32,11 @@ class Settings extends StatelessWidget {
                   Expanded(
                       flex: 2,
                       child: Switch(
-                        value: store.state.settings.darkTheme,
+                        value: model.content.darkTheme,
 
                         //Dispatches set setting action with new value
                         onChanged: (value) {
-                          store.dispatch(StateAction.setSetting(property: UserSettingsProperty.darkTheme, value: value));
+                          model.dispatch(SettingsAction(property: UserSettingsProperty.darkTheme, value: value));
                         },
                       )
                   ),
@@ -55,18 +56,18 @@ class Settings extends StatelessWidget {
                   Expanded(
                       flex: 2,
                       child: Switch(
-                        value: store.state.settings.pushNotifications,
+                        value: model.content.pushNotifications,
 
                         //Dispatches set setting action with new value
                         onChanged: (value) {
-                          store.dispatch(StateAction.setSetting(property: UserSettingsProperty.pushNotifications, value: value));
+                          model.dispatch(SettingsAction(property: UserSettingsProperty.pushNotifications, value: value));
                         },
                       )
                   ),
                 ],
               ),
 
-              NotificationsExtension(beginOpen: store.state.settings.pushNotifications),
+              NotificationsExtension(beginOpen: model.content.pushNotifications),
             ],
           );
         }
@@ -118,18 +119,19 @@ class NotificationsExtensionState extends State<NotificationsExtension> with Sin
 
   @override
   Widget build(BuildContext context) {
-    return StoreBuilder<GlobalState>(
-      builder: (context, store) {
+    return StoreConnector<GlobalState, ViewModel<UserSettings>>(
+      converter: (store) => ViewModel<UserSettings>(store: store, content: store.state.settings),
+      builder: (context, model) {
 
         /*
         If animation controller state doesn't match setting state, initiate
         animation to appropriate value
          */
-        if (store.state.settings.pushNotifications && controller.value != 1) {
+        if (model.content.pushNotifications && controller.value != 1) {
           controller.animateTo(1);
         }
 
-        if (!store.state.settings.pushNotifications && controller.value != 0) {
+        if (!model.content.pushNotifications && controller.value != 0) {
           controller.animateTo(0);
         }
 
@@ -152,11 +154,11 @@ class NotificationsExtensionState extends State<NotificationsExtension> with Sin
                     Expanded(
                         flex: 2,
                         child: Switch(
-                          value: store.state.settings.passPush,
+                          value: model.content.passPush,
 
                           //Dispatches set setting action with new value
                           onChanged: (value) {
-                            store.dispatch(StateAction.setSetting(property: UserSettingsProperty.passPush, value: value));
+                            model.dispatch(SettingsAction(property: UserSettingsProperty.passPush, value: value));
                           },
                         )
                     ),
@@ -175,11 +177,11 @@ class NotificationsExtensionState extends State<NotificationsExtension> with Sin
                     Expanded(
                         flex: 2,
                         child: Switch(
-                          value: store.state.settings.diPush,
+                          value: model.content.diPush,
 
                           //Dispatches set setting action with new value
                           onChanged: (value) {
-                            store.dispatch(StateAction.setSetting(property: UserSettingsProperty.diPush, value: value));
+                            model.dispatch(SettingsAction(property: UserSettingsProperty.diPush, value: value));
                           },
                         )
                     ),
@@ -198,11 +200,11 @@ class NotificationsExtensionState extends State<NotificationsExtension> with Sin
                     Expanded(
                         flex: 2,
                         child: Switch(
-                          value: store.state.settings.taskPush,
+                          value: model.content.taskPush,
 
                           //Dispatches set setting action with new value
                           onChanged: (value) {
-                            store.dispatch(StateAction.setSetting(property: UserSettingsProperty.taskPush, value: value));
+                            model.dispatch(SettingsAction(property: UserSettingsProperty.taskPush, value: value));
                           },
                         )
                     ),

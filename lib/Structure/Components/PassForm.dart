@@ -1,12 +1,13 @@
 import 'dart:core';
 
+import 'package:async_redux/async_redux.dart';
 import 'package:falcon_net/Model/Data/Pass.dart';
 import 'package:falcon_net/Structure/Components/DateFormField.dart';
+import 'package:falcon_net/Structure/Components/ViewModel.dart';
 import 'package:falcon_net/Utility/InputValidation.dart';
 import 'package:falcon_net/Utility/TemporalFormatting.dart';
 import 'package:falcon_net/Structure/Components/TimeFormField.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_redux/flutter_redux.dart';
 
 import '../../Model/Store/GlobalState.dart';
 
@@ -168,8 +169,9 @@ class PassFormState extends State<PassForm> with SingleTickerProviderStateMixin 
 
   @override
   Widget build(BuildContext context) {
-    return StoreBuilder<GlobalState>(
-        builder: (context, store) => Form(
+    return StoreConnector<GlobalState, ViewModel<void>>(
+        converter: (store) => ViewModel<void>(store: store, content: null),
+        builder: (context, f) => Form(
             key: key,
             child: ListView(
               primary: false,

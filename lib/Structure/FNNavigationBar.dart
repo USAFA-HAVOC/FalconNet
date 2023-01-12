@@ -1,12 +1,14 @@
+import 'package:async_redux/async_redux.dart';
 import 'package:badges/badges.dart';
+import 'package:falcon_net/Model/Data/UserNotification.dart';
+import 'package:falcon_net/Structure/Components/ViewModel.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_redux/flutter_redux.dart';
 import 'package:go_router/go_router.dart';
 import 'package:popover/popover.dart';
 import 'package:falcon_net/Model/Store/GlobalState.dart';
-import '../Model/Store/StateAction.dart';
+import '../Model/Store/Actions/DismissalAction.dart';
 import 'Components/TapIcon.dart';
 import 'FNNotifications.dart';
 
@@ -73,13 +75,12 @@ class FNNavigationBar extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-
                       Expanded(
-                          child: StoreBuilder<GlobalState>(
-                              builder: (context, store) {
-
+                          child: StoreConnector<GlobalState, ViewModel<List<UserNotification>>>(
+                              converter: (store) => ViewModel<List<UserNotification>>(store: store, content: store.state.notifications),
+                              builder: (context, model) {
                                 //If there are notifications display a badge icon
-                                if (store.state.notifications.isNotEmpty) {
+                                if (model.content.isNotEmpty) {
                                   return GestureDetector(
 
                                     behavior: HitTestBehavior.opaque,
@@ -90,20 +91,20 @@ class FNNavigationBar extends StatelessWidget {
                                       showPopover(
                                         context: context,
                                         width: constraints.maxWidth / 2,
-                                        height: store.state.notifications.length * 50,
+                                        height: model.content.length * 50,
 
                                         //On closing, dispatch dismiss all action
                                         onPop: () {
-                                          store.dispatch(StateAction.dismissAll());
+                                          model.dispatch(DismissalAction.all());
                                         },
 
                                         //Display FNNotifications in popover
                                         bodyBuilder: (context) => FNNotifications(
-                                          notifications: store.state.notifications,
+                                          notifications: model.content,
 
                                           //On click, dispatch dismiss action
                                           onClick: (notification) {
-                                            store.dispatch(StateAction.dismiss(notification: notification));
+                                            model.dispatch(DismissalAction(notification));
                                           },
                                         ),
                                       );
@@ -113,7 +114,7 @@ class FNNavigationBar extends StatelessWidget {
                                     child: Padding(
                                       padding: EdgeInsets.symmetric(vertical: 25),
                                       child: Badge(
-                                        badgeContent: Text(store.state.notifications.length.toString()),
+                                        badgeContent: Text(model.content.length.toString()),
                                         badgeColor: Theme.of(context).indicatorColor,
                                         position: BadgePosition.topEnd(end: 10),
                                         child: Icon(Icons.notifications),

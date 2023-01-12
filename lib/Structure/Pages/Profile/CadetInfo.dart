@@ -1,10 +1,10 @@
+import 'package:async_redux/async_redux.dart';
 import 'package:falcon_net/Model/Data/Cadet.dart';
 import 'package:falcon_net/Model/Store/GlobalState.dart';
-import 'package:falcon_net/Structure/Components/PaddedColumn.dart';
+import 'package:falcon_net/Structure/Components/ViewModel.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_redux/flutter_redux.dart';
 
-import '../../../Model/Store/StateAction.dart';
+import '../../../Model/Store/Actions/InfoAction.dart';
 
 ///Cadet Information tab
 ///Displays editable personal information
@@ -13,8 +13,9 @@ class CadetInfo extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return StoreBuilder<GlobalState>(
-        builder: (context, store) {
+    return StoreConnector<GlobalState, ViewModel<Cadet>>(
+        converter: (store) => ViewModel<Cadet>(store: store, content: store.state.cadet),
+        builder: (context, model) {
           return ListView(
             primary: false,
             shrinkWrap: true,
@@ -23,52 +24,44 @@ class CadetInfo extends StatelessWidget {
 
               InputBlock(
                 label: "Name",
-                onSubmit: (value) => {
-                  store.dispatch(StateAction.editInfo(CadetProperty.name, value))
-                },
+                onSubmit: (value) => model.dispatch(InfoAction(property: CadetProperty.name, value: value)),
                 validator: (String? value) => (value ?? "").characters.length >= 6,
                 error: "Name must have at least six characters",
                 hint: "Jane Doe",
-                initial: store.state.cadet.name,
+                initial: model.content.name,
               ),
 
               SizedBox(height: 20,),
 
               InputBlock(
                 label: "Phone Number",
-                onSubmit: (value) => {
-                  store.dispatch(StateAction.editInfo(CadetProperty.phone, value))
-                },
+                onSubmit: (value) => model.dispatch(InfoAction(property: CadetProperty.phone, value: value)),
                 validator: (String? value) => (value ?? "").characters.length >= 10,
                 error: "Phone number must have at least ten characters",
                 hint: "(123) 456-789",
-                initial: store.state.cadet.phone,
+                initial: model.content.phone,
               ),
 
               SizedBox(height: 20,),
 
               InputBlock(
                 label: "Room Number",
-                onSubmit: (value) => {
-                  store.dispatch(StateAction.editInfo(CadetProperty.room, value))
-                },
+                onSubmit: (value) => model.dispatch(InfoAction(property: CadetProperty.room, value: value)),
                 validator: (String? value) => (value ?? "").characters.length >= 3,
                 error: "Room must have at least three characters",
                 hint: "room #",
-                initial: store.state.cadet.room,
+                initial: model.content.room,
               ),
 
               SizedBox(height: 20,),
 
               InputBlock(
                 label: "Squadron",
-                onSubmit: (value) => {
-                  store.dispatch(StateAction.editInfo(CadetProperty.squadron, int.parse(value!)))
-                },
+                onSubmit: (value) => model.dispatch(InfoAction(property: CadetProperty.squadron, value: int.parse(value!))),
                 validator: (String? value) => 0 < (int.tryParse(value ?? "0") ?? 0) && (int.tryParse(value ?? "0") ?? 41) < 41,
                 error: "Enter a valid squadron",
                 hint: "squadron",
-                initial: store.state.cadet.squadron?.toString(),
+                initial: model.content.squadron?.toString(),
               ),
             ],
           );
@@ -132,6 +125,9 @@ class InputBlockState extends State<InputBlock> {
           //Toggles focus state
           onFocusChange: (focused) => setState(() {
             selected = focused;
+            if (!focused) {
+              widget.onSubmit(controller.text);
+            }
           }),
 
           child: TextField(

@@ -1,6 +1,7 @@
+import 'package:async_redux/async_redux.dart';
+import 'package:falcon_net/Structure/Components/ViewModel.dart';
 import 'package:falcon_net/Utility/TemporalFormatting.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_redux/flutter_redux.dart';
 
 import '../../Model/Store/GlobalState.dart';
 import '../../Model/Data/Pass.dart';
@@ -14,9 +15,10 @@ class PassStatus extends StatelessWidget {
     return Row(
       children: [
         Expanded(
-          child: StoreBuilder<GlobalState>(
-              builder: (context, store) {
-                if (store.state.pass == null) {
+          child: StoreConnector<GlobalState, ViewModel<Pass?>>(
+              converter: (store) => ViewModel<Pass?>(store: store, content: store.state.pass),
+              builder: (context, model) {
+                if (model.content == null) {
                   //Add logic for closed passes
 
                   //If there is no current pass, display blue passes are open message
@@ -59,7 +61,7 @@ class PassStatus extends StatelessWidget {
 
                   //If there is a current pass, display pass information
                   //Determine expiration message
-                  Pass pass = store.state.pass!;
+                  Pass pass = model.content!;
                   String expiration;
                   if (pass.end!.difference(DateTime.now()).compareTo(Duration(hours: 24)) < 0 && pass.end!.weekday == DateTime.now().weekday) {
                     expiration = "Expires: ${describeTime(TimeOfDay.fromDateTime(pass.end!))}";

@@ -1,8 +1,9 @@
+import 'package:async_redux/async_redux.dart';
 import 'package:falcon_net/Model/Store/GlobalState.dart';
+import 'package:falcon_net/Structure/Components/ViewModel.dart';
 import 'package:falcon_net/Structure/Pages/TaskManagement/ExternalTaskWidget.dart';
 import 'package:falcon_net/Structure/Pages/TaskManagement/FormOneWidget.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_redux/flutter_redux.dart';
 
 import '../../../Model/Data/FormOne.dart';
 
@@ -18,8 +19,17 @@ class TaskManagement extends StatelessWidget {
 
     var sdo = true;
     var jdo = true;
+    var cwoc = true;
 
     //Add role based tasks first to give precedence
+    if (cwoc) {
+      tasks.add(ExternalTaskWidget(
+          path: "/task_management/cwoc",
+          title: "CWOC",
+          description: "Imagine being a cwoc controller, that's depressing"
+      ));
+    }
+
     if (sdo) {
       tasks.add(ExternalTaskWidget(
           path: "/task_management/sdo",
@@ -65,8 +75,9 @@ class TaskManagement extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return StoreBuilder<GlobalState>(
-        builder: (context, store) {
+    return StoreConnector<GlobalState, ViewModel<GlobalState>>(
+        converter: (store) => ViewModel<GlobalState>(store: store, content: store.state),
+        builder: (context, model) {
           return RefreshIndicator(
 
             //Call refresh method to find new tasks
@@ -92,7 +103,7 @@ class TaskManagement extends StatelessWidget {
                         ),
                       ),
 
-                      ...buildTasks(store.state, context),
+                      ...buildTasks(model.content, context),
                     ],
                   ),
                 ),

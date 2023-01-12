@@ -17,12 +17,12 @@ class SDOTask extends StatefulWidget {
 }
 
 class SDOTaskState extends State<SDOTask> {
-  late Future<Map<String, DIStatus>> future;
+  late Future<Map<String, DIStatus>?> future;
 
   @override
   void initState() {
     super.initState();
-    future = Future<Map<String, DIStatus>>.delayed(Duration(seconds: 1), () => {
+    future = Future<Map<String, DIStatus>?>.delayed(Duration(seconds: 1), () => {
       "Rylie Anderson" : DIStatus.unsigned,
       "David Petzold" : DIStatus.signedDI,
       "Ethan Chapman" : DIStatus.signedOut,
@@ -32,37 +32,39 @@ class SDOTaskState extends State<SDOTask> {
 
   void sign(String name, ScaffoldMessengerState messenger) async {
     var di = await future;
-    di[name] = DIStatus.signedDI;
+    if (di != null) {
+      di[name] = DIStatus.signedDI;
 
-    //api call
-    var result = Future<bool>.delayed(Duration(seconds: 1), () => true);
+      //api call
+      var result = Future<bool>.delayed(Duration(seconds: 1), () => true);
 
-    setState(() {
-      future = Future<Map<String, DIStatus>>.value(di);
-    });
+      setState(() {
+        future = Future<Map<String, DIStatus>?>.value(di);
+      });
 
-    result.then((success) {
-      if (!success) {
-       future.then((actual) {
-         var mutable = actual;
-         mutable[name] = DIStatus.unsigned;
-         messenger.showSnackBar(
-             SnackBar(content: Text("Failed to sign di"))
-         );
-         setState(() {
-           future = Future<Map<String, DIStatus>>.value(mutable);
-         });
-       });
-      }
-    });
+      result.then((success) {
+        if (!success) {
+          future.then((actual) {
+            var mutable = actual!;
+            mutable[name] = DIStatus.unsigned;
+            messenger.showSnackBar(
+                SnackBar(content: Text("Failed to sign di"))
+            );
+            setState(() {
+              future = Future<Map<String, DIStatus>?>.value(mutable);
+            });
+          });
+        }
+      });
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<Map<String, DIStatus>>(
+    return FutureBuilder<Map<String, DIStatus>?>(
       future: future,
       builder: (context, snapshot) {
-        var di = snapshot.data ?? <String, DIStatus>{};
+        var di = snapshot.data;
 
 
         var messenger = ScaffoldMessenger.of(context);

@@ -1,9 +1,11 @@
+import 'package:async_redux/async_redux.dart';
+import 'package:falcon_net/Model/Store/Actions/PassAction.dart';
 import 'package:falcon_net/Structure/Components/PageWidget.dart';
+import 'package:falcon_net/Structure/Components/ViewModel.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_redux/flutter_redux.dart';
 
+import '../../Model/Data/Pass.dart';
 import '../../Model/Store/GlobalState.dart';
-import '../../Model/Store/StateAction.dart';
 import 'PassStatus.dart';
 import 'PassForm.dart';
 
@@ -17,14 +19,15 @@ class PassWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return StoreBuilder<GlobalState>(
-        builder: (context, store) {
+    return StoreConnector<GlobalState, ViewModel<Pass?>>(
+        converter: (store) => ViewModel<Pass?>(store: store, content: store.state.pass),
+        builder: (context, model) {
 
           //List of children to filled
           List<Widget> children;
 
           //If no current pass, display status and new pass button
-          if (store.state.pass == null) {
+          if (model.content == null) {
             children = [
 
               PassStatus(),
@@ -42,7 +45,7 @@ class PassWidget extends StatelessWidget {
                         //Closes dialog and dispatches open pass action
                         onSubmit: (pass) {
                           Navigator.of(context).pop();
-                          store.dispatch(StateAction.openPass(pass));
+                          model.dispatch(PassAction.open(pass));
                         },
 
                         //Closes dialog
@@ -84,12 +87,12 @@ class PassWidget extends StatelessWidget {
                             child: PassForm(
 
                               //Passes existing data
-                              existing: store.state.pass,
+                              existing: model.content,
 
                               //Closes dialog and dispatches update pass action
                               onSubmit: (pass) {
                                 Navigator.of(context).pop();
-                                store.dispatch(StateAction.updatePass(pass));
+                                model.dispatch(PassAction.update(pass));
                               },
 
                               //Closes dialog
@@ -118,7 +121,7 @@ class PassWidget extends StatelessWidget {
 
                       //Dispatches close pass action
                       onPressed: () {
-                        store.dispatch(StateAction.closePass());
+                        model.dispatch(PassAction.close());
                       },
 
                       child: const Padding(

@@ -1,5 +1,6 @@
+import 'package:async_redux/async_redux.dart';
+import 'package:falcon_net/Structure/Components/ViewModel.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_redux/flutter_redux.dart';
 import '../../../Model/Data/Leave.dart';
 import '../../../Model/Store/GlobalState.dart';
 import 'LeaveInfo.dart';
@@ -52,11 +53,12 @@ class LeaveLocator extends StatelessWidget {
               Card(
                 child: Padding(
                     padding: EdgeInsets.all(20),
-                    child: StoreBuilder<GlobalState>(
 
-                      //Displays form if leave data is empty or info if it exists
-                      builder: (context, store) {
-                        if (store.state.leave == null) {
+                    //Displays form or existing data depending on state
+                    child: StoreConnector<GlobalState, ViewModel<Leave?>>(
+                      converter: (store) => ViewModel<Leave?>(store: store, content: store.state.leave),
+                      builder: (context, model) {
+                        if (model.content == null) {
                           return LeaveLocatorForm(dialog: false, existing: test,);
                         }
                         else {

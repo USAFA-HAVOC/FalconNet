@@ -1,9 +1,10 @@
+import 'package:async_redux/async_redux.dart';
 import 'package:falcon_net/Model/Store/GlobalState.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_redux/flutter_redux.dart';
 
 import '../../Model/Data/UserGrades.dart';
 import '../Components/PaddedColumn.dart';
+import '../Components/ViewModel.dart';
 
 ///Grades page displays sami and ami information in extension panel lists
 class Grades extends StatefulWidget {
@@ -85,8 +86,9 @@ class GradesState extends State<Grades> {
               ),
 
               Card(
-                child: StoreBuilder<GlobalState>(
-                  builder: (context, store) => PaddedColumn(
+                child: StoreConnector<GlobalState, ViewModel<UserGrades>>(
+                  converter: (store) => ViewModel<UserGrades>(store: store, content: store.state.grades),
+                  builder: (context, model) => PaddedColumn(
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     padding: EdgeInsets.all(10),
                     children: [
@@ -98,7 +100,7 @@ class GradesState extends State<Grades> {
                               mainAxisSize: MainAxisSize.min,
                               children: [
                                 Text(
-                                  calculateAverage(store.state.grades.amis),
+                                  calculateAverage(model.content.amis),
                                   style: Theme.of(context).textTheme.displayMedium,
                                 ),
 
@@ -118,7 +120,7 @@ class GradesState extends State<Grades> {
                               mainAxisSize: MainAxisSize.min,
                               children: [
                                 Text(
-                                  calculateAverage(store.state.grades.samis),
+                                  calculateAverage(model.content.samis),
                                   style: Theme.of(context).textTheme.displayMedium,
                                 ),
 
@@ -149,7 +151,7 @@ class GradesState extends State<Grades> {
                           });
                         },
 
-                        children: store.state.grades.amis.asMap().map(
+                        children: model.content.amis.asMap().map(
                                 (key, value) => MapEntry(key, buildGradePanel("AMI #${(key + 1).toString()}", value, amiExtensions[key]))
                         ).values.toList(),
                       ),
@@ -169,7 +171,7 @@ class GradesState extends State<Grades> {
                           });
                         },
 
-                        children: store.state.grades.samis.asMap().map(
+                        children: model.content.samis.asMap().map(
                                 (key, value) => MapEntry(key, buildGradePanel("SAMI #${(key + 1).toString()}", value, samiExtensions[key]))
                         ).values.toList(),
                       )

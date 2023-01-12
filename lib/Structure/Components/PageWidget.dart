@@ -17,6 +17,7 @@ class PageWidget extends StatelessWidget {
     return Card(
         child: PaddedColumn(
           crossAxisAlignment: CrossAxisAlignment.stretch,
+          mainAxisSize: MainAxisSize.min,
           padding: EdgeInsets.only(top: 10, left: 10, right: 10, bottom: 5),
           children: [
 

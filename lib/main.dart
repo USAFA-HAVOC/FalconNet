@@ -1,9 +1,8 @@
+import 'package:async_redux/async_redux.dart';
 import 'package:falcon_net/Model/Data/FormOne.dart';
 import 'package:falcon_net/Model/Data/UserGrades.dart';
+import 'package:falcon_net/Model/Store/Connection.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_redux/flutter_redux.dart';
-import 'package:go_router/go_router.dart';
-import 'package:redux/redux.dart';
 
 import 'Model/Data/Cadet.dart';
 import 'Model/Data/PassAllocation.dart';
@@ -12,7 +11,6 @@ import 'Router/FNRouter.dart';
 import 'Theme/FNTheme.dart';
 import 'Model/Data/Pass.dart';
 import 'Model/Store/GlobalState.dart';
-import 'Model/Store/Reducer.dart';
 import 'Model/Data/UserNotification.dart';
 
 void main() {
@@ -20,7 +18,6 @@ void main() {
   //Initialize a default store
   //Replace the default global state with an api call
   final store = Store<GlobalState>(
-      reducer,
       initialState: GlobalState(
           cadet: Cadet(
             name: "Rylie Anderson",
@@ -141,6 +138,8 @@ class FNApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
+
+
 
     //Surrounds the app with a store provider so all child widgets can access global state
     return StoreProvider(

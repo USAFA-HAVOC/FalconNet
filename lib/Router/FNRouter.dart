@@ -8,6 +8,7 @@ import '../Structure/Pages/Grades.dart';
 import '../Structure/Pages/LeaveLocator/LeaveLocator.dart';
 import '../Structure/Pages/PassManagement/PassManagement.dart';
 import '../Structure/Pages/Profile/Profile.dart';
+import '../Structure/Pages/TaskManagement/Tasks/CWOC/CWOCTask.dart';
 import '../Structure/Pages/TaskManagement/Tasks/Ordering/OrderingTask.dart';
 import '../Structure/Pages/TaskManagement/Tasks/SDO/SDOTask.dart';
 
@@ -63,6 +64,11 @@ final GoRouter fnRouter = GoRouter(
                     GoRoute(
                       path: "ordering",
                       builder: (context, state) => const FNBackground(child: OrderingTask()),
+                    ),
+
+                    GoRoute(
+                      path: "cwoc",
+                      builder: (context, state) => const FNBackground(child: CWOCTask()),
                     ),
                   ]
                 ),

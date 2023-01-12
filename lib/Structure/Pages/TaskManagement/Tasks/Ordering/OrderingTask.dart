@@ -1,6 +1,7 @@
 import 'package:falcon_net/Structure/Components/PageWidget.dart';
 import 'package:falcon_net/Structure/Pages/TaskManagement/Tasks/Ordering/OrderingForm.dart';
 import 'package:flutter/material.dart';
+import 'package:shimmer/shimmer.dart';
 
 import '../../../../../Model/Data/Order.dart';
 
@@ -67,7 +68,17 @@ class OrderingTaskState extends State<OrderingTask> {
                           title: "Current Order",
 
                           children: [
-                            Text("loading"),
+                            Shimmer.fromColors(
+                              baseColor: Colors.grey[300]!,
+                              highlightColor: Colors.grey[100]!,
+                              child: DecoratedBox(
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(5),
+                                  color: Colors.white,
+                                ),
+                                child: SizedBox(width: double.infinity, height: 100,),
+                              ),
+                            )
                           ]
                       );
                     }

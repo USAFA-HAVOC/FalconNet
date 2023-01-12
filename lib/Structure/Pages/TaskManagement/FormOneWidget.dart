@@ -1,11 +1,12 @@
+import 'package:async_redux/async_redux.dart';
+import 'package:falcon_net/Model/Store/Actions/FormAction.dart';
 import 'package:falcon_net/Structure/Components/ConfirmationDialog.dart';
 import 'package:falcon_net/Structure/Components/PageWidget.dart';
+import 'package:falcon_net/Structure/Components/ViewModel.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_redux/flutter_redux.dart';
 
 import '../../../Model/Data/FormOne.dart';
 import '../../../Model/Store/GlobalState.dart';
-import '../../../Model/Store/StateAction.dart';
 
 ///Page Widget for signing a form one
 ///Displayed in task center
@@ -28,8 +29,9 @@ class FormOneWidget extends StatelessWidget {
             style: Theme.of(context).textTheme.bodyLarge,
           ),
 
-          StoreBuilder<GlobalState>(
-              builder: (context, store) => ElevatedButton(
+          StoreConnector<GlobalState, ViewModel<void>>(
+              converter: (store) => ViewModel<void>(store: store, content: null),
+              builder: (context, model) => ElevatedButton(
                 onPressed: () {
                   showDialog(
                     context: context,
@@ -40,7 +42,7 @@ class FormOneWidget extends StatelessWidget {
 
                       //Dispatches signing action with own form one
                       onConfirm: () {
-                        store.dispatch(StateAction.signForm(form));
+                        model.dispatch(FormAction(form));
                       },
                     ),
                   );

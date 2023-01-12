@@ -1,6 +1,8 @@
+import 'package:async_redux/async_redux.dart';
+import 'package:falcon_net/Model/Data/PassAllocation.dart';
 import 'package:falcon_net/Structure/Components/PageWidget.dart';
+import 'package:falcon_net/Structure/Components/ViewModel.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_redux/flutter_redux.dart';
 
 import '../../../Model/Store/GlobalState.dart';
 
@@ -12,23 +14,24 @@ class AllotmentWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return StoreBuilder<GlobalState>(
-        builder: (context, store) {
+    return StoreConnector<GlobalState, ViewModel<PassAllocation>>(
+        converter: (store) => ViewModel<PassAllocation>(store: store, content: store.state.allocation),
+        builder: (context, model) {
           return PageWidget(
               title: title,
               children: [
                 Text(
-                  "Weekday Day Passes: ${store.state.allocation.weekdayDay}",
+                  "Weekday Day Passes: ${model.content.weekdayDay}",
                   style: Theme.of(context).textTheme.bodyLarge,
                 ),
 
                 Text(
-                  "Weekend Overnight Passes: ${store.state.allocation.weekendOvernight}",
+                  "Weekend Overnight Passes: ${model.content.weekendOvernight}",
                   style: Theme.of(context).textTheme.bodyLarge,
                 ),
 
                 Text(
-                  "Weekday Overnight Passes: ${store.state.allocation.weekdayOvernight}",
+                  "Weekday Overnight Passes: ${model.content.weekdayOvernight}",
                   style: Theme.of(context).textTheme.bodyLarge,
                 ),
               ],

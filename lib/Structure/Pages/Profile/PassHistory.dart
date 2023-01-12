@@ -1,5 +1,6 @@
+import 'package:async_redux/async_redux.dart';
+import 'package:falcon_net/Structure/Components/ViewModel.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_redux/flutter_redux.dart';
 
 import '../../../Model/Store/GlobalState.dart';
 import '../../../Model/Data/Pass.dart';
@@ -13,15 +14,16 @@ class PassHistory extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return StoreBuilder<GlobalState>(
-        builder: (context, store) {
+    return StoreConnector<GlobalState, ViewModel<List<Pass>>>(
+        converter: (store) => ViewModel<List<Pass>>(store: store, content: store.state.history),
+        builder: (context, model) {
 
           //Generate list view dynamically as list is scrolled with builder constructor
           return ListView.builder(
             shrinkWrap: true,
             primary: false,
-            itemCount: store.state.history.length,
-            itemBuilder: (context, index) => PassRecord(pass: store.state.history[index]),
+            itemCount: model.content.length,
+            itemBuilder: (context, index) => PassRecord(pass: model.content[index]),
           );
         }
     );

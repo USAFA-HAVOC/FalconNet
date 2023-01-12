@@ -1,9 +1,12 @@
+import 'package:async_redux/async_redux.dart';
+import 'package:falcon_net/Model/Data/CadetDI.dart';
+import 'package:falcon_net/Model/Data/DIStatus.dart';
+import 'package:falcon_net/Model/Store/Actions/SignAction.dart';
 import 'package:falcon_net/Structure/Components/PageWidget.dart';
+import 'package:falcon_net/Structure/Components/ViewModel.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_redux/flutter_redux.dart';
 
 import '../../../Model/Store/GlobalState.dart';
-import '../../../Model/Store/StateAction.dart';
 
 ///Page widget for displaying DI information with signing ui
 class DIWidget extends StatelessWidget {
@@ -13,14 +16,14 @@ class DIWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return StoreBuilder<GlobalState>(
-        builder: (context, store) {
-          GlobalState state = store.state;
+    return StoreConnector<GlobalState, ViewModel<CadetDI?>>(
+        converter: (store) => ViewModel<CadetDI?>(store: store, content: store.state.di),
+        builder: (context, model) {
 
           //Replace these three with state queries/function calls--NOT API CALLS--once we have the time to do so
           bool senior = true;
           bool time = true;
-          bool signed = state.di == null;
+          bool signed = model.content == null;
 
           bool signable = signed && senior && time;
 
@@ -52,7 +55,7 @@ class DIWidget extends StatelessWidget {
           }
           else {
             text = [Text(
-              "DI Signed by ${state.di!.signature}",
+              "DI Signed by ${model.content!.signature}",
               style: TextStyle(
                 fontSize: Theme.of(context).textTheme.headlineMedium?.fontSize,
                 color: Colors.black,
@@ -81,7 +84,7 @@ class DIWidget extends StatelessWidget {
 
                 //Dispatch sign di action
                 onPressed: () {
-                  store.dispatch(StateAction.signDI());
+                  model.dispatch(SignAction());
                 },
 
                 child: Padding(

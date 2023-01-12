@@ -1,10 +1,11 @@
+import 'package:async_redux/async_redux.dart';
+import 'package:falcon_net/Model/Store/Actions/LeaveAction.dart';
 import 'package:falcon_net/Model/Store/GlobalState.dart';
+import 'package:falcon_net/Structure/Components/ViewModel.dart';
 import 'package:falcon_net/Utility/InputValidation.dart';
 import 'package:falcon_net/Utility/TemporalFormatting.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_redux/flutter_redux.dart';
 import '../../../Model/Data/Leave.dart';
-import '../../../Model/Store/StateAction.dart';
 import '../../Components/DateFormField.dart';
 import '../../Components/TimeFormField.dart';
 import 'MethodSubform/LeaveMethodSubform.dart';
@@ -98,8 +99,9 @@ class LeaveLocatorFormState extends State<LeaveLocatorForm> {
         flex: 5,
         child: Padding(
           padding: EdgeInsets.symmetric(vertical: 20),
-          child: StoreBuilder<GlobalState>(
-            builder: (context, store) {
+          child: StoreConnector<GlobalState, ViewModel<Leave?>>(
+            converter: (store) => ViewModel<Leave?>(store: store, content: store.state.leave),
+            builder: (context, model) {
               return ElevatedButton(
 
                 //Attempts to validate form, then closes dialog if applicable
@@ -109,7 +111,7 @@ class LeaveLocatorFormState extends State<LeaveLocatorForm> {
                     if (widget.dialog) {
                       Navigator.of(context).pop();
                     }
-                    store.dispatch(StateAction.setLeave(formatLeave()));
+                    model.dispatch(LeaveAction.set(formatLeave()));
                   }
                 },
 
