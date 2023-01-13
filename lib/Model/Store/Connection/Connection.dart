@@ -71,7 +71,7 @@ class APIData {
   static bool authenticated = false;
   static Cadet? user_data;
   static String email = "c23christopher.vonhaasl@afacademy.af.edu";
-// static String email = "C26Ethan.Chapman@afacademy.af.edu";
+//static String email = "C26Ethan.Chapman@afacademy.af.edu";
 }
 
 Cadet defaultCadet = Cadet((b) => b

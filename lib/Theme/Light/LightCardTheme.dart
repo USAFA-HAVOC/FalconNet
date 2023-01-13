@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-CardTheme fnCardTheme = const CardTheme(
+CardTheme lightCardTheme = const CardTheme(
   color: Colors.white,
   elevation: 1.0,
   clipBehavior: Clip.antiAlias,

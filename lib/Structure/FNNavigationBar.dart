@@ -40,7 +40,6 @@ class FNNavigationBar extends StatelessWidget {
 
                       child: Icon(
                         Icons.menu,
-                        color: Colors.black,
                       ),
                     ),
                   ),

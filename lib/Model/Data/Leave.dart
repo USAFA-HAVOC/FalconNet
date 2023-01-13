@@ -31,7 +31,7 @@ enum VehicleType {
   gov,
   rental,
   cab,
-  uber,
+  rideshare,
   carpool,
 }
 
@@ -43,7 +43,7 @@ extension VehicleNames on VehicleType {
       case VehicleType.gov: return "GOV";
       case VehicleType.pov: return "POV";
       case VehicleType.rental: return "Rental";
-      case VehicleType.uber: return "Uber/Lyft";
+      case VehicleType.rideshare: return "Rideshare";
     }
   }
 
@@ -100,7 +100,7 @@ class VehicleMethod extends LeaveMethod {
   @override
   String description() {
     switch (vehicleType) {
-      case VehicleType.uber:
+      case VehicleType.rideshare:
         return "Taking an Uber/Lyft.";
       default:
         return "Driven in ${vehicleType.description} by ${vehicleDriverName!} for ${vehicleTravelTime!.toStringAsPrecision(1)} hours";

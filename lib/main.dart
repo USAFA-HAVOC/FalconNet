@@ -9,7 +9,9 @@ import 'Model/Data/PassAllocation.dart';
 import 'Model/Data/UserSettings.dart';
 import 'Model/Store/Actions/NotificationAction.dart';
 import 'Router/FNRouter.dart';
-import 'Theme/FNTheme.dart';
+import 'Structure/Components/ViewModel.dart';
+import 'Theme/Dark/DarkTheme.dart';
+import 'Theme/Light/LightTheme.dart';
 import 'Model/Data/Pass.dart';
 import 'Model/Store/GlobalState.dart';
 import 'Model/Data/UserNotification.dart';
@@ -153,9 +155,12 @@ class FNApp extends StatelessWidget {
         store: store,
 
         //Navigates to child pages based on path
-        child: MaterialApp.router(
-          theme: fnTheme,
-          routerConfig: fnRouter,
+        child: StoreConnector<GlobalState, ViewModel<bool>>(
+          converter: (store) => ViewModel(store: store, content: store.state.settings.darkTheme),
+          builder: (context, model) => MaterialApp.router(
+            theme: model.content ? darkTheme : lightTheme,
+            routerConfig: fnRouter,
+          ),
         )
     );
   }

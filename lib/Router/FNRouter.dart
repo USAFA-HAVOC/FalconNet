@@ -89,7 +89,7 @@ class FNBackground extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: Colors.white12,
+      color: Theme.of(context).canvasColor,
       child: child,
     );
   }

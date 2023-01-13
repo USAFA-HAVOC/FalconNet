@@ -19,7 +19,7 @@ class FNDrawer extends StatelessWidget {
       constraints: BoxConstraints.tight(Size(viewport.width * 0.75, viewport.height * 0.75)),
       child: DecoratedBox(
         decoration: BoxDecoration(
-          color: Colors.white,
+          color: Theme.of(context).primaryColor,
           borderRadius: BorderRadiusDirectional.horizontal(end: Radius.circular(10)),
         ),
 

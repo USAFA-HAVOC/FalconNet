@@ -96,7 +96,7 @@ class VehicleMethodSubformState extends State<VehicleMethodSubform> with SingleT
 
   ///Determines whether a vehicle type (as a string) requires driver and time information
   bool requiresInfo(String type) {
-    if (type == VehicleType.uber.description || type == "Select") {
+    if (type == VehicleType.rideshare.description || type == "Select") {
       return false;
     }
     return true;
