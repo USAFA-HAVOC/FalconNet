@@ -2,10 +2,10 @@ import 'package:async_redux/async_redux.dart';
 
 import '../GlobalState.dart';
 
-class InfoAction extends ReduxAction<GlobalState> {
+class SetAction extends ReduxAction<GlobalState> {
   final GlobalState replacement;
 
-  InfoAction(this.replacement);
+  SetAction(this.replacement);
 
   @override
   GlobalState? reduce() {

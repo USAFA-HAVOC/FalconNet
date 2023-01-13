@@ -14,7 +14,8 @@ class PassAction extends ReduxAction<GlobalState> {
   PassAction.close() : pass = null, updated = false;
 
   @override
-  GlobalState? reduce() {
+  Future<GlobalState?> reduce() async {
+    await Future.delayed(Duration(milliseconds: 10));
     if (pass == null) {
       return state.modified(GlobalStateProperty.pass, null);
     }

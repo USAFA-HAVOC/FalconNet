@@ -42,6 +42,8 @@ dependencies:
   popover: ^0.2.7
   shimmer: ^2.0.0
   dio: ^4.0.6
+  built_value: ^8.4.1
+  shared_preferences: ^2.0.16
 
 dev_dependencies:
   flutter_test:
@@ -53,6 +55,8 @@ dev_dependencies:
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
   flutter_lints: ^2.0.0
+  build_runner: 2.3.0
+  built_value_generator:
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

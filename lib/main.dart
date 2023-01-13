@@ -1,12 +1,13 @@
 import 'package:async_redux/async_redux.dart';
 import 'package:falcon_net/Model/Data/FormOne.dart';
 import 'package:falcon_net/Model/Data/UserGrades.dart';
-import 'package:falcon_net/Model/Store/Connection.dart';
+import 'package:falcon_net/Model/Store/Actions/SettingsAction.dart';
 import 'package:flutter/material.dart';
 
 import 'Model/Data/Cadet.dart';
 import 'Model/Data/PassAllocation.dart';
 import 'Model/Data/UserSettings.dart';
+import 'Model/Store/Actions/NotificationAction.dart';
 import 'Router/FNRouter.dart';
 import 'Theme/FNTheme.dart';
 import 'Model/Data/Pass.dart';
@@ -126,6 +127,12 @@ void main() {
           ],
       )
   );
+
+  store.dispatch(SettingsAction.retrieve());
+  store.dispatch(NotificationAction.retrieve());
+  store.dispatch(NotificationAction.add(UserNotification(message: "You logged in", destination: "/")));
+
+  //getUserData().then((cadet) => print(cadet.id), onError: (obj, stack) => print("error"));
 
   runApp(FNApp(store: store));
 }

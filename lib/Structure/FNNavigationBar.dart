@@ -8,7 +8,7 @@ import 'package:flutter/services.dart';
 import 'package:go_router/go_router.dart';
 import 'package:popover/popover.dart';
 import 'package:falcon_net/Model/Store/GlobalState.dart';
-import '../Model/Store/Actions/DismissalAction.dart';
+import '../Model/Store/Actions/NotificationAction.dart';
 import 'Components/TapIcon.dart';
 import 'FNNotifications.dart';
 
@@ -95,7 +95,7 @@ class FNNavigationBar extends StatelessWidget {
 
                                         //On closing, dispatch dismiss all action
                                         onPop: () {
-                                          model.dispatch(DismissalAction.all());
+                                          model.dispatch(NotificationAction.dismissAll());
                                         },
 
                                         //Display FNNotifications in popover
@@ -104,7 +104,7 @@ class FNNavigationBar extends StatelessWidget {
 
                                           //On click, dispatch dismiss action
                                           onClick: (notification) {
-                                            model.dispatch(DismissalAction(notification));
+                                            model.dispatch(NotificationAction.dismiss(notification));
                                           },
                                         ),
                                       );
