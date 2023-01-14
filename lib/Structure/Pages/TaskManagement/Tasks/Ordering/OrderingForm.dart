@@ -1,7 +1,7 @@
 import 'package:falcon_net/Utility/InputValidation.dart';
 import 'package:flutter/material.dart';
 
-import '../../../../../Model/Data/Order.dart';
+import 'Order.dart';
 
 ///Simple form for updating a mitches meals order
 ///Two fields and a submission button
@@ -25,10 +25,12 @@ class OrderingFormState extends State<OrderingForm> {
   @override
   void initState() {
     super.initState();
-    regular = TextEditingController(text:widget.order?.regular?.toString());
-    vegetarian = TextEditingController(text: widget.order?.vegetarian ?.toString());
+    regular = TextEditingController(text:widget.order?.regular.toString());
+    vegetarian = TextEditingController(text: widget.order?.vegetarian .toString());
   }
 
+  ///Formats and returns an order object based on field information
+  ///Requires form validation
   Order formatOrder() {
     return Order(
       regular: regular.text.isEmpty ? 0 : int.parse(regular.text),

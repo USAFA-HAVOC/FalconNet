@@ -1,13 +1,11 @@
+import 'package:falcon_net/Structure/Components/LoadingShimmer.dart';
 import 'package:falcon_net/Structure/Components/PageWidget.dart';
 import 'package:falcon_net/Structure/Pages/TaskManagement/Tasks/Ordering/OrderingForm.dart';
 import 'package:flutter/material.dart';
-import 'package:shimmer/shimmer.dart';
 
-import '../../../../../Model/Data/Order.dart';
+import 'Order.dart';
 
 ///Applet for submitting Q&I / Bedrest meal orders
-///Seperated from rest of app
-///Performs own api calls
 class OrderingTask extends StatefulWidget {
   const OrderingTask({super.key});
 
@@ -25,12 +23,12 @@ class OrderingTaskState extends State<OrderingTask> {
   }
 
   Future<Order> fetchOrder() {
-    //api call
+    /// todo: replace with api call
     return Future<Order>.delayed(Duration(seconds: 1), () => Order(regular: 5, vegetarian: 3));
   }
 
   Future<bool> submitOrder(Order order) {
-    //api call
+    /// todo: replace with api call
     var result = true;
     return Future<bool>.delayed(Duration(seconds: 1), () => result);
   }
@@ -68,17 +66,7 @@ class OrderingTaskState extends State<OrderingTask> {
                           title: "Current Order",
 
                           children: [
-                            Shimmer.fromColors(
-                              baseColor: Colors.grey[300]!,
-                              highlightColor: Colors.grey[100]!,
-                              child: DecoratedBox(
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(5),
-                                  color: Colors.white,
-                                ),
-                                child: SizedBox(width: double.infinity, height: 100,),
-                              ),
-                            )
+                            LoadingShimmer(),
                           ]
                       );
                     }

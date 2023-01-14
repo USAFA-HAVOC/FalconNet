@@ -10,6 +10,7 @@ class Cadet implements StateObject {
   int? squadron;
   String? group;
   String? unit;
+  String? id;
 
   Cadet({
     this.email,
@@ -18,7 +19,8 @@ class Cadet implements StateObject {
     this.room,
     this.squadron,
     this.group,
-    this.unit
+    this.unit,
+    this.id,
   });
 
   @override

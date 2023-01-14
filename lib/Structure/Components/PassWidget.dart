@@ -37,6 +37,7 @@ class PassWidget extends StatelessWidget {
                 //Opens a pass form dialog
                 onPressed: () {
                   showDialog(context: context, builder: (context) => Dialog(
+                    backgroundColor: Theme.of(context).cardTheme.color,
                     child: Padding(
                       padding: EdgeInsets.all(10),
 

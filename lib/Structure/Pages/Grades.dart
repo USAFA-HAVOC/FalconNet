@@ -20,8 +20,9 @@ class GradesState extends State<Grades> {
 
   ///Builds an extension panel for a particular grade with expansion state
   ///Works for both sami and ami grades
-  ExpansionPanel buildGradePanel(String description, Grade grade, bool expanded) {
+  ExpansionPanel buildGradePanel(BuildContext context, String description, Grade grade, bool expanded) {
     return ExpansionPanel(
+        backgroundColor: Theme.of(context).cardTheme.color,
         isExpanded: expanded,
         headerBuilder: (context, open) => Padding(
             padding: EdgeInsets.all(10),
@@ -143,16 +144,25 @@ class GradesState extends State<Grades> {
 
                       ExpansionPanelList(
 
-                        //Closes all sami panels other than current one
+                        //Closes all panels other than current one
                         expansionCallback: (index, status) {
                           setState(() {
                             amiExtensions = List<bool>.filled(7, false);
+                            samiExtensions = List<bool>.filled(2, false);
                             amiExtensions[index] = !status;
                           });
                         },
 
                         children: model.content.amis.asMap().map(
-                                (key, value) => MapEntry(key, buildGradePanel("AMI #${(key + 1).toString()}", value, amiExtensions[key]))
+                          (key, value) => MapEntry(
+                            key,
+                            buildGradePanel(
+                              context,
+                              "AMI #${(key + 1).toString()}",
+                              value,
+                              amiExtensions[key]
+                            )
+                          )
                         ).values.toList(),
                       ),
 
@@ -163,16 +173,25 @@ class GradesState extends State<Grades> {
 
                       ExpansionPanelList(
 
-                        //Closes all sami panels other than current one
+                        //Closes all panels other than current one
                         expansionCallback: (index, status) {
                           setState(() {
-                            samiExtensions = List<bool>.filled(7, false);
+                            samiExtensions = List<bool>.filled(2, false);
+                            amiExtensions = List<bool>.filled(7, false);
                             samiExtensions[index] = !status;
                           });
                         },
 
                         children: model.content.samis.asMap().map(
-                                (key, value) => MapEntry(key, buildGradePanel("SAMI #${(key + 1).toString()}", value, samiExtensions[key]))
+                          (key, value) => MapEntry(
+                            key,
+                            buildGradePanel(
+                              context,
+                              "SAMI #${(key + 1).toString()}",
+                              value,
+                              samiExtensions[key]
+                            )
+                          )
                         ).values.toList(),
                       )
                     ],

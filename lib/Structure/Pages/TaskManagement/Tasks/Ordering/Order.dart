@@ -1,3 +1,4 @@
+///A jdo meal order
 class Order {
   final int vegetarian;
   final int regular;

@@ -1,13 +1,14 @@
+import 'package:falcon_net/Structure/Components/LoadingShimmer.dart';
 import 'package:flutter/material.dart';
-import 'package:shimmer/shimmer.dart';
 
 import '../../../../../Model/Data/DIStatus.dart';
 import '../../../../Components/PageWidget.dart';
+import '../Shared/Signee.dart';
 
 ///Displays present status of SDO signing based on di object
 ///Displays a circular chart with counts for each di types
 class SDOStatusWidget extends StatelessWidget {
-  final Map<String, DIStatus>? di;
+  final Map<String, Signee>? di;
 
   const SDOStatusWidget({super.key, required this.di});
 
@@ -17,27 +18,17 @@ class SDOStatusWidget extends StatelessWidget {
       return PageWidget(
           title: "Current Status",
           children: [
-            Shimmer.fromColors(
-              baseColor: Colors.grey[300]!,
-              highlightColor: Colors.grey[100]!,
-              child: DecoratedBox(
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(5),
-                  color: Colors.white,
-                ),
-                child: SizedBox(width: double.infinity, height: 100,),
-              ),
-            )
+            LoadingShimmer(),
           ]
       );
     }
 
-    var unsignedCount = di!.values.where((status) => status == DIStatus.unsigned).length;
-    var signedCount = di!.values.where((status) => status == DIStatus.signedDI).length;
-    var signedOutCount = di!.values.where((status) => status == DIStatus.signedOut).length;
+    var unsignedCount = di!.values.where((signee) => signee.status == DIStatus.unsigned).length;
+    var signedCount = di!.values.where((signee) => signee.status == DIStatus.signedDI).length;
+    var signedOutCount = di!.values.where((signee) => signee.status == DIStatus.signedOut).length;
 
     double percent;
-    if (di!.length == 0) {
+    if (di!.isEmpty) {
       percent = 0;
     }
     else {
@@ -58,6 +49,7 @@ class SDOStatusWidget extends StatelessWidget {
                     fit: StackFit.expand,
                     children: [
                       CircularProgressIndicator(
+                        strokeWidth: 10,
                         value: percent,
                       ),
 

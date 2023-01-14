@@ -1,12 +1,20 @@
 import 'package:async_redux/async_redux.dart';
 import 'package:falcon_net/Model/Data/CadetDI.dart';
-import 'package:falcon_net/Model/Data/DIStatus.dart';
 import 'package:falcon_net/Model/Store/Actions/SignAction.dart';
 import 'package:falcon_net/Structure/Components/PageWidget.dart';
 import 'package:falcon_net/Structure/Components/ViewModel.dart';
+import 'package:falcon_net/Utility/TemporalFormatting.dart';
 import 'package:flutter/material.dart';
 
+import '../../../Model/Data/Role.dart';
 import '../../../Model/Store/GlobalState.dart';
+
+class DITuple {
+  final CadetDI? di;
+  final List<Role> roles;
+
+  const DITuple({required this.di, required this.roles});
+}
 
 ///Page widget for displaying DI information with signing ui
 class DIWidget extends StatelessWidget {
@@ -16,16 +24,22 @@ class DIWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return StoreConnector<GlobalState, ViewModel<CadetDI?>>(
-        converter: (store) => ViewModel<CadetDI?>(store: store, content: store.state.di),
+
+    return StoreConnector<GlobalState, ViewModel<DITuple>>(
+        converter: (store) =>
+            ViewModel<DITuple>(store: store, content: DITuple(di: store.state.di, roles: store.state.roles)),
         builder: (context, model) {
 
-          //Replace these three with state queries/function calls--NOT API CALLS--once we have the time to do so
-          bool senior = true;
-          bool time = true;
-          bool signed = model.content == null;
+          //Whether cadet is able to sign own di based on roles
+          bool senior = model.content.roles.any((role) => role == Role.signable);
 
-          bool signable = signed && senior && time;
+          //Determines whether time is signable
+          bool time = DateTime.now().isAfter(combineDate(DateTime.now(), TimeOfDay(hour: 19, minute: 50)));
+
+          //Whether cadet has already signed
+          bool signed = model.content.di != null;
+
+          bool signable = !signed && senior && time;
 
           //Determine text based on state values
           List<Widget> text;
@@ -55,7 +69,7 @@ class DIWidget extends StatelessWidget {
           }
           else {
             text = [Text(
-              "DI Signed by ${model.content!.signature}",
+              "DI Signed by ${model.content.di!.signature}",
               style: TextStyle(
                 fontSize: Theme.of(context).textTheme.headlineMedium?.fontSize,
                 color: Colors.black,

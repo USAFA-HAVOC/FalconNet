@@ -1,10 +1,7 @@
 import 'package:falcon_net/Structure/FNDrawer.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 
 import 'FNNavigationBar.dart';
-import 'Components/TapIcon.dart';
 
 ///Scaffold containing all application pages
 ///Places navigation bar above content and

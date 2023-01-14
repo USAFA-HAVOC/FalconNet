@@ -9,7 +9,6 @@ import 'package:go_router/go_router.dart';
 import 'package:popover/popover.dart';
 import 'package:falcon_net/Model/Store/GlobalState.dart';
 import '../Model/Store/Actions/NotificationAction.dart';
-import 'Components/TapIcon.dart';
 import 'FNNotifications.dart';
 
 ///Overhead navigation bar
@@ -115,7 +114,9 @@ class FNNavigationBar extends StatelessWidget {
                                       child: Badge(
                                         badgeContent: Text(model.content.length.toString()),
                                         badgeColor: Theme.of(context).indicatorColor,
-                                        position: BadgePosition.topEnd(end: 10),
+
+                                        //Very empirical formula
+                                        position: BadgePosition.topEnd(end: -15 + MediaQuery.of(context).size.width / 17),
                                         child: Icon(Icons.notifications),
                                       ),
                                     ),

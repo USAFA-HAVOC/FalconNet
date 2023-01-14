@@ -1,11 +1,11 @@
-import 'package:falcon_net/Model/Data/CWOCData.dart';
+import 'package:falcon_net/Structure/Components/LoadingShimmer.dart';
+import 'package:falcon_net/Structure/Pages/TaskManagement/Tasks/Shared/CWOCData.dart';
 import 'package:flutter/material.dart';
-import 'package:shimmer/shimmer.dart';
 
 import '../../../../Components/PageWidget.dart';
 
 class CWOCStatusWidget extends StatelessWidget {
-  final List<UnitData> units;
+  final List<UnitInfo> units;
   final String label;
 
   const CWOCStatusWidget({super.key, required this.units, required this.label});
@@ -16,18 +16,7 @@ class CWOCStatusWidget extends StatelessWidget {
       return PageWidget(
           title: label,
           children: [
-            Shimmer.fromColors(
-              baseColor: Colors.grey[300]!,
-              highlightColor: Colors.grey[100]!,
-              child: DecoratedBox(
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(5),
-                  color: Colors.white,
-                ),
-
-                child: SizedBox(width: double.infinity, height: 100,),
-              ),
-            )
+            LoadingShimmer(),
           ]
       );
     }
@@ -68,6 +57,7 @@ class CWOCStatusWidget extends StatelessWidget {
                     fit: StackFit.expand,
                     children: [
                       CircularProgressIndicator(
+                        strokeWidth: 10,
                         value: percent,
                       ),
 

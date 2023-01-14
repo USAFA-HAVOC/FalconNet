@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 
 import 'Model/Data/Cadet.dart';
 import 'Model/Data/PassAllocation.dart';
+import 'Model/Data/Role.dart';
 import 'Model/Data/UserSettings.dart';
 import 'Model/Store/Actions/NotificationAction.dart';
 import 'Router/FNRouter.dart';
@@ -127,6 +128,7 @@ void main() {
             FormOne(title: "Test", description: "READ CSND", signed: false),
             FormOne(title: "Test Two", description: "bruh", signed: false),
           ],
+          roles: [Role.jdo, Role.signable, Role.cwoc, Role.signable],
       )
   );
 
