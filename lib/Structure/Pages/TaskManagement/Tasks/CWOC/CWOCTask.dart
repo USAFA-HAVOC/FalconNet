@@ -1,12 +1,11 @@
 import 'dart:core';
-import 'dart:math';
 
 import 'package:falcon_net/Structure/Components/LoadingShimmer.dart';
 import 'package:falcon_net/Structure/Pages/TaskManagement/Tasks/CWOC/CWOCStatusWidget.dart';
 import 'package:falcon_net/Structure/Pages/TaskManagement/Tasks/Shared/SigningWidget.dart';
 import 'package:flutter/material.dart';
 
-import '../../../../../Model/Data/DIStatus.dart';
+import '../../../../../Utility/UnitTesting.dart';
 import '../Shared/CWOCData.dart';
 import '../Shared/Signee.dart';
 
@@ -27,55 +26,6 @@ class CWOCTaskState extends State<CWOCTask> {
 
   //Expansion panel states for each unit
   Map<String, bool> expansions = {};
-
-  ///For local testing purposes only
-  List<Signee> generateMembers(int count, DIStatus status) {
-    String randString(int lengthOfString){
-      final random = Random();
-      const allChars='AaBbCcDdlMmNnOoPpQqRrSsTtUuVvWwXxYyZzEeFfGgHhIiJjKkL';
-      final randomString = List.generate(lengthOfString, (index) => allChars[random.nextInt(allChars.length)]).join();
-      return randomString;    // return the generated string
-    }
-
-    List<Signee> members = [];
-
-    for (int i = 0; i < count; i++) {
-      members.add(Signee(name: "Narpy Cadet #" + randString(5), id: randString(15), status: status));
-    }
-
-    return members;
-  }
-
-  ///For local testing purposes only
-  UnitData generateUnit(UnitInfo info) {
-    var members = generateMembers(info.signed, DIStatus.signedDI) +
-        generateMembers(info.unsigned, DIStatus.unsigned) +
-        generateMembers(info.out, DIStatus.signedOut);
-    return UnitData(
-        signed: info.signed,
-        out: info.out,
-        unsigned: info.unsigned,
-        name: info.name,
-        members: members,
-        group: info.group,
-    );
-  }
-
-  ///For local testing purposes only
-  UnitInfo generateInfo(String name, int group, [int? count]) {
-    Random r = Random();
-    int total = count ?? 95 + r.nextInt(10);
-    int signed = r.nextInt(total);
-    int out = r.nextInt(total - signed);
-    int unsigned = total - signed - out;
-    return UnitInfo(
-      signed: signed,
-      out: out,
-      unsigned: unsigned,
-      name: name,
-      group: group,
-    );
-  }
 
   ///Requests cwoc data from backend
   @override
@@ -100,29 +50,44 @@ class CWOCTaskState extends State<CWOCTask> {
   }
 
   ///Signs for an individual signee in a given unit
-  void signFor(CWOCData cwoc, UnitData unit, Signee signee) {
+  void signFor(CWOCData cwoc, UnitData unit, Signee signee, ScaffoldMessengerState messenger) async {
 
     /// todo: replace with api call
-    Future.delayed(Duration(milliseconds: 250), () => setState(() {
-      connection = Future.value(cwoc.set(unit.name, unit.sign(signee)));
-    }));
+    var success = await Future.delayed(Duration(milliseconds: 250), () => true);
+
+    if (success) {
+      setState(() {
+        connection = Future.value(cwoc.set(unit.name, unit.sign(signee)));
+      });
+    }
+
+    else {
+      messenger.showSnackBar(
+        const SnackBar(content: Text("Failed to sign"))
+      );
+    }
   }
 
   ///Loads a given unit based on the unit name
-  void loadUnit(String unit) async {
+  void loadUnit(String unit, ScaffoldMessengerState messenger) async {
     var cwoc = await connection;
     if (cwoc == null) {
       return;
     }
 
     /// todo: replace with api call
-    UnitData actual = await Future.delayed(Duration(milliseconds: 250),
-            () => generateUnit(cwoc.units.firstWhere((u) => u.name == unit))
-    );
-
-    setState(() {
-      connection = Future.value(cwoc.set(unit, actual));
-    });
+    var success = await Future.delayed(Duration(milliseconds: 250), () => true);
+    if (success) {
+      UnitData actual = generateUnit(cwoc.units.firstWhere((u) => u.name == unit));
+      setState(() {
+        connection = Future.value(cwoc.set(unit, actual));
+      });
+    }
+    else {
+      messenger.showSnackBar(
+        SnackBar(content: Text("Failed to laod data for $unit"))
+      );
+    }
   }
 
   ///Builds an expansion panel from unit information
@@ -134,8 +99,8 @@ class CWOCTaskState extends State<CWOCTask> {
     //Displays signing widget if full unit data is available
     if (unit is UnitData) {
       body = SigningWidget(
-        di: Map<String, Signee>.fromEntries(unit.members.map((member) => MapEntry(member.id, member))),
-        onSign: (id) => signFor(cwoc, unit, unit.members.firstWhere((m) => m.id == id)),
+        di: unit,
+        onSign: (signee) => signFor(cwoc, unit, unit.members.firstWhere((m) => m.id == signee.id), ScaffoldMessenger.of(context)),
       );
     }
 
@@ -213,7 +178,7 @@ class CWOCTaskState extends State<CWOCTask> {
 
                               SizedBox(height: 20,),
 
-                              CWOCStatusWidget(units: units.where((unit) => unit.group == 2).toList(), label: "Group Two"),
+                              CWOCStatusWidget(units: units.where((unit) => unit.group == 3).toList(), label: "Group Three"),
                             ],
                           ),
                         ),
@@ -224,7 +189,7 @@ class CWOCTaskState extends State<CWOCTask> {
                           child: Column(
                             mainAxisSize: MainAxisSize.min,
                             children: [
-                              CWOCStatusWidget(units: units.where((unit) => unit.group == 3).toList(), label: "Group Three"),
+                              CWOCStatusWidget(units: units.where((unit) => unit.group == 2).toList(), label: "Group Two"),
 
                               SizedBox(height: 20,),
 
@@ -274,7 +239,7 @@ class CWOCTaskState extends State<CWOCTask> {
                       expansionCallback: (index, status) {
                         var unit = (snapshot.data?.units ?? [])[index];
                         if (unit is! UnitData) {
-                          loadUnit(unit.name);
+                          loadUnit(unit.name, ScaffoldMessenger.of(context));
                         }
 
                         setState(() {

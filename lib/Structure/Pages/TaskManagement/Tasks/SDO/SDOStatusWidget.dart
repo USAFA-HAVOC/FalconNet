@@ -1,14 +1,14 @@
 import 'package:falcon_net/Structure/Components/LoadingShimmer.dart';
+import 'package:falcon_net/Structure/Pages/TaskManagement/Tasks/Shared/CWOCData.dart';
 import 'package:flutter/material.dart';
 
 import '../../../../../Model/Data/DIStatus.dart';
 import '../../../../Components/PageWidget.dart';
-import '../Shared/Signee.dart';
 
 ///Displays present status of SDO signing based on di object
 ///Displays a circular chart with counts for each di types
 class SDOStatusWidget extends StatelessWidget {
-  final Map<String, Signee>? di;
+  final UnitData? di;
 
   const SDOStatusWidget({super.key, required this.di});
 
@@ -18,21 +18,21 @@ class SDOStatusWidget extends StatelessWidget {
       return PageWidget(
           title: "Current Status",
           children: [
-            LoadingShimmer(),
+            LoadingShimmer(height: 175,),
           ]
       );
     }
 
-    var unsignedCount = di!.values.where((signee) => signee.status == DIStatus.unsigned).length;
-    var signedCount = di!.values.where((signee) => signee.status == DIStatus.signedDI).length;
-    var signedOutCount = di!.values.where((signee) => signee.status == DIStatus.signedOut).length;
+    var unsignedCount = di!.members.where((signee) => signee.status == DIStatus.unsigned).length;
+    var signedCount = di!.members.where((signee) => signee.status == DIStatus.signedDI).length;
+    var signedOutCount = di!.members.where((signee) => signee.status == DIStatus.signedOut).length;
 
     double percent;
-    if (di!.isEmpty) {
+    if (di!.members.isEmpty) {
       percent = 0;
     }
     else {
-      percent = (signedCount + signedOutCount) / di!.length;
+      percent = (signedCount + signedOutCount) / di!.members.length;
     }
     return PageWidget(
       title: "Current Status",

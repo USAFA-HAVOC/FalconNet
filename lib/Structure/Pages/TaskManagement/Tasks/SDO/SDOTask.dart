@@ -1,8 +1,9 @@
-import 'package:falcon_net/Model/Data/DIStatus.dart';
+import 'package:falcon_net/Structure/Pages/TaskManagement/Tasks/Shared/CWOCData.dart';
 import 'package:falcon_net/Structure/Pages/TaskManagement/Tasks/Shared/SigningWidget.dart';
 import 'package:falcon_net/Structure/Pages/TaskManagement/Tasks/SDO/SDOStatusWidget.dart';
 import 'package:flutter/material.dart';
 
+import '../../../../../Utility/UnitTesting.dart';
 import '../../../../Components/PageWidget.dart';
 import '../Shared/Signee.dart';
 
@@ -16,57 +17,44 @@ class SDOTask extends StatefulWidget {
 }
 
 class SDOTaskState extends State<SDOTask> {
-  late Future<Map<String, Signee>?> future;
+  late Future<UnitData?> future;
 
   @override
   void initState() {
     super.initState();
-    future = Future<Map<String, Signee>?>.delayed(Duration(seconds: 1), () =>
-      {
-        "ra" : Signee(name: "Rylie Anderson", id: "ra", status: DIStatus.signedOut),
-        "ec" : Signee(name: "Ethan Chapman", id: "ec", status: DIStatus.signedDI),
-        "eo" : Signee(name: "Enrique Oti", id: "eo", status: DIStatus.unsigned),
-        "dp" : Signee(name: "David Petzold", id: "dp", status: DIStatus.unsigned),
-      }
-    );
+
+    /// todo: replace with api call
+    future = Future<UnitData?>.delayed(Duration(seconds: 1), () => generateUnit(generateInfo("CS12", 2)));
   }
 
-  void sign(String id, ScaffoldMessengerState messenger) async {
-    var di = await future;
-    if (di != null) {
-      di[id] = Signee(name: di[id]!.name, id: id, status: DIStatus.signedDI);
+  void sign(Signee member, ScaffoldMessengerState messenger) async {
+    var unit = await future;
+    if (unit != null) {
 
-      //api call
-      var result = Future<bool>.delayed(Duration(seconds: 1), () => true);
+      /// todo: replace with api call
+      var result = Future<bool>.delayed(Duration(milliseconds: 250), () => true);
 
-      setState(() {
-        future = Future<Map<String, Signee>?>.value(di);
-      });
+      var success = await result;
+      if (success) {
+        setState(() {
+          future = Future<UnitData?>.value(unit.sign(member));
+        });
+      }
 
-      result.then((success) {
-        if (!success) {
-          future.then((actual) {
-            var mutable = actual!;
-            mutable[id] = Signee(name: di[id]!.name, id: id, status: DIStatus.unsigned);
-            messenger.showSnackBar(
-              SnackBar(content: Text("Failed to sign di"))
-            );
-            setState(() {
-              future = Future<Map<String, Signee>?>.value(mutable);
-            });
-          });
-        }
-      });
+      else {
+        messenger.showSnackBar(
+          const SnackBar(content: Text("Failed to sign"))
+        );
+      }
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<Map<String, Signee>?>(
+    return FutureBuilder<UnitData?>(
       future: future,
       builder: (context, snapshot) {
         var di = snapshot.data;
-
 
         var messenger = ScaffoldMessenger.of(context);
 
@@ -92,7 +80,7 @@ class SDOTaskState extends State<SDOTask> {
                 child: PageWidget(
                   title: "Inspections",
                   children: [
-                    SigningWidget(di: di, onSign: (name) => sign(name, messenger),),
+                    SigningWidget(di: di, onSign: (member) => sign(member, messenger),),
                   ],
                 )
               ),

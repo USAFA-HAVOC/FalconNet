@@ -16,7 +16,7 @@ class CWOCStatusWidget extends StatelessWidget {
       return PageWidget(
           title: label,
           children: [
-            LoadingShimmer(),
+            LoadingShimmer(height: 170,),
           ]
       );
     }

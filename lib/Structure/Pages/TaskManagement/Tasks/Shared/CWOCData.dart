@@ -58,7 +58,7 @@ class UnitData extends UnitInfo {
   ///Returns a new unit data object with a given member signed for
   UnitData sign(Signee signee) {
     var mutable = members.where((member) => member.id != signee.id).toList();
-    var index = members.indexOf(signee);
+    var index = members.indexOf(members.firstWhere((member) => member.id == signee.id));
     mutable.insert(index, signee.signed());
     return UnitData(signed: signed + 1, out: out, unsigned: unsigned - 1, name: name, members: mutable, group: group);
   }

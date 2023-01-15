@@ -1,3 +1,4 @@
+import 'package:falcon_net/Structure/Pages/TaskManagement/Tasks/Shared/CWOCData.dart';
 import 'package:flutter/material.dart';
 import 'package:shimmer/shimmer.dart';
 
@@ -6,8 +7,8 @@ import 'Signee.dart';
 
 ///List displaying all squadron names and allowing SDO to sign di
 class SigningWidget extends StatelessWidget {
-  final Map<String, Signee>? di;
-  final void Function(String) onSign;
+  final UnitData? di;
+  final void Function(Signee) onSign;
 
   const SigningWidget({super.key, required this.di, required this.onSign});
 
@@ -30,16 +31,13 @@ class SigningWidget extends StatelessWidget {
     return ListView(
       primary: false,
       shrinkWrap: true,
-      children: di!.map(
-              (id, value) => MapEntry(
-            id,
-            SignBox(
-              name: value.name,
-              status: value.status,
-              onSign: () => onSign(id),
-            ),
-          )
-      ).values.toList(),
+      children: di!.members.map(
+        (value) => SignBox(
+          name: value.name,
+          status: value.status,
+          onSign: () => onSign(value),
+        ),
+      ).toList(),
     );
   }
 }
