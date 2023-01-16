@@ -11,6 +11,8 @@ class DateFormField extends StatefulWidget {
   final String? label;
   final void Function(String)? onChanged;
   final String? value;
+  final DateTime? firstDate;
+  final DateTime? lastDate;
 
   const DateFormField({
     super.key,
@@ -18,6 +20,8 @@ class DateFormField extends StatefulWidget {
     this.label,
     this.onChanged,
     this.value,
+    this.firstDate,
+    this.lastDate
   });
 
   @override
@@ -49,8 +53,8 @@ class DateFormFieldState extends State<DateFormField> {
         DateTime? pickedDate = await showDatePicker(
           context: context,
           initialDate: parseDate(value),
-          firstDate: DateTime.now(),
-          lastDate: DateTime(2100),
+          firstDate: widget.firstDate ?? DateTime.now(),
+          lastDate: widget.lastDate ?? DateTime(2100),
         );
 
         //If picked date isn't null, set text editing state

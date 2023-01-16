@@ -128,7 +128,14 @@ void main() {
             FormOne(title: "Test", description: "READ CSND", signed: false),
             FormOne(title: "Test Two", description: "bruh", signed: false),
           ],
-          roles: [Role.jdo, Role.signable, Role.cwoc, Role.signable, Role.sdo],
+
+          roles: [
+            Role(type: RoleType.jdo, level: RoleLevel.delegation),
+            Role(type: RoleType.sdo),
+            Role(type: RoleType.cwoc, level: RoleLevel.staff),
+            Role(type: RoleType.signable),
+            Role(type: RoleType.recognized)
+          ],
       )
   );
 

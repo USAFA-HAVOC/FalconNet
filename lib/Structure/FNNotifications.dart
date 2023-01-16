@@ -44,7 +44,7 @@ class NotificationBar extends StatelessWidget {
         }
       },
 
-      //Important: Constained box is required to prevent size overflow and match to notification widget height
+      //Important: Constrained box is required to prevent size overflow and match to notification widget height
       child: ConstrainedBox(
         constraints: BoxConstraints.tightFor(height: 50),
         child: DecoratedBox(

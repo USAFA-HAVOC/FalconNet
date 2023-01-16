@@ -11,6 +11,7 @@ ThemeData darkTheme = ThemeData(
   cardTheme: darkCardTheme,
   fontFamily: "Roboto",
   canvasColor: Colors.grey,
+  dialogBackgroundColor: darkCardTheme.color,
   iconTheme: IconThemeData(color: Colors.white),
   buttonTheme: const ButtonThemeData(
     buttonColor: Colors.blue,

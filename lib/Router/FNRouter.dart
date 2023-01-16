@@ -1,4 +1,5 @@
 import 'package:falcon_net/Structure/Pages/TaskManagement/TaskManagement.dart';
+import 'package:falcon_net/Structure/Pages/TaskManagement/Tasks/Delegation/Delegation.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -69,6 +70,11 @@ final GoRouter fnRouter = GoRouter(
                     GoRoute(
                       path: "cwoc",
                       builder: (context, state) => const FNBackground(child: CWOCTask()),
+                    ),
+
+                    GoRoute(
+                      path: "delegation",
+                      builder: (context, state) => const FNBackground(child: Delegation()),
                     ),
                   ]
                 ),

@@ -19,7 +19,10 @@ TimeOfDay parseTime(String time) {
 }
 
 ///Formats a date as a string
-String describeDate(DateTime date) {
+String describeDate(DateTime date, [bool calender = false]) {
+  if (calender) {
+    return "${date.month}/${date.day}";
+  }
   return "${date.month}/${date.day}/${date.year}";
 }
 

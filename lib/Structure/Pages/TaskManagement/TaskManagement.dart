@@ -18,7 +18,15 @@ class TaskManagement extends StatelessWidget {
     var tasks = <Widget>[];
 
     //Add tasks in order of precedent based on roles and available forms
-    if (state.roles.any((role) => role == Role.cwoc)) {
+    if (state.roles.any((role) => role.level.rawValue >= RoleLevel.delegation.rawValue)) {
+      tasks.add(const ExternalTaskWidget(
+          path: "/task_management/delegation",
+          title: "Delegation",
+          description: "Imagine being in cadet leadership"
+      ));
+    }
+
+    if (state.roles.any((role) => role.type == RoleType.cwoc)) {
       tasks.add(const ExternalTaskWidget(
           path: "/task_management/cwoc",
           title: "CWOC",
@@ -26,7 +34,7 @@ class TaskManagement extends StatelessWidget {
       ));
     }
 
-    if (state.roles.any((role) => role == Role.sdo)) {
+    if (state.roles.any((role) => role.type == RoleType.sdo)) {
       tasks.add(const ExternalTaskWidget(
           path: "/task_management/sdo",
           title: "SDO",
@@ -34,7 +42,7 @@ class TaskManagement extends StatelessWidget {
       ));
     }
 
-    if (state.roles.any((role) => role == Role.jdo)) {
+    if (state.roles.any((role) => role.type == RoleType.jdo)) {
       tasks.add(const ExternalTaskWidget(
           path: "/task_management/ordering",
           title: "JDO",
