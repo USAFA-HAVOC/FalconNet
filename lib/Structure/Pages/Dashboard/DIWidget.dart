@@ -31,7 +31,7 @@ class DIWidget extends StatelessWidget {
         builder: (context, model) {
 
           //Whether cadet is able to sign own di based on roles
-          bool senior = model.content.roles.any((role) => role.type == RoleType.signable);
+          bool senior = model.content.roles.any((role) => role == Role.signable);
 
           //Determines whether time is signable
           bool time = DateTime.now().isAfter(combineDate(DateTime.now(), TimeOfDay(hour: 19, minute: 50)));

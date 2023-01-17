@@ -18,21 +18,8 @@ class Delegate {
 
 extension TimedRoleOperations on List<TimedRole> {
 
-  RoleLevel highest({required RoleType type, RoleLevel? baseline}) {
-    var kind = where((r) => r.role.type == type).map((r) => r.role.level.rawValue).toList();
-    kind.sort();
-    assert(kind.last > 0);
-    if (baseline != null) {
-      if (kind.last - 1 >= baseline.rawValue) {
-        return baseline;
-      }
-    }
-
-    return RoleLevelInfo.fromValue(kind.last - 1);
-  }
-
-  DateTime earliest({required RoleType role, required RoleLevel level, DateTime? first, DateTime? last}) {
-    var kind = where((r) => r.role.type == role && r.role.level.rawValue - level.rawValue > 0).map((r) => r.start).toList();
+  DateTime earliest({required Role role, DateTime? first, DateTime? last}) {
+    var kind = where((r) => r.role.isGreaterThan(role)).map((r) => r.start).toList();
     assert(kind.isNotEmpty);
     kind.sort();
     if (first != null) {
@@ -49,8 +36,8 @@ extension TimedRoleOperations on List<TimedRole> {
     return kind.first;
   }
 
-  DateTime latest({required RoleType role, required RoleLevel level, DateTime? first, DateTime? last}) {
-    var kind = where((r) => r.role.type == role && r.role.level.rawValue - level.rawValue > 0).map((r) => r.end).toList();
+  DateTime latest({required Role role, DateTime? first, DateTime? last}) {
+    var kind = where((r) => r.role.isGreaterThan(role)).map((r) => r.end).toList();
     assert(kind.isNotEmpty);
     kind.sort();
     if (first != null) {
@@ -67,9 +54,9 @@ extension TimedRoleOperations on List<TimedRole> {
     return kind.last;
   }
 
-  DateTime constrain(DateTime date, {required RoleType type, required RoleLevel level, required bool start}) {
-    var kind = where((r) => r.role.type == type && r.role.level.rawValue - level.rawValue > 0).map((r) => r.start).toList();
-    kind += where((r) => r.role.type == type && r.role.level.rawValue - level.rawValue > 0).map((r) => r.end).toList();
+  DateTime constrain(DateTime date, {required Role role, required bool start}) {
+    var kind = where((r) => r.role.isGreaterThan(role)).map((r) => r.start).toList();
+    kind += where((r) => r.role.isGreaterThan(role)).map((r) => r.end).toList();
     assert(kind.isNotEmpty);
     kind.sort();
     if (start) {

@@ -130,11 +130,11 @@ void main() {
           ],
 
           roles: [
-            Role(type: RoleType.jdo, level: RoleLevel.delegation),
-            Role(type: RoleType.sdo),
-            Role(type: RoleType.cwoc, level: RoleLevel.staff),
-            Role(type: RoleType.signable),
-            Role(type: RoleType.recognized)
+            Role.jdo,
+            Role.sdo,
+            Role.cwoc,
+            Role.signable,
+            Role.squadron_admin
           ],
       )
   );
@@ -162,8 +162,6 @@ class FNApp extends StatelessWidget {
     //Surrounds the app with a store provider so all child widgets can access global state
     return StoreProvider(
         store: store,
-
-        //Navigates to child pages based on path
         child: StoreConnector<GlobalState, ViewModel<bool>>(
           converter: (store) => ViewModel(store: store, content: store.state.settings.darkTheme),
           builder: (context, model) => MaterialApp.router(

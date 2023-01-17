@@ -1,78 +1,76 @@
 ///Possible cadet roles
-enum RoleType {
+enum Role {
   unrecognized,
   recognized,
   signable,
   jdo,
   sdo,
   cwoc,
+  squadron_admin,
+  group_admin,
+  wing_admin
 }
 
-extension RoleTypeNames on RoleType {
+extension RoleTypeNames on Role {
   String get description {
     switch (this) {
-      case RoleType.unrecognized: return "Unrecognized";
-      case RoleType.recognized: return "Recognized";
-      case RoleType.signable: return "Signable";
-      case RoleType.jdo: return "JDO";
-      case RoleType.sdo: return "SDO";
-      case RoleType.cwoc: return "CWOC";
+      case Role.unrecognized: return "Unrecognized";
+      case Role.recognized: return "Recognized";
+      case Role.signable: return "Signable";
+      case Role.jdo: return "JDO";
+      case Role.sdo: return "SDO";
+      case Role.cwoc: return "CWOC";
+      case Role.squadron_admin: return "Squadron Admin";
+      case Role.group_admin: return "Group Admin";
+      case Role.wing_admin: return "Wing Admin";
     }
   }
-}
 
-enum RoleLevel {
-  baseline,
-  delegation,
-  staff,
-  squadron,
-  group,
-  wing,
-}
-
-extension RoleLevelInfo on RoleLevel {
-  String get description {
+  bool get isAdmin {
     switch (this) {
-      case RoleLevel.baseline: return "Baseline";
-      case RoleLevel.delegation: return "Delegation";
-      case RoleLevel.staff: return "Staff";
-      case RoleLevel.squadron: return "Squadron Admin";
-      case RoleLevel.group: return "Group Admin";
-      case RoleLevel.wing: return "Wing Admin";
+      case Role.squadron_admin: return true;
+      case Role.group_admin: return true;
+      case Role.wing_admin: return true;
+      default: return false;
     }
   }
 
-  int get rawValue {
-    switch (this) {
-      case RoleLevel.baseline: return 0;
-      case RoleLevel.delegation: return 1;
-      case RoleLevel.staff: return 2;
-      case RoleLevel.squadron: return 3;
-      case RoleLevel.group: return 4;
-      case RoleLevel.wing: return 5;
+  List<Role> get delegable {
+    if (isAdmin) {
+      var delegables = Role.values.where((r) => !r.isAdmin).toList();
+      if (this == Role.group_admin) {
+        delegables.add(Role.squadron_admin);
+      }
+      else if (this == Role.wing_admin) {
+        delegables.add(Role.group_admin);
+      }
+      return delegables;
     }
+    return [];
   }
 
-  static RoleLevel fromValue(int value) {
-    switch (value) {
-      case 0: return RoleLevel.baseline;
-      case 1: return RoleLevel.delegation;
-      case 2: return RoleLevel.staff;
-      case 3: return RoleLevel.squadron;
-      case 4: return RoleLevel.group;
-      case 5: return RoleLevel.wing;
+  bool isGreaterThan(Role other) {
+    if (!isAdmin) {
+      return false;
     }
-    throw Exception("Value out of bounds");
-  }
-
-  List<RoleLevel> get delegable {
-    return Iterable<RoleLevel>.generate(rawValue, (index) => fromValue(index)).toList();
+    if (other.isAdmin) {
+      return <Role>[other, this].highest! != other;
+    }
+    return true;
   }
 }
 
-class Role {
-  final RoleLevel level;
-  final RoleType type;
-
-  const Role({required this.type, this.level = RoleLevel.baseline});
+extension RoleList on List<Role> {
+  Role? get highest {
+    if (any((r) => r == Role.wing_admin)) {
+      return Role.wing_admin;
+    }
+    if (any((r) => r == Role.group_admin)) {
+      return Role.group_admin;
+    }
+    if (any((r) => r == Role.squadron_admin)) {
+      return Role.squadron_admin;
+    }
+    return null;
+  }
 }

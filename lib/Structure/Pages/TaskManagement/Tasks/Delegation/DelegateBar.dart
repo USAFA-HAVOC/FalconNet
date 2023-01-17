@@ -21,7 +21,7 @@ class DelegateBar extends StatelessWidget {
     }
     else {
       for (var timed in delegate.roles) {
-        roleDescription += "${timed.role.type.description}-${timed.role.level.description} (${describeDate(timed.start, true)} - ${describeDate(timed.end, true)}), ";
+        roleDescription += "${timed.role.description} (${describeDate(timed.start, true)} - ${describeDate(timed.end, true)}), ";
       }
     }
 

@@ -65,10 +65,7 @@ class DelegationFormState extends State<DelegationForm> {
                 onPressed: () => setState(() {
                   roles.add(
                       TimedRole(
-                          role: Role(
-                              type: widget.applicable.firstWhere((r) => r.role.level.rawValue > 0).role.type,
-                              level: RoleLevel.baseline
-                          ),
+                          role: Role.sdo,
                           start: DateTime.now(),
                           end: DateTime.now()
                       )

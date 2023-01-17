@@ -10,13 +10,13 @@ List<Signee> generateMembers(int count, DIStatus status) {
     final random = Random();
     const allChars='AaBbCcDdlMmNnOoPpQqRrSsTtUuVvWwXxYyZzEeFfGgHhIiJjKkL';
     final randomString = List.generate(lengthOfString, (index) => allChars[random.nextInt(allChars.length)]).join();
-    return randomString;    // return the generated string
+    return randomString;
   }
 
   List<Signee> members = [];
 
   for (int i = 0; i < count; i++) {
-    members.add(Signee(name: "Narpy Cadet #" + randString(5), id: randString(15), status: status));
+    members.add(Signee(name: randString(5), id: randString(15), status: status));
   }
 
   return members;

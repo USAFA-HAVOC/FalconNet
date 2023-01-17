@@ -15,26 +15,20 @@ class RoleSubform extends StatelessWidget {
   RoleSubform({
     super.key,
     required this.value,
-    required this.applicable,
     required this.onChanged,
     required this.onRemove,
+    required this.applicable
   }) : assert(applicable.isNotEmpty);
 
   @override
   Widget build(BuildContext context) {
 
     //If role permissions extend beyond owners, role is uneditable
-    var editable = applicable.any((timed) {
-      if (timed.role.type == value.role.type) {
-        return timed.role.level.rawValue > value.role.level.rawValue;
-      }
-      return false;
+    var editable = applicable.any((given) {
+      return given.role.isGreaterThan(value.role);
     });
 
-    if (editable) {
-      editable = applicable.earliest(role: value.role.type, level: value.role.level).compareTo(value.start) != 1 &&
-          applicable.latest(role: value.role.type, level: value.role.level).compareTo(value.end) != -1;
-    }
+    print(applicable.map((e) => e.role).toList().highest!);
 
     if (!editable) {
       return DecoratedBox(
@@ -46,7 +40,7 @@ class RoleSubform extends StatelessWidget {
           child: Padding(
             padding: EdgeInsets.all(10),
             child: Text(
-              "${value.role.type.description} Role Uneditable",
+              "${value.role.description} Role Uneditable",
               style: Theme.of(context).textTheme.titleSmall,
               textAlign: TextAlign.center,
             ),
@@ -64,57 +58,28 @@ class RoleSubform extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            DropdownButtonFormField<RoleType>(
-              value: value.role.type,
+            DropdownButtonFormField<Role>(
+              value: value.role,
               decoration: InputDecoration(
                   labelStyle: Theme.of(context).textTheme.bodyLarge,
                   labelText: "Role"
               ),
-              items: applicable.map<DropdownMenuItem<RoleType>?>((possible) {
-                if (possible.role.level.rawValue > 0) {
-                  return DropdownMenuItem<RoleType>(
-                    value: possible.role.type,
-                    child: Text(possible.role.type.description),
-                  );
-                }
-                return null;
+              items: applicable.map((e) => e.role).toList().highest!.delegable.map<DropdownMenuItem<Role>?>((possible) {
+                return DropdownMenuItem<Role>(
+                  value: possible,
+                  child: Text(possible.description),
+                );
               })
                   .where((item) => item != null)
                   .map((e) => e!)
                   .toList(),
-              onChanged: (selection) => onChanged(TimedRole(
-                role: Role(
-                  type: selection!,
-                  level: applicable.highest(type: selection, baseline: value.role.level)
-                ),
-                start: applicable.constrain(value.start, type: selection, level: value.role.level, start: true),
-                end: applicable.constrain(value.end, type: selection, level: value.role.level, start: false),
-              )),
-            ),
-
-            SizedBox(height: 20,),
-
-            DropdownButtonFormField<RoleLevel>(
-              value: value.role.level,
-              decoration: InputDecoration(
-                  labelStyle: Theme.of(context).textTheme.bodyLarge,
-                  labelText: "Level"
-              ),
-              items: List<DropdownMenuItem<RoleLevel>>.generate(
-                  applicable.highest(type: value.role.type).rawValue + 1,
-                  (index) => DropdownMenuItem(
-                    value: RoleLevelInfo.fromValue(index),
-                    child: Text(RoleLevelInfo.fromValue(index).description),
-                  )
-              ),
-              onChanged: (selection) => onChanged(TimedRole(
-                role: Role(
-                  type: value.role.type,
-                  level: selection!
-                ),
-                start: applicable.constrain(value.start, type: value.role.type, level: selection, start: true),
-                end: applicable.constrain(value.end, type: value.role.type, level: selection, start: false),
-              )),
+              onChanged: (selection) {
+                onChanged(TimedRole(
+                  role: selection!,
+                  start: value.start,
+                  end: value.end,
+                ));
+              },
             ),
 
             SizedBox(height: 20,),
@@ -124,9 +89,10 @@ class RoleSubform extends StatelessWidget {
                 Expanded(
                   flex: 5,
                   child: DateFormField(
+                    label: "Start",
                     validator: InputValidation.date(),
                     value: describeDate(value.start),
-                    firstDate: applicable.earliest(role: value.role.type, level: value.role.level, last: value.end),
+                    firstDate: applicable.earliest(role: value.role, last: value.end),
                     lastDate: value.end,
                     onChanged: (change) => onChanged(TimedRole(
                       role: value.role,
@@ -141,10 +107,11 @@ class RoleSubform extends StatelessWidget {
                 Expanded(
                   flex: 5,
                   child: DateFormField(
+                    label: "End",
                     validator: InputValidation.date(),
                     value: describeDate(value.end),
                     firstDate: value.start,
-                    lastDate: applicable.latest(role: value.role.type, level: value.role.level, first: value.start),
+                    lastDate: applicable.latest(role: value.role, first: value.start),
                     onChanged: (change) => onChanged(TimedRole(
                       role: value.role,
                       start: value.start,
