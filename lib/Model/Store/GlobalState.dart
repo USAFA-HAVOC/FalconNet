@@ -26,7 +26,7 @@ class NoSuchProperty implements Exception {
 ///Global application state both for api and local data
 ///Modified by dispatching actions to reducer
 class GlobalState implements StateObject {
-  final Cadet cadet;
+  final CadetModel cadet;
   final List<Pass> history;
   final List<UserNotification> notifications;
   final UserSettings settings;

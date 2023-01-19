@@ -17,7 +17,7 @@ abstract class CadetPersonalInfo implements Built<CadetPersonalInfo, CadetPerson
   String get phone_number;
   String get room_number;
   int get squadron;
-  int get group;
+  String get group;
   String get unit;
 
   CadetPersonalInfo._();
@@ -33,31 +33,40 @@ abstract class DIRequest implements Built<DIRequest, DIRequestBuilder> {
   factory DIRequest([void Function(DIRequestBuilder) updates]) = _$DIRequest;
 }
 
-abstract class C4CPassAllocation implements Built<C4CPassAllocation, C4CPassAllocationBuilder> {
-  static Serializer<C4CPassAllocation> get serializer => _$c4CPassAllocationSerializer;
+abstract class CadetDI implements Built<CadetDI, CadetDIBuilder> {
+  static Serializer<CadetDI> get serializer => _$cadetDISerializer;
+
+  DateTime? get last_signed;
+  String? get signed_by;
+
+  CadetDI._();
+  factory CadetDI([void Function(CadetDIBuilder) updates]) = _$CadetDI;
+}
+
+abstract class CadetPassAllocation implements Built<CadetPassAllocation, CadetPassAllocationBuilder> {
+  static Serializer<CadetPassAllocation> get serializer => _$cadetPassAllocationSerializer;
 
   int? get weekend_overnight_passes;
   int? get weekday_overnight_passes;
   int? get weekday_day_passes;
+  String? get individual_pass_status;
+  String? get effective_pass_status;
 
-  C4CPassAllocation._();
-  factory C4CPassAllocation([void Function(C4CPassAllocationBuilder) updates]) = _$C4CPassAllocation;
+  CadetPassAllocation._();
+  factory CadetPassAllocation([void Function(CadetPassAllocationBuilder) updates]) = _$CadetPassAllocation;
 }
 
-abstract class Cadet implements Built<Cadet, CadetBuilder> {
-  static Serializer<Cadet> get serializer => _$cadetSerializer;
+abstract class User implements Built<User, UserBuilder> {
+  static Serializer<User> get serializer => _$userSerializer;
 
   String get id;
   CadetPersonalInfo get personal_info;
-  C4CPassAllocation? get pass_allocation;
-  DateTime get last_login;
-  DateTime get di_time;
-  String? get di_signed_by;
-  String get individual_pass_status;
-  String? get effective_pass_status;
+  CadetPassAllocation? get pass_allocation;
+  CadetDI? get di;
+  DateTime? get last_login;
 
-  Cadet._();
-  factory Cadet([Function(CadetBuilder) updates]) = _$Cadet;
+  User._();
+  factory User([Function(UserBuilder) updates]) = _$User;
 }
 
 abstract class LoginResponse implements Built<LoginResponse, LoginResponseBuilder> {
@@ -83,7 +92,7 @@ abstract class CWOCViewData implements Built<CWOCViewData, CWOCViewDataBuilder> 
   int get squadron_members;
   int get group_members;
   int get wing_members;
-  BuiltList<Cadet> get unit_members;
+  BuiltList<User> get unit_members;
 
   CWOCViewData._();
   factory CWOCViewData([void Function(CWOCViewDataBuilder) updates]) = _$CWOCViewData;
@@ -92,8 +101,9 @@ abstract class CWOCViewData implements Built<CWOCViewData, CWOCViewDataBuilder> 
 @SerializersFor([
   CadetPersonalInfo,
   DIRequest,
-  C4CPassAllocation,
-  Cadet,
+  User,
+  CadetDI,
+  CadetPassAllocation,
   LoginResponse,
   CWOCViewData
 ])

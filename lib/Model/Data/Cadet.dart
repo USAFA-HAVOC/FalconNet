@@ -2,7 +2,7 @@ import 'dart:core';
 
 import 'package:falcon_net/Model/Store/GlobalState.dart';
 
-class Cadet implements StateObject {
+class CadetModel implements StateObject {
   String? email;
   String? name;
   String? phone;
@@ -12,7 +12,7 @@ class Cadet implements StateObject {
   String? unit;
   String? id;
 
-  Cadet({
+  CadetModel({
     this.email,
     this.name,
     this.phone,
@@ -24,29 +24,29 @@ class Cadet implements StateObject {
   });
 
   @override
-  Cadet modified(Enum k, dynamic value) {
+  CadetModel modified(Enum k, dynamic value) {
     CadetProperty key = k as CadetProperty;
     switch (key) {
       case CadetProperty.email: {
-        return Cadet(email: value, name: name, phone: phone, room: room, squadron: squadron, group: group, unit: unit);
+        return CadetModel(email: value, name: name, phone: phone, room: room, squadron: squadron, group: group, unit: unit);
       }
       case CadetProperty.name: {
-        return Cadet(email: email, name: value, phone: phone, room: room, squadron: squadron, group: group, unit: unit);
+        return CadetModel(email: email, name: value, phone: phone, room: room, squadron: squadron, group: group, unit: unit);
       }
       case CadetProperty.phone: {
-        return Cadet(email: email, name: name, phone: value, room: room, squadron: squadron, group: group, unit: unit);
+        return CadetModel(email: email, name: name, phone: value, room: room, squadron: squadron, group: group, unit: unit);
       }
       case CadetProperty.room: {
-        return Cadet(email: email, name: name, phone: phone, room: value, squadron: squadron, group: group, unit: unit);
+        return CadetModel(email: email, name: name, phone: phone, room: value, squadron: squadron, group: group, unit: unit);
       }
       case CadetProperty.squadron: {
-        return Cadet(email: email, name: name, phone: phone, room: room, squadron: value, group: group, unit: unit);
+        return CadetModel(email: email, name: name, phone: phone, room: room, squadron: value, group: group, unit: unit);
       }
       case CadetProperty.group: {
-        return Cadet(email: email, name: name, phone: phone, room: room, squadron: squadron, group: value, unit: unit);
+        return CadetModel(email: email, name: name, phone: phone, room: room, squadron: squadron, group: value, unit: unit);
       }
       case CadetProperty.unit: {
-        return Cadet(email: email, name: name, phone: phone, room: room, squadron: squadron, group: group, unit: value);
+        return CadetModel(email: email, name: name, phone: phone, room: room, squadron: squadron, group: group, unit: value);
       }
     }
   }

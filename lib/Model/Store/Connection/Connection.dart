@@ -2,12 +2,13 @@ import 'dart:io';
 
 import 'package:built_value/serializer.dart';
 import 'package:dio/dio.dart';
+import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'Models.dart';
 
 final options = BaseOptions(
-  baseUrl: 'http://0.0.0.0:8000/',
+  baseUrl: 'http://localhost:8000/',
   connectTimeout: 5000,
   receiveTimeout: 3000,
 );
@@ -38,23 +39,13 @@ class Endpoint<Req, Res> {
 
     Response res;
 
-    try {
-      if (get) {
-        res = await dio.get(path, queryParameters: data);
-      } else {
-        res = await dio.post(path, data: data, options: Options(headers: {
-          HttpHeaders.contentTypeHeader: "application/json"
-        }));
-      }
-    } on DioError {
-      await login(APIData.email);
-      if (get) {
-        res = await dio.get(path, queryParameters: data);
-      } else {
-        res = await dio.post(path, data: data);
-      }
+    if (get) {
+      res = await dio.get(path, queryParameters: data);
+    } else {
+      res = await dio.post(path, data: data, options: Options(headers: {
+        HttpHeaders.contentTypeHeader: "application/json"
+      }));
     }
-
 
     return serializers.deserialize(res.data, specifiedType: FullType(Res)) as Res;
   }
@@ -62,58 +53,38 @@ class Endpoint<Req, Res> {
 
 class Endpoints {
   static Endpoint<FormData, LoginResponse> token = Endpoint("/auth/token");
-  static Endpoint<void, Cadet> profile = Endpoint("/profile/info", get: true);
+  static Endpoint<void, User> profile = Endpoint("/profile/info", get: true);
   static Endpoint<void, CWOCViewData> cwoc = Endpoint("/pages/cwoc", get: true);
   static Endpoint<DIRequest, bool> signDI = Endpoint("/accountability/sign");
 }
 
 class APIData {
   static bool authenticated = false;
-  static Cadet? user_data;
-  static String email = "c23christopher.vonhaasl@afacademy.af.edu";
-//static String email = "C26Ethan.Chapman@afacademy.af.edu";
+  static User? userData;
 }
 
-Cadet defaultCadet = Cadet((b) => b
-  ..id = ""
-  ..personal_info = CadetPersonalInfo((b2) => b2
-    ..email = ""
-    ..full_name = ""
-    ..phone_number = ""
-    ..room_number = ""
-    ..squadron = 0
-    ..group = 0
-    ..unit = ""
-  ).toBuilder()
-  ..pass_allocation = C4CPassAllocation((b2) => b2
-    ..weekend_overnight_passes = 0
-    ..weekday_overnight_passes = 0
-    ..weekday_day_passes = 0
-  ).toBuilder()
-  ..di_time = DateTime.now()
-  ..last_login = DateTime.now()
-  ..individual_pass_status = "OPEN"
-);
+// User defaultCadet = User((b) => b
+//   ..id = ""
+//   ..personal_info = CadetPersonalInfo((b2) => b2
+//     ..email = ""
+//     ..full_name = ""
+//     ..phone_number = ""
+//     ..room_number = ""
+//     ..squadron = 0
+//     ..group = "CG00"
+//     ..unit = ""
+//   ).toBuilder()
+//   ..pass_allocation = C4CPassAllocation((b2) => b2
+//     ..weekend_overnight_passes = 0
+//     ..weekday_overnight_passes = 0
+//     ..weekday_day_passes = 0
+//   ).toBuilder()
+//   ..di_time = DateTime.now()
+//   ..last_login = DateTime.now()
+//   ..individual_pass_status = "OPEN"
+// );
 
-Future<void> login(String username) async {
-  if (APIData.authenticated) return;
-  LoginResponse r = await Endpoints.token.hit(FormData.fromMap({'username': username, 'password': 'password'}));
-  dio.options.headers = {"Authorization": "Bearer ${r.access_token}"};
+Future<void> login(String token) async {
+  dio.options.headers = {"Authorization": "Bearer $token"};
   APIData.authenticated = true;
-}
-
-Future<Cadet> getUserData() async {
-  APIData.user_data ??= await Endpoints.profile.hit(null);
-  return APIData.user_data!;
-}
-
-Future<bool> sign() async {
-  if (APIData.user_data == null) {
-    await login(APIData.email);
-    if (APIData.user_data == null) {
-      return false;
-    }
-  }
-
-  return Endpoints.signDI.hit(DIRequest((builder) => builder.cadet_id = APIData.user_data!.id));
 }

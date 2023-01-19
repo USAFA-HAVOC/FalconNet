@@ -1,8 +1,11 @@
 import 'package:async_redux/async_redux.dart';
 import 'package:falcon_net/Model/Data/FormOne.dart';
 import 'package:falcon_net/Model/Data/UserGrades.dart';
+import 'package:falcon_net/Model/Store/Actions/FetchProfileInfoAction.dart';
 import 'package:falcon_net/Model/Store/Actions/SettingsAction.dart';
+import 'package:falcon_net/Model/Store/Connection/Connection.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_web_plugins/flutter_web_plugins.dart';
 
 import 'Model/Data/Cadet.dart';
 import 'Model/Data/PassAllocation.dart';
@@ -17,13 +20,15 @@ import 'Model/Data/Pass.dart';
 import 'Model/Store/GlobalState.dart';
 import 'Model/Data/UserNotification.dart';
 
-void main() {
+import 'dart:html' as html;
+
+void main() async {
 
   //Initialize a default store
   //Replace the default global state with an api call
   final store = Store<GlobalState>(
       initialState: GlobalState(
-          cadet: Cadet(
+          cadet: CadetModel(
             name: "Rylie Anderson",
             phone: "(515) 782-5949",
             room: "6A19",
@@ -139,10 +144,10 @@ void main() {
       )
   );
 
-  store.dispatch(SettingsAction.retrieve());
-  store.dispatch(NotificationAction.retrieve());
-  store.dispatch(NotificationAction.add(UserNotification(message: "You logged in", destination: "/")));
-
+  // store.dispatch(SettingsAction.retrieve());
+  // store.dispatch(NotificationAction.retrieve());
+  // store.dispatch(NotificationAction.add(UserNotification(message: "You logged in", destination: "/")));
+  
   //getUserData().then((cadet) => print(cadet.id), onError: (obj, stack) => print("error"));
 
   runApp(FNApp(store: store));
@@ -156,19 +161,28 @@ class FNApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-
-
+    if (!APIData.authenticated) {
+      String s = html.window.location.toString();
+      if (s.contains("code=")) {
+        html.window.history.pushState(null, 'FalconNet', '');
+        String token = s.split("code=").last;
+        login(token);
+        store.dispatch(FetchInitialInfoAction());
+      } else {
+        html.window.open('http://localhost:8000/', "_self");
+      }
+    }
 
     //Surrounds the app with a store provider so all child widgets can access global state
     return StoreProvider(
-        store: store,
-        child: StoreConnector<GlobalState, ViewModel<bool>>(
-          converter: (store) => ViewModel(store: store, content: store.state.settings.darkTheme),
-          builder: (context, model) => MaterialApp.router(
-            theme: model.content ? darkTheme : lightTheme,
-            routerConfig: fnRouter,
-          ),
-        )
+      store: store,
+      child: StoreConnector<GlobalState, ViewModel<bool>>(
+        converter: (store) => ViewModel(store: store, content: store.state.settings.darkTheme),
+        builder: (context, model) => MaterialApp.router(
+          theme: model.content ? darkTheme : lightTheme,
+          routerConfig: fnRouter,
+        ),
+      )
     );
   }
 }

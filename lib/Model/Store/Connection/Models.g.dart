@@ -7,26 +7,28 @@ part of models;
 // **************************************************************************
 
 Serializers _$serializers = (new Serializers().toBuilder()
-  ..add(C4CPassAllocation.serializer)
-  ..add(CWOCViewData.serializer)
-  ..add(Cadet.serializer)
-  ..add(CadetPersonalInfo.serializer)
-  ..add(DIRequest.serializer)
-  ..add(LoginResponse.serializer)
-  ..addBuilderFactory(
-      const FullType(BuiltList, const [const FullType(Cadet)]),
-          () => new ListBuilder<Cadet>()))
+      ..add(CWOCViewData.serializer)
+      ..add(CadetDI.serializer)
+      ..add(CadetPassAllocation.serializer)
+      ..add(CadetPersonalInfo.serializer)
+      ..add(DIRequest.serializer)
+      ..add(LoginResponse.serializer)
+      ..add(User.serializer)
+      ..addBuilderFactory(
+          const FullType(BuiltList, const [const FullType(User)]),
+          () => new ListBuilder<User>()))
     .build();
 Serializer<CadetPersonalInfo> _$cadetPersonalInfoSerializer =
-new _$CadetPersonalInfoSerializer();
+    new _$CadetPersonalInfoSerializer();
 Serializer<DIRequest> _$dIRequestSerializer = new _$DIRequestSerializer();
-Serializer<C4CPassAllocation> _$c4CPassAllocationSerializer =
-new _$C4CPassAllocationSerializer();
-Serializer<Cadet> _$cadetSerializer = new _$CadetSerializer();
+Serializer<CadetDI> _$cadetDISerializer = new _$CadetDISerializer();
+Serializer<CadetPassAllocation> _$cadetPassAllocationSerializer =
+    new _$CadetPassAllocationSerializer();
+Serializer<User> _$userSerializer = new _$UserSerializer();
 Serializer<LoginResponse> _$loginResponseSerializer =
-new _$LoginResponseSerializer();
+    new _$LoginResponseSerializer();
 Serializer<CWOCViewData> _$cWOCViewDataSerializer =
-new _$CWOCViewDataSerializer();
+    new _$CWOCViewDataSerializer();
 
 class _$CadetPersonalInfoSerializer
     implements StructuredSerializer<CadetPersonalInfo> {
@@ -55,7 +57,8 @@ class _$CadetPersonalInfoSerializer
       serializers.serialize(object.squadron,
           specifiedType: const FullType(int)),
       'group',
-      serializers.serialize(object.group, specifiedType: const FullType(int)),
+      serializers.serialize(object.group,
+          specifiedType: const FullType(String)),
       'unit',
       serializers.serialize(object.unit, specifiedType: const FullType(String)),
     ];
@@ -97,7 +100,7 @@ class _$CadetPersonalInfoSerializer
           break;
         case 'group':
           result.group = serializers.deserialize(value,
-              specifiedType: const FullType(int))! as int;
+              specifiedType: const FullType(String))! as String;
           break;
         case 'unit':
           result.unit = serializers.deserialize(value,
@@ -150,15 +153,73 @@ class _$DIRequestSerializer implements StructuredSerializer<DIRequest> {
   }
 }
 
-class _$C4CPassAllocationSerializer
-    implements StructuredSerializer<C4CPassAllocation> {
+class _$CadetDISerializer implements StructuredSerializer<CadetDI> {
   @override
-  final Iterable<Type> types = const [C4CPassAllocation, _$C4CPassAllocation];
+  final Iterable<Type> types = const [CadetDI, _$CadetDI];
   @override
-  final String wireName = 'C4CPassAllocation';
+  final String wireName = 'CadetDI';
 
   @override
-  Iterable<Object?> serialize(Serializers serializers, C4CPassAllocation object,
+  Iterable<Object?> serialize(Serializers serializers, CadetDI object,
+      {FullType specifiedType = FullType.unspecified}) {
+    final result = <Object?>[];
+    Object? value;
+    value = object.last_signed;
+    if (value != null) {
+      result
+        ..add('last_signed')
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(DateTime)));
+    }
+    value = object.signed_by;
+    if (value != null) {
+      result
+        ..add('signed_by')
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(String)));
+    }
+    return result;
+  }
+
+  @override
+  CadetDI deserialize(Serializers serializers, Iterable<Object?> serialized,
+      {FullType specifiedType = FullType.unspecified}) {
+    final result = new CadetDIBuilder();
+
+    final iterator = serialized.iterator;
+    while (iterator.moveNext()) {
+      final key = iterator.current! as String;
+      iterator.moveNext();
+      final Object? value = iterator.current;
+      switch (key) {
+        case 'last_signed':
+          result.last_signed = serializers.deserialize(value,
+              specifiedType: const FullType(DateTime)) as DateTime?;
+          break;
+        case 'signed_by':
+          result.signed_by = serializers.deserialize(value,
+              specifiedType: const FullType(String)) as String?;
+          break;
+      }
+    }
+
+    return result.build();
+  }
+}
+
+class _$CadetPassAllocationSerializer
+    implements StructuredSerializer<CadetPassAllocation> {
+  @override
+  final Iterable<Type> types = const [
+    CadetPassAllocation,
+    _$CadetPassAllocation
+  ];
+  @override
+  final String wireName = 'CadetPassAllocation';
+
+  @override
+  Iterable<Object?> serialize(
+      Serializers serializers, CadetPassAllocation object,
       {FullType specifiedType = FullType.unspecified}) {
     final result = <Object?>[];
     Object? value;
@@ -180,14 +241,28 @@ class _$C4CPassAllocationSerializer
         ..add('weekday_day_passes')
         ..add(serializers.serialize(value, specifiedType: const FullType(int)));
     }
+    value = object.individual_pass_status;
+    if (value != null) {
+      result
+        ..add('individual_pass_status')
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(String)));
+    }
+    value = object.effective_pass_status;
+    if (value != null) {
+      result
+        ..add('effective_pass_status')
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(String)));
+    }
     return result;
   }
 
   @override
-  C4CPassAllocation deserialize(
+  CadetPassAllocation deserialize(
       Serializers serializers, Iterable<Object?> serialized,
       {FullType specifiedType = FullType.unspecified}) {
-    final result = new C4CPassAllocationBuilder();
+    final result = new CadetPassAllocationBuilder();
 
     final iterator = serialized.iterator;
     while (iterator.moveNext()) {
@@ -207,6 +282,14 @@ class _$C4CPassAllocationSerializer
           result.weekday_day_passes = serializers.deserialize(value,
               specifiedType: const FullType(int)) as int?;
           break;
+        case 'individual_pass_status':
+          result.individual_pass_status = serializers.deserialize(value,
+              specifiedType: const FullType(String)) as String?;
+          break;
+        case 'effective_pass_status':
+          result.effective_pass_status = serializers.deserialize(value,
+              specifiedType: const FullType(String)) as String?;
+          break;
       }
     }
 
@@ -214,14 +297,14 @@ class _$C4CPassAllocationSerializer
   }
 }
 
-class _$CadetSerializer implements StructuredSerializer<Cadet> {
+class _$UserSerializer implements StructuredSerializer<User> {
   @override
-  final Iterable<Type> types = const [Cadet, _$Cadet];
+  final Iterable<Type> types = const [User, _$User];
   @override
-  final String wireName = 'Cadet';
+  final String wireName = 'User';
 
   @override
-  Iterable<Object?> serialize(Serializers serializers, Cadet object,
+  Iterable<Object?> serialize(Serializers serializers, User object,
       {FullType specifiedType = FullType.unspecified}) {
     final result = <Object?>[
       'id',
@@ -229,15 +312,6 @@ class _$CadetSerializer implements StructuredSerializer<Cadet> {
       'personal_info',
       serializers.serialize(object.personal_info,
           specifiedType: const FullType(CadetPersonalInfo)),
-      'last_login',
-      serializers.serialize(object.last_login,
-          specifiedType: const FullType(DateTime)),
-      'di_time',
-      serializers.serialize(object.di_time,
-          specifiedType: const FullType(DateTime)),
-      'individual_pass_status',
-      serializers.serialize(object.individual_pass_status,
-          specifiedType: const FullType(String)),
     ];
     Object? value;
     value = object.pass_allocation;
@@ -245,29 +319,29 @@ class _$CadetSerializer implements StructuredSerializer<Cadet> {
       result
         ..add('pass_allocation')
         ..add(serializers.serialize(value,
-            specifiedType: const FullType(C4CPassAllocation)));
+            specifiedType: const FullType(CadetPassAllocation)));
     }
-    value = object.di_signed_by;
+    value = object.di;
     if (value != null) {
       result
-        ..add('di_signed_by')
+        ..add('di')
         ..add(serializers.serialize(value,
-            specifiedType: const FullType(String)));
+            specifiedType: const FullType(CadetDI)));
     }
-    value = object.effective_pass_status;
+    value = object.last_login;
     if (value != null) {
       result
-        ..add('effective_pass_status')
+        ..add('last_login')
         ..add(serializers.serialize(value,
-            specifiedType: const FullType(String)));
+            specifiedType: const FullType(DateTime)));
     }
     return result;
   }
 
   @override
-  Cadet deserialize(Serializers serializers, Iterable<Object?> serialized,
+  User deserialize(Serializers serializers, Iterable<Object?> serialized,
       {FullType specifiedType = FullType.unspecified}) {
-    final result = new CadetBuilder();
+    final result = new UserBuilder();
 
     final iterator = serialized.iterator;
     while (iterator.moveNext()) {
@@ -281,33 +355,21 @@ class _$CadetSerializer implements StructuredSerializer<Cadet> {
           break;
         case 'personal_info':
           result.personal_info.replace(serializers.deserialize(value,
-              specifiedType: const FullType(CadetPersonalInfo))!
-          as CadetPersonalInfo);
+                  specifiedType: const FullType(CadetPersonalInfo))!
+              as CadetPersonalInfo);
           break;
         case 'pass_allocation':
           result.pass_allocation.replace(serializers.deserialize(value,
-              specifiedType: const FullType(C4CPassAllocation))!
-          as C4CPassAllocation);
+                  specifiedType: const FullType(CadetPassAllocation))!
+              as CadetPassAllocation);
+          break;
+        case 'di':
+          result.di.replace(serializers.deserialize(value,
+              specifiedType: const FullType(CadetDI))! as CadetDI);
           break;
         case 'last_login':
           result.last_login = serializers.deserialize(value,
-              specifiedType: const FullType(DateTime))! as DateTime;
-          break;
-        case 'di_time':
-          result.di_time = serializers.deserialize(value,
-              specifiedType: const FullType(DateTime))! as DateTime;
-          break;
-        case 'di_signed_by':
-          result.di_signed_by = serializers.deserialize(value,
-              specifiedType: const FullType(String)) as String?;
-          break;
-        case 'individual_pass_status':
-          result.individual_pass_status = serializers.deserialize(value,
-              specifiedType: const FullType(String))! as String;
-          break;
-        case 'effective_pass_status':
-          result.effective_pass_status = serializers.deserialize(value,
-              specifiedType: const FullType(String)) as String?;
+              specifiedType: const FullType(DateTime)) as DateTime?;
           break;
       }
     }
@@ -405,7 +467,7 @@ class _$CWOCViewDataSerializer implements StructuredSerializer<CWOCViewData> {
       'unit_members',
       serializers.serialize(object.unit_members,
           specifiedType:
-          const FullType(BuiltList, const [const FullType(Cadet)])),
+              const FullType(BuiltList, const [const FullType(User)])),
     ];
 
     return result;
@@ -466,9 +528,9 @@ class _$CWOCViewDataSerializer implements StructuredSerializer<CWOCViewData> {
           break;
         case 'unit_members':
           result.unit_members.replace(serializers.deserialize(value,
-              specifiedType:
-              const FullType(BuiltList, const [const FullType(Cadet)]))!
-          as BuiltList<Object?>);
+                  specifiedType:
+                      const FullType(BuiltList, const [const FullType(User)]))!
+              as BuiltList<Object?>);
           break;
       }
     }
@@ -489,22 +551,22 @@ class _$CadetPersonalInfo extends CadetPersonalInfo {
   @override
   final int squadron;
   @override
-  final int group;
+  final String group;
   @override
   final String unit;
 
   factory _$CadetPersonalInfo(
-      [void Function(CadetPersonalInfoBuilder)? updates]) =>
+          [void Function(CadetPersonalInfoBuilder)? updates]) =>
       (new CadetPersonalInfoBuilder()..update(updates))._build();
 
   _$CadetPersonalInfo._(
       {required this.email,
-        required this.full_name,
-        required this.phone_number,
-        required this.room_number,
-        required this.squadron,
-        required this.group,
-        required this.unit})
+      required this.full_name,
+      required this.phone_number,
+      required this.room_number,
+      required this.squadron,
+      required this.group,
+      required this.unit})
       : super._() {
     BuiltValueNullFieldError.checkNotNull(email, r'CadetPersonalInfo', 'email');
     BuiltValueNullFieldError.checkNotNull(
@@ -542,28 +604,28 @@ class _$CadetPersonalInfo extends CadetPersonalInfo {
 
   @override
   int get hashCode {
-    return $jf($jc(
-        $jc(
-            $jc(
-                $jc(
-                    $jc($jc($jc(0, email.hashCode), full_name.hashCode),
-                        phone_number.hashCode),
-                    room_number.hashCode),
-                squadron.hashCode),
-            group.hashCode),
-        unit.hashCode));
+    var _$hash = 0;
+    _$hash = $jc(_$hash, email.hashCode);
+    _$hash = $jc(_$hash, full_name.hashCode);
+    _$hash = $jc(_$hash, phone_number.hashCode);
+    _$hash = $jc(_$hash, room_number.hashCode);
+    _$hash = $jc(_$hash, squadron.hashCode);
+    _$hash = $jc(_$hash, group.hashCode);
+    _$hash = $jc(_$hash, unit.hashCode);
+    _$hash = $jf(_$hash);
+    return _$hash;
   }
 
   @override
   String toString() {
     return (newBuiltValueToStringHelper(r'CadetPersonalInfo')
-      ..add('email', email)
-      ..add('full_name', full_name)
-      ..add('phone_number', phone_number)
-      ..add('room_number', room_number)
-      ..add('squadron', squadron)
-      ..add('group', group)
-      ..add('unit', unit))
+          ..add('email', email)
+          ..add('full_name', full_name)
+          ..add('phone_number', phone_number)
+          ..add('room_number', room_number)
+          ..add('squadron', squadron)
+          ..add('group', group)
+          ..add('unit', unit))
         .toString();
   }
 }
@@ -592,9 +654,9 @@ class CadetPersonalInfoBuilder
   int? get squadron => _$this._squadron;
   set squadron(int? squadron) => _$this._squadron = squadron;
 
-  int? _group;
-  int? get group => _$this._group;
-  set group(int? group) => _$this._group = group;
+  String? _group;
+  String? get group => _$this._group;
+  set group(String? group) => _$this._group = group;
 
   String? _unit;
   String? get unit => _$this._unit;
@@ -679,13 +741,16 @@ class _$DIRequest extends DIRequest {
 
   @override
   int get hashCode {
-    return $jf($jc(0, cadet_id.hashCode));
+    var _$hash = 0;
+    _$hash = $jc(_$hash, cadet_id.hashCode);
+    _$hash = $jf(_$hash);
+    return _$hash;
   }
 
   @override
   String toString() {
     return (newBuiltValueToStringHelper(r'DIRequest')
-      ..add('cadet_id', cadet_id))
+          ..add('cadet_id', cadet_id))
         .toString();
   }
 }
@@ -732,62 +797,166 @@ class DIRequestBuilder implements Builder<DIRequest, DIRequestBuilder> {
   }
 }
 
-class _$C4CPassAllocation extends C4CPassAllocation {
+class _$CadetDI extends CadetDI {
+  @override
+  final DateTime? last_signed;
+  @override
+  final String? signed_by;
+
+  factory _$CadetDI([void Function(CadetDIBuilder)? updates]) =>
+      (new CadetDIBuilder()..update(updates))._build();
+
+  _$CadetDI._({this.last_signed, this.signed_by}) : super._();
+
+  @override
+  CadetDI rebuild(void Function(CadetDIBuilder) updates) =>
+      (toBuilder()..update(updates)).build();
+
+  @override
+  CadetDIBuilder toBuilder() => new CadetDIBuilder()..replace(this);
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(other, this)) return true;
+    return other is CadetDI &&
+        last_signed == other.last_signed &&
+        signed_by == other.signed_by;
+  }
+
+  @override
+  int get hashCode {
+    var _$hash = 0;
+    _$hash = $jc(_$hash, last_signed.hashCode);
+    _$hash = $jc(_$hash, signed_by.hashCode);
+    _$hash = $jf(_$hash);
+    return _$hash;
+  }
+
+  @override
+  String toString() {
+    return (newBuiltValueToStringHelper(r'CadetDI')
+          ..add('last_signed', last_signed)
+          ..add('signed_by', signed_by))
+        .toString();
+  }
+}
+
+class CadetDIBuilder implements Builder<CadetDI, CadetDIBuilder> {
+  _$CadetDI? _$v;
+
+  DateTime? _last_signed;
+  DateTime? get last_signed => _$this._last_signed;
+  set last_signed(DateTime? last_signed) => _$this._last_signed = last_signed;
+
+  String? _signed_by;
+  String? get signed_by => _$this._signed_by;
+  set signed_by(String? signed_by) => _$this._signed_by = signed_by;
+
+  CadetDIBuilder();
+
+  CadetDIBuilder get _$this {
+    final $v = _$v;
+    if ($v != null) {
+      _last_signed = $v.last_signed;
+      _signed_by = $v.signed_by;
+      _$v = null;
+    }
+    return this;
+  }
+
+  @override
+  void replace(CadetDI other) {
+    ArgumentError.checkNotNull(other, 'other');
+    _$v = other as _$CadetDI;
+  }
+
+  @override
+  void update(void Function(CadetDIBuilder)? updates) {
+    if (updates != null) updates(this);
+  }
+
+  @override
+  CadetDI build() => _build();
+
+  _$CadetDI _build() {
+    final _$result =
+        _$v ?? new _$CadetDI._(last_signed: last_signed, signed_by: signed_by);
+    replace(_$result);
+    return _$result;
+  }
+}
+
+class _$CadetPassAllocation extends CadetPassAllocation {
   @override
   final int? weekend_overnight_passes;
   @override
   final int? weekday_overnight_passes;
   @override
   final int? weekday_day_passes;
+  @override
+  final String? individual_pass_status;
+  @override
+  final String? effective_pass_status;
 
-  factory _$C4CPassAllocation(
-      [void Function(C4CPassAllocationBuilder)? updates]) =>
-      (new C4CPassAllocationBuilder()..update(updates))._build();
+  factory _$CadetPassAllocation(
+          [void Function(CadetPassAllocationBuilder)? updates]) =>
+      (new CadetPassAllocationBuilder()..update(updates))._build();
 
-  _$C4CPassAllocation._(
+  _$CadetPassAllocation._(
       {this.weekend_overnight_passes,
-        this.weekday_overnight_passes,
-        this.weekday_day_passes})
+      this.weekday_overnight_passes,
+      this.weekday_day_passes,
+      this.individual_pass_status,
+      this.effective_pass_status})
       : super._();
 
   @override
-  C4CPassAllocation rebuild(void Function(C4CPassAllocationBuilder) updates) =>
+  CadetPassAllocation rebuild(
+          void Function(CadetPassAllocationBuilder) updates) =>
       (toBuilder()..update(updates)).build();
 
   @override
-  C4CPassAllocationBuilder toBuilder() =>
-      new C4CPassAllocationBuilder()..replace(this);
+  CadetPassAllocationBuilder toBuilder() =>
+      new CadetPassAllocationBuilder()..replace(this);
 
   @override
   bool operator ==(Object other) {
     if (identical(other, this)) return true;
-    return other is C4CPassAllocation &&
+    return other is CadetPassAllocation &&
         weekend_overnight_passes == other.weekend_overnight_passes &&
         weekday_overnight_passes == other.weekday_overnight_passes &&
-        weekday_day_passes == other.weekday_day_passes;
+        weekday_day_passes == other.weekday_day_passes &&
+        individual_pass_status == other.individual_pass_status &&
+        effective_pass_status == other.effective_pass_status;
   }
 
   @override
   int get hashCode {
-    return $jf($jc(
-        $jc($jc(0, weekend_overnight_passes.hashCode),
-            weekday_overnight_passes.hashCode),
-        weekday_day_passes.hashCode));
+    var _$hash = 0;
+    _$hash = $jc(_$hash, weekend_overnight_passes.hashCode);
+    _$hash = $jc(_$hash, weekday_overnight_passes.hashCode);
+    _$hash = $jc(_$hash, weekday_day_passes.hashCode);
+    _$hash = $jc(_$hash, individual_pass_status.hashCode);
+    _$hash = $jc(_$hash, effective_pass_status.hashCode);
+    _$hash = $jf(_$hash);
+    return _$hash;
   }
 
   @override
   String toString() {
-    return (newBuiltValueToStringHelper(r'C4CPassAllocation')
-      ..add('weekend_overnight_passes', weekend_overnight_passes)
-      ..add('weekday_overnight_passes', weekday_overnight_passes)
-      ..add('weekday_day_passes', weekday_day_passes))
+    return (newBuiltValueToStringHelper(r'CadetPassAllocation')
+          ..add('weekend_overnight_passes', weekend_overnight_passes)
+          ..add('weekday_overnight_passes', weekday_overnight_passes)
+          ..add('weekday_day_passes', weekday_day_passes)
+          ..add('individual_pass_status', individual_pass_status)
+          ..add('effective_pass_status', effective_pass_status))
         .toString();
   }
 }
 
-class C4CPassAllocationBuilder
-    implements Builder<C4CPassAllocation, C4CPassAllocationBuilder> {
-  _$C4CPassAllocation? _$v;
+class CadetPassAllocationBuilder
+    implements Builder<CadetPassAllocation, CadetPassAllocationBuilder> {
+  _$CadetPassAllocation? _$v;
 
   int? _weekend_overnight_passes;
   int? get weekend_overnight_passes => _$this._weekend_overnight_passes;
@@ -804,138 +973,129 @@ class C4CPassAllocationBuilder
   set weekday_day_passes(int? weekday_day_passes) =>
       _$this._weekday_day_passes = weekday_day_passes;
 
-  C4CPassAllocationBuilder();
+  String? _individual_pass_status;
+  String? get individual_pass_status => _$this._individual_pass_status;
+  set individual_pass_status(String? individual_pass_status) =>
+      _$this._individual_pass_status = individual_pass_status;
 
-  C4CPassAllocationBuilder get _$this {
+  String? _effective_pass_status;
+  String? get effective_pass_status => _$this._effective_pass_status;
+  set effective_pass_status(String? effective_pass_status) =>
+      _$this._effective_pass_status = effective_pass_status;
+
+  CadetPassAllocationBuilder();
+
+  CadetPassAllocationBuilder get _$this {
     final $v = _$v;
     if ($v != null) {
       _weekend_overnight_passes = $v.weekend_overnight_passes;
       _weekday_overnight_passes = $v.weekday_overnight_passes;
       _weekday_day_passes = $v.weekday_day_passes;
+      _individual_pass_status = $v.individual_pass_status;
+      _effective_pass_status = $v.effective_pass_status;
       _$v = null;
     }
     return this;
   }
 
   @override
-  void replace(C4CPassAllocation other) {
+  void replace(CadetPassAllocation other) {
     ArgumentError.checkNotNull(other, 'other');
-    _$v = other as _$C4CPassAllocation;
+    _$v = other as _$CadetPassAllocation;
   }
 
   @override
-  void update(void Function(C4CPassAllocationBuilder)? updates) {
+  void update(void Function(CadetPassAllocationBuilder)? updates) {
     if (updates != null) updates(this);
   }
 
   @override
-  C4CPassAllocation build() => _build();
+  CadetPassAllocation build() => _build();
 
-  _$C4CPassAllocation _build() {
+  _$CadetPassAllocation _build() {
     final _$result = _$v ??
-        new _$C4CPassAllocation._(
+        new _$CadetPassAllocation._(
             weekend_overnight_passes: weekend_overnight_passes,
             weekday_overnight_passes: weekday_overnight_passes,
-            weekday_day_passes: weekday_day_passes);
+            weekday_day_passes: weekday_day_passes,
+            individual_pass_status: individual_pass_status,
+            effective_pass_status: effective_pass_status);
     replace(_$result);
     return _$result;
   }
 }
 
-class _$Cadet extends Cadet {
+class _$User extends User {
   @override
   final String id;
   @override
   final CadetPersonalInfo personal_info;
   @override
-  final C4CPassAllocation? pass_allocation;
+  final CadetPassAllocation? pass_allocation;
   @override
-  final DateTime last_login;
+  final CadetDI? di;
   @override
-  final DateTime di_time;
-  @override
-  final String? di_signed_by;
-  @override
-  final String individual_pass_status;
-  @override
-  final String? effective_pass_status;
+  final DateTime? last_login;
 
-  factory _$Cadet([void Function(CadetBuilder)? updates]) =>
-      (new CadetBuilder()..update(updates))._build();
+  factory _$User([void Function(UserBuilder)? updates]) =>
+      (new UserBuilder()..update(updates))._build();
 
-  _$Cadet._(
+  _$User._(
       {required this.id,
-        required this.personal_info,
-        this.pass_allocation,
-        required this.last_login,
-        required this.di_time,
-        this.di_signed_by,
-        required this.individual_pass_status,
-        this.effective_pass_status})
+      required this.personal_info,
+      this.pass_allocation,
+      this.di,
+      this.last_login})
       : super._() {
-    BuiltValueNullFieldError.checkNotNull(id, r'Cadet', 'id');
+    BuiltValueNullFieldError.checkNotNull(id, r'User', 'id');
     BuiltValueNullFieldError.checkNotNull(
-        personal_info, r'Cadet', 'personal_info');
-    BuiltValueNullFieldError.checkNotNull(last_login, r'Cadet', 'last_login');
-    BuiltValueNullFieldError.checkNotNull(di_time, r'Cadet', 'di_time');
-    BuiltValueNullFieldError.checkNotNull(
-        individual_pass_status, r'Cadet', 'individual_pass_status');
+        personal_info, r'User', 'personal_info');
   }
 
   @override
-  Cadet rebuild(void Function(CadetBuilder) updates) =>
+  User rebuild(void Function(UserBuilder) updates) =>
       (toBuilder()..update(updates)).build();
 
   @override
-  CadetBuilder toBuilder() => new CadetBuilder()..replace(this);
+  UserBuilder toBuilder() => new UserBuilder()..replace(this);
 
   @override
   bool operator ==(Object other) {
     if (identical(other, this)) return true;
-    return other is Cadet &&
+    return other is User &&
         id == other.id &&
         personal_info == other.personal_info &&
         pass_allocation == other.pass_allocation &&
-        last_login == other.last_login &&
-        di_time == other.di_time &&
-        di_signed_by == other.di_signed_by &&
-        individual_pass_status == other.individual_pass_status &&
-        effective_pass_status == other.effective_pass_status;
+        di == other.di &&
+        last_login == other.last_login;
   }
 
   @override
   int get hashCode {
-    return $jf($jc(
-        $jc(
-            $jc(
-                $jc(
-                    $jc(
-                        $jc($jc($jc(0, id.hashCode), personal_info.hashCode),
-                            pass_allocation.hashCode),
-                        last_login.hashCode),
-                    di_time.hashCode),
-                di_signed_by.hashCode),
-            individual_pass_status.hashCode),
-        effective_pass_status.hashCode));
+    var _$hash = 0;
+    _$hash = $jc(_$hash, id.hashCode);
+    _$hash = $jc(_$hash, personal_info.hashCode);
+    _$hash = $jc(_$hash, pass_allocation.hashCode);
+    _$hash = $jc(_$hash, di.hashCode);
+    _$hash = $jc(_$hash, last_login.hashCode);
+    _$hash = $jf(_$hash);
+    return _$hash;
   }
 
   @override
   String toString() {
-    return (newBuiltValueToStringHelper(r'Cadet')
-      ..add('id', id)
-      ..add('personal_info', personal_info)
-      ..add('pass_allocation', pass_allocation)
-      ..add('last_login', last_login)
-      ..add('di_time', di_time)
-      ..add('di_signed_by', di_signed_by)
-      ..add('individual_pass_status', individual_pass_status)
-      ..add('effective_pass_status', effective_pass_status))
+    return (newBuiltValueToStringHelper(r'User')
+          ..add('id', id)
+          ..add('personal_info', personal_info)
+          ..add('pass_allocation', pass_allocation)
+          ..add('di', di)
+          ..add('last_login', last_login))
         .toString();
   }
 }
 
-class CadetBuilder implements Builder<Cadet, CadetBuilder> {
-  _$Cadet? _$v;
+class UserBuilder implements Builder<User, UserBuilder> {
+  _$User? _$v;
 
   String? _id;
   String? get id => _$this._id;
@@ -947,82 +1107,59 @@ class CadetBuilder implements Builder<Cadet, CadetBuilder> {
   set personal_info(CadetPersonalInfoBuilder? personal_info) =>
       _$this._personal_info = personal_info;
 
-  C4CPassAllocationBuilder? _pass_allocation;
-  C4CPassAllocationBuilder get pass_allocation =>
-      _$this._pass_allocation ??= new C4CPassAllocationBuilder();
-  set pass_allocation(C4CPassAllocationBuilder? pass_allocation) =>
+  CadetPassAllocationBuilder? _pass_allocation;
+  CadetPassAllocationBuilder get pass_allocation =>
+      _$this._pass_allocation ??= new CadetPassAllocationBuilder();
+  set pass_allocation(CadetPassAllocationBuilder? pass_allocation) =>
       _$this._pass_allocation = pass_allocation;
+
+  CadetDIBuilder? _di;
+  CadetDIBuilder get di => _$this._di ??= new CadetDIBuilder();
+  set di(CadetDIBuilder? di) => _$this._di = di;
 
   DateTime? _last_login;
   DateTime? get last_login => _$this._last_login;
   set last_login(DateTime? last_login) => _$this._last_login = last_login;
 
-  DateTime? _di_time;
-  DateTime? get di_time => _$this._di_time;
-  set di_time(DateTime? di_time) => _$this._di_time = di_time;
+  UserBuilder();
 
-  String? _di_signed_by;
-  String? get di_signed_by => _$this._di_signed_by;
-  set di_signed_by(String? di_signed_by) => _$this._di_signed_by = di_signed_by;
-
-  String? _individual_pass_status;
-  String? get individual_pass_status => _$this._individual_pass_status;
-  set individual_pass_status(String? individual_pass_status) =>
-      _$this._individual_pass_status = individual_pass_status;
-
-  String? _effective_pass_status;
-  String? get effective_pass_status => _$this._effective_pass_status;
-  set effective_pass_status(String? effective_pass_status) =>
-      _$this._effective_pass_status = effective_pass_status;
-
-  CadetBuilder();
-
-  CadetBuilder get _$this {
+  UserBuilder get _$this {
     final $v = _$v;
     if ($v != null) {
       _id = $v.id;
       _personal_info = $v.personal_info.toBuilder();
       _pass_allocation = $v.pass_allocation?.toBuilder();
+      _di = $v.di?.toBuilder();
       _last_login = $v.last_login;
-      _di_time = $v.di_time;
-      _di_signed_by = $v.di_signed_by;
-      _individual_pass_status = $v.individual_pass_status;
-      _effective_pass_status = $v.effective_pass_status;
       _$v = null;
     }
     return this;
   }
 
   @override
-  void replace(Cadet other) {
+  void replace(User other) {
     ArgumentError.checkNotNull(other, 'other');
-    _$v = other as _$Cadet;
+    _$v = other as _$User;
   }
 
   @override
-  void update(void Function(CadetBuilder)? updates) {
+  void update(void Function(UserBuilder)? updates) {
     if (updates != null) updates(this);
   }
 
   @override
-  Cadet build() => _build();
+  User build() => _build();
 
-  _$Cadet _build() {
-    _$Cadet _$result;
+  _$User _build() {
+    _$User _$result;
     try {
       _$result = _$v ??
-          new _$Cadet._(
-              id: BuiltValueNullFieldError.checkNotNull(id, r'Cadet', 'id'),
+          new _$User._(
+              id: BuiltValueNullFieldError.checkNotNull(id, r'User', 'id'),
               personal_info: personal_info.build(),
               pass_allocation: _pass_allocation?.build(),
-              last_login: BuiltValueNullFieldError.checkNotNull(
-                  last_login, r'Cadet', 'last_login'),
-              di_time: BuiltValueNullFieldError.checkNotNull(
-                  di_time, r'Cadet', 'di_time'),
-              di_signed_by: di_signed_by,
-              individual_pass_status: BuiltValueNullFieldError.checkNotNull(
-                  individual_pass_status, r'Cadet', 'individual_pass_status'),
-              effective_pass_status: effective_pass_status);
+              di: _di?.build(),
+              last_login: last_login);
     } catch (_) {
       late String _$failedField;
       try {
@@ -1030,9 +1167,11 @@ class CadetBuilder implements Builder<Cadet, CadetBuilder> {
         personal_info.build();
         _$failedField = 'pass_allocation';
         _pass_allocation?.build();
+        _$failedField = 'di';
+        _di?.build();
       } catch (e) {
         throw new BuiltValueNestedFieldError(
-            r'Cadet', _$failedField, e.toString());
+            r'User', _$failedField, e.toString());
       }
       rethrow;
     }
@@ -1075,14 +1214,18 @@ class _$LoginResponse extends LoginResponse {
 
   @override
   int get hashCode {
-    return $jf($jc($jc(0, access_token.hashCode), token_type.hashCode));
+    var _$hash = 0;
+    _$hash = $jc(_$hash, access_token.hashCode);
+    _$hash = $jc(_$hash, token_type.hashCode);
+    _$hash = $jf(_$hash);
+    return _$hash;
   }
 
   @override
   String toString() {
     return (newBuiltValueToStringHelper(r'LoginResponse')
-      ..add('access_token', access_token)
-      ..add('token_type', token_type))
+          ..add('access_token', access_token)
+          ..add('token_type', token_type))
         .toString();
   }
 }
@@ -1159,23 +1302,23 @@ class _$CWOCViewData extends CWOCViewData {
   @override
   final int wing_members;
   @override
-  final BuiltList<Cadet> unit_members;
+  final BuiltList<User> unit_members;
 
   factory _$CWOCViewData([void Function(CWOCViewDataBuilder)? updates]) =>
       (new CWOCViewDataBuilder()..update(updates))._build();
 
   _$CWOCViewData._(
       {required this.unit,
-        required this.squadron,
-        required this.group,
-        required this.unit_accountability_percent,
-        required this.squadron_accountability_percent,
-        required this.group_accountability_percent,
-        required this.wing_accountability_percent,
-        required this.squadron_members,
-        required this.group_members,
-        required this.wing_members,
-        required this.unit_members})
+      required this.squadron,
+      required this.group,
+      required this.unit_accountability_percent,
+      required this.squadron_accountability_percent,
+      required this.group_accountability_percent,
+      required this.wing_accountability_percent,
+      required this.squadron_members,
+      required this.group_members,
+      required this.wing_members,
+      required this.unit_members})
       : super._() {
     BuiltValueNullFieldError.checkNotNull(unit, r'CWOCViewData', 'unit');
     BuiltValueNullFieldError.checkNotNull(
@@ -1226,43 +1369,37 @@ class _$CWOCViewData extends CWOCViewData {
 
   @override
   int get hashCode {
-    return $jf($jc(
-        $jc(
-            $jc(
-                $jc(
-                    $jc(
-                        $jc(
-                            $jc(
-                                $jc(
-                                    $jc(
-                                        $jc($jc(0, unit.hashCode),
-                                            squadron.hashCode),
-                                        group.hashCode),
-                                    unit_accountability_percent.hashCode),
-                                squadron_accountability_percent.hashCode),
-                            group_accountability_percent.hashCode),
-                        wing_accountability_percent.hashCode),
-                    squadron_members.hashCode),
-                group_members.hashCode),
-            wing_members.hashCode),
-        unit_members.hashCode));
+    var _$hash = 0;
+    _$hash = $jc(_$hash, unit.hashCode);
+    _$hash = $jc(_$hash, squadron.hashCode);
+    _$hash = $jc(_$hash, group.hashCode);
+    _$hash = $jc(_$hash, unit_accountability_percent.hashCode);
+    _$hash = $jc(_$hash, squadron_accountability_percent.hashCode);
+    _$hash = $jc(_$hash, group_accountability_percent.hashCode);
+    _$hash = $jc(_$hash, wing_accountability_percent.hashCode);
+    _$hash = $jc(_$hash, squadron_members.hashCode);
+    _$hash = $jc(_$hash, group_members.hashCode);
+    _$hash = $jc(_$hash, wing_members.hashCode);
+    _$hash = $jc(_$hash, unit_members.hashCode);
+    _$hash = $jf(_$hash);
+    return _$hash;
   }
 
   @override
   String toString() {
     return (newBuiltValueToStringHelper(r'CWOCViewData')
-      ..add('unit', unit)
-      ..add('squadron', squadron)
-      ..add('group', group)
-      ..add('unit_accountability_percent', unit_accountability_percent)
-      ..add('squadron_accountability_percent',
-          squadron_accountability_percent)
-      ..add('group_accountability_percent', group_accountability_percent)
-      ..add('wing_accountability_percent', wing_accountability_percent)
-      ..add('squadron_members', squadron_members)
-      ..add('group_members', group_members)
-      ..add('wing_members', wing_members)
-      ..add('unit_members', unit_members))
+          ..add('unit', unit)
+          ..add('squadron', squadron)
+          ..add('group', group)
+          ..add('unit_accountability_percent', unit_accountability_percent)
+          ..add('squadron_accountability_percent',
+              squadron_accountability_percent)
+          ..add('group_accountability_percent', group_accountability_percent)
+          ..add('wing_accountability_percent', wing_accountability_percent)
+          ..add('squadron_members', squadron_members)
+          ..add('group_members', group_members)
+          ..add('wing_members', wing_members)
+          ..add('unit_members', unit_members))
         .toString();
   }
 }
@@ -1293,7 +1430,7 @@ class CWOCViewDataBuilder
   double? get squadron_accountability_percent =>
       _$this._squadron_accountability_percent;
   set squadron_accountability_percent(
-      double? squadron_accountability_percent) =>
+          double? squadron_accountability_percent) =>
       _$this._squadron_accountability_percent = squadron_accountability_percent;
 
   double? _group_accountability_percent;
@@ -1322,10 +1459,10 @@ class CWOCViewDataBuilder
   int? get wing_members => _$this._wing_members;
   set wing_members(int? wing_members) => _$this._wing_members = wing_members;
 
-  ListBuilder<Cadet>? _unit_members;
-  ListBuilder<Cadet> get unit_members =>
-      _$this._unit_members ??= new ListBuilder<Cadet>();
-  set unit_members(ListBuilder<Cadet>? unit_members) =>
+  ListBuilder<User>? _unit_members;
+  ListBuilder<User> get unit_members =>
+      _$this._unit_members ??= new ListBuilder<User>();
+  set unit_members(ListBuilder<User>? unit_members) =>
       _$this._unit_members = unit_members;
 
   CWOCViewDataBuilder();
@@ -1403,4 +1540,4 @@ class CWOCViewDataBuilder
   }
 }
 
-// ignore_for_file: always_put_control_body_on_new_line,always_specify_types,annotate_overrides,avoid_annotating_with_dynamic,avoid_as,avoid_catches_without_on_clauses,avoid_returning_this,deprecated_member_use_from_same_package,lines_longer_than_80_chars,no_leading_underscores_for_local_identifiers,omit_local_variable_types,prefer_expression_function_bodies,sort_constructors_first,test_types_in_equals,unnecessary_const,unnecessary_new,unnecessary_lambdas
+// ignore_for_file: deprecated_member_use_from_same_package,type=lint

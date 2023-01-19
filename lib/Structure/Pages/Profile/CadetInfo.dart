@@ -13,8 +13,8 @@ class CadetInfo extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return StoreConnector<GlobalState, ViewModel<Cadet>>(
-        converter: (store) => ViewModel<Cadet>(store: store, content: store.state.cadet),
+    return StoreConnector<GlobalState, ViewModel<CadetModel>>(
+        converter: (store) => ViewModel<CadetModel>(store: store, content: store.state.cadet),
         builder: (context, model) {
           return ListView(
             primary: false,

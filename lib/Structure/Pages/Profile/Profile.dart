@@ -81,8 +81,8 @@ class ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
                     ),
 
                     //Greets the user by name according to global state
-                    StoreConnector<GlobalState, ViewModel<Cadet>>(
-                        converter: (store) => ViewModel<Cadet>(store: store, content: store.state.cadet),
+                    StoreConnector<GlobalState, ViewModel<CadetModel>>(
+                        converter: (store) => ViewModel<CadetModel>(store: store, content: store.state.cadet),
                         builder: (context, model) {
                           return Text(
                             "Hi, ${model.content.name}!",
