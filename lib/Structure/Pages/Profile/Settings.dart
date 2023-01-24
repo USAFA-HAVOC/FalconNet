@@ -1,7 +1,7 @@
 import 'package:async_redux/async_redux.dart';
+import 'package:falcon_net/Model/Database/UserSettings.dart';
 import 'package:falcon_net/Model/Store/Actions/SettingsAction.dart';
-import 'package:falcon_net/Model/Store/GlobalState.dart';
-import 'package:falcon_net/Model/Data/UserSettings.dart';
+import 'package:falcon_net/Model/Store/GlobalStateModel.dart';
 import 'package:falcon_net/Structure/Components/ViewModel.dart';
 import 'package:flutter/material.dart';
 
@@ -36,7 +36,7 @@ class Settings extends StatelessWidget {
 
                         //Dispatches set setting action with new value
                         onChanged: (value) {
-                          model.dispatch(SettingsAction(property: UserSettingsProperty.darkTheme, value: value));
+                          model.dispatch(SettingsAction(modify: (b) => b..darkTheme = value));
                         },
                       )
                   ),
@@ -60,7 +60,7 @@ class Settings extends StatelessWidget {
 
                         //Dispatches set setting action with new value
                         onChanged: (value) {
-                          model.dispatch(SettingsAction(property: UserSettingsProperty.pushNotifications, value: value));
+                          model.dispatch(SettingsAction(modify: (b) => b..pushNotifications=value..diPush=value..passPush=value..taskPush=value));
                         },
                       )
                   ),
@@ -158,7 +158,7 @@ class NotificationsExtensionState extends State<NotificationsExtension> with Sin
 
                           //Dispatches set setting action with new value
                           onChanged: (value) {
-                            model.dispatch(SettingsAction(property: UserSettingsProperty.passPush, value: value));
+                            model.dispatch(SettingsAction(modify: (b) => b..passPush = value));
                           },
                         )
                     ),
@@ -181,7 +181,7 @@ class NotificationsExtensionState extends State<NotificationsExtension> with Sin
 
                           //Dispatches set setting action with new value
                           onChanged: (value) {
-                            model.dispatch(SettingsAction(property: UserSettingsProperty.diPush, value: value));
+                            model.dispatch(SettingsAction(modify: (b) => b..diPush = value));
                           },
                         )
                     ),
@@ -204,7 +204,7 @@ class NotificationsExtensionState extends State<NotificationsExtension> with Sin
 
                           //Dispatches set setting action with new value
                           onChanged: (value) {
-                            model.dispatch(SettingsAction(property: UserSettingsProperty.taskPush, value: value));
+                            model.dispatch(SettingsAction(modify: (b) => b..taskPush = value));
                           },
                         )
                     ),

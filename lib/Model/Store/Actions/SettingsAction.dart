@@ -1,46 +1,28 @@
 import 'package:async_redux/async_redux.dart';
-import 'package:falcon_net/Model/Data/UserSettings.dart';
+import 'package:built_value/serializer.dart';
+import 'package:falcon_net/Model/Database/UserSettings.dart';
+import 'package:falcon_net/Model/Serializers.dart';
+import 'package:falcon_net/Model/Store/GlobalStateModel.dart';
 import '../Connection/Connection.dart' as connection;
-import '../GlobalState.dart';
 
 class SettingsAction extends ReduxAction<GlobalState> {
-  final UserSettingsProperty? property;
-  final dynamic value;
+  final UserSettingsBuilder Function(UserSettingsBuilder b)? modify;
 
-  SettingsAction({required this.property, required this.value});
+  SettingsAction({required this.modify});
 
-  SettingsAction.retrieve() : property = null, value = null;
+  SettingsAction.retrieve() : modify = null;
 
   @override
   Future<GlobalState?> reduce() async {
     var preferences = await connection.preferences;
-    if (property != null) {
-      if (property == UserSettingsProperty.pushNotifications) {
-        await preferences.setBool("settings/${UserSettingsProperty.pushNotifications.name}", value as bool);
-        await preferences.setBool("settings/${UserSettingsProperty.diPush.name}", value as bool);
-        await preferences.setBool("settings/${UserSettingsProperty.passPush.name}", value as bool);
-        await preferences.setBool("settings/${UserSettingsProperty.taskPush.name}", value as bool);
-        return state.modified(
-          GlobalStateProperty.settings,
-          state.settings
-            .modified(property!, value)
-            .modified(UserSettingsProperty.diPush, value)
-            .modified(UserSettingsProperty.passPush, value)
-            .modified(UserSettingsProperty.taskPush, value)
-        );
-      }
-      else {
-        await preferences.setBool("settings/${property!.name}", value as bool);
-        return state.modified(GlobalStateProperty.settings, state.settings.modified(property!, value));
-      }
+    if (modify != null) {
+      var modified = modify!(state.settings.toBuilder());
+      await preferences.setString("settings", serializers.serialize(modified, specifiedType: const FullType(String)) as String);
+      return (state.toBuilder()..settings=modified).build();
     }
     else {
-      var mutable = state.settings;
-      for (var setting in UserSettingsProperty.values) {
-        var value = preferences.getBool("settings/${setting.name}");
-        mutable = mutable.modified(setting, value ?? false);
-      }
-      return state.modified(GlobalStateProperty.settings, mutable);
+      UserSettings newSettings = serializers.deserialize(preferences.getString("settings"), specifiedType: const FullType(UserSettings)) as UserSettings;
+      return (state.toBuilder()..settings=newSettings.toBuilder()).build();
     }
   }
 }

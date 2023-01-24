@@ -1,13 +1,12 @@
 import 'package:async_redux/async_redux.dart';
 import 'package:badges/badges.dart';
-import 'package:falcon_net/Model/Data/UserNotification.dart';
+import 'package:falcon_net/Model/Database/UserNotification.dart';
+import 'package:falcon_net/Model/Store/GlobalStateModel.dart';
 import 'package:falcon_net/Structure/Components/ViewModel.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:go_router/go_router.dart';
 import 'package:popover/popover.dart';
-import 'package:falcon_net/Model/Store/GlobalState.dart';
 import '../Model/Store/Actions/NotificationAction.dart';
 import 'FNNotifications.dart';
 
@@ -75,7 +74,7 @@ class FNNavigationBar extends StatelessWidget {
                     children: [
                       Expanded(
                           child: StoreConnector<GlobalState, ViewModel<List<UserNotification>>>(
-                              converter: (store) => ViewModel<List<UserNotification>>(store: store, content: store.state.notifications),
+                              converter: (store) => ViewModel<List<UserNotification>>(store: store, content: store.state.notifications.toList(growable: false)),
                               builder: (context, model) {
                                 //If there are notifications display a badge icon
                                 if (model.content.isNotEmpty) {

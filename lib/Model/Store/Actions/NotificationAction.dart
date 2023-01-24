@@ -1,7 +1,7 @@
 import 'package:async_redux/async_redux.dart';
-import 'package:falcon_net/Model/Store/GlobalState.dart';
-
-import '../../Data/UserNotification.dart';
+import 'package:built_collection/src/list.dart';
+import 'package:falcon_net/Model/Database/UserNotification.dart';
+import 'package:falcon_net/Model/Store/GlobalStateModel.dart';
 import "../../Store/Connection/Connection.dart" as connection;
 
 class NotificationAction extends ReduxAction<GlobalState> {
@@ -37,25 +37,27 @@ class NotificationAction extends ReduxAction<GlobalState> {
     var preferences = await connection.preferences;
     if (all) {
       await preferences.setStringList("notifications", <String>[]);
-      return state.modified(GlobalStateProperty.notifications, <UserNotification>[]);
+      return (state.toBuilder()..notifications.clear()).build();
     }
     else if (add) {
-      List<UserNotification> mutated = state.notifications;
+      List<UserNotification> mutated = state.notifications.toList(growable: false);
       mutated.add(notification!);
       await preferences.setStringList("notifications", mutated.map((n) => n.stringify()).toList());
-      return state.modified(GlobalStateProperty.notifications, mutated);
+      return (state.toBuilder()..notifications=ListBuilder<UserNotification>(mutated)).build();
     }
     else if (retrieve) {
-      return state.modified(
-          GlobalStateProperty.notifications, 
-          (preferences.getStringList("notifications") ?? []).map((n) => UserNotification.fromString(n)).toList()
-      );
+      return (
+          state.toBuilder()
+            ..notifications=ListBuilder<UserNotification>(
+                (preferences.getStringList("notifications") ?? []).map((n) => UserNotification.fromString(n)).toList()
+            )
+      ).build();
     }
     else {
-      List<UserNotification> mutated = state.notifications;
+      List<UserNotification> mutated = state.notifications.toList(growable: false);
       mutated.remove(notification);
       await preferences.setStringList("notifications", mutated.map((n) => n.stringify()).toList());
-      return state.modified(GlobalStateProperty.notifications, mutated);
+      return (state.toBuilder()..notifications=ListBuilder<UserNotification>(mutated)).build();
     }
   }
 }

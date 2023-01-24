@@ -1,7 +1,7 @@
+import 'package:falcon_net/Model/Database/CadetLeave.dart';
 import 'package:falcon_net/Utility/InputValidation.dart';
 import 'package:falcon_net/Utility/TemporalFormatting.dart';
 import 'package:flutter/material.dart';
-import '../../../../Model/Data/Leave.dart';
 import '../../../Components/DateFormField.dart';
 import '../../../Components/TimeFormField.dart';
 import 'LeaveMethodSubform.dart';
@@ -10,7 +10,7 @@ import 'LeaveMethodSubform.dart';
 class AirlineMethodSubform extends StatefulWidget {
 
   //Controller for passing values back to form
-  final SubformController<LeaveMethod> controller;
+  final SubformController<CadetLeaveTransportMethod> controller;
   final LeaveMethodSubformType type;
 
   const AirlineMethodSubform({super.key, required this.type, required this.controller});
@@ -34,14 +34,14 @@ class AirlineMethodSubformState extends State<AirlineMethodSubform> {
   void initState() {
 
     //Uses existing values if provided
-    if (widget.controller.value != null && widget.controller.value is AirlineMethod) {
-      AirlineMethod operant = widget.controller.value! as AirlineMethod;
-      airline = TextEditingController(text: operant.airline);
-      number = TextEditingController(text: operant.flightNumber);
-      depDate = describeDate(operant.flightDepartureTime);
-      arrDate = describeDate(operant.flightArrivalTime);
-      depTime = describeTime(timeOf(operant.flightDepartureTime));
-      arrTime = describeTime(timeOf(operant.flightArrivalTime));
+    if (widget.controller.value != null && widget.controller.value!.transport_type == "airline") {
+      var method = widget.controller.value!;
+      airline = TextEditingController(text: method.airline_name);
+      number = TextEditingController(text: method.airline_flight_number);
+      depDate = describeDate(method.airline_flight_departure_time);
+      arrDate = describeDate(method.airline_flight_arrival_time);
+      depTime = describeTime(timeOf(method.airline_flight_departure_time));
+      arrTime = describeTime(timeOf(method.airline_flight_arrival_time));
     }
 
     //Otherwise populates with defaults
@@ -61,18 +61,18 @@ class AirlineMethodSubformState extends State<AirlineMethodSubform> {
   ///Builds leave method with field values
   ///Requires valid entries
   ///Should only be called after successful validate function
-  AirlineMethod buildLeaveMethod() {
+  CadetLeaveTransportMethod buildLeaveMethod() {
     var fDepTime = parseTime(depTime);
     var fDepDate = parseDate(depDate);
     var flightDepartureTime = combineDate(fDepDate, fDepTime);
     var fArrTime = parseTime(arrTime);
     var fArrDate = parseDate(arrDate);
     var flightArrivalTime = combineDate(fArrDate, fArrTime);
-    return AirlineMethod(
-        airline: airline.text,
-        flightNumber: number.text,
-        flightArrivalTime: flightArrivalTime,
-        flightDepartureTime: flightDepartureTime
+    return CadetLeaveTransportMethod((b) => b
+        ..airline_flight_departure_time = flightDepartureTime
+        ..airline_flight_arrival_time = flightArrivalTime
+        ..airline_flight_number = number.text
+        ..airline_name = airline.text
     );
   }
 

@@ -3,7 +3,6 @@ import 'package:falcon_net/Structure/Pages/TaskManagement/Tasks/Delegation/Deleg
 import 'package:flutter/material.dart';
 import  'package:string_similarity/string_similarity.dart';
 
-import '../../../../../Model/Data/Role.dart';
 import 'DelegateBar.dart';
 import 'DelegationForm.dart';
 
@@ -25,14 +24,14 @@ class DelegationState extends State<Delegation> {
     super.initState();
     connection = Future.delayed(Duration(milliseconds: 250), () => DelegationData(
         delegates: [
-          Delegate(name: "Rylie Anderson", id: "ra", roles: [TimedRole(role: Role.cwoc, start: DateTime(2022, 11, 24), end: DateTime(2023, 1, 23))]),
+          Delegate(name: "Rylie Anderson", id: "ra", roles: [TimedRole(role: "cwoc", start: DateTime(2022, 11, 24), end: DateTime(2023, 1, 23))]),
           Delegate(name: "Ethan Chapman", id: "ec", roles: []),
-          Delegate(name: "Enrique Oti", id: "eo", roles: [TimedRole(role: Role.sdo, start: DateTime(2022, 11, 24), end: DateTime(2023, 1, 21))]),
+          Delegate(name: "Enrique Oti", id: "eo", roles: [TimedRole(role: "sdo", start: DateTime(2022, 11, 24), end: DateTime(2023, 1, 21))]),
           Delegate(name: "David Petzold", id: "dp", roles: []),
         ],
 
         owner: [
-          TimedRole(role: Role.wing_admin, start: DateTime(2022, 11, 23), end: DateTime(2023, 1, 22)),
+          TimedRole(role: "wing_admin", start: DateTime(2022, 11, 23), end: DateTime(2023, 1, 22)),
         ]
     ));
   }

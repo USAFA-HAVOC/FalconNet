@@ -1,6 +1,6 @@
+import 'package:falcon_net/Model/Database/UserNotification.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import '../Model/Data/UserNotification.dart';
 
 ///Notification widget contained in popover
 class FNNotifications extends StatelessWidget {

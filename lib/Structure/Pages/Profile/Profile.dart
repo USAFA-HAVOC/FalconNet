@@ -1,9 +1,9 @@
 import 'package:async_redux/async_redux.dart';
-import 'package:falcon_net/Model/Data/Cadet.dart';
+import 'package:falcon_net/Model/Database/User.dart';
+import 'package:falcon_net/Model/Store/GlobalStateModel.dart';
 import 'package:falcon_net/Structure/Components/PaddedColumn.dart';
 import 'package:falcon_net/Structure/Components/ViewModel.dart';
 import 'package:flutter/material.dart';
-import '../../../Model/Store/GlobalState.dart';
 import 'CadetInfo.dart';
 import 'PassHistory.dart';
 import 'Settings.dart';
@@ -81,11 +81,11 @@ class ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
                     ),
 
                     //Greets the user by name according to global state
-                    StoreConnector<GlobalState, ViewModel<CadetModel>>(
-                        converter: (store) => ViewModel<CadetModel>(store: store, content: store.state.cadet),
+                    StoreConnector<GlobalState, ViewModel<User>>(
+                        converter: (store) => ViewModel<User>(store: store, content: store.state.user),
                         builder: (context, model) {
                           return Text(
-                            "Hi, ${model.content.name}!",
+                            "Hi, ${model.content.personal_info.full_name}!",
                             style: Theme.of(context).textTheme.titleMedium,
                           );
                         }

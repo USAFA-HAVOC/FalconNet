@@ -1,6 +1,6 @@
+import 'package:falcon_net/Model/Database/CadetLeave.dart';
 import 'package:falcon_net/Utility/InputValidation.dart';
 import 'package:flutter/material.dart';
-import '../../../../Model/Data/Leave.dart';
 import 'AirlineMethodSubform.dart';
 import 'OtherMethodSubform.dart';
 import 'VehicleMethodSubform.dart';
@@ -22,7 +22,7 @@ class SubformController<T> {
 ///Consists of a dropdown menu for a method type and another
 ///subform determined by the selected method type
 class LeaveMethodSubform extends StatefulWidget {
-  final SubformController<LeaveMethod> controller;
+  final SubformController<CadetLeaveTransportMethod> controller;
   final LeaveMethodSubformType type;
   const LeaveMethodSubform({super.key, required this.type, required this.controller});
 
@@ -37,12 +37,8 @@ class LeaveMethodSubformState extends State<LeaveMethodSubform> {
   late Widget oldChild;
   late Widget newChild;
 
-  String describeMethod(TransportType transport) {
-    switch (transport) {
-      case TransportType.other: return "Other";
-      case TransportType.vehicle: return "Vehicle";
-      case TransportType.airline: return "Airline";
-    }
+  String describeMethod(CadetLeaveTransportMethod method) {
+    return method.transport_type;
   }
 
   ///Initializes controller values from given leave method data
@@ -50,7 +46,7 @@ class LeaveMethodSubformState extends State<LeaveMethodSubform> {
   void initState() {
     super.initState();
     if (widget.controller.value != null) {
-      method = describeMethod(widget.controller.value!.type());
+      method = describeMethod(widget.controller.value!);
     }
     else {
       method = "Select";

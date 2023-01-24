@@ -1,8 +1,8 @@
 import 'package:async_redux/async_redux.dart';
+import 'package:falcon_net/Model/Database/CadetLeave.dart';
+import 'package:falcon_net/Model/Store/GlobalStateModel.dart';
 import 'package:falcon_net/Structure/Components/ViewModel.dart';
 import 'package:flutter/material.dart';
-import '../../../Model/Data/Leave.dart';
-import '../../../Model/Store/GlobalState.dart';
 import 'LeaveInfo.dart';
 import 'LeaveLocatorForm.dart';
 
@@ -11,7 +11,7 @@ class LeaveLocator extends StatelessWidget {
   LeaveLocator({super.key});
 
   //Filled out leave data for testing purposes
-  final Leave? test = null;
+  final CadetLeave? test = null;
   /*Leave? test = Leave(
     contactName: "Rylie Anderson",
     contactPhone: "(515) 782-5949",
@@ -55,8 +55,8 @@ class LeaveLocator extends StatelessWidget {
                     padding: EdgeInsets.all(20),
 
                     //Displays form or existing data depending on state
-                    child: StoreConnector<GlobalState, ViewModel<Leave?>>(
-                      converter: (store) => ViewModel<Leave?>(store: store, content: store.state.leave),
+                    child: StoreConnector<GlobalState, ViewModel<CadetLeave?>>(
+                      converter: (store) => ViewModel<CadetLeave?>(store: store, content: store.state.leave),
                       builder: (context, model) {
                         if (model.content == null) {
                           return LeaveLocatorForm(dialog: false, existing: test,);

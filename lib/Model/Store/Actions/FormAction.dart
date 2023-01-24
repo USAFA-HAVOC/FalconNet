@@ -1,6 +1,6 @@
 import 'package:async_redux/async_redux.dart';
-import 'package:falcon_net/Model/Data/FormOne.dart';
-import 'package:falcon_net/Model/Store/GlobalState.dart';
+import 'package:falcon_net/Model/Database/FormOne.dart';
+import 'package:falcon_net/Model/Store/GlobalStateModel.dart';
 
 class FormAction extends ReduxAction<GlobalState> {
   final FormOne form;
@@ -9,9 +9,9 @@ class FormAction extends ReduxAction<GlobalState> {
 
   @override
   GlobalState? reduce() {
-    var list = state.forms;
-    list.remove(form);
-    list.add((form).sign());
-    return state.modified(GlobalStateProperty.forms, list);
+    var sb = state.toBuilder();
+    sb.forms.remove(form);
+    sb.forms.add((form.toBuilder()..signed=true).build());
+    return sb.build();
   }
 }

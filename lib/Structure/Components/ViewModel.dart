@@ -1,6 +1,5 @@
 import 'package:async_redux/async_redux.dart';
-
-import '../../Model/Store/GlobalState.dart';
+import 'package:falcon_net/Model/Store/GlobalStateModel.dart';
 
 class ViewModel<T> {
   final void Function(ReduxAction<GlobalState>) dispatch;

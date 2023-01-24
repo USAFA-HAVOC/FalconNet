@@ -2,10 +2,9 @@ import 'dart:io';
 
 import 'package:built_value/serializer.dart';
 import 'package:dio/dio.dart';
-import 'package:flutter/material.dart';
+import 'package:falcon_net/Model/Database/User.dart';
+import 'package:falcon_net/Model/Serializers.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
-import 'Models.dart';
 
 final options = BaseOptions(
   baseUrl: 'http://localhost:8000/',
@@ -52,10 +51,8 @@ class Endpoint<Req, Res> {
 }
 
 class Endpoints {
-  static Endpoint<FormData, LoginResponse> token = Endpoint("/auth/token");
   static Endpoint<void, User> profile = Endpoint("/profile/info", get: true);
-  static Endpoint<void, CWOCViewData> cwoc = Endpoint("/pages/cwoc", get: true);
-  static Endpoint<DIRequest, bool> signDI = Endpoint("/accountability/sign");
+  static Endpoint<User, bool> profileEdit = Endpoint("/profile/edit");
 }
 
 class APIData {

@@ -1,9 +1,9 @@
 import 'package:async_redux/async_redux.dart';
+import 'package:falcon_net/Model/Database/CadetPass.dart';
+import 'package:falcon_net/Model/Store/GlobalStateModel.dart';
 import 'package:falcon_net/Structure/Components/ViewModel.dart';
 import 'package:flutter/material.dart';
 
-import '../../../Model/Store/GlobalState.dart';
-import '../../../Model/Data/Pass.dart';
 import '../../../Utility/TemporalFormatting.dart';
 import '../../Components/PaddedColumn.dart';
 
@@ -14,8 +14,8 @@ class PassHistory extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return StoreConnector<GlobalState, ViewModel<List<Pass>>>(
-        converter: (store) => ViewModel<List<Pass>>(store: store, content: store.state.history),
+    return StoreConnector<GlobalState, ViewModel<List<CadetPass>>>(
+        converter: (store) => ViewModel<List<CadetPass>>(store: store, content: store.state.history.toList()),
         builder: (context, model) {
 
           //Generate list view dynamically as list is scrolled with builder constructor
@@ -31,7 +31,7 @@ class PassHistory extends StatelessWidget {
 }
 
 class PassRecord extends StatelessWidget {
-  final Pass pass;
+  final CadetPass pass;
 
   const PassRecord({super.key, required this.pass});
 
@@ -68,7 +68,7 @@ class PassRecord extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     Text(
-                        pass.start != null ? describeDate(pass.start!) : "None",
+                        describeDate(pass.start_time),
                         style: Theme.of(context).textTheme.bodyMedium
                     ),
 
@@ -78,7 +78,7 @@ class PassRecord extends StatelessWidget {
                     ),
 
                     Text(
-                        pass.end != null ? describeDate(pass.end!) : "Open",
+                        describeDate(pass.end_time),
                         style: Theme.of(context).textTheme.bodyMedium
                     ),
                   ],
@@ -95,17 +95,17 @@ class PassRecord extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                        pass.type == null ? "No Type" : formatType(pass.type!),
+                        formatType(pass.pass_type),
                         style: Theme.of(context).textTheme.bodySmall
                     ),
 
                     Text(
-                        (pass.sca == null ? "" : "SCA: ${pass.sca!}. ") + (pass.description ?? "No description."),
+                        (pass.sca_number == null ? "" : "SCA: ${pass.sca_number!}. ") + (pass.description ?? "No description."),
                         style: Theme.of(context).textTheme.bodyMedium
                     ),
 
                     Text(
-                        "${pass.city ?? "None"}, ${pass.state ?? "None"} ${pass.zip ?? ""}",
+                        "${pass.city ?? "None"}, ${pass.state ?? "None"} ${pass.zip_code ?? ""}",
                         style: Theme.of(context).textTheme.bodySmall
                     ),
                   ],

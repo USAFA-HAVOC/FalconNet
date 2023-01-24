@@ -1,14 +1,14 @@
+import 'package:falcon_net/Model/Database/CadetLeave.dart';
 import 'package:falcon_net/Utility/InputValidation.dart';
 import 'package:falcon_net/Utility/TemporalFormatting.dart';
 import 'package:flutter/material.dart';
 
-import '../../../../Model/Data/Leave.dart';
 import 'LeaveMethodSubform.dart';
 
 ///Subform for vehicle method
 ///Animates form change when vehicle type is changed
 class VehicleMethodSubform extends StatefulWidget {
-  final SubformController<LeaveMethod> controller;
+  final SubformController<CadetLeaveTransportMethod> controller;
   final LeaveMethodSubformType type;
 
   const VehicleMethodSubform({super.key, required this.type, required this.controller});
@@ -37,11 +37,11 @@ class VehicleMethodSubformState extends State<VehicleMethodSubform> with SingleT
   @override
   void initState() {
     super.initState();
-    if (widget.controller.value != null && widget.controller.value is VehicleMethod) {
-      VehicleMethod operant = widget.controller.value as VehicleMethod;
-      vehicleType = operant.vehicleType.description;
-      time = TextEditingController(text: operant.vehicleTravelTime?.toStringAsPrecision(1));
-      name = TextEditingController(text: operant.vehicleDriverName);
+    if (widget.controller.value != null && widget.controller.value!.transport_type == "vehicle") {
+      CadetLeaveTransportMethod method = widget.controller.value!;
+      vehicleType = method.vehicle_type;
+      time = TextEditingController(text: method.vehicle_travel_time_hours.toStringAsPrecision(1));
+      name = TextEditingController(text: method.vehicle_driver_name);
     }
     else {
       vehicleType = "Select";
@@ -79,17 +79,19 @@ class VehicleMethodSubformState extends State<VehicleMethodSubform> with SingleT
   }
 
   ///Builds leave method based on field values
-  VehicleMethod buildLeaveMethod() {
+  CadetLeaveTransportMethod buildLeaveMethod() {
     if (requiresInfo(vehicleType)) {
-      return VehicleMethod(
-        vehicleDriverName: name.text,
-        vehicleTravelTime: double.parse(time.text),
-        vehicleType: VehicleNames.parse(vehicleType),
+      return CadetLeaveTransportMethod((b) => b
+          ..transport_type = "vehicle"
+          ..vehicle_driver_name = name.text
+          ..vehicle_travel_time_hours = double.parse(time.text)
+          ..vehicle_type = vehicleType
       );
     }
     else {
-      return VehicleMethod(
-        vehicleType: VehicleNames.parse(vehicleType),
+      return CadetLeaveTransportMethod((b) => b
+          ..transport_type = "vehicle"
+          ..vehicle_type = vehicleType
       );
     }
   }

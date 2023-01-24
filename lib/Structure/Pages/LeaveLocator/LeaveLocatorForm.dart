@@ -1,11 +1,11 @@
 import 'package:async_redux/async_redux.dart';
+import 'package:falcon_net/Model/Database/CadetLeave.dart';
 import 'package:falcon_net/Model/Store/Actions/LeaveAction.dart';
-import 'package:falcon_net/Model/Store/GlobalState.dart';
+import 'package:falcon_net/Model/Store/GlobalStateModel.dart';
 import 'package:falcon_net/Structure/Components/ViewModel.dart';
 import 'package:falcon_net/Utility/InputValidation.dart';
 import 'package:falcon_net/Utility/TemporalFormatting.dart';
 import 'package:flutter/material.dart';
-import '../../../Model/Data/Leave.dart';
 import '../../Components/DateFormField.dart';
 import '../../Components/TimeFormField.dart';
 import 'MethodSubform/LeaveMethodSubform.dart';
@@ -13,7 +13,7 @@ import 'MethodSubform/LeaveMethodSubform.dart';
 ///Leave locator form
 ///Animates sub form expansion to ensure all required data is acquired
 class LeaveLocatorForm extends StatefulWidget {
-  final Leave? existing;
+  final CadetLeave? existing;
 
   //Whether form is in a dialog
   final bool dialog;
@@ -45,25 +45,25 @@ class LeaveLocatorFormState extends State<LeaveLocatorForm> {
   late String retTimeValue;
 
   //Controllers for retrieving subform values
-  late SubformController<LeaveMethod> depMethodController;
-  late SubformController<LeaveMethod> retMethodController;
+  late SubformController<CadetLeaveTransportMethod> depMethodController;
+  late SubformController<CadetLeaveTransportMethod> retMethodController;
 
   ///Initializes controllers values based on leave data or defaults
   @override
   void initState() {
     super.initState();
-    addressController = TextEditingController(text: widget.existing?.finalAddress);
-    cityController = TextEditingController(text: widget.existing?.finalCity);
-    zipController = TextEditingController(text: widget.existing?.finalZip);
-    state = widget.existing?.finalState ?? "Colorado";
-    nameController = TextEditingController(text: widget.existing?.contactName);
-    phoneController = TextEditingController(text: widget.existing?.contactPhone);
-    depDateValue = describeDate(widget.existing?.departureTime ?? DateTime.now());
-    depTimeValue = describeTime(timeOf(widget.existing?.departureTime ?? DateTime.now()));
-    retDateValue = describeDate(widget.existing?.returnTime ?? DateTime.now());
-    retTimeValue = describeTime(timeOf(widget.existing?.returnTime ?? DateTime.now()));
-    depMethodController = SubformController<LeaveMethod>(value: widget.existing?.departureMethod);
-    retMethodController = SubformController<LeaveMethod>(value: widget.existing?.returnMethod);
+    addressController = TextEditingController(text: widget.existing?.final_address);
+    cityController = TextEditingController(text: widget.existing?.final_city);
+    zipController = TextEditingController(text: widget.existing?.final_zip);
+    state = widget.existing?.final_state ?? "Colorado";
+    nameController = TextEditingController(text: widget.existing?.emergency_contact_name);
+    phoneController = TextEditingController(text: widget.existing?.emergency_contact_phone);
+    depDateValue = describeDate(widget.existing?.departure_time ?? DateTime.now());
+    depTimeValue = describeTime(timeOf(widget.existing?.departure_time ?? DateTime.now()));
+    retDateValue = describeDate(widget.existing?.return_time ?? DateTime.now());
+    retTimeValue = describeTime(timeOf(widget.existing?.return_time ?? DateTime.now()));
+    depMethodController = SubformController<CadetLeaveTransportMethod>(value: widget.existing?.departure_method);
+    retMethodController = SubformController<CadetLeaveTransportMethod>(value: widget.existing?.return_method);
   }
 
   ///Build state options
@@ -99,8 +99,8 @@ class LeaveLocatorFormState extends State<LeaveLocatorForm> {
         flex: 5,
         child: Padding(
           padding: EdgeInsets.symmetric(vertical: 20),
-          child: StoreConnector<GlobalState, ViewModel<Leave?>>(
-            converter: (store) => ViewModel<Leave?>(store: store, content: store.state.leave),
+          child: StoreConnector<GlobalState, ViewModel<CadetLeave?>>(
+            converter: (store) => ViewModel<CadetLeave?>(store: store, content: store.state.leave),
             builder: (context, model) {
               return ElevatedButton(
 
@@ -157,19 +157,19 @@ class LeaveLocatorFormState extends State<LeaveLocatorForm> {
   }
 
   ///Formats leave object based on field values
-  Leave formatLeave() {
-    return Leave(
-        departureMethod: depMethodController.retrieve(),
-        returnMethod: retMethodController.retrieve(),
-        contactName: nameController.text,
-        contactPhone: phoneController.text,
-        finalZip: zipController.text,
-        finalState: state,
-        finalCity: cityController.text,
-        finalAddress: addressController.text,
-        departureTime: combineDate(parseDate(depDateValue), parseTime(depTimeValue)),
-        returnTime: combineDate(parseDate(retDateValue), parseTime(retTimeValue)),
-        id: "Change this later",
+  CadetLeave formatLeave() {
+    return CadetLeave((b) => b
+        ..departure_method = depMethodController.retrieve().toBuilder()
+        ..return_method = retMethodController.retrieve().toBuilder()
+        ..emergency_contact_name = nameController.text
+        ..emergency_contact_phone = phoneController.text
+        ..final_zip = zipController.text
+        ..final_state = state
+        ..final_city = cityController.text
+        ..final_address = addressController.text
+        ..departure_time = combineDate(parseDate(depDateValue), parseTime(depTimeValue))
+        ..return_time = combineDate(parseDate(retDateValue), parseTime(retTimeValue))
+        ..cadet_id = "Change this later"
     );
   }
 

@@ -1,13 +1,13 @@
+import 'package:falcon_net/Model/Database/CadetLeave.dart';
 import 'package:falcon_net/Utility/InputValidation.dart';
 import 'package:falcon_net/Utility/TemporalFormatting.dart';
 import 'package:flutter/material.dart';
 
-import '../../../../Model/Data/Leave.dart';
 import 'LeaveMethodSubform.dart';
 
 ///Subform for other method
 class OtherMethodSubform extends StatefulWidget {
-  final SubformController<LeaveMethod> controller;
+  final SubformController<CadetLeaveTransportMethod> controller;
   final LeaveMethodSubformType type;
 
   const OtherMethodSubform({super.key, required this.type, required this.controller});
@@ -23,9 +23,8 @@ class OtherMethodSubformState extends State<OtherMethodSubform> {
   @override
   void initState() {
     super.initState();
-    if (widget.controller.value != null && widget.controller.value is OtherMethod) {
-      OtherMethod operant = widget.controller.value! as OtherMethod;
-      info = TextEditingController(text: operant.info);
+    if (widget.controller.value != null && widget.controller.value!.transport_type == "other") {
+      info = TextEditingController(text: widget.controller.value!.other_info);
     }
     else {
       info = TextEditingController();
@@ -37,9 +36,10 @@ class OtherMethodSubformState extends State<OtherMethodSubform> {
 
   ///Build leave method from field data
   @override
-  OtherMethod buildLeaveMethod() {
-    return OtherMethod(
-      info: info.text,
+  CadetLeaveTransportMethod buildLeaveMethod() {
+    return CadetLeaveTransportMethod((b) => b
+        ..transport_type = "other"
+        ..other_info = info.text
     );
   }
 

@@ -1,17 +1,15 @@
 import 'package:async_redux/async_redux.dart';
-import 'package:falcon_net/Model/Data/CadetDI.dart';
+import 'package:falcon_net/Model/Database/CadetDI.dart';
 import 'package:falcon_net/Model/Store/Actions/SignAction.dart';
+import 'package:falcon_net/Model/Store/GlobalStateModel.dart';
 import 'package:falcon_net/Structure/Components/PageWidget.dart';
 import 'package:falcon_net/Structure/Components/ViewModel.dart';
 import 'package:falcon_net/Utility/TemporalFormatting.dart';
 import 'package:flutter/material.dart';
 
-import '../../../Model/Data/Role.dart';
-import '../../../Model/Store/GlobalState.dart';
-
 class DITuple {
   final CadetDI? di;
-  final List<Role> roles;
+  final List<String> roles;
 
   const DITuple({required this.di, required this.roles});
 }
@@ -27,11 +25,11 @@ class DIWidget extends StatelessWidget {
 
     return StoreConnector<GlobalState, ViewModel<DITuple>>(
         converter: (store) =>
-            ViewModel<DITuple>(store: store, content: DITuple(di: store.state.di, roles: store.state.roles)),
+            ViewModel<DITuple>(store: store, content: DITuple(di: store.state.user.di, roles: store.state.roles.toList())),
         builder: (context, model) {
 
           //Whether cadet is able to sign own di based on roles
-          bool senior = model.content.roles.any((role) => role == Role.signable);
+          bool senior = model.content.roles.any((role) => role == "sign_own_di");
 
           //Determines whether time is signable
           bool time = DateTime.now().isAfter(combineDate(DateTime.now(), TimeOfDay(hour: 19, minute: 50)));
@@ -69,7 +67,7 @@ class DIWidget extends StatelessWidget {
           }
           else {
             text = [Text(
-              "DI Signed by ${model.content.di!.signature}",
+              "DI Signed by ${model.content.di!.signed_by}",
               style: TextStyle(
                 fontSize: Theme.of(context).textTheme.headlineMedium?.fontSize,
                 color: Colors.black,

@@ -1,8 +1,6 @@
 import 'package:async_redux/async_redux.dart';
-import 'package:falcon_net/Model/Store/GlobalState.dart';
 import 'package:flutter/material.dart';
 
-import '../../Model/Data/UserGrades.dart';
 import '../Components/PaddedColumn.dart';
 import '../Components/ViewModel.dart';
 

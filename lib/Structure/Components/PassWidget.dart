@@ -1,11 +1,11 @@
 import 'package:async_redux/async_redux.dart';
+import 'package:falcon_net/Model/Database/CadetPass.dart';
 import 'package:falcon_net/Model/Store/Actions/PassAction.dart';
+import 'package:falcon_net/Model/Store/GlobalStateModel.dart';
 import 'package:falcon_net/Structure/Components/PageWidget.dart';
 import 'package:falcon_net/Structure/Components/ViewModel.dart';
 import 'package:flutter/material.dart';
 
-import '../../Model/Data/Pass.dart';
-import '../../Model/Store/GlobalState.dart';
 import 'PassStatus.dart';
 import 'PassForm.dart';
 
@@ -19,8 +19,8 @@ class PassWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return StoreConnector<GlobalState, ViewModel<Pass?>>(
-        converter: (store) => ViewModel<Pass?>(store: store, content: store.state.pass),
+    return StoreConnector<GlobalState, ViewModel<CadetPass?>>(
+        converter: (store) => ViewModel<CadetPass?>(store: store, content: store.state.pass),
         builder: (context, model) {
 
           //List of children to filled

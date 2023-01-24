@@ -1,10 +1,9 @@
 import 'package:async_redux/async_redux.dart';
+import 'package:falcon_net/Model/Database/CadetPass.dart';
+import 'package:falcon_net/Model/Store/GlobalStateModel.dart';
 import 'package:falcon_net/Structure/Components/ViewModel.dart';
 import 'package:falcon_net/Utility/TemporalFormatting.dart';
 import 'package:flutter/material.dart';
-
-import '../../Model/Store/GlobalState.dart';
-import '../../Model/Data/Pass.dart';
 
 ///Widget for displaying current pass status
 class PassStatus extends StatelessWidget {
@@ -15,8 +14,8 @@ class PassStatus extends StatelessWidget {
     return Row(
       children: [
         Expanded(
-          child: StoreConnector<GlobalState, ViewModel<Pass?>>(
-              converter: (store) => ViewModel<Pass?>(store: store, content: store.state.pass),
+          child: StoreConnector<GlobalState, ViewModel<CadetPass?>>(
+              converter: (store) => ViewModel<CadetPass?>(store: store, content: store.state.pass),
               builder: (context, model) {
                 if (model.content == null) {
                   //Add logic for closed passes
@@ -61,16 +60,16 @@ class PassStatus extends StatelessWidget {
 
                   //If there is a current pass, display pass information
                   //Determine expiration message
-                  Pass pass = model.content!;
+                  CadetPass pass = model.content!;
                   String expiration;
-                  if (pass.end!.difference(DateTime.now()).compareTo(Duration(hours: 24)) < 0 && pass.end!.weekday == DateTime.now().weekday) {
-                    expiration = "Expires: ${describeTime(TimeOfDay.fromDateTime(pass.end!))}";
+                  if (pass.end_time.difference(DateTime.now()).compareTo(Duration(hours: 24)) < 0 && pass.end_time.weekday == DateTime.now().weekday) {
+                    expiration = "Expires: ${describeTime(TimeOfDay.fromDateTime(pass.end_time))}";
                   }
-                  else if (pass.end!.difference(DateTime.now()).compareTo(Duration(days: 7)) < 0) {
-                    expiration = "Expires: ${formatWeekday(pass.end!.weekday)}, ${describeTime(TimeOfDay.fromDateTime(pass.end!))}";
+                  else if (pass.end_time.difference(DateTime.now()).compareTo(Duration(days: 7)) < 0) {
+                    expiration = "Expires: ${formatWeekday(pass.end_time.weekday)}, ${describeTime(TimeOfDay.fromDateTime(pass.end_time))}";
                   }
                   else {
-                    expiration = "Expires: ${describeDate(pass.end!)}, ${describeTime(TimeOfDay.fromDateTime(pass.end!))}";
+                    expiration = "Expires: ${describeDate(pass.end_time)}, ${describeTime(TimeOfDay.fromDateTime(pass.end_time))}";
                   }
 
                   //Display a gray card with expiration time/date

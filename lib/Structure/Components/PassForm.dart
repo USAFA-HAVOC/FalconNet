@@ -1,7 +1,8 @@
 import 'dart:core';
 
 import 'package:async_redux/async_redux.dart';
-import 'package:falcon_net/Model/Data/Pass.dart';
+import 'package:falcon_net/Model/Database/CadetPass.dart';
+import 'package:falcon_net/Model/Store/GlobalStateModel.dart';
 import 'package:falcon_net/Structure/Components/DateFormField.dart';
 import 'package:falcon_net/Structure/Components/ViewModel.dart';
 import 'package:falcon_net/Utility/InputValidation.dart';
@@ -9,17 +10,15 @@ import 'package:falcon_net/Utility/TemporalFormatting.dart';
 import 'package:falcon_net/Structure/Components/TimeFormField.dart';
 import 'package:flutter/material.dart';
 
-import '../../Model/Store/GlobalState.dart';
-
 ///Form for submitting or editing a pass
 class PassForm extends StatefulWidget {
 
   //Closures for submission and cancellation
-  final void Function(Pass pass) onSubmit;
+  final void Function(CadetPass pass) onSubmit;
   final void Function() onCancel;
 
   //Existing pass to be edited
-  final Pass? existing;
+  final CadetPass? existing;
 
   const PassForm({super.key, required this.onSubmit, required this.onCancel, this.existing});
 
@@ -60,19 +59,19 @@ class PassFormState extends State<PassForm> with SingleTickerProviderStateMixin 
     type = DateTime.now().weekday < 5 ? "weekday" : "weekend";
     
     if (widget.existing != null) {
-      dateValue = describeDate(widget.existing!.end!);
-      timeValue = describeTime(TimeOfDay.fromDateTime(widget.existing!.end!));
+      dateValue = describeDate(widget.existing!.end_time!);
+      timeValue = describeTime(TimeOfDay.fromDateTime(widget.existing!.end_time!));
     }
     else {
       dateValue = describeDate(DateTime.now());
       timeValue = describeTime(TimeOfDay(hour: 19, minute: 50));
     }
     
-    scaController = TextEditingController(text: widget.existing?.sca);
+    scaController = TextEditingController(text: widget.existing?.sca_number);
     descriptionController = TextEditingController(text: widget.existing?.description);
     state = widget.existing?.state ?? "Colorado";
     cityController = TextEditingController(text: widget.existing?.city ?? "Colorado Springs");
-    zipController = TextEditingController(text: widget.existing?.zip ?? "80841");
+    zipController = TextEditingController(text: widget.existing?.zip_code ?? "80841");
   }
 
   @override
@@ -96,18 +95,18 @@ class PassFormState extends State<PassForm> with SingleTickerProviderStateMixin 
   ///Format pass object based on form data
   ///Requires valid inputs in all fields
   ///Should only be called after form has been validated
-  Pass formatPass() {
+  CadetPass formatPass() {
     var endDate = parseDate(dateValue);
     var endTime = parseTime(timeValue);
-    return Pass(
-      start: widget.existing?.start ?? DateTime.now(),
-      end: combineDate(endDate, endTime),
-      type: type,
-      description: descriptionController.text,
-      sca: scaController.text == "" ? null : scaController.text,
-      city: cityController.text,
-      state: state,
-      zip: zipController.text,
+    return CadetPass((b) => b
+      ..start_time = widget.existing?.start_time ?? DateTime.now()
+      ..end_time = combineDate(endDate, endTime)
+      ..pass_type = type
+      ..description = descriptionController.text
+      ..sca_number = scaController.text == "" ? null : scaController.text
+      ..city = cityController.text
+      ..state = state
+      ..zip_code = zipController.text
     );
   }
 

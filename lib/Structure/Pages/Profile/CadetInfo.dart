@@ -1,6 +1,6 @@
 import 'package:async_redux/async_redux.dart';
-import 'package:falcon_net/Model/Data/Cadet.dart';
-import 'package:falcon_net/Model/Store/GlobalState.dart';
+import 'package:falcon_net/Model/Database/User.dart';
+import 'package:falcon_net/Model/Store/GlobalStateModel.dart';
 import 'package:falcon_net/Structure/Components/ViewModel.dart';
 import 'package:flutter/material.dart';
 
@@ -13,8 +13,8 @@ class CadetInfo extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return StoreConnector<GlobalState, ViewModel<CadetModel>>(
-        converter: (store) => ViewModel<CadetModel>(store: store, content: store.state.cadet),
+    return StoreConnector<GlobalState, ViewModel<User>>(
+        converter: (store) => ViewModel<User>(store: store, content: store.state.user),
         builder: (context, model) {
           return ListView(
             primary: false,
@@ -24,44 +24,44 @@ class CadetInfo extends StatelessWidget {
 
               InputBlock(
                 label: "Name",
-                onSubmit: (value) => model.dispatch(InfoAction(property: CadetProperty.name, value: value)),
+                onSubmit: (value) => model.dispatch(InfoAction(modify: (b) => b..personal_info.full_name = value)),
                 validator: (String? value) => (value ?? "").characters.length >= 6,
                 error: "Name must have at least six characters",
                 hint: "Jane Doe",
-                initial: model.content.name,
+                initial: model.content.personal_info.full_name,
               ),
 
               SizedBox(height: 20,),
 
               InputBlock(
                 label: "Phone Number",
-                onSubmit: (value) => model.dispatch(InfoAction(property: CadetProperty.phone, value: value)),
+                onSubmit: (value) => model.dispatch(InfoAction(modify: (b) => b..personal_info.phone_number = value)),
                 validator: (String? value) => (value ?? "").characters.length >= 10,
                 error: "Phone number must have at least ten characters",
                 hint: "(123) 456-789",
-                initial: model.content.phone,
+                initial: model.content.personal_info.phone_number,
               ),
 
               SizedBox(height: 20,),
 
               InputBlock(
                 label: "Room Number",
-                onSubmit: (value) => model.dispatch(InfoAction(property: CadetProperty.room, value: value)),
+                onSubmit: (value) => model.dispatch(InfoAction(modify: (b) => b..personal_info.room_number = value)),
                 validator: (String? value) => (value ?? "").characters.length >= 3,
                 error: "Room must have at least three characters",
                 hint: "room #",
-                initial: model.content.room,
+                initial: model.content.personal_info.room_number,
               ),
 
               SizedBox(height: 20,),
 
               InputBlock(
                 label: "Squadron",
-                onSubmit: (value) => model.dispatch(InfoAction(property: CadetProperty.squadron, value: int.parse(value!))),
+                onSubmit: (value) => model.dispatch(InfoAction(modify: (b) => b..personal_info.squadron = int.parse(value!))),
                 validator: (String? value) => 0 < (int.tryParse(value ?? "0") ?? 0) && (int.tryParse(value ?? "0") ?? 41) < 41,
                 error: "Enter a valid squadron",
                 hint: "squadron",
-                initial: model.content.squadron?.toString(),
+                initial: model.content.personal_info.squadron.toString(),
               ),
             ],
           );

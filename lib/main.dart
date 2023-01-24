@@ -1,24 +1,22 @@
 import 'package:async_redux/async_redux.dart';
-import 'package:falcon_net/Model/Data/FormOne.dart';
-import 'package:falcon_net/Model/Data/UserGrades.dart';
+import 'package:built_collection/src/list.dart';
+import 'package:falcon_net/Model/Database/CadetDI.dart';
+import 'package:falcon_net/Model/Database/CadetPassAllocation.dart';
+import 'package:falcon_net/Model/Database/User.dart';
+import 'package:falcon_net/Model/Database/UserNotification.dart';
+import 'package:falcon_net/Model/Database/UserPersonalInfo.dart';
 import 'package:falcon_net/Model/Store/Actions/FetchProfileInfoAction.dart';
 import 'package:falcon_net/Model/Store/Actions/SettingsAction.dart';
 import 'package:falcon_net/Model/Store/Connection/Connection.dart';
+import 'package:falcon_net/Model/Store/GlobalStateModel.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_web_plugins/flutter_web_plugins.dart';
 
-import 'Model/Data/Cadet.dart';
-import 'Model/Data/PassAllocation.dart';
-import 'Model/Data/Role.dart';
-import 'Model/Data/UserSettings.dart';
 import 'Model/Store/Actions/NotificationAction.dart';
 import 'Router/FNRouter.dart';
 import 'Structure/Components/ViewModel.dart';
 import 'Theme/Dark/DarkTheme.dart';
 import 'Theme/Light/LightTheme.dart';
-import 'Model/Data/Pass.dart';
-import 'Model/Store/GlobalState.dart';
-import 'Model/Data/UserNotification.dart';
 
 import 'dart:html' as html;
 
@@ -27,120 +25,31 @@ void main() async {
   //Initialize a default store
   //Replace the default global state with an api call
   final store = Store<GlobalState>(
-      initialState: GlobalState(
-          cadet: CadetModel(
-            name: "Rylie Anderson",
-            phone: "(515) 782-5949",
-            room: "6A19",
-            squadron: 25
-          ),
-          history: <Pass>[
-            Pass(
-              start: DateTime.now(),
-              end: null,
-              type: "Discretionary",
-              description: "Well it looks like I'm going to Denver for the weekend, see ya bitcheees.\nPS. this is a poem I wrote about my relationship with my philosophy teacher:\nRoses are red\nviolets are blue\nkarma's a bitch\nand so are you",
-              sca: "123456",
-              city: "Da Springs",
-              state: "Colorado",
-              zip: "50035",
-            ),
-            Pass(
-              start: DateTime.now(),
-              end: null,
-              type: "Discretionary",
-              description: "Weekend",
-              sca: null,
-              city: "Sponsor's",
-              state: "Sponsor's",
-              zip: "12345",
-            ),
-            Pass(
-              start: DateTime.now(),
-              end: null,
-              type: "Discretionary",
-              description: "Well it looks like I'm going to Denver for the weekend, see ya bitcheees.\nPS. this is a poem I wrote about my relationship with my philosophy teacher:\nRoses are red\nviolets are blue\nkarma's a bitch\nand so are you",
-              sca: "123456",
-              city: "Da Springs",
-              state: "Colorado",
-              zip: "50035",
-            ),
-            Pass(
-              start: DateTime.now(),
-              end: null,
-              type: "Discretionary",
-              description: "Weekend",
-              sca: null,
-              city: "Sponsor's",
-              state: "Sponsor's",
-              zip: "12345",
-            ),
-            Pass(
-              start: DateTime.now(),
-              end: null,
-              type: "Discretionary",
-              description: "Well it looks like I'm going to Denver for the weekend, see ya bitcheees.\nPS. this is a poem I wrote about my relationship with my philosophy teacher:\nRoses are red\nviolets are blue\nkarma's a bitch\nand so are you",
-              sca: "123456",
-              city: "Da Springs",
-              state: "Colorado",
-              zip: "50035",
-            ),
-            Pass(
-              start: DateTime.now(),
-              end: null,
-              type: "Discretionary",
-              description: "Weekend",
-              sca: null,
-              city: "Sponsor's",
-              state: "Sponsor's",
-              zip: "12345",
-            ),
-          ],
-          notifications: <UserNotification>[
-            UserNotification(
-                message: "Overdue Pass",
-                destination: "/"
-            ),
-            UserNotification(
-                message: "Fill in Personal Info",
-                destination: "/profile"
-            )
-          ],
-          settings: UserSettings(),
-          grades: UserGrades(
-            amiScores: [
-              Grade(
-                  score: 97,
-                  description: "Disgusting",
-              ),
-              Grade(
-                score: 94,
-              ),
-              Grade(
-                score: 93,
-                description: "Homemade yogurt",
-              ),
-            ],
-            samiScores: [
-              Grade(
-                  score: 98,
-                  description: "dust",
-              )
-            ],
-          ),
-          allocation: PassAllocation(weekdayDay: 5, weekdayOvernight: 1, weekendOvernight: 1),
-          forms: [
-            FormOne(title: "Test", description: "READ CSND", signed: false),
-            FormOne(title: "Test Two", description: "bruh", signed: false),
-          ],
-
-          roles: [
-            Role.jdo,
-            Role.sdo,
-            Role.cwoc,
-            Role.signable,
-            Role.squadron_admin
-          ],
+      initialState: GlobalState((b1) => b1
+          ..user = User((b2) => b2
+              ..id = ""
+              ..personal_info = UserPersonalInfo((b3) => b3
+                  ..full_name = "Ethan Chapman"
+                  ..email = "C26Ethan.Chapman@afacademy.af.edu"
+                  ..phone_number = "3037461308"
+                  ..room_number = "Vandy 6D6"
+                  ..squadron = 18
+                  ..group = "CG02"
+                  ..unit = "CS18"
+              ).toBuilder()
+              ..pass_allocation = CadetPassAllocation((b3) => b3
+                  ..individual_pass_status = "OPEN"
+                  ..effective_pass_status = "OPEN"
+                  ..weekday_day_passes = 0
+                  ..weekday_overnight_passes = 0
+                  ..weekend_overnight_passes = 0
+              ).toBuilder()
+              ..di = CadetDI((b3) => b3
+                  ..last_signed = DateTime.now()
+                  ..signed_by = ""
+              ).toBuilder()
+          ).toBuilder()
+          ..notifications=ListBuilder<UserNotification>([])
       )
   );
 
@@ -167,7 +76,7 @@ class FNApp extends StatelessWidget {
         html.window.history.pushState(null, 'FalconNet', '');
         String token = s.split("code=").last;
         login(token);
-        store.dispatch(FetchInitialInfoAction());
+        store.dispatch(FetchProfileInfoAction());
       } else {
         html.window.open('http://localhost:8000/', "_self");
       }

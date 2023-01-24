@@ -1,10 +1,9 @@
 import 'package:async_redux/async_redux.dart';
-
-import '../../Data/Pass.dart';
-import '../GlobalState.dart';
+import 'package:falcon_net/Model/Database/CadetPass.dart';
+import 'package:falcon_net/Model/Store/GlobalStateModel.dart';
 
 class PassAction extends ReduxAction<GlobalState> {
-  final Pass? pass;
+  final CadetPass? pass;
   final bool updated;
 
   PassAction.open(this.pass) : updated = false;
@@ -17,17 +16,13 @@ class PassAction extends ReduxAction<GlobalState> {
   Future<GlobalState?> reduce() async {
     await Future.delayed(Duration(milliseconds: 10));
     if (pass == null) {
-      return state.modified(GlobalStateProperty.pass, null);
+      return (state.toBuilder()..pass=null).build();
     }
 
-    else if (updated) {
-      return state
-          .modified(GlobalStateProperty.pass, pass)
-          .modified(GlobalStateProperty.history, <Pass>[pass!] + state.history.sublist(1));
-    }
-
-    return state
-        .modified(GlobalStateProperty.history, <Pass>[pass!] + state.history)
-        .modified(GlobalStateProperty.pass, pass!);
+    var sb = state.toBuilder();
+    sb.pass = pass!.toBuilder();
+    if (updated) sb.history.sublist(1);
+    sb.history.insert(0, pass!);
+    return sb.build();
   }
 }

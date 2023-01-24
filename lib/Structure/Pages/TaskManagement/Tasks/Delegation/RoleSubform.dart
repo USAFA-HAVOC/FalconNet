@@ -3,7 +3,6 @@ import 'package:falcon_net/Structure/Pages/TaskManagement/Tasks/Delegation/Deleg
 import 'package:falcon_net/Utility/TemporalFormatting.dart';
 import 'package:flutter/material.dart';
 
-import '../../../../../Model/Data/Role.dart';
 import "../../../../../Utility/InputValidation.dart";
 
 class RoleSubform extends StatelessWidget {
@@ -40,7 +39,7 @@ class RoleSubform extends StatelessWidget {
           child: Padding(
             padding: EdgeInsets.all(10),
             child: Text(
-              "${value.role.description} Role Uneditable",
+              "${value.role} Role Uneditable",
               style: Theme.of(context).textTheme.titleSmall,
               textAlign: TextAlign.center,
             ),

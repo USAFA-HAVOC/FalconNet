@@ -2,7 +2,6 @@ import 'package:falcon_net/Structure/Components/LoadingShimmer.dart';
 import 'package:falcon_net/Structure/Pages/TaskManagement/Tasks/Shared/CWOCData.dart';
 import 'package:flutter/material.dart';
 
-import '../../../../../Model/Data/DIStatus.dart';
 import '../../../../Components/PageWidget.dart';
 
 ///Displays present status of SDO signing based on di object

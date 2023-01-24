@@ -1,9 +1,9 @@
 import 'package:async_redux/async_redux.dart';
-import 'package:falcon_net/Model/Store/GlobalState.dart';
+import 'package:falcon_net/Model/Database/CadetLeave.dart';
+import 'package:falcon_net/Model/Store/GlobalStateModel.dart';
 import 'package:falcon_net/Utility/TemporalFormatting.dart';
 import 'package:flutter/material.dart';
 
-import '../../../../Model/Data/Leave.dart';
 import '../../../Model/Store/Actions/LeaveAction.dart';
 import '../../Components/PaddedColumn.dart';
 import '../../Components/ViewModel.dart';
@@ -15,10 +15,10 @@ class LeaveInfo extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return StoreConnector<GlobalState, ViewModel<Leave?>>(
+    return StoreConnector<GlobalState, ViewModel<CadetLeave?>>(
         converter: (store) => ViewModel(store: store, content: store.state.leave),
         builder: (context, model) {
-          Leave leave = model.content!;
+          CadetLeave leave = model.content!;
           return Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -33,22 +33,22 @@ class LeaveInfo extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    "Address: ${leave.finalAddress} ${leave.finalCity}, ${leave.finalState} ${leave.finalZip}",
+                    "Address: ${leave.final_address} ${leave.final_city}, ${leave.final_state} ${leave.final_zip}",
                     style: Theme.of(context).textTheme.bodyMedium,
                   ),
 
                   Text(
-                    "Emergency Contact: ${leave.contactName} ${leave.contactPhone}",
+                    "Emergency Contact: ${leave.emergency_contact_name} ${leave.emergency_contact_phone}",
                     style: Theme.of(context).textTheme.bodyMedium,
                   ),
 
                   Text(
-                    "Departure: ${describeDate(leave.departureTime)} ${describeTime(timeOf(leave.departureTime))}",
+                    "Departure: ${describeDate(leave.departure_time)} ${describeTime(timeOf(leave.departure_time))}",
                     style: Theme.of(context).textTheme.bodyMedium,
                   ),
 
                   Text(
-                    "Return: ${describeDate(leave.returnTime)} ${describeTime(timeOf(leave.returnTime))}",
+                    "Return: ${describeDate(leave.return_time)} ${describeTime(timeOf(leave.return_time))}",
                     style: Theme.of(context).textTheme.bodyMedium,
                   ),
                 ],
@@ -64,7 +64,7 @@ class LeaveInfo extends StatelessWidget {
               Padding(
                 padding: EdgeInsets.symmetric(vertical: 10),
                 child: Text(
-                  leave.departureMethod.description(),
+                  leave.departure_method.transport_type,
                   style: Theme.of(context).textTheme.bodyMedium,
                 ),
               ),
@@ -79,7 +79,7 @@ class LeaveInfo extends StatelessWidget {
               Padding(
                 padding: EdgeInsets.symmetric(vertical: 10),
                 child: Text(
-                  leave.returnMethod.description(),
+                  leave.return_method.transport_type,
                   style: Theme.of(context).textTheme.bodyMedium,
                 ),
               ),

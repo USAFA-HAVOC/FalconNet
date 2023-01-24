@@ -1,12 +1,11 @@
 import 'package:async_redux/async_redux.dart';
+import 'package:falcon_net/Model/Database/FormOne.dart';
 import 'package:falcon_net/Model/Store/Actions/FormAction.dart';
+import 'package:falcon_net/Model/Store/GlobalStateModel.dart';
 import 'package:falcon_net/Structure/Components/ConfirmationDialog.dart';
 import 'package:falcon_net/Structure/Components/PageWidget.dart';
 import 'package:falcon_net/Structure/Components/ViewModel.dart';
 import 'package:flutter/material.dart';
-
-import '../../../Model/Data/FormOne.dart';
-import '../../../Model/Store/GlobalState.dart';
 
 ///Page Widget for signing a form one
 ///Displayed in task center

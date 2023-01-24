@@ -1,7 +1,5 @@
-import '../../../../../Model/Data/Role.dart';
-
 class TimedRole {
-  final Role role;
+  final String role;
   final DateTime start;
   final DateTime end;
 

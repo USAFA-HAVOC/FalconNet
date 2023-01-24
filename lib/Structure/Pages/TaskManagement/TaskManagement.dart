@@ -1,11 +1,9 @@
 import 'package:async_redux/async_redux.dart';
-import 'package:falcon_net/Model/Store/GlobalState.dart';
+import 'package:falcon_net/Model/Store/GlobalStateModel.dart';
 import 'package:falcon_net/Structure/Components/ViewModel.dart';
 import 'package:falcon_net/Structure/Pages/TaskManagement/ExternalTaskWidget.dart';
 import 'package:falcon_net/Structure/Pages/TaskManagement/FormOneWidget.dart';
 import 'package:flutter/material.dart';
-
-import '../../../Model/Data/Role.dart';
 
 ///Page acting as general hub for all cadet tasks
 ///This includes both general, role specific, and unit specific tasks
@@ -18,15 +16,15 @@ class TaskManagement extends StatelessWidget {
     var tasks = <Widget>[];
 
     //Add tasks in order of precedent based on roles and available forms
-    if (state.roles.any((role) => role.isAdmin)) {
-      tasks.add(const ExternalTaskWidget(
-          path: "/task_management/delegation",
-          title: "Delegation",
-          description: "Imagine being in cadet leadership"
-      ));
-    }
+    // if (state.roles.any((role) => role.isAdmin)) {
+    //   tasks.add(const ExternalTaskWidget(
+    //       path: "/task_management/delegation",
+    //       title: "Delegation",
+    //       description: "Imagine being in cadet leadership"
+    //   ));
+    // }
 
-    if (state.roles.any((role) => role == Role.cwoc)) {
+    if (state.roles.any((role) => role == "cwoc")) {
       tasks.add(const ExternalTaskWidget(
           path: "/task_management/cwoc",
           title: "CWOC",
@@ -34,7 +32,7 @@ class TaskManagement extends StatelessWidget {
       ));
     }
 
-    if (state.roles.any((role) => role == Role.sdo)) {
+    if (state.roles.any((role) => role == "sdo")) {
       tasks.add(const ExternalTaskWidget(
           path: "/task_management/sdo",
           title: "SDO",
@@ -42,7 +40,7 @@ class TaskManagement extends StatelessWidget {
       ));
     }
 
-    if (state.roles.any((role) => role == Role.jdo)) {
+    if (state.roles.any((role) => role == "jdo")) {
       tasks.add(const ExternalTaskWidget(
           path: "/task_management/ordering",
           title: "JDO",
