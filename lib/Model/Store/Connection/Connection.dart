@@ -76,8 +76,8 @@ class APIData {
 //     ..weekday_overnight_passes = 0
 //     ..weekday_day_passes = 0
 //   ).toBuilder()
-//   ..di_time = DateTime.now()
-//   ..last_login = DateTime.now()
+//   ..di_time = DateTime.now().toUtc()
+//   ..last_login = DateTime.now().toUtc()
 //   ..individual_pass_status = "OPEN"
 // );
 

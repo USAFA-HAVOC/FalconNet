@@ -38,7 +38,7 @@ class InputValidation {
       if (content.isNotEmpty) {
         TimeOfDay time = parseTime(content);
         DateTime givenDate = DateTime(date.year, date.month, date.day, time.hour, time.minute);
-        DateTime present = DateTime.now();
+        DateTime present = DateTime.now().toUtc();
         print(describeDate(givenDate));
         if (givenDate.compareTo(present) < 0) {
           return "Time in past";

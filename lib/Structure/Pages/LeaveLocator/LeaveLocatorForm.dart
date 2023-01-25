@@ -58,10 +58,10 @@ class LeaveLocatorFormState extends State<LeaveLocatorForm> {
     state = widget.existing?.final_state ?? "Colorado";
     nameController = TextEditingController(text: widget.existing?.emergency_contact_name);
     phoneController = TextEditingController(text: widget.existing?.emergency_contact_phone);
-    depDateValue = describeDate(widget.existing?.departure_time ?? DateTime.now());
-    depTimeValue = describeTime(timeOf(widget.existing?.departure_time ?? DateTime.now()));
-    retDateValue = describeDate(widget.existing?.return_time ?? DateTime.now());
-    retTimeValue = describeTime(timeOf(widget.existing?.return_time ?? DateTime.now()));
+    depDateValue = describeDate(widget.existing?.departure_time ?? DateTime.now().toUtc());
+    depTimeValue = describeTime(timeOf(widget.existing?.departure_time ?? DateTime.now().toUtc()));
+    retDateValue = describeDate(widget.existing?.return_time ?? DateTime.now().toUtc());
+    retTimeValue = describeTime(timeOf(widget.existing?.return_time ?? DateTime.now().toUtc()));
     depMethodController = SubformController<CadetLeaveTransportMethod>(value: widget.existing?.departure_method);
     retMethodController = SubformController<CadetLeaveTransportMethod>(value: widget.existing?.return_method);
   }

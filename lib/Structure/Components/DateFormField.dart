@@ -34,7 +34,7 @@ class DateFormFieldState extends State<DateFormField> {
 
   @override
   Widget build(BuildContext context) {
-    value = widget.value ?? describeDate(DateTime.now());
+    value = widget.value ?? describeDate(DateTime.now().toUtc());
     controller = TextEditingController(text: value);
     return TextFormField(
       controller: controller,
@@ -53,7 +53,7 @@ class DateFormFieldState extends State<DateFormField> {
         DateTime? pickedDate = await showDatePicker(
           context: context,
           initialDate: parseDate(value),
-          firstDate: widget.firstDate ?? DateTime.now(),
+          firstDate: widget.firstDate ?? DateTime.now().toUtc(),
           lastDate: widget.lastDate ?? DateTime(2100),
         );
 

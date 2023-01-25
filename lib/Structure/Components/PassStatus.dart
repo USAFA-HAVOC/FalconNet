@@ -62,10 +62,10 @@ class PassStatus extends StatelessWidget {
                   //Determine expiration message
                   CadetPass pass = model.content!;
                   String expiration;
-                  if (pass.end_time.difference(DateTime.now()).compareTo(Duration(hours: 24)) < 0 && pass.end_time.weekday == DateTime.now().weekday) {
+                  if (pass.end_time.difference(DateTime.now().toUtc()).compareTo(Duration(hours: 24)) < 0 && pass.end_time.weekday == DateTime.now().toUtc().weekday) {
                     expiration = "Expires: ${describeTime(TimeOfDay.fromDateTime(pass.end_time))}";
                   }
-                  else if (pass.end_time.difference(DateTime.now()).compareTo(Duration(days: 7)) < 0) {
+                  else if (pass.end_time.difference(DateTime.now().toUtc()).compareTo(Duration(days: 7)) < 0) {
                     expiration = "Expires: ${formatWeekday(pass.end_time.weekday)}, ${describeTime(TimeOfDay.fromDateTime(pass.end_time))}";
                   }
                   else {

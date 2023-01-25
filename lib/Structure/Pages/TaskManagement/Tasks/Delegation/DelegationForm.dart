@@ -1,3 +1,4 @@
+import 'package:falcon_net/Model/Database/Role.dart';
 import 'package:falcon_net/Structure/Pages/TaskManagement/Tasks/Delegation/RoleSubform.dart';
 import 'package:flutter/material.dart';
 
@@ -64,9 +65,9 @@ class DelegationFormState extends State<DelegationForm> {
                 onPressed: () => setState(() {
                   roles.add(
                       TimedRole(
-                          role: "sdo",
-                          start: DateTime.now(),
-                          end: DateTime.now()
+                          role: Role.sdo,
+                          start: DateTime.now().toUtc(),
+                          end: DateTime.now().toUtc()
                       )
                   );
                 }),

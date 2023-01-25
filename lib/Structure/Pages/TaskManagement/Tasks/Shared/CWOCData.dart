@@ -1,5 +1,3 @@
-import 'package:falcon_net/Model/Data/DIStatus.dart';
-
 import 'Signee.dart';
 
 ///Summary of unit di information

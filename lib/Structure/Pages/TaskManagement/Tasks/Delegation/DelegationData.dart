@@ -1,5 +1,7 @@
+import 'package:falcon_net/Model/Database/Role.dart';
+
 class TimedRole {
-  final String role;
+  final Role role;
   final DateTime start;
   final DateTime end;
 

@@ -7,7 +7,7 @@ class SignAction extends ReduxAction<GlobalState> {
     await Future.delayed(const Duration(milliseconds: 250));
     var status = true;
     if (status) {
-      return (state.toBuilder()..user.di.signed_by="Test"..user.di.last_signed=DateTime.now()).build();
+      return (state.toBuilder()..user.di.signed_by="Test"..user.di.last_signed=DateTime.now().toUtc()).build();
     }
     else {
       print("failed to sign");

@@ -1,4 +1,6 @@
 import 'package:async_redux/async_redux.dart';
+import 'package:falcon_net/Model/Database/UserGrades.dart';
+import 'package:falcon_net/Model/Store/GlobalStateModel.dart';
 import 'package:flutter/material.dart';
 
 import '../Components/PaddedColumn.dart';
@@ -99,7 +101,7 @@ class GradesState extends State<Grades> {
                               mainAxisSize: MainAxisSize.min,
                               children: [
                                 Text(
-                                  calculateAverage(model.content.amis),
+                                  calculateAverage(model.content.amis.toList()),
                                   style: Theme.of(context).textTheme.displayMedium,
                                 ),
 
@@ -119,7 +121,7 @@ class GradesState extends State<Grades> {
                               mainAxisSize: MainAxisSize.min,
                               children: [
                                 Text(
-                                  calculateAverage(model.content.samis),
+                                  calculateAverage(model.content.samis.toList()),
                                   style: Theme.of(context).textTheme.displayMedium,
                                 ),
 

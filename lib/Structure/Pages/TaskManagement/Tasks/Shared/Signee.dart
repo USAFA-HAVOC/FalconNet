@@ -1,4 +1,8 @@
-import '../../../../../Model/Data/DIStatus.dart';
+enum DIStatus {
+  signedOut,
+  signedDI,
+  unsigned,
+}
 
 ///Represents minimum cadet information for sdo and cwoc controllers
 class Signee {

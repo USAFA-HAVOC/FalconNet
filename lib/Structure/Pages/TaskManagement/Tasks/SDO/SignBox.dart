@@ -1,6 +1,6 @@
+import 'package:falcon_net/Structure/Pages/TaskManagement/Tasks/Shared/Signee.dart';
 import 'package:flutter/material.dart';
 
-import '../../../../../Model/Data/DIStatus.dart';
 import '../../../../Components/ConfirmationDialog.dart';
 
 ///Box for displaying name, signing status, and signing button

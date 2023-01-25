@@ -12,6 +12,7 @@ import 'package:falcon_net/Model/Store/GlobalStateModel.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_web_plugins/flutter_web_plugins.dart';
 
+import 'Model/Database/UserSettings.dart';
 import 'Model/Store/Actions/NotificationAction.dart';
 import 'Router/FNRouter.dart';
 import 'Structure/Components/ViewModel.dart';
@@ -45,11 +46,18 @@ void main() async {
                   ..weekend_overnight_passes = 0
               ).toBuilder()
               ..di = CadetDI((b3) => b3
-                  ..last_signed = DateTime.now()
+                  ..last_signed = DateTime.now().toUtc()
                   ..signed_by = ""
               ).toBuilder()
           ).toBuilder()
-          ..notifications=ListBuilder<UserNotification>([])
+          ..notifications = ListBuilder<UserNotification>([])
+          ..settings = UserSettings((b2) => b2
+              ..darkTheme = false
+              ..taskPush = true
+              ..diPush = true
+              ..passPush = true
+              ..pushNotifications = true
+          ).toBuilder()
       )
   );
 

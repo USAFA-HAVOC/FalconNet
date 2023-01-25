@@ -17,7 +17,7 @@ class SettingsAction extends ReduxAction<GlobalState> {
     var preferences = await connection.preferences;
     if (modify != null) {
       var modified = modify!(state.settings.toBuilder());
-      await preferences.setString("settings", serializers.serialize(modified, specifiedType: const FullType(String)) as String);
+      await preferences.setString("settings", serializers.serialize(modified.build(), specifiedType: const FullType(UserSettings)).toString());
       return (state.toBuilder()..settings=modified).build();
     }
     else {

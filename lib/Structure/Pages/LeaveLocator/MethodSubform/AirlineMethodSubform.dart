@@ -48,8 +48,8 @@ class AirlineMethodSubformState extends State<AirlineMethodSubform> {
     else {
       airline = TextEditingController();
       number = TextEditingController();
-      depDate = describeDate(DateTime.now());
-      arrDate = describeDate(DateTime.now());
+      depDate = describeDate(DateTime.now().toUtc());
+      arrDate = describeDate(DateTime.now().toUtc());
       depTime = describeTime(TimeOfDay.now());
       arrTime = describeTime(TimeOfDay.now());
     }

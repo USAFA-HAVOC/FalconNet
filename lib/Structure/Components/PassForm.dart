@@ -56,14 +56,14 @@ class PassFormState extends State<PassForm> with SingleTickerProviderStateMixin 
   @override
   void initState() {
     super.initState();
-    type = DateTime.now().weekday < 5 ? "weekday" : "weekend";
+    type = DateTime.now().toUtc().weekday < 5 ? "weekday" : "weekend";
     
     if (widget.existing != null) {
       dateValue = describeDate(widget.existing!.end_time!);
       timeValue = describeTime(TimeOfDay.fromDateTime(widget.existing!.end_time!));
     }
     else {
-      dateValue = describeDate(DateTime.now());
+      dateValue = describeDate(DateTime.now().toUtc());
       timeValue = describeTime(TimeOfDay(hour: 19, minute: 50));
     }
     
@@ -84,7 +84,7 @@ class PassFormState extends State<PassForm> with SingleTickerProviderStateMixin 
   void maximizePass() {
 
     //Implement a model call to determine latest possible time
-    var last = DateTime.now().toLocal().add(Duration(days: 2, hours: 5));
+    var last = DateTime.now().toUtc().toLocal().add(Duration(days: 2, hours: 5));
 
     setState(() {
       dateValue = describeDate(last);
@@ -99,7 +99,8 @@ class PassFormState extends State<PassForm> with SingleTickerProviderStateMixin 
     var endDate = parseDate(dateValue);
     var endTime = parseTime(timeValue);
     return CadetPass((b) => b
-      ..start_time = widget.existing?.start_time ?? DateTime.now()
+      ..cadet_id = "change later"
+      ..start_time = widget.existing?.start_time ?? DateTime.now().toUtc()
       ..end_time = combineDate(endDate, endTime)
       ..pass_type = type
       ..description = descriptionController.text
@@ -114,7 +115,7 @@ class PassFormState extends State<PassForm> with SingleTickerProviderStateMixin 
   List<DropdownMenuItem<String>> buildTypeOptions() {
     Map<String, String> options = <String, String>{};
 
-    if (DateTime.now().weekday < 5) {
+    if (DateTime.now().toUtc().weekday < 5) {
       options.addAll({"Weekday Sign-Out Period" : "weekday"});
     }
     else {
