@@ -5,15 +5,12 @@ import 'package:falcon_net/Model/Database/CadetPassAllocation.dart';
 import 'package:falcon_net/Model/Database/User.dart';
 import 'package:falcon_net/Model/Database/UserNotification.dart';
 import 'package:falcon_net/Model/Database/UserPersonalInfo.dart';
-import 'package:falcon_net/Model/Store/Actions/FetchProfileInfoAction.dart';
-import 'package:falcon_net/Model/Store/Actions/SettingsAction.dart';
 import 'package:falcon_net/Model/Store/Connection/Connection.dart';
 import 'package:falcon_net/Model/Store/GlobalStateModel.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_web_plugins/flutter_web_plugins.dart';
 
 import 'Model/Database/UserSettings.dart';
-import 'Model/Store/Actions/NotificationAction.dart';
+import 'Model/Store/Actions/InfoAction.dart';
 import 'Router/FNRouter.dart';
 import 'Structure/Components/ViewModel.dart';
 import 'Theme/Dark/DarkTheme.dart';
@@ -84,7 +81,7 @@ class FNApp extends StatelessWidget {
         html.window.history.pushState(null, 'FalconNet', '');
         String token = s.split("code=").last;
         login(token);
-        store.dispatch(FetchProfileInfoAction());
+        store.dispatch(InfoAction.retrieve());
       } else {
         html.window.open('http://localhost:8000/', "_self");
       }
@@ -99,7 +96,7 @@ class FNApp extends StatelessWidget {
           theme: model.content ? darkTheme : lightTheme,
           routerConfig: fnRouter,
         ),
-      )
+      ),
     );
   }
 }
