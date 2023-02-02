@@ -12,11 +12,11 @@ abstract class UserPersonalInfo implements Built<UserPersonalInfo, UserPersonalI
 
   String get email;
   String get full_name;
-  String get phone_number;
-  String get room_number;
-  int get squadron;
-  String get group;
-  String get unit;
+  String? get phone_number;
+  String? get room_number;
+  int? get squadron;
+  String? get group;
+  String? get unit;
 
   UserPersonalInfo._();
   factory UserPersonalInfo([void Function(UserPersonalInfoBuilder) updates]) = _$UserPersonalInfo;

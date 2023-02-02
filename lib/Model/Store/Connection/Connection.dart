@@ -7,7 +7,7 @@ import 'package:falcon_net/Model/Serializers.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 final options = BaseOptions(
-  baseUrl: 'http://localhost:8000/',
+  baseUrl: 'https://api.ethanchapman.dev/',
   connectTimeout: 5000,
   receiveTimeout: 3000,
 );

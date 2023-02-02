@@ -86,7 +86,7 @@ class FNApp extends StatelessWidget {
         login(token);
         store.dispatch(FetchProfileInfoAction());
       } else {
-        html.window.open('http://localhost:8000/', "_self");
+        html.window.open('https://api.ethanchapman.dev/', "_self");
       }
     }
 

@@ -26,22 +26,42 @@ class _$UserPersonalInfoSerializer
       'full_name',
       serializers.serialize(object.full_name,
           specifiedType: const FullType(String)),
-      'phone_number',
-      serializers.serialize(object.phone_number,
-          specifiedType: const FullType(String)),
-      'room_number',
-      serializers.serialize(object.room_number,
-          specifiedType: const FullType(String)),
-      'squadron',
-      serializers.serialize(object.squadron,
-          specifiedType: const FullType(int)),
-      'group',
-      serializers.serialize(object.group,
-          specifiedType: const FullType(String)),
-      'unit',
-      serializers.serialize(object.unit, specifiedType: const FullType(String)),
     ];
-
+    Object? value;
+    value = object.phone_number;
+    if (value != null) {
+      result
+        ..add('phone_number')
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(String)));
+    }
+    value = object.room_number;
+    if (value != null) {
+      result
+        ..add('room_number')
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(String)));
+    }
+    value = object.squadron;
+    if (value != null) {
+      result
+        ..add('squadron')
+        ..add(serializers.serialize(value, specifiedType: const FullType(int)));
+    }
+    value = object.group;
+    if (value != null) {
+      result
+        ..add('group')
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(String)));
+    }
+    value = object.unit;
+    if (value != null) {
+      result
+        ..add('unit')
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(String)));
+    }
     return result;
   }
 
@@ -67,23 +87,23 @@ class _$UserPersonalInfoSerializer
           break;
         case 'phone_number':
           result.phone_number = serializers.deserialize(value,
-              specifiedType: const FullType(String))! as String;
+              specifiedType: const FullType(String)) as String?;
           break;
         case 'room_number':
           result.room_number = serializers.deserialize(value,
-              specifiedType: const FullType(String))! as String;
+              specifiedType: const FullType(String)) as String?;
           break;
         case 'squadron':
           result.squadron = serializers.deserialize(value,
-              specifiedType: const FullType(int))! as int;
+              specifiedType: const FullType(int)) as int?;
           break;
         case 'group':
           result.group = serializers.deserialize(value,
-              specifiedType: const FullType(String))! as String;
+              specifiedType: const FullType(String)) as String?;
           break;
         case 'unit':
           result.unit = serializers.deserialize(value,
-              specifiedType: const FullType(String))! as String;
+              specifiedType: const FullType(String)) as String?;
           break;
       }
     }
@@ -98,15 +118,15 @@ class _$UserPersonalInfo extends UserPersonalInfo {
   @override
   final String full_name;
   @override
-  final String phone_number;
+  final String? phone_number;
   @override
-  final String room_number;
+  final String? room_number;
   @override
-  final int squadron;
+  final int? squadron;
   @override
-  final String group;
+  final String? group;
   @override
-  final String unit;
+  final String? unit;
 
   factory _$UserPersonalInfo(
           [void Function(UserPersonalInfoBuilder)? updates]) =>
@@ -115,23 +135,15 @@ class _$UserPersonalInfo extends UserPersonalInfo {
   _$UserPersonalInfo._(
       {required this.email,
       required this.full_name,
-      required this.phone_number,
-      required this.room_number,
-      required this.squadron,
-      required this.group,
-      required this.unit})
+      this.phone_number,
+      this.room_number,
+      this.squadron,
+      this.group,
+      this.unit})
       : super._() {
     BuiltValueNullFieldError.checkNotNull(email, r'UserPersonalInfo', 'email');
     BuiltValueNullFieldError.checkNotNull(
         full_name, r'UserPersonalInfo', 'full_name');
-    BuiltValueNullFieldError.checkNotNull(
-        phone_number, r'UserPersonalInfo', 'phone_number');
-    BuiltValueNullFieldError.checkNotNull(
-        room_number, r'UserPersonalInfo', 'room_number');
-    BuiltValueNullFieldError.checkNotNull(
-        squadron, r'UserPersonalInfo', 'squadron');
-    BuiltValueNullFieldError.checkNotNull(group, r'UserPersonalInfo', 'group');
-    BuiltValueNullFieldError.checkNotNull(unit, r'UserPersonalInfo', 'unit');
   }
 
   @override
@@ -253,16 +265,11 @@ class UserPersonalInfoBuilder
                 email, r'UserPersonalInfo', 'email'),
             full_name: BuiltValueNullFieldError.checkNotNull(
                 full_name, r'UserPersonalInfo', 'full_name'),
-            phone_number: BuiltValueNullFieldError.checkNotNull(
-                phone_number, r'UserPersonalInfo', 'phone_number'),
-            room_number: BuiltValueNullFieldError.checkNotNull(
-                room_number, r'UserPersonalInfo', 'room_number'),
-            squadron: BuiltValueNullFieldError.checkNotNull(
-                squadron, r'UserPersonalInfo', 'squadron'),
-            group: BuiltValueNullFieldError.checkNotNull(
-                group, r'UserPersonalInfo', 'group'),
-            unit: BuiltValueNullFieldError.checkNotNull(
-                unit, r'UserPersonalInfo', 'unit'));
+            phone_number: phone_number,
+            room_number: room_number,
+            squadron: squadron,
+            group: group,
+            unit: unit);
     replace(_$result);
     return _$result;
   }
