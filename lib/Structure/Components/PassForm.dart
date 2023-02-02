@@ -59,8 +59,8 @@ class PassFormState extends State<PassForm> with SingleTickerProviderStateMixin 
     type = DateTime.now().toUtc().weekday < 5 ? "weekday" : "weekend";
     
     if (widget.existing != null) {
-      dateValue = describeDate(widget.existing!.end_time!);
-      timeValue = describeTime(TimeOfDay.fromDateTime(widget.existing!.end_time!));
+      dateValue = describeDate(widget.existing!.end_time);
+      timeValue = describeTime(TimeOfDay.fromDateTime(widget.existing!.end_time));
     }
     else {
       dateValue = describeDate(DateTime.now().toUtc());
