@@ -86,6 +86,11 @@ class VehicleMethodSubformState extends State<VehicleMethodSubform> with SingleT
           ..vehicle_driver_name = name.text
           ..vehicle_travel_time_hours = double.parse(time.text)
           ..vehicle_type = vehicleType
+          ..other_info = ""
+          ..airline_flight_arrival_time = DateTime(3000).toUtc()
+          ..airline_flight_departure_time = DateTime(3001).toUtc()
+          ..airline_flight_number = ""
+          ..airline_name = ""
       );
     }
     else {
@@ -127,7 +132,7 @@ class VehicleMethodSubformState extends State<VehicleMethodSubform> with SingleT
               }
 
               //Set new vehicle type
-              vehicleType = change!;
+              vehicleType = change;
             });
           },
           items: buildTypeOptions(),

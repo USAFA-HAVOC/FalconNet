@@ -1,28 +1,49 @@
 import 'package:async_redux/async_redux.dart';
 import 'package:falcon_net/Model/Database/CadetPass.dart';
+import 'package:falcon_net/Model/Store/Endpoints.dart';
 import 'package:falcon_net/Model/Store/GlobalStateModel.dart';
 
 class PassAction extends ReduxAction<GlobalState> {
   final CadetPass? pass;
   final bool updated;
+  final bool retrieve;
+  final void Function()? onFail;
+  final void Function()? onSucceed;
 
-  PassAction.open(this.pass) : updated = false;
+  PassAction.open(this.pass, {this.onFail, this.onSucceed}) : updated = false, retrieve = false;
 
-  PassAction.update(this.pass) : updated = true;
+  PassAction.update(this.pass, {this.onFail, this.onSucceed}) : updated = true, retrieve = false;
 
-  PassAction.close() : pass = null, updated = false;
+  PassAction.close({this.onFail, this.onSucceed}) : pass = null, updated = false, retrieve = false;
+
+  PassAction.retrieve({this.onFail, this.onSucceed}) : pass = null, updated = false, retrieve = true;
 
   @override
   Future<GlobalState?> reduce() async {
-    await Future.delayed(Duration(milliseconds: 10));
-    if (pass == null) {
-      return (state.toBuilder()..pass=null).build();
-    }
+    try {
+      if (retrieve) {
+        var pass = await Endpoints.passGet.hit(null);
+        onSucceed?.call();
+        return (state.toBuilder()..pass=pass.toBuilder()).build();
+      }
+      if (pass == null) {
+        await Endpoints.passClose.hit(null);
+        onSucceed?.call();
+        return (state.toBuilder()..pass=null).build();
+      }
 
-    var sb = state.toBuilder();
-    sb.pass = pass!.toBuilder();
-    if (updated) sb.history.sublist(1);
-    sb.history.insert(0, pass!);
-    return sb.build();
+      await Endpoints.passSet.hit(pass!);
+
+      var sb = state.toBuilder();
+      sb.pass = pass!.toBuilder();
+      if (updated) sb.history.sublist(1);
+      sb.history.insert(0, pass!);
+      onSucceed?.call();
+      return sb.build();
+    }
+    catch (_) {
+      onFail?.call();
+      return null;
+    }
   }
 }

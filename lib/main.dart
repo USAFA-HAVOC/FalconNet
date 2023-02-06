@@ -5,12 +5,12 @@ import 'package:falcon_net/Model/Database/CadetPassAllocation.dart';
 import 'package:falcon_net/Model/Database/User.dart';
 import 'package:falcon_net/Model/Database/UserNotification.dart';
 import 'package:falcon_net/Model/Database/UserPersonalInfo.dart';
-import 'package:falcon_net/Model/Store/Connection/Connection.dart';
+import 'package:falcon_net/Model/Store/Actions/GlobalAction.dart';
+import 'package:falcon_net/Model/Store/Endpoints.dart';
 import 'package:falcon_net/Model/Store/GlobalStateModel.dart';
 import 'package:flutter/material.dart';
 
 import 'Model/Database/UserSettings.dart';
-import 'Model/Store/Actions/InfoAction.dart';
 import 'Router/FNRouter.dart';
 import 'Structure/Components/ViewModel.dart';
 import 'Theme/Dark/DarkTheme.dart';
@@ -18,7 +18,7 @@ import 'Theme/Light/LightTheme.dart';
 
 import 'dart:html' as html;
 
-void main() async {
+void main() {
 
   //Initialize a default store
   //Replace the default global state with an api call
@@ -57,9 +57,6 @@ void main() async {
           ).toBuilder()
       )
   );
-
-  // store.dispatch(SettingsAction.retrieve());
-  // store.dispatch(NotificationAction.retrieve());
   // store.dispatch(NotificationAction.add(UserNotification(message: "You logged in", destination: "/")));
   
   //getUserData().then((cadet) => print(cadet.id), onError: (obj, stack) => print("error"));
@@ -81,8 +78,10 @@ class FNApp extends StatelessWidget {
         html.window.history.pushState(null, 'FalconNet', '');
         String token = s.split("code=").last;
         login(token);
-        store.dispatch(InfoAction.retrieve());
-      } else {
+        store.dispatch(GlobalAction.initialize());
+        //store.dispatch(InfoAction.retrieve());
+      }
+      else {
         html.window.open('https://api.ethanchapman.dev/', "_self");
       }
     }

@@ -2,7 +2,7 @@ import 'package:async_redux/async_redux.dart';
 import 'package:built_collection/src/list.dart';
 import 'package:falcon_net/Model/Database/UserNotification.dart';
 import 'package:falcon_net/Model/Store/GlobalStateModel.dart';
-import "../../Store/Connection/Connection.dart" as connection;
+import '../Endpoints.dart' as connection;
 
 class NotificationAction extends ReduxAction<GlobalState> {
   final UserNotification? notification;

@@ -3,26 +3,44 @@ import 'package:built_value/serializer.dart';
 import 'package:falcon_net/Model/Database/UserSettings.dart';
 import 'package:falcon_net/Model/Serializers.dart';
 import 'package:falcon_net/Model/Store/GlobalStateModel.dart';
-import '../Connection/Connection.dart' as connection;
+import 'package:shared_preferences/shared_preferences.dart';
 
 class SettingsAction extends ReduxAction<GlobalState> {
   final UserSettingsBuilder Function(UserSettingsBuilder b)? modify;
+  final void Function()? onFail;
+  final void Function()? onSucceed;
 
-  SettingsAction({required this.modify});
+  SettingsAction({required this.modify, this.onFail, this.onSucceed});
 
-  SettingsAction.retrieve() : modify = null;
+  SettingsAction.retrieve({this.onFail, this.onSucceed}) : modify = null;
 
   @override
   Future<GlobalState?> reduce() async {
-    var preferences = await connection.preferences;
-    if (modify != null) {
-      var modified = modify!(state.settings.toBuilder());
-      await preferences.setString("settings", serializers.serialize(modified.build(), specifiedType: const FullType(UserSettings)).toString());
-      return (state.toBuilder()..settings=modified).build();
+    try {
+      var preferences = await SharedPreferences.getInstance();
+      if (modify != null) {
+        var modified = modify!(state.settings.toBuilder());
+        var serialized = serializers.toJson(UserSettings.serializer, modified.build()).replaceAll("\"", "*");
+        await preferences.setString("settings", serialized);
+        onSucceed?.call();
+        return (state.toBuilder()..settings=modified).build();
+      }
+      else {
+        var serialized = preferences.getString("settings")?.replaceAll("*", "\"");
+        if (serialized != null) {
+          UserSettings newSettings = serializers.fromJson(UserSettings.serializer, serialized)!;
+          onSucceed?.call();
+          return (state.toBuilder()..settings=newSettings.toBuilder()).build();
+        }
+        else {
+          dispatch(SettingsAction(modify: (b) => state.settings.toBuilder(), onSucceed: onSucceed, onFail: onFail));
+          return null;
+        }
+      }
     }
-    else {
-      UserSettings newSettings = serializers.deserialize(preferences.getString("settings"), specifiedType: const FullType(UserSettings)) as UserSettings;
-      return (state.toBuilder()..settings=newSettings.toBuilder()).build();
+    catch (e) {
+      onFail?.call();
+      return null;
     }
   }
 }

@@ -69,10 +69,15 @@ class AirlineMethodSubformState extends State<AirlineMethodSubform> {
     var fArrDate = parseDate(arrDate);
     var flightArrivalTime = combineDate(fArrDate, fArrTime);
     return CadetLeaveTransportMethod((b) => b
-        ..airline_flight_departure_time = flightDepartureTime
-        ..airline_flight_arrival_time = flightArrivalTime
+        ..transport_type = "airline"
+        ..airline_flight_departure_time = flightDepartureTime.toUtc()
+        ..airline_flight_arrival_time = flightArrivalTime.toUtc()
         ..airline_flight_number = number.text
         ..airline_name = airline.text
+        ..other_info = ""
+        ..vehicle_driver_name = ""
+        ..vehicle_travel_time_hours = 0.0
+        ..vehicle_type = ""
     );
   }
 

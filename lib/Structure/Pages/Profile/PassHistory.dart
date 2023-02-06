@@ -100,12 +100,12 @@ class PassRecord extends StatelessWidget {
                     ),
 
                     Text(
-                        (pass.sca_number == null ? "" : "SCA: ${pass.sca_number!}. ") + (pass.description ?? "No description."),
+                        (pass.sca_number == null ? "" : "SCA: ${pass.sca_number!}. ") + pass.description,
                         style: Theme.of(context).textTheme.bodyMedium
                     ),
 
                     Text(
-                        "${pass.city ?? "None"}, ${pass.state ?? "None"} ${pass.zip_code ?? ""}",
+                        "${pass.city}, ${pass.state} ${pass.zip_code}",
                         style: Theme.of(context).textTheme.bodySmall
                     ),
                   ],

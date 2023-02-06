@@ -38,10 +38,6 @@ class _$GlobalStateSerializer implements StructuredSerializer<GlobalState> {
       serializers.serialize(object.forms,
           specifiedType:
               const FullType(BuiltList, const [const FullType(FormOne)])),
-      'roles',
-      serializers.serialize(object.roles,
-          specifiedType:
-              const FullType(BuiltList, const [const FullType(String)])),
     ];
     Object? value;
     value = object.leave;
@@ -102,12 +98,6 @@ class _$GlobalStateSerializer implements StructuredSerializer<GlobalState> {
                       BuiltList, const [const FullType(FormOne)]))!
               as BuiltList<Object?>);
           break;
-        case 'roles':
-          result.roles.replace(serializers.deserialize(value,
-                  specifiedType: const FullType(
-                      BuiltList, const [const FullType(String)]))!
-              as BuiltList<Object?>);
-          break;
         case 'leave':
           result.leave.replace(serializers.deserialize(value,
               specifiedType: const FullType(CadetLeave))! as CadetLeave);
@@ -137,8 +127,6 @@ class _$GlobalState extends GlobalState {
   @override
   final BuiltList<FormOne> forms;
   @override
-  final BuiltList<String> roles;
-  @override
   final CadetLeave? leave;
   @override
   final CadetPass? pass;
@@ -153,7 +141,6 @@ class _$GlobalState extends GlobalState {
       required this.settings,
       required this.grades,
       required this.forms,
-      required this.roles,
       this.leave,
       this.pass})
       : super._() {
@@ -164,7 +151,6 @@ class _$GlobalState extends GlobalState {
     BuiltValueNullFieldError.checkNotNull(settings, r'GlobalState', 'settings');
     BuiltValueNullFieldError.checkNotNull(grades, r'GlobalState', 'grades');
     BuiltValueNullFieldError.checkNotNull(forms, r'GlobalState', 'forms');
-    BuiltValueNullFieldError.checkNotNull(roles, r'GlobalState', 'roles');
   }
 
   @override
@@ -184,7 +170,6 @@ class _$GlobalState extends GlobalState {
         settings == other.settings &&
         grades == other.grades &&
         forms == other.forms &&
-        roles == other.roles &&
         leave == other.leave &&
         pass == other.pass;
   }
@@ -198,7 +183,6 @@ class _$GlobalState extends GlobalState {
     _$hash = $jc(_$hash, settings.hashCode);
     _$hash = $jc(_$hash, grades.hashCode);
     _$hash = $jc(_$hash, forms.hashCode);
-    _$hash = $jc(_$hash, roles.hashCode);
     _$hash = $jc(_$hash, leave.hashCode);
     _$hash = $jc(_$hash, pass.hashCode);
     _$hash = $jf(_$hash);
@@ -214,7 +198,6 @@ class _$GlobalState extends GlobalState {
           ..add('settings', settings)
           ..add('grades', grades)
           ..add('forms', forms)
-          ..add('roles', roles)
           ..add('leave', leave)
           ..add('pass', pass))
         .toString();
@@ -253,10 +236,6 @@ class GlobalStateBuilder implements Builder<GlobalState, GlobalStateBuilder> {
       _$this._forms ??= new ListBuilder<FormOne>();
   set forms(ListBuilder<FormOne>? forms) => _$this._forms = forms;
 
-  ListBuilder<String>? _roles;
-  ListBuilder<String> get roles => _$this._roles ??= new ListBuilder<String>();
-  set roles(ListBuilder<String>? roles) => _$this._roles = roles;
-
   CadetLeaveBuilder? _leave;
   CadetLeaveBuilder get leave => _$this._leave ??= new CadetLeaveBuilder();
   set leave(CadetLeaveBuilder? leave) => _$this._leave = leave;
@@ -276,7 +255,6 @@ class GlobalStateBuilder implements Builder<GlobalState, GlobalStateBuilder> {
       _settings = $v.settings.toBuilder();
       _grades = $v.grades.toBuilder();
       _forms = $v.forms.toBuilder();
-      _roles = $v.roles.toBuilder();
       _leave = $v.leave?.toBuilder();
       _pass = $v.pass?.toBuilder();
       _$v = null;
@@ -309,7 +287,6 @@ class GlobalStateBuilder implements Builder<GlobalState, GlobalStateBuilder> {
               settings: settings.build(),
               grades: grades.build(),
               forms: forms.build(),
-              roles: roles.build(),
               leave: _leave?.build(),
               pass: _pass?.build());
     } catch (_) {
@@ -327,8 +304,6 @@ class GlobalStateBuilder implements Builder<GlobalState, GlobalStateBuilder> {
         grades.build();
         _$failedField = 'forms';
         forms.build();
-        _$failedField = 'roles';
-        roles.build();
         _$failedField = 'leave';
         _leave?.build();
         _$failedField = 'pass';

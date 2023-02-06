@@ -21,6 +21,10 @@ class _$UserSerializer implements StructuredSerializer<User> {
       'personal_info',
       serializers.serialize(object.personal_info,
           specifiedType: const FullType(UserPersonalInfo)),
+      'roles',
+      serializers.serialize(object.roles,
+          specifiedType:
+              const FullType(BuiltList, const [const FullType(String)])),
     ];
     Object? value;
     value = object.id;
@@ -87,6 +91,12 @@ class _$UserSerializer implements StructuredSerializer<User> {
           result.last_login = serializers.deserialize(value,
               specifiedType: const FullType(DateTime)) as DateTime?;
           break;
+        case 'roles':
+          result.roles.replace(serializers.deserialize(value,
+                  specifiedType: const FullType(
+                      BuiltList, const [const FullType(String)]))!
+              as BuiltList<Object?>);
+          break;
       }
     }
 
@@ -105,6 +115,8 @@ class _$User extends User {
   final CadetDI? di;
   @override
   final DateTime? last_login;
+  @override
+  final BuiltList<String> roles;
 
   factory _$User([void Function(UserBuilder)? updates]) =>
       (new UserBuilder()..update(updates))._build();
@@ -114,10 +126,12 @@ class _$User extends User {
       required this.personal_info,
       this.pass_allocation,
       this.di,
-      this.last_login})
+      this.last_login,
+      required this.roles})
       : super._() {
     BuiltValueNullFieldError.checkNotNull(
         personal_info, r'User', 'personal_info');
+    BuiltValueNullFieldError.checkNotNull(roles, r'User', 'roles');
   }
 
   @override
@@ -135,7 +149,8 @@ class _$User extends User {
         personal_info == other.personal_info &&
         pass_allocation == other.pass_allocation &&
         di == other.di &&
-        last_login == other.last_login;
+        last_login == other.last_login &&
+        roles == other.roles;
   }
 
   @override
@@ -146,6 +161,7 @@ class _$User extends User {
     _$hash = $jc(_$hash, pass_allocation.hashCode);
     _$hash = $jc(_$hash, di.hashCode);
     _$hash = $jc(_$hash, last_login.hashCode);
+    _$hash = $jc(_$hash, roles.hashCode);
     _$hash = $jf(_$hash);
     return _$hash;
   }
@@ -157,7 +173,8 @@ class _$User extends User {
           ..add('personal_info', personal_info)
           ..add('pass_allocation', pass_allocation)
           ..add('di', di)
-          ..add('last_login', last_login))
+          ..add('last_login', last_login)
+          ..add('roles', roles))
         .toString();
   }
 }
@@ -189,6 +206,10 @@ class UserBuilder implements Builder<User, UserBuilder> {
   DateTime? get last_login => _$this._last_login;
   set last_login(DateTime? last_login) => _$this._last_login = last_login;
 
+  ListBuilder<String>? _roles;
+  ListBuilder<String> get roles => _$this._roles ??= new ListBuilder<String>();
+  set roles(ListBuilder<String>? roles) => _$this._roles = roles;
+
   UserBuilder();
 
   UserBuilder get _$this {
@@ -199,6 +220,7 @@ class UserBuilder implements Builder<User, UserBuilder> {
       _pass_allocation = $v.pass_allocation?.toBuilder();
       _di = $v.di?.toBuilder();
       _last_login = $v.last_login;
+      _roles = $v.roles.toBuilder();
       _$v = null;
     }
     return this;
@@ -227,7 +249,8 @@ class UserBuilder implements Builder<User, UserBuilder> {
               personal_info: personal_info.build(),
               pass_allocation: _pass_allocation?.build(),
               di: _di?.build(),
-              last_login: last_login);
+              last_login: last_login,
+              roles: roles.build());
     } catch (_) {
       late String _$failedField;
       try {
@@ -237,6 +260,9 @@ class UserBuilder implements Builder<User, UserBuilder> {
         _pass_allocation?.build();
         _$failedField = 'di';
         _di?.build();
+
+        _$failedField = 'roles';
+        roles.build();
       } catch (e) {
         throw new BuiltValueNestedFieldError(
             r'User', _$failedField, e.toString());

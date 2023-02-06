@@ -22,10 +22,10 @@ class DIWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
+    var messenger = ScaffoldMessenger.of(context);
     return StoreConnector<GlobalState, ViewModel<DITuple>>(
         converter: (store) =>
-            ViewModel<DITuple>(store: store, content: DITuple(di: store.state.user.di, roles: store.state.roles.toList())),
+            ViewModel<DITuple>(store: store, content: DITuple(di: store.state.user.di, roles: store.state.user.roles.toList())),
         builder: (context, model) {
 
           //Whether cadet is able to sign own di based on roles
@@ -96,7 +96,14 @@ class DIWidget extends StatelessWidget {
 
                 //Dispatch sign di action
                 onPressed: () {
-                  model.dispatch(SignAction());
+                  model.dispatch(SignAction(
+                    onSucceed: () {
+                      messenger.showSnackBar(const SnackBar(content: Text("DI Signed Successfully")));
+                    },
+                    onFail: () {
+                      messenger.showSnackBar(const SnackBar(content: Text("Failed to Sign DI")));
+                    }
+                  ));
                 },
 
                 child: Padding(

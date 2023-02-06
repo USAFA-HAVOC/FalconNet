@@ -1,21 +1,21 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'FormOne.dart';
+part of 'DIRequest.dart';
 
 // **************************************************************************
 // BuiltValueGenerator
 // **************************************************************************
 
-Serializer<FormOne> _$formOneSerializer = new _$FormOneSerializer();
+Serializer<DIRequest> _$dIRequestSerializer = new _$DIRequestSerializer();
 
-class _$FormOneSerializer implements StructuredSerializer<FormOne> {
+class _$DIRequestSerializer implements StructuredSerializer<DIRequest> {
   @override
-  final Iterable<Type> types = const [FormOne, _$FormOne];
+  final Iterable<Type> types = const [DIRequest, _$DIRequest];
   @override
-  final String wireName = 'FormOne';
+  final String wireName = 'DIRequest';
 
   @override
-  Iterable<Object?> serialize(Serializers serializers, FormOne object,
+  Iterable<Object?> serialize(Serializers serializers, DIRequest object,
       {FullType specifiedType = FullType.unspecified}) {
     final result = <Object?>[
       'title',
@@ -32,9 +32,9 @@ class _$FormOneSerializer implements StructuredSerializer<FormOne> {
   }
 
   @override
-  FormOne deserialize(Serializers serializers, Iterable<Object?> serialized,
+  DIRequest deserialize(Serializers serializers, Iterable<Object?> serialized,
       {FullType specifiedType = FullType.unspecified}) {
-    final result = new FormOneBuilder();
+    final result = new DIRequestBuilder();
 
     final iterator = serialized.iterator;
     while (iterator.moveNext()) {
@@ -61,7 +61,7 @@ class _$FormOneSerializer implements StructuredSerializer<FormOne> {
   }
 }
 
-class _$FormOne extends FormOne {
+class _$DIRequest extends DIRequest {
   @override
   final String title;
   @override
@@ -69,29 +69,29 @@ class _$FormOne extends FormOne {
   @override
   final bool signed;
 
-  factory _$FormOne([void Function(FormOneBuilder)? updates]) =>
-      (new FormOneBuilder()..update(updates))._build();
+  factory _$DIRequest([void Function(DIRequestBuilder)? updates]) =>
+      (new DIRequestBuilder()..update(updates))._build();
 
-  _$FormOne._(
+  _$DIRequest._(
       {required this.title, required this.description, required this.signed})
       : super._() {
-    BuiltValueNullFieldError.checkNotNull(title, r'FormOne', 'title');
+    BuiltValueNullFieldError.checkNotNull(title, r'DIRequest', 'title');
     BuiltValueNullFieldError.checkNotNull(
-        description, r'FormOne', 'description');
-    BuiltValueNullFieldError.checkNotNull(signed, r'FormOne', 'signed');
+        description, r'DIRequest', 'description');
+    BuiltValueNullFieldError.checkNotNull(signed, r'DIRequest', 'signed');
   }
 
   @override
-  FormOne rebuild(void Function(FormOneBuilder) updates) =>
+  DIRequest rebuild(void Function(DIRequestBuilder) updates) =>
       (toBuilder()..update(updates)).build();
 
   @override
-  FormOneBuilder toBuilder() => new FormOneBuilder()..replace(this);
+  DIRequestBuilder toBuilder() => new DIRequestBuilder()..replace(this);
 
   @override
   bool operator ==(Object other) {
     if (identical(other, this)) return true;
-    return other is FormOne &&
+    return other is DIRequest &&
         title == other.title &&
         description == other.description &&
         signed == other.signed;
@@ -109,7 +109,7 @@ class _$FormOne extends FormOne {
 
   @override
   String toString() {
-    return (newBuiltValueToStringHelper(r'FormOne')
+    return (newBuiltValueToStringHelper(r'DIRequest')
           ..add('title', title)
           ..add('description', description)
           ..add('signed', signed))
@@ -117,8 +117,8 @@ class _$FormOne extends FormOne {
   }
 }
 
-class FormOneBuilder implements Builder<FormOne, FormOneBuilder> {
-  _$FormOne? _$v;
+class DIRequestBuilder implements Builder<DIRequest, DIRequestBuilder> {
+  _$DIRequest? _$v;
 
   String? _title;
   String? get title => _$this._title;
@@ -132,9 +132,9 @@ class FormOneBuilder implements Builder<FormOne, FormOneBuilder> {
   bool? get signed => _$this._signed;
   set signed(bool? signed) => _$this._signed = signed;
 
-  FormOneBuilder();
+  DIRequestBuilder();
 
-  FormOneBuilder get _$this {
+  DIRequestBuilder get _$this {
     final $v = _$v;
     if ($v != null) {
       _title = $v.title;
@@ -146,28 +146,28 @@ class FormOneBuilder implements Builder<FormOne, FormOneBuilder> {
   }
 
   @override
-  void replace(FormOne other) {
+  void replace(DIRequest other) {
     ArgumentError.checkNotNull(other, 'other');
-    _$v = other as _$FormOne;
+    _$v = other as _$DIRequest;
   }
 
   @override
-  void update(void Function(FormOneBuilder)? updates) {
+  void update(void Function(DIRequestBuilder)? updates) {
     if (updates != null) updates(this);
   }
 
   @override
-  FormOne build() => _build();
+  DIRequest build() => _build();
 
-  _$FormOne _build() {
+  _$DIRequest _build() {
     final _$result = _$v ??
-        new _$FormOne._(
+        new _$DIRequest._(
             title: BuiltValueNullFieldError.checkNotNull(
-                title, r'FormOne', 'title'),
+                title, r'DIRequest', 'title'),
             description: BuiltValueNullFieldError.checkNotNull(
-                description, r'FormOne', 'description'),
+                description, r'DIRequest', 'description'),
             signed: BuiltValueNullFieldError.checkNotNull(
-                signed, r'FormOne', 'signed'));
+                signed, r'DIRequest', 'signed'));
     replace(_$result);
     return _$result;
   }

@@ -15,6 +15,7 @@ class LeaveInfo extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var messenger = ScaffoldMessenger.of(context);
     return StoreConnector<GlobalState, ViewModel<CadetLeave?>>(
         converter: (store) => ViewModel(store: store, content: store.state.leave),
         builder: (context, model) {
@@ -134,7 +135,14 @@ class LeaveInfo extends StatelessWidget {
 
                       //Dispatch a clear leave action
                       onPressed: () {
-                        model.dispatch(LeaveAction.clear());
+                        model.dispatch(LeaveAction.clear(
+                            onSucceed: () {
+                              messenger.showSnackBar(const SnackBar(content: Text("Leave Data Cleared Successfully")));
+                            },
+                            onFail: () {
+                              messenger.showSnackBar(const SnackBar(content: Text("Failed to Clear Leave Data")));
+                            }
+                        ));
                       },
 
                       child: Padding(

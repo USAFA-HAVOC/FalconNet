@@ -7,11 +7,13 @@ part of 'Serializers.dart';
 // **************************************************************************
 
 Serializers _$serializers = (new Serializers().toBuilder()
+      ..add(CWOCViewData.serializer)
       ..add(CadetDI.serializer)
       ..add(CadetLeave.serializer)
       ..add(CadetLeaveTransportMethod.serializer)
       ..add(CadetPass.serializer)
       ..add(CadetPassAllocation.serializer)
+      ..add(DIRequest.serializer)
       ..add(FormOne.serializer)
       ..add(GlobalState.serializer)
       ..add(Grade.serializer)
@@ -30,14 +32,17 @@ Serializers _$serializers = (new Serializers().toBuilder()
           const FullType(BuiltList, const [const FullType(FormOne)]),
           () => new ListBuilder<FormOne>())
       ..addBuilderFactory(
-          const FullType(BuiltList, const [const FullType(String)]),
-          () => new ListBuilder<String>())
-      ..addBuilderFactory(
           const FullType(BuiltList, const [const FullType(Grade)]),
           () => new ListBuilder<Grade>())
       ..addBuilderFactory(
           const FullType(BuiltList, const [const FullType(Grade)]),
-          () => new ListBuilder<Grade>()))
+          () => new ListBuilder<Grade>())
+      ..addBuilderFactory(
+          const FullType(BuiltList, const [const FullType(String)]),
+          () => new ListBuilder<String>())
+      ..addBuilderFactory(
+          const FullType(BuiltList, const [const FullType(User)]),
+          () => new ListBuilder<User>()))
     .build();
 
 // ignore_for_file: deprecated_member_use_from_same_package,type=lint

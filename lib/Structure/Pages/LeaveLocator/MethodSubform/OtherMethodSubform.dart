@@ -35,11 +35,17 @@ class OtherMethodSubformState extends State<OtherMethodSubform> {
   }
 
   ///Build leave method from field data
-  @override
   CadetLeaveTransportMethod buildLeaveMethod() {
     return CadetLeaveTransportMethod((b) => b
         ..transport_type = "other"
         ..other_info = info.text
+        ..vehicle_driver_name = ""
+        ..vehicle_travel_time_hours = 0.0
+        ..vehicle_type = ""
+        ..airline_flight_arrival_time = DateTime(3000).toUtc()
+        ..airline_flight_departure_time = DateTime(3001).toUtc()
+        ..airline_flight_number = ""
+        ..airline_name = ""
     );
   }
 

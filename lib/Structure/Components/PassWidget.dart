@@ -19,6 +19,7 @@ class PassWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var messenger = ScaffoldMessenger.of(context);
     return StoreConnector<GlobalState, ViewModel<CadetPass?>>(
         converter: (store) => ViewModel<CadetPass?>(store: store, content: store.state.pass),
         builder: (context, model) {
@@ -46,7 +47,19 @@ class PassWidget extends StatelessWidget {
                         //Closes dialog and dispatches open pass action
                         onSubmit: (pass) {
                           Navigator.of(context).pop();
-                          model.dispatch(PassAction.open(pass));
+                          model.dispatch(PassAction.open(
+                            pass,
+                            onFail: () {
+                              messenger.showSnackBar(
+                                  const SnackBar(content: Text("Unable to Open Pass"))
+                              );
+                            },
+                            onSucceed: () {
+                              messenger.showSnackBar(
+                                  const SnackBar(content: Text("Pass Opened Successfully"))
+                              );
+                            },
+                          ));
                         },
 
                         //Closes dialog
@@ -93,7 +106,19 @@ class PassWidget extends StatelessWidget {
                               //Closes dialog and dispatches update pass action
                               onSubmit: (pass) {
                                 Navigator.of(context).pop();
-                                model.dispatch(PassAction.update(pass));
+                                model.dispatch(PassAction.update(
+                                  pass,
+                                  onFail: () {
+                                    messenger.showSnackBar(
+                                        const SnackBar(content: Text("Unable to Update Pass"))
+                                    );
+                                  },
+                                  onSucceed: () {
+                                    messenger.showSnackBar(
+                                        const SnackBar(content: Text("Pass Updated Successfully"))
+                                    );
+                                  },
+                                ));
                               },
 
                               //Closes dialog
@@ -122,7 +147,18 @@ class PassWidget extends StatelessWidget {
 
                       //Dispatches close pass action
                       onPressed: () {
-                        model.dispatch(PassAction.close());
+                        model.dispatch(PassAction.close(
+                          onFail: () {
+                            messenger.showSnackBar(
+                                const SnackBar(content: Text("Unable to Close Pass"))
+                            );
+                          },
+                          onSucceed: () {
+                            messenger.showSnackBar(
+                                const SnackBar(content: Text("Pass Closed Successfully"))
+                            );
+                          },
+                        ));
                       },
 
                       child: const Padding(

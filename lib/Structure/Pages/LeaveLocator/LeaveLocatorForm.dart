@@ -94,7 +94,8 @@ class LeaveLocatorFormState extends State<LeaveLocatorForm> {
   }
 
   //Builds submission bar based on present state
-  Widget buildSubmissionBar() {
+  Widget buildSubmissionBar(BuildContext context) {
+    var messenger = ScaffoldMessenger.of(context);
     Widget submit = Expanded(
         flex: 5,
         child: Padding(
@@ -107,11 +108,21 @@ class LeaveLocatorFormState extends State<LeaveLocatorForm> {
                 //Attempts to validate form, then closes dialog if applicable
                 //Then, dispatches set leave action with leave data
                 onPressed: () {
+                  print("attempting");
                   if (key.currentState!.validate()) {
+                    print("valid");
                     if (widget.dialog) {
                       Navigator.of(context).pop();
                     }
-                    model.dispatch(LeaveAction.set(formatLeave()));
+                    model.dispatch(LeaveAction.set(
+                      formatLeave(),
+                      onSucceed: () {
+                        messenger.showSnackBar(const SnackBar(content: Text("Leave Data Submitted")));
+                      },
+                      onFail: () {
+                        messenger.showSnackBar(const SnackBar(content: Text("Failed to Submit Leave Data")));
+                      }
+                    ));
                   }
                 },
 
@@ -167,8 +178,8 @@ class LeaveLocatorFormState extends State<LeaveLocatorForm> {
         ..final_state = state
         ..final_city = cityController.text
         ..final_address = addressController.text
-        ..departure_time = combineDate(parseDate(depDateValue), parseTime(depTimeValue))
-        ..return_time = combineDate(parseDate(retDateValue), parseTime(retTimeValue))
+        ..departure_time = combineDate(parseDate(depDateValue), parseTime(depTimeValue)).toUtc()
+        ..return_time = combineDate(parseDate(retDateValue), parseTime(retTimeValue)).toUtc()
         ..cadet_id = "Change this later"
     );
   }
@@ -354,7 +365,7 @@ class LeaveLocatorFormState extends State<LeaveLocatorForm> {
 
             LeaveMethodSubform(type: LeaveMethodSubformType.arrival, controller: retMethodController),
 
-            buildSubmissionBar(),
+            buildSubmissionBar(context),
           ],
         )
     );

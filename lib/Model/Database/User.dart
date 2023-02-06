@@ -19,6 +19,7 @@ abstract class User implements Built<User, UserBuilder> {
   CadetPassAllocation? get pass_allocation;
   CadetDI? get di;
   DateTime? get last_login;
+  BuiltList<String> get roles;
 
   User._();
   factory User([Function(UserBuilder) updates]) = _$User;

@@ -1,28 +1,36 @@
 import 'package:async_redux/async_redux.dart';
 import 'package:falcon_net/Model/Database/User.dart';
-import 'package:falcon_net/Model/Store/Connection/Connection.dart';
+import 'package:falcon_net/Model/Store/Endpoints.dart';
 import 'package:falcon_net/Model/Store/GlobalStateModel.dart';
 
 class InfoAction extends ReduxAction<GlobalState> {
   final UserBuilder Function(UserBuilder c)? modify;
   final bool retrieval;
+  final void Function()? onFail;
+  final void Function()? onSucceed;
   
-  InfoAction({required this.modify}) : retrieval = false;
+  InfoAction({required this.modify, this.onFail, this.onSucceed}) : retrieval = false;
 
-  InfoAction.retrieve() : retrieval = true, modify = null;
+  InfoAction.retrieve({this.onFail, this.onSucceed}) : retrieval = true, modify = null;
 
   @override
   Future<GlobalState?> reduce() async {
-    if (retrieval) {
-      User c = await Endpoints.profile.hit(null);
-      return (state.toBuilder()..user=c.toBuilder()).build();
+    try {
+      if (retrieval) {
+        User c = await Endpoints.profileGet.hit(null);
+        onSucceed?.call();
+        return (state.toBuilder()..user=c.toBuilder()).build();
+      }
+      else {
+        UserBuilder newUser = modify!(state.user.toBuilder());
+        await Endpoints.profileEdit.hit(newUser.build());
+        onSucceed?.call();
+        return (state.toBuilder()..user=newUser).build();
+      }
     }
-    else {
-      UserBuilder newUser = modify!(state.user.toBuilder());
-      Endpoints.profileEdit.hit(newUser.build()).then((value) {
-        store.dispatch(InfoAction.retrieve());
-      });
-      return (state.toBuilder()..user=newUser).build();
+    catch (e) {
+      onFail?.call();
+      return null;
     }
   }
 }

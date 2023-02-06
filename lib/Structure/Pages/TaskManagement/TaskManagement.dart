@@ -24,7 +24,7 @@ class TaskManagement extends StatelessWidget {
     //   ));
     // }
 
-    if (state.roles.any((role) => role == "cwoc")) {
+    if (state.user.roles.any((role) => role == "cwoc")) {
       tasks.add(const ExternalTaskWidget(
           path: "/task_management/cwoc",
           title: "CWOC",
@@ -32,7 +32,7 @@ class TaskManagement extends StatelessWidget {
       ));
     }
 
-    if (state.roles.any((role) => role == "sdo")) {
+    if (state.user.roles.any((role) => role == "sdo")) {
       tasks.add(const ExternalTaskWidget(
           path: "/task_management/sdo",
           title: "SDO",
@@ -40,7 +40,7 @@ class TaskManagement extends StatelessWidget {
       ));
     }
 
-    if (state.roles.any((role) => role == "jdo")) {
+    if (state.user.roles.any((role) => role == "jdo")) {
       tasks.add(const ExternalTaskWidget(
           path: "/task_management/ordering",
           title: "JDO",

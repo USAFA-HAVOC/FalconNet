@@ -18,6 +18,7 @@ class InputValidation {
         return "Requires ${(length ?? 0).toString()} characters";
       }
     }
+    print("failed length");
     return emptyMessage ?? "Please enter something";
   };
 
@@ -28,6 +29,7 @@ class InputValidation {
         return null;
       }
     }
+    print("failed date");
     return emptyMessage ?? "Please enter a date";
   };
 
@@ -46,6 +48,7 @@ class InputValidation {
         return null;
       }
     }
+    print("failed time");
     return "Please enter a time";
   };
 
@@ -56,6 +59,7 @@ class InputValidation {
         return null;
       }
     }
+    print("failed dropdown");
     return emptyMessage ?? "Please select an option";
   };
 
@@ -68,6 +72,7 @@ class InputValidation {
         }
       }
     }
+    print("failed number");
     return emptyMessage ?? "Please enter a number";
   };
 

@@ -101,7 +101,7 @@ class PassFormState extends State<PassForm> with SingleTickerProviderStateMixin 
     return CadetPass((b) => b
       ..cadet_id = "change later"
       ..start_time = widget.existing?.start_time ?? DateTime.now().toUtc()
-      ..end_time = combineDate(endDate, endTime)
+      ..end_time = combineDate(endDate, endTime).toUtc()
       ..pass_type = type
       ..description = descriptionController.text
       ..sca_number = scaController.text == "" ? null : scaController.text
