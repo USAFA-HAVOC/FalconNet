@@ -5,6 +5,7 @@ import 'package:falcon_net/Model/Store/Actions/GradeAction.dart';
 import 'package:falcon_net/Model/Store/Actions/HistoryAction.dart';
 import 'package:falcon_net/Model/Store/Actions/InfoAction.dart';
 import 'package:falcon_net/Model/Store/Actions/LeaveAction.dart';
+import 'package:falcon_net/Model/Store/Actions/NotificationAction.dart';
 import 'package:falcon_net/Model/Store/Actions/SettingsAction.dart';
 import 'package:falcon_net/Model/Store/GlobalStateModel.dart';
 
@@ -43,6 +44,7 @@ class GlobalAction extends ReduxAction<GlobalState> {
         futures.add(dispatch(LeaveAction.retrieve(onFail: fail)));
         futures.add(dispatch(FormAction.retrieve(onFail: fail)));
         futures.add(dispatch(HistoryAction.retrieve(onFail: fail)));
+        futures.add(dispatch(NotificationAction.retrieve(onFail: fail)));
 
         //Poor man's Promise.all()
         for (var future in futures) {

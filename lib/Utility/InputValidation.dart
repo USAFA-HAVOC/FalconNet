@@ -8,6 +8,14 @@ import 'TemporalFormatting.dart';
 ///Container class for all input validation default methods
 class InputValidation {
 
+  ///Allows override of other validation function
+  static String? Function(String?) override(String? Function(String?) validator, bool override) => (String? content) {
+    if (override) {
+      return null;
+    }
+    return validator(content);
+  };
+
   ///Validates plaintext fields with an optional minimum length
   static String? Function(String?) stringLength({int? length, String? emptyMessage}) => (String? content) {
     if (content != null) {
@@ -18,7 +26,7 @@ class InputValidation {
         return "Requires ${(length ?? 0).toString()} characters";
       }
     }
-    print("failed length");
+    print(emptyMessage);
     return emptyMessage ?? "Please enter something";
   };
 

@@ -32,6 +32,7 @@ class AirlineMethodSubformState extends State<AirlineMethodSubform> {
   ///Initializes controller values based on existing data and defaults
   @override
   void initState() {
+    super.initState();
 
     //Uses existing values if provided
     if (widget.controller.value != null && widget.controller.value!.transport_type == "airline") {
@@ -83,6 +84,8 @@ class AirlineMethodSubformState extends State<AirlineMethodSubform> {
 
   @override
   Widget build(BuildContext context) {
+    bool inactive = LeaveMethodSelection.of(context).type != "airline";
+
     return Column(
       children: [
         Row(
@@ -96,7 +99,10 @@ class AirlineMethodSubformState extends State<AirlineMethodSubform> {
                     labelText: "Airline"
                 ),
                 style: Theme.of(context).textTheme.bodyLarge,
-                validator: InputValidation.stringLength(length: 0, emptyMessage: "Please enter an airline"),
+                validator: InputValidation.override(
+                    InputValidation.stringLength(length: 0, emptyMessage: "Please enter an airline"),
+                    inactive
+                ),
               ),
             ),
 
@@ -111,7 +117,10 @@ class AirlineMethodSubformState extends State<AirlineMethodSubform> {
                     labelText: "Flight Number"
                 ),
                 style: Theme.of(context).textTheme.bodyLarge,
-                validator: InputValidation.stringLength(length: 0, emptyMessage: "Please enter a flight number"),
+                validator: InputValidation.override(
+                    InputValidation.stringLength(length: 0, emptyMessage: "Please enter a flight number"),
+                    inactive
+                ),
               ),
             ),
 
@@ -125,7 +134,10 @@ class AirlineMethodSubformState extends State<AirlineMethodSubform> {
               child: DateFormField(
                 value: depDate,
                 label: "Takeoff Date",
-                validator: InputValidation.date(),
+                validator: InputValidation.override(
+                    InputValidation.date(),
+                    inactive
+                ),
                 onChanged: (change) => setState(() {
                   depDate = change;
                 }),
@@ -139,7 +151,10 @@ class AirlineMethodSubformState extends State<AirlineMethodSubform> {
               child: TimeFormField(
                 value: depTime,
                 label: "Takeoff Time",
-                validator: InputValidation.time(date: parseDate(depDate)),
+                validator: InputValidation.override(
+                    InputValidation.time(date: parseDate(depDate)),
+                    inactive
+                ),
                 onChanged: (change) => setState(() {
                   depTime = change;
                 }),
@@ -155,7 +170,10 @@ class AirlineMethodSubformState extends State<AirlineMethodSubform> {
               child: DateFormField(
                 value: arrDate,
                 label: "Landing Date",
-                validator: InputValidation.date(),
+                validator: InputValidation.override(
+                    InputValidation.date(),
+                    inactive
+                ),
                 onChanged: (change) => setState(() {
                   arrDate = change;
                 }),
@@ -169,7 +187,10 @@ class AirlineMethodSubformState extends State<AirlineMethodSubform> {
               child: TimeFormField(
                 value: arrTime,
                 label: "Landing Time",
-                validator: InputValidation.time(date: parseDate(arrDate)),
+                validator: InputValidation.override(
+                    InputValidation.time(date: parseDate(arrDate)),
+                    inactive
+                ),
                 onChanged: (change) => setState(() {
                   arrTime = change;
                 }),

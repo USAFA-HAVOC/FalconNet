@@ -18,6 +18,7 @@ class InfoAction extends ReduxAction<GlobalState> {
     try {
       if (retrieval) {
         User c = await Endpoints.profileGet.hit(null);
+        print(c);
         onSucceed?.call();
         return (state.toBuilder()..user=c.toBuilder()).build();
       }

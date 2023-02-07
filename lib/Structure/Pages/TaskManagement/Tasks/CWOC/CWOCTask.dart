@@ -1,5 +1,6 @@
 import 'dart:core';
 
+import 'package:falcon_net/Model/Store/Endpoints.dart';
 import 'package:falcon_net/Structure/Components/LoadingShimmer.dart';
 import 'package:falcon_net/Structure/Pages/TaskManagement/Tasks/CWOC/CWOCStatusWidget.dart';
 import 'package:falcon_net/Structure/Pages/TaskManagement/Tasks/Shared/SigningWidget.dart';
@@ -11,7 +12,7 @@ import '../Shared/Signee.dart';
 
 ///Page displaying information for CWOC controllers
 ///Shows statistics for groups as well as individual units
-///Allows controller to view individual cadet statuses and sign if nessecary
+///Allows controller to view individual cadet statuses and sign if necessary
 class CWOCTask extends StatefulWidget {
   const CWOCTask({super.key});
 
@@ -43,6 +44,14 @@ class CWOCTaskState extends State<CWOCTask> {
       generateInfo("CG4", 4, 25),
       ...(List<UnitInfo>.generate(10, (index) => generateInfo("CS${index + 1 + 30}", 4))),
     ]));
+
+    try {
+      print("Loading CWOC Data");
+      Endpoints.cwocUnit.hit(null).then((value) => print(value));
+    }
+    catch (e) {
+      print("Error on loading CWOC data: ${e.toString()}");
+    }
 
     connection.then((value) => (value?.units ?? []).forEach((unit) => setState(() {
       expansions[unit.name] = false;
@@ -85,14 +94,14 @@ class CWOCTaskState extends State<CWOCTask> {
     }
     else {
       messenger.showSnackBar(
-        SnackBar(content: Text("Failed to laod data for $unit"))
+        SnackBar(content: Text("Failed to load data for $unit"))
       );
     }
   }
 
   ///Builds an expansion panel from unit information
   ///Displays current di progress
-  ///Body allows controller to view individual signee status and sign if nessecary
+  ///Body allows controller to view individual signee status and sign if necessary
   ExpansionPanel buildPanel(BuildContext context, CWOCData cwoc, UnitInfo unit) {
     Widget body;
 
@@ -106,7 +115,7 @@ class CWOCTaskState extends State<CWOCTask> {
 
     //Otherwise displays a loading shimmer until results are available
     else {
-      body = LoadingShimmer(height: 500,);
+      body = const LoadingShimmer(height: 500,);
     }
 
     return ExpansionPanel(
@@ -226,7 +235,7 @@ class CWOCTaskState extends State<CWOCTask> {
 
                   //Displays a loading shimmer until results load
                   if (snapshot.data == null) {
-                    unitList = LoadingShimmer(height: 200,);
+                    unitList = const LoadingShimmer(height: 200,);
                   }
 
                   //Then displays an expansion panel list for each unit

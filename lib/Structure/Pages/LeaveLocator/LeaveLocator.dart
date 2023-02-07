@@ -8,7 +8,7 @@ import 'LeaveLocatorForm.dart';
 
 ///Leave locator page which displays either leave locator form or information
 class LeaveLocator extends StatelessWidget {
-  LeaveLocator({super.key});
+  const LeaveLocator({super.key});
 
   //Filled out leave data for testing purposes
   final CadetLeave? test = null;

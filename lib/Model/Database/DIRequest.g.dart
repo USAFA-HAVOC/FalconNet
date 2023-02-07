@@ -18,14 +18,9 @@ class _$DIRequestSerializer implements StructuredSerializer<DIRequest> {
   Iterable<Object?> serialize(Serializers serializers, DIRequest object,
       {FullType specifiedType = FullType.unspecified}) {
     final result = <Object?>[
-      'title',
-      serializers.serialize(object.title,
+      'cadet_id',
+      serializers.serialize(object.cadet_id,
           specifiedType: const FullType(String)),
-      'description',
-      serializers.serialize(object.description,
-          specifiedType: const FullType(String)),
-      'signed',
-      serializers.serialize(object.signed, specifiedType: const FullType(bool)),
     ];
 
     return result;
@@ -42,17 +37,9 @@ class _$DIRequestSerializer implements StructuredSerializer<DIRequest> {
       iterator.moveNext();
       final Object? value = iterator.current;
       switch (key) {
-        case 'title':
-          result.title = serializers.deserialize(value,
+        case 'cadet_id':
+          result.cadet_id = serializers.deserialize(value,
               specifiedType: const FullType(String))! as String;
-          break;
-        case 'description':
-          result.description = serializers.deserialize(value,
-              specifiedType: const FullType(String))! as String;
-          break;
-        case 'signed':
-          result.signed = serializers.deserialize(value,
-              specifiedType: const FullType(bool))! as bool;
           break;
       }
     }
@@ -63,22 +50,13 @@ class _$DIRequestSerializer implements StructuredSerializer<DIRequest> {
 
 class _$DIRequest extends DIRequest {
   @override
-  final String title;
-  @override
-  final String description;
-  @override
-  final bool signed;
+  final String cadet_id;
 
   factory _$DIRequest([void Function(DIRequestBuilder)? updates]) =>
       (new DIRequestBuilder()..update(updates))._build();
 
-  _$DIRequest._(
-      {required this.title, required this.description, required this.signed})
-      : super._() {
-    BuiltValueNullFieldError.checkNotNull(title, r'DIRequest', 'title');
-    BuiltValueNullFieldError.checkNotNull(
-        description, r'DIRequest', 'description');
-    BuiltValueNullFieldError.checkNotNull(signed, r'DIRequest', 'signed');
+  _$DIRequest._({required this.cadet_id}) : super._() {
+    BuiltValueNullFieldError.checkNotNull(cadet_id, r'DIRequest', 'cadet_id');
   }
 
   @override
@@ -91,18 +69,13 @@ class _$DIRequest extends DIRequest {
   @override
   bool operator ==(Object other) {
     if (identical(other, this)) return true;
-    return other is DIRequest &&
-        title == other.title &&
-        description == other.description &&
-        signed == other.signed;
+    return other is DIRequest && cadet_id == other.cadet_id;
   }
 
   @override
   int get hashCode {
     var _$hash = 0;
-    _$hash = $jc(_$hash, title.hashCode);
-    _$hash = $jc(_$hash, description.hashCode);
-    _$hash = $jc(_$hash, signed.hashCode);
+    _$hash = $jc(_$hash, cadet_id.hashCode);
     _$hash = $jf(_$hash);
     return _$hash;
   }
@@ -110,9 +83,7 @@ class _$DIRequest extends DIRequest {
   @override
   String toString() {
     return (newBuiltValueToStringHelper(r'DIRequest')
-          ..add('title', title)
-          ..add('description', description)
-          ..add('signed', signed))
+          ..add('cadet_id', cadet_id))
         .toString();
   }
 }
@@ -120,26 +91,16 @@ class _$DIRequest extends DIRequest {
 class DIRequestBuilder implements Builder<DIRequest, DIRequestBuilder> {
   _$DIRequest? _$v;
 
-  String? _title;
-  String? get title => _$this._title;
-  set title(String? title) => _$this._title = title;
-
-  String? _description;
-  String? get description => _$this._description;
-  set description(String? description) => _$this._description = description;
-
-  bool? _signed;
-  bool? get signed => _$this._signed;
-  set signed(bool? signed) => _$this._signed = signed;
+  String? _cadet_id;
+  String? get cadet_id => _$this._cadet_id;
+  set cadet_id(String? cadet_id) => _$this._cadet_id = cadet_id;
 
   DIRequestBuilder();
 
   DIRequestBuilder get _$this {
     final $v = _$v;
     if ($v != null) {
-      _title = $v.title;
-      _description = $v.description;
-      _signed = $v.signed;
+      _cadet_id = $v.cadet_id;
       _$v = null;
     }
     return this;
@@ -162,12 +123,8 @@ class DIRequestBuilder implements Builder<DIRequest, DIRequestBuilder> {
   _$DIRequest _build() {
     final _$result = _$v ??
         new _$DIRequest._(
-            title: BuiltValueNullFieldError.checkNotNull(
-                title, r'DIRequest', 'title'),
-            description: BuiltValueNullFieldError.checkNotNull(
-                description, r'DIRequest', 'description'),
-            signed: BuiltValueNullFieldError.checkNotNull(
-                signed, r'DIRequest', 'signed'));
+            cadet_id: BuiltValueNullFieldError.checkNotNull(
+                cadet_id, r'DIRequest', 'cadet_id'));
     replace(_$result);
     return _$result;
   }

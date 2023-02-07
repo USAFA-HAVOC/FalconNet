@@ -6,6 +6,7 @@ import 'package:falcon_net/Model/Database/User.dart';
 import 'package:falcon_net/Model/Database/UserNotification.dart';
 import 'package:falcon_net/Model/Database/UserPersonalInfo.dart';
 import 'package:falcon_net/Model/Store/Actions/GlobalAction.dart';
+import 'package:falcon_net/Model/Store/Actions/NotificationAction.dart';
 import 'package:falcon_net/Model/Store/Endpoints.dart';
 import 'package:falcon_net/Model/Store/GlobalStateModel.dart';
 import 'package:flutter/material.dart';
@@ -57,9 +58,14 @@ void main() {
           ).toBuilder()
       )
   );
-  // store.dispatch(NotificationAction.add(UserNotification(message: "You logged in", destination: "/")));
-  
-  //getUserData().then((cadet) => print(cadet.id), onError: (obj, stack) => print("error"));
+
+  store.dispatch(NotificationAction.add(
+      (
+        UserNotificationBuilder()
+          ..message = "Logged In"
+          ..destination = "/"
+      ).build()
+  ));
 
   runApp(FNApp(store: store));
 }

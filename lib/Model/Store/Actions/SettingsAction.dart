@@ -1,5 +1,4 @@
 import 'package:async_redux/async_redux.dart';
-import 'package:built_value/serializer.dart';
 import 'package:falcon_net/Model/Database/UserSettings.dart';
 import 'package:falcon_net/Model/Serializers.dart';
 import 'package:falcon_net/Model/Store/GlobalStateModel.dart';

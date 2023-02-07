@@ -51,6 +51,7 @@ class OtherMethodSubformState extends State<OtherMethodSubform> {
 
   @override
   Widget build(BuildContext context) {
+    bool inactive = LeaveMethodSelection.of(context).type != "other";
 
     //Text field with minimum of four lines to display as textarea
     return TextFormField(
@@ -63,7 +64,10 @@ class OtherMethodSubformState extends State<OtherMethodSubform> {
           labelText: "Description"
       ),
       style: Theme.of(context).textTheme.bodyLarge,
-      validator: InputValidation.stringLength(length: 0, emptyMessage: "Please enter a description"),
+      validator: InputValidation.override(
+          InputValidation.stringLength(length: 0, emptyMessage: "Please enter a description"),
+          inactive
+      ),
     );
   }
 }

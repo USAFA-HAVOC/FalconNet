@@ -30,6 +30,19 @@ class LeaveMethodSubform extends StatefulWidget {
   State<LeaveMethodSubform> createState() => LeaveMethodSubformState();
 }
 
+class LeaveMethodSelection extends InheritedWidget {
+  final String type;
+
+  const LeaveMethodSelection({super.key, required this.type, required super.child});
+
+  @override
+  bool updateShouldNotify(LeaveMethodSelection oldWidget) => oldWidget.type != type;
+
+  static LeaveMethodSelection of(BuildContext context) {
+    return context.dependOnInheritedWidgetOfExactType<LeaveMethodSelection>()!;
+  }
+}
+
 class LeaveMethodSubformState extends State<LeaveMethodSubform> {
   late String method;
 
@@ -81,8 +94,7 @@ class LeaveMethodSubformState extends State<LeaveMethodSubform> {
             key,
             style: Theme.of(context).textTheme.bodyLarge
         )
-    )
-    ).toList();
+    )).toList();
   }
 
   @override
@@ -113,11 +125,14 @@ class LeaveMethodSubformState extends State<LeaveMethodSubform> {
         ),
 
         //Animates a cross fade between subform children
-        AnimatedCrossFade(
+        LeaveMethodSelection(
+          type: method,
+          child: AnimatedCrossFade(
             firstChild: oldChild,
             secondChild: newChild,
             crossFadeState: CrossFadeState.showSecond,
             duration: const Duration(milliseconds: 500),
+          ),
         )
       ],
     );

@@ -35,7 +35,8 @@ class LeaveAction extends ReduxAction<GlobalState> {
         return (state.toBuilder()..leave=null).build();
       }
     }
-    catch (_) {
+    catch (e) {
+      print(e.toString());
       onFail?.call();
       return null;
     }

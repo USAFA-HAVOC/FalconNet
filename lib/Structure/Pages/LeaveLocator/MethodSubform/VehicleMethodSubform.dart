@@ -1,6 +1,5 @@
 import 'package:falcon_net/Model/Database/CadetLeave.dart';
 import 'package:falcon_net/Utility/InputValidation.dart';
-import 'package:falcon_net/Utility/TemporalFormatting.dart';
 import 'package:flutter/material.dart';
 
 import 'LeaveMethodSubform.dart';
@@ -97,6 +96,13 @@ class VehicleMethodSubformState extends State<VehicleMethodSubform> with SingleT
       return CadetLeaveTransportMethod((b) => b
           ..transport_type = "vehicle"
           ..vehicle_type = vehicleType
+          ..vehicle_travel_time_hours = 0
+          ..vehicle_driver_name = ""
+          ..other_info = ""
+          ..airline_flight_arrival_time = DateTime(3000).toUtc()
+          ..airline_flight_departure_time = DateTime(3001).toUtc()
+          ..airline_flight_number = ""
+          ..airline_name = ""
       );
     }
   }
@@ -111,11 +117,16 @@ class VehicleMethodSubformState extends State<VehicleMethodSubform> with SingleT
 
   @override
   Widget build(BuildContext context) {
+    bool inactive = LeaveMethodSelection.of(context).type != "vehicle";
+
     return Column(
       children: [
         DropdownButtonFormField(
           value: vehicleType,
-          validator: InputValidation.dropdown(),
+          validator: InputValidation.override(
+              InputValidation.dropdown(),
+              inactive,
+          ),
           onChanged: (change) {
             setState(() {
 
@@ -152,11 +163,10 @@ class VehicleMethodSubformState extends State<VehicleMethodSubform> with SingleT
                 style: Theme.of(context).textTheme.bodyLarge,
 
                 //Only require validation if vehicle type requires the time
-                validator: (content) {
-                  if (requiresInfo(vehicleType)) {
-                    return InputValidation.number()(content);
-                  }
-                },
+                validator: InputValidation.override(
+                  InputValidation.number(),
+                  inactive || !requiresInfo(vehicleType),
+                ),
               ),
 
               TextFormField(
@@ -168,11 +178,10 @@ class VehicleMethodSubformState extends State<VehicleMethodSubform> with SingleT
                 style: Theme.of(context).textTheme.bodyLarge,
 
                 //Only require validation if vehicle type requires the name
-                validator: (content) {
-                  if (requiresInfo(vehicleType)) {
-                    return InputValidation.stringLength(emptyMessage: "Please enter a name")(content);
-                  }
-                },
+                validator: InputValidation.override(
+                  InputValidation.stringLength(emptyMessage: "Please enter a name"),
+                  inactive || !requiresInfo(vehicleType),
+                ),
               ),
             ],
           ),

@@ -34,7 +34,9 @@ class SigningWidgetState extends State<SigningWidget> {
       else if (secondScore > firstScore) {
         return 1;
       }
-      return 0;
+      else {
+        return first.compareTo(second);
+      }
     });
 
     return mutable;

@@ -29,10 +29,10 @@ class DIWidget extends StatelessWidget {
         builder: (context, model) {
 
           //Whether cadet is able to sign own di based on roles
-          bool senior = model.content.roles.any((role) => role == "sign_own_di");
+          bool senior = model.content.roles.any((role) => role == "upper_two");
 
           //Determines whether time is signable
-          bool time = DateTime.now().toUtc().isAfter(combineDate(DateTime.now().toUtc(), TimeOfDay(hour: 19, minute: 50)));
+          bool time = DateTime.now().isAfter(combineDate(DateTime.now(), TimeOfDay(hour: 19, minute: 15)));
 
           //Whether cadet has already signed
           bool signed = model.content.di != null;

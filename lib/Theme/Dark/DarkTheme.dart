@@ -12,7 +12,7 @@ ThemeData darkTheme = ThemeData(
   fontFamily: "Roboto",
   canvasColor: Colors.grey,
   dialogBackgroundColor: darkCardTheme.color,
-  iconTheme: IconThemeData(color: Colors.white),
+  iconTheme: const IconThemeData(color: Colors.white),
   buttonTheme: const ButtonThemeData(
     buttonColor: Colors.blue,
     shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(20)))

@@ -9,7 +9,7 @@ ThemeData lightTheme = ThemeData(
   textTheme: lightTextTheme,
   cardTheme: lightCardTheme,
   fontFamily: "Roboto",
-  iconTheme: IconThemeData(color: Colors.black),
+  iconTheme: const IconThemeData(color: Colors.black),
   canvasColor: Colors.white70,
   buttonTheme: const ButtonThemeData(
     buttonColor: Colors.blue,
