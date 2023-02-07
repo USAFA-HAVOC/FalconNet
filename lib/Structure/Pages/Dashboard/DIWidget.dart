@@ -1,5 +1,5 @@
 import 'package:async_redux/async_redux.dart';
-import 'package:falcon_net/Model/Database/CadetDI.dart';
+import 'package:falcon_net/Model/Database/CadetAccountability.dart';
 import 'package:falcon_net/Model/Store/Actions/SignAction.dart';
 import 'package:falcon_net/Model/Store/GlobalStateModel.dart';
 import 'package:falcon_net/Structure/Components/PageWidget.dart';
@@ -8,10 +8,10 @@ import 'package:falcon_net/Utility/TemporalFormatting.dart';
 import 'package:flutter/material.dart';
 
 class DITuple {
-  final CadetDI? di;
+  final CadetAccountability? accountability;
   final List<String> roles;
 
-  const DITuple({required this.di, required this.roles});
+  const DITuple({required this.accountability, required this.roles});
 }
 
 ///Page widget for displaying DI information with signing ui
@@ -25,7 +25,7 @@ class DIWidget extends StatelessWidget {
     var messenger = ScaffoldMessenger.of(context);
     return StoreConnector<GlobalState, ViewModel<DITuple>>(
         converter: (store) =>
-            ViewModel<DITuple>(store: store, content: DITuple(di: store.state.user.di, roles: store.state.user.roles.toList())),
+            ViewModel<DITuple>(store: store, content: DITuple(accountability: store.state.user.accountability, roles: store.state.user.roles.toList())),
         builder: (context, model) {
 
           //Whether cadet is able to sign own di based on roles
@@ -35,7 +35,7 @@ class DIWidget extends StatelessWidget {
           bool time = DateTime.now().isAfter(combineDate(DateTime.now(), TimeOfDay(hour: 19, minute: 15)));
 
           //Whether cadet has already signed
-          bool signed = model.content.di != null;
+          bool signed = (model.content.accountability?.di_last_signed) != null;
 
           bool signable = !signed && senior && time;
 
@@ -67,7 +67,7 @@ class DIWidget extends StatelessWidget {
           }
           else {
             text = [Text(
-              "DI Signed by ${model.content.di!.signed_by}",
+              "DI Signed by ${model.content.accountability!.di_signed_by!}",
               style: TextStyle(
                 fontSize: Theme.of(context).textTheme.headlineMedium?.fontSize,
                 color: Colors.black,

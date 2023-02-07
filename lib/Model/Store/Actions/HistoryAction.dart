@@ -13,7 +13,7 @@ class HistoryAction extends ReduxAction<GlobalState> {
   @override
   Future<GlobalState?> reduce() async {
     try {
-      var history = await Endpoints.passHistory.hit(null);
+      var history = await Endpoints.passHistory(null);
       var sb = state.toBuilder();
       sb.history = history.toBuilder();
       onSucceed?.call();

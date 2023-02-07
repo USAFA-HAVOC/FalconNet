@@ -8,7 +8,7 @@ part of 'Serializers.dart';
 
 Serializers _$serializers = (new Serializers().toBuilder()
       ..add(CWOCViewData.serializer)
-      ..add(CadetDI.serializer)
+      ..add(CadetAccountability.serializer)
       ..add(CadetLeave.serializer)
       ..add(CadetLeaveTransportMethod.serializer)
       ..add(CadetPass.serializer)

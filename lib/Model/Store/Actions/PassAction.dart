@@ -22,17 +22,17 @@ class PassAction extends ReduxAction<GlobalState> {
   Future<GlobalState?> reduce() async {
     try {
       if (retrieve) {
-        var pass = await Endpoints.passGet.hit(null);
+        var pass = await Endpoints.passGet(null);
         onSucceed?.call();
         return (state.toBuilder()..pass=pass.toBuilder()).build();
       }
       if (pass == null) {
-        await Endpoints.passClose.hit(null);
+        await Endpoints.passClose(null);
         onSucceed?.call();
         return (state.toBuilder()..pass=null).build();
       }
 
-      await Endpoints.passSet.hit(pass!);
+      await Endpoints.passSet(pass!);
 
       var sb = state.toBuilder();
       sb.pass = pass!.toBuilder();

@@ -20,17 +20,17 @@ class LeaveAction extends ReduxAction<GlobalState> {
   Future<GlobalState?> reduce() async {
     try {
       if (retrieve) {
-        var leave = await Endpoints.leaveGet.hit(null);
+        var leave = await Endpoints.leaveGet(null);
         onSucceed?.call();
         return (state.toBuilder()..leave=leave.toBuilder()).build();
       }
       if (leave != null) {
-        await Endpoints.leaveSet.hit(leave!);
+        await Endpoints.leaveSet(leave!);
         onSucceed?.call();
         return (state.toBuilder()..leave=leave?.toBuilder()).build();
       }
       else {
-        await Endpoints.leaveClear.hit(null);
+        await Endpoints.leaveClear(null);
         onSucceed?.call();
         return (state.toBuilder()..leave=null).build();
       }

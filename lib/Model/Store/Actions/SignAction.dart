@@ -11,9 +11,12 @@ class SignAction extends ReduxAction<GlobalState> {
   @override
   Future<GlobalState?> reduce() async {
     try {
-      await Endpoints.selfSign.hit(null);
+      await Endpoints.selfSign(null);
       onSucceed?.call();
-      return (state.toBuilder()..user.di.signed_by="Test"..user.di.last_signed=DateTime.now().toUtc()).build();
+      return (state.toBuilder()
+        ..user.accountability.di_signed_by=state.user.id
+        ..user.accountability.di_last_signed=DateTime.now().toUtc()
+      ).build();
     }
     catch (_) {
       onFail?.call();

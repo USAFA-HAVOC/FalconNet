@@ -19,7 +19,7 @@ class FormAction extends ReduxAction<GlobalState> {
     try {
       var sb = state.toBuilder();
       if (retrieve) {
-        var forms = await Endpoints.formsGet.hit(null);
+        var forms = await Endpoints.formsGet(null);
         sb.forms = forms.toBuilder();
       }
       else {

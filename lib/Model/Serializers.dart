@@ -1,11 +1,10 @@
 import 'package:built_collection/built_collection.dart';
-import 'package:built_value/built_value.dart';
 import 'package:built_value/iso_8601_date_time_serializer.dart';
 import 'package:built_value/serializer.dart';
 import 'package:built_value/standard_json_plugin.dart';
 import 'package:falcon_net/Model/Database/CWOCViewData.dart';
+import 'package:falcon_net/Model/Database/CadetAccountability.dart';
 
-import 'package:falcon_net/Model/Database/CadetDI.dart';
 import 'package:falcon_net/Model/Database/CadetLeave.dart';
 import 'package:falcon_net/Model/Database/CadetPass.dart';
 import 'package:falcon_net/Model/Database/CadetPassAllocation.dart';
@@ -22,7 +21,7 @@ import 'Database/DIRequest.dart';
 part 'Serializers.g.dart';
 
 @SerializersFor([
-  CadetDI,
+  CadetAccountability,
   CadetLeave,
   CadetLeaveTransportMethod,
   CadetPass,

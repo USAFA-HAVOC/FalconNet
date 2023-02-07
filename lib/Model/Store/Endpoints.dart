@@ -7,7 +7,6 @@ import 'package:falcon_net/Model/Database/Forms.dart';
 import 'package:falcon_net/Model/Database/User.dart';
 import 'package:falcon_net/Model/Database/UserGrades.dart';
 import 'package:falcon_net/Model/Serializers.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:built_collection/built_collection.dart';
 
 import '../Database/CadetLeave.dart';
@@ -20,8 +19,6 @@ final options = BaseOptions(
   receiveTimeout: 3000,
 );
 
-final Future<SharedPreferences> preferences = SharedPreferences.getInstance();
-
 Dio dio = Dio(options);
 
 class Endpoint<Req, Res> {
@@ -31,7 +28,7 @@ class Endpoint<Req, Res> {
 
   Endpoint(this.path, {this.protected = false, this.get = false});
 
-  Future<Res> hit(Req request, {String? token}) async {
+  Future<Res> call(Req request, {String? token}) async {
     var data;
 
     if (request is String || request is FormData || request is Map || request == null) {
@@ -67,7 +64,7 @@ class Endpoints {
   static Endpoint<CadetPass, bool> passSet = Endpoint("/passes/create");
   static Endpoint<void, bool> passClose = Endpoint("/passes/close");
   static Endpoint<void, CadetPass> passGet = Endpoint("/passes/info", get: true);
-  static Endpoint<void, BuiltList<CadetPass>> passHistory = Endpoint("/passes/history", get: true);
+  static Endpoint<void, BuiltList<CadetPass>> passHistory = Endpoint("/passes/history");
   static Endpoint<void, bool> selfSign = Endpoint("/accountability/self-sign");
   static Endpoint<DIRequest, bool> sdoSign = Endpoint("/accountability/sdo-sign");
   static Endpoint<void, CWOCViewData> cwocUnit = Endpoint("/pages/cwoc", get: true);

@@ -41,12 +41,12 @@ class _$UserSerializer implements StructuredSerializer<User> {
         ..add(serializers.serialize(value,
             specifiedType: const FullType(CadetPassAllocation)));
     }
-    value = object.di;
+    value = object.accountability;
     if (value != null) {
       result
-        ..add('di')
+        ..add('accountability')
         ..add(serializers.serialize(value,
-            specifiedType: const FullType(CadetDI)));
+            specifiedType: const FullType(CadetAccountability)));
     }
     value = object.last_login;
     if (value != null) {
@@ -83,9 +83,10 @@ class _$UserSerializer implements StructuredSerializer<User> {
                   specifiedType: const FullType(CadetPassAllocation))!
               as CadetPassAllocation);
           break;
-        case 'di':
-          result.di.replace(serializers.deserialize(value,
-              specifiedType: const FullType(CadetDI))! as CadetDI);
+        case 'accountability':
+          result.accountability.replace(serializers.deserialize(value,
+                  specifiedType: const FullType(CadetAccountability))!
+              as CadetAccountability);
           break;
         case 'last_login':
           result.last_login = serializers.deserialize(value,
@@ -112,7 +113,7 @@ class _$User extends User {
   @override
   final CadetPassAllocation? pass_allocation;
   @override
-  final CadetDI? di;
+  final CadetAccountability? accountability;
   @override
   final DateTime? last_login;
   @override
@@ -125,7 +126,7 @@ class _$User extends User {
       {this.id,
       required this.personal_info,
       this.pass_allocation,
-      this.di,
+      this.accountability,
       this.last_login,
       required this.roles})
       : super._() {
@@ -148,7 +149,7 @@ class _$User extends User {
         id == other.id &&
         personal_info == other.personal_info &&
         pass_allocation == other.pass_allocation &&
-        di == other.di &&
+        accountability == other.accountability &&
         last_login == other.last_login &&
         roles == other.roles;
   }
@@ -159,7 +160,7 @@ class _$User extends User {
     _$hash = $jc(_$hash, id.hashCode);
     _$hash = $jc(_$hash, personal_info.hashCode);
     _$hash = $jc(_$hash, pass_allocation.hashCode);
-    _$hash = $jc(_$hash, di.hashCode);
+    _$hash = $jc(_$hash, accountability.hashCode);
     _$hash = $jc(_$hash, last_login.hashCode);
     _$hash = $jc(_$hash, roles.hashCode);
     _$hash = $jf(_$hash);
@@ -172,7 +173,7 @@ class _$User extends User {
           ..add('id', id)
           ..add('personal_info', personal_info)
           ..add('pass_allocation', pass_allocation)
-          ..add('di', di)
+          ..add('accountability', accountability)
           ..add('last_login', last_login)
           ..add('roles', roles))
         .toString();
@@ -198,9 +199,11 @@ class UserBuilder implements Builder<User, UserBuilder> {
   set pass_allocation(CadetPassAllocationBuilder? pass_allocation) =>
       _$this._pass_allocation = pass_allocation;
 
-  CadetDIBuilder? _di;
-  CadetDIBuilder get di => _$this._di ??= new CadetDIBuilder();
-  set di(CadetDIBuilder? di) => _$this._di = di;
+  CadetAccountabilityBuilder? _accountability;
+  CadetAccountabilityBuilder get accountability =>
+      _$this._accountability ??= new CadetAccountabilityBuilder();
+  set accountability(CadetAccountabilityBuilder? accountability) =>
+      _$this._accountability = accountability;
 
   DateTime? _last_login;
   DateTime? get last_login => _$this._last_login;
@@ -218,7 +221,7 @@ class UserBuilder implements Builder<User, UserBuilder> {
       _id = $v.id;
       _personal_info = $v.personal_info.toBuilder();
       _pass_allocation = $v.pass_allocation?.toBuilder();
-      _di = $v.di?.toBuilder();
+      _accountability = $v.accountability?.toBuilder();
       _last_login = $v.last_login;
       _roles = $v.roles.toBuilder();
       _$v = null;
@@ -248,7 +251,7 @@ class UserBuilder implements Builder<User, UserBuilder> {
               id: id,
               personal_info: personal_info.build(),
               pass_allocation: _pass_allocation?.build(),
-              di: _di?.build(),
+              accountability: _accountability?.build(),
               last_login: last_login,
               roles: roles.build());
     } catch (_) {
@@ -258,8 +261,8 @@ class UserBuilder implements Builder<User, UserBuilder> {
         personal_info.build();
         _$failedField = 'pass_allocation';
         _pass_allocation?.build();
-        _$failedField = 'di';
-        _di?.build();
+        _$failedField = 'accountability';
+        _accountability?.build();
 
         _$failedField = 'roles';
         roles.build();

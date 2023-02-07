@@ -47,7 +47,7 @@ class CWOCTaskState extends State<CWOCTask> {
 
     try {
       print("Loading CWOC Data");
-      Endpoints.cwocUnit.hit(null).then((value) => print(value));
+      Endpoints.cwocUnit(null).then((value) => print(value));
     }
     catch (e) {
       print("Error on loading CWOC data: ${e.toString()}");

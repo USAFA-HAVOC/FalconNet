@@ -1,6 +1,6 @@
 import 'package:async_redux/async_redux.dart';
 import 'package:built_collection/src/list.dart';
-import 'package:falcon_net/Model/Database/CadetDI.dart';
+import 'package:falcon_net/Model/Database/CadetAccountability.dart';
 import 'package:falcon_net/Model/Database/CadetPassAllocation.dart';
 import 'package:falcon_net/Model/Database/User.dart';
 import 'package:falcon_net/Model/Database/UserNotification.dart';
@@ -43,9 +43,9 @@ void main() {
                   ..weekday_overnight_passes = 0
                   ..weekend_overnight_passes = 0
               ).toBuilder()
-              ..di = CadetDI((b3) => b3
-                  ..last_signed = DateTime.now().toUtc()
-                  ..signed_by = ""
+              ..accountability = CadetAccountability((b3) => b3
+                  ..di_last_signed = DateTime.now().toUtc()
+                  ..di_signed_by = ""
               ).toBuilder()
           ).toBuilder()
           ..notifications = ListBuilder<UserNotification>([])

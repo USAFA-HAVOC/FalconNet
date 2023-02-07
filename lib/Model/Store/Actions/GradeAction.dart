@@ -13,7 +13,7 @@ class GradeAction extends ReduxAction<GlobalState> {
   @override
   Future<GlobalState?> reduce() async {
     try {
-      var grades = await Endpoints.grades.hit(null);
+      var grades = await Endpoints.grades(null);
       var sb = state.toBuilder();
       sb.grades = grades.toBuilder();
       onSucceed?.call();
