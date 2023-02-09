@@ -1,11 +1,11 @@
+import 'package:falcon_net/Model/Database/UnitSummary.dart';
 import 'package:falcon_net/Structure/Components/LoadingShimmer.dart';
-import 'package:falcon_net/Structure/Pages/TaskManagement/Tasks/Shared/CWOCData.dart';
 import 'package:flutter/material.dart';
 
 import '../../../../Components/PageWidget.dart';
 
 class CWOCStatusWidget extends StatelessWidget {
-  final List<UnitInfo> units;
+  final List<UnitSummary> units;
   final String label;
 
   const CWOCStatusWidget({super.key, required this.units, required this.label});

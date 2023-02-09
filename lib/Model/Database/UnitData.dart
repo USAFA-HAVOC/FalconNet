@@ -1,8 +1,6 @@
 import 'package:built_collection/built_collection.dart';
 import 'package:built_value/built_value.dart';
-import 'package:built_value/iso_8601_date_time_serializer.dart';
 import 'package:built_value/serializer.dart';
-import 'package:built_value/standard_json_plugin.dart';
 
 import 'User.dart';
 
@@ -15,9 +13,18 @@ abstract class UnitData implements Built<UnitData, UnitDataBuilder> {
   int get unsigned;
   int get out;
   int get total;
-  int? get group;
+  String? get group;
   String get name;
   BuiltList<User> get members;
+
+  UnitData sign(User member) {
+
+    return (toBuilder()
+      ..signed = signed + 1
+      ..unsigned = unsigned - 1
+      ..members=BuiltList<User>((members.where((u) => u.id != member.id).toList() + [member.sign()])).toBuilder()
+    ).build();
+  }
 
   UnitData._();
   factory UnitData([void Function(UnitDataBuilder) updates]) = _$UnitData;

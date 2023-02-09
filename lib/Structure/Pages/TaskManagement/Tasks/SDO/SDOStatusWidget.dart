@@ -1,8 +1,8 @@
 import 'package:falcon_net/Structure/Components/LoadingShimmer.dart';
-import 'package:falcon_net/Structure/Pages/TaskManagement/Tasks/Shared/CWOCData.dart';
-import 'package:falcon_net/Structure/Pages/TaskManagement/Tasks/Shared/Signee.dart';
 import 'package:flutter/material.dart';
 
+import '../../../../../Model/Database/UnitData.dart';
+import '../../../../../Model/Database/User.dart';
 import '../../../../Components/PageWidget.dart';
 
 ///Displays present status of SDO signing based on di object
@@ -23,16 +23,31 @@ class SDOStatusWidget extends StatelessWidget {
       );
     }
 
-    var unsignedCount = di!.members.where((signee) => signee.status == DIStatus.unsigned).length;
-    var signedCount = di!.members.where((signee) => signee.status == DIStatus.signedDI).length;
-    var signedOutCount = di!.members.where((signee) => signee.status == DIStatus.signedOut).length;
+    String status(User member) {
+      var status = "unsigned";
+      if (member.accountability != null) {
+        if (member.accountability!.current_pass != null) {
+          status = "out";
+        }
+        if (member.accountability!.di_last_signed != null) {
+          if (DateTime.now().toUtc().difference(member.accountability!.di_last_signed!.toUtc()).compareTo(Duration(days: 1)) < 0) {
+            status = "signed";
+          }
+        }
+      }
+      return status;
+    }
+
+    var unsignedCount = di!.members.where((signee) => status(signee) == "unsigned").length;
+    var signedCount = di!.members.where((signee) => status(signee) == "signed").length;
+    var outCount = di!.members.where((signee) => status(signee) == "out").length;
 
     double percent;
     if (di!.members.isEmpty) {
       percent = 0;
     }
     else {
-      percent = (signedCount + signedOutCount) / di!.members.length;
+      percent = (signedCount + outCount) / di!.members.length;
     }
     return PageWidget(
       title: "Current Status",
@@ -79,7 +94,7 @@ class SDOStatusWidget extends StatelessWidget {
                   ),
 
                   Text(
-                    "Signed-Out: ${signedOutCount.toString()}",
+                    "Signed-Out: ${outCount.toString()}",
                     style: Theme.of(context).textTheme.titleSmall,
                   ),
 

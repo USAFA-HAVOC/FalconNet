@@ -39,7 +39,8 @@ class _$UnitDataSerializer implements StructuredSerializer<UnitData> {
     if (value != null) {
       result
         ..add('group')
-        ..add(serializers.serialize(value, specifiedType: const FullType(int)));
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(String)));
     }
     return result;
   }
@@ -73,7 +74,7 @@ class _$UnitDataSerializer implements StructuredSerializer<UnitData> {
           break;
         case 'group':
           result.group = serializers.deserialize(value,
-              specifiedType: const FullType(int)) as int?;
+              specifiedType: const FullType(String)) as String?;
           break;
         case 'name':
           result.name = serializers.deserialize(value,
@@ -102,7 +103,7 @@ class _$UnitData extends UnitData {
   @override
   final int total;
   @override
-  final int? group;
+  final String? group;
   @override
   final String name;
   @override
@@ -195,9 +196,9 @@ class UnitDataBuilder implements Builder<UnitData, UnitDataBuilder> {
   int? get total => _$this._total;
   set total(int? total) => _$this._total = total;
 
-  int? _group;
-  int? get group => _$this._group;
-  set group(int? group) => _$this._group = group;
+  String? _group;
+  String? get group => _$this._group;
+  set group(String? group) => _$this._group = group;
 
   String? _name;
   String? get name => _$this._name;

@@ -13,7 +13,7 @@ abstract class UnitSummary implements Built<UnitSummary, UnitSummaryBuilder> {
   int get unsigned;
   int get out;
   int get total;
-  int? get group;
+  String? get group;
   String get name;
 
   UnitSummary._();

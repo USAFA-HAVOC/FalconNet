@@ -1,11 +1,12 @@
-import 'package:falcon_net/Structure/Pages/TaskManagement/Tasks/Shared/CWOCData.dart';
+import 'package:falcon_net/Model/Database/DIRequest.dart';
+import 'package:falcon_net/Model/Store/Endpoints.dart';
 import 'package:falcon_net/Structure/Pages/TaskManagement/Tasks/Shared/SigningWidget.dart';
 import 'package:falcon_net/Structure/Pages/TaskManagement/Tasks/SDO/SDOStatusWidget.dart';
-import 'package:falcon_net/Utility/UnitTesting.dart';
 import 'package:flutter/material.dart';
 
+import '../../../../../Model/Database/UnitData.dart';
+import '../../../../../Model/Database/User.dart';
 import '../../../../Components/PageWidget.dart';
-import '../Shared/Signee.dart';
 
 ///Task for completing DI as Squadron SDO
 ///Shows present status and allows SDO to sign individuals' DIs
@@ -23,25 +24,20 @@ class SDOTaskState extends State<SDOTask> {
   void initState() {
     super.initState();
 
-    /// todo: replace with api call
-    future = Future<UnitData?>.delayed(Duration(seconds: 1), () => generateUnit(generateInfo("CS12", 2)));
+    future = Endpoints.sdo("self");
   }
 
-  void sign(Signee member, ScaffoldMessengerState messenger) async {
+  void sign(User member, ScaffoldMessengerState messenger) async {
     var unit = await future;
     if (unit != null) {
+      try {
+        await Endpoints.sdoSign(DIRequest((b) => b..cadet_id = member.id));
 
-      /// todo: replace with api call
-      var result = Future<bool>.delayed(Duration(milliseconds: 250), () => true);
-
-      var success = await result;
-      if (success) {
         setState(() {
           future = Future<UnitData?>.value(unit.sign(member));
         });
       }
-
-      else {
+      catch(e) {
         messenger.showSnackBar(
           const SnackBar(content: Text("Failed to sign"))
         );

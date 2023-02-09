@@ -85,7 +85,6 @@ class FNApp extends StatelessWidget {
         String token = s.split("code=").last;
         login(token);
         store.dispatch(GlobalAction.initialize());
-        //store.dispatch(InfoAction.retrieve());
       }
       else {
         html.window.open('https://api.ethanchapman.dev/', "_self");

@@ -1,15 +1,15 @@
-import 'package:falcon_net/Structure/Pages/TaskManagement/Tasks/Shared/CWOCData.dart';
 import 'package:flutter/material.dart';
 import 'package:shimmer/shimmer.dart';
 import  'package:string_similarity/string_similarity.dart';
 
-import '../SDO/SignBox.dart';
-import 'Signee.dart';
+import '../../../../../Model/Database/UnitData.dart';
+import '../../../../../Model/Database/User.dart';
+import 'SignBox.dart';
 
 ///List displaying all squadron names and allowing SDO to sign di
 class SigningWidget extends StatefulWidget {
   final UnitData? di;
-  final void Function(Signee) onSign;
+  final void Function(User) onSign;
 
   const SigningWidget({super.key, required this.di, required this.onSign});
 
@@ -19,12 +19,12 @@ class SigningWidget extends StatefulWidget {
 
 class SigningWidgetState extends State<SigningWidget> {
   String query = "";
-
-  List<Signee> search(List<Signee> applicable, String q) {
+  
+  List<User> search(List<User> applicable, String q) {
     var mutable = applicable;
     mutable.sort((a, b) {
-      var first = a.name.toLowerCase();
-      var second = b.name.toLowerCase();
+      var first = a.personal_info.full_name.toLowerCase();
+      var second = b.personal_info.full_name.toLowerCase();
       var query = q.toLowerCase();
       var firstScore = first.similarityTo(query);
       var secondScore = second.similarityTo(query);
@@ -58,7 +58,7 @@ class SigningWidgetState extends State<SigningWidget> {
       );
     }
 
-    var ordered = search(widget.di!.members, query);
+    var ordered = search(widget.di!.members.toList(), query);
 
     return ListView.builder(
       primary: false,
@@ -78,9 +78,10 @@ class SigningWidgetState extends State<SigningWidget> {
         }
 
         var member = ordered[index - 1];
+
         return SignBox(
-          name: member.name,
-          status: member.status,
+          name: member.personal_info.full_name,
+          status: member.status(),
           onSign: () => widget.onSign(member),
         );
       },

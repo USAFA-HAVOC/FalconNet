@@ -1,4 +1,3 @@
-import 'package:falcon_net/Structure/Pages/TaskManagement/Tasks/Shared/Signee.dart';
 import 'package:flutter/material.dart';
 
 import '../../../../Components/ConfirmationDialog.dart';
@@ -6,7 +5,7 @@ import '../../../../Components/ConfirmationDialog.dart';
 ///Box for displaying name, signing status, and signing button
 class SignBox extends StatelessWidget {
   final String name;
-  final DIStatus status;
+  final String status;
   final void Function() onSign;
 
   const SignBox({super.key, required this.onSign, required this.name, required this.status});
@@ -25,7 +24,7 @@ class SignBox extends StatelessWidget {
             ),
           ),
 
-          if (status == DIStatus.unsigned) Expanded(
+          if (status == "unsigned") Expanded(
             flex: 4,
             child: ElevatedButton(
               onPressed: () => showDialog(context: context, builder: (context) => ConfirmationDialog(
@@ -50,7 +49,7 @@ class SignBox extends StatelessWidget {
               onPressed: null,
               child: Padding(
                 padding: EdgeInsets.symmetric(vertical: 5),
-                child: Text(status == DIStatus.signedDI ? "Signed" : "Signed-Out"),
+                child: Text(status == "signed" ? "Signed" : "Signed-Out"),
               ),
             ),
           )
