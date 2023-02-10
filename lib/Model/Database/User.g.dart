@@ -24,7 +24,7 @@ class _$UserSerializer implements StructuredSerializer<User> {
       'roles',
       serializers.serialize(object.roles,
           specifiedType:
-              const FullType(BuiltList, const [const FullType(String)])),
+              const FullType(BuiltList, const [const FullType(TimedRole)])),
     ];
     Object? value;
     value = object.id;
@@ -95,7 +95,7 @@ class _$UserSerializer implements StructuredSerializer<User> {
         case 'roles':
           result.roles.replace(serializers.deserialize(value,
                   specifiedType: const FullType(
-                      BuiltList, const [const FullType(String)]))!
+                      BuiltList, const [const FullType(TimedRole)]))!
               as BuiltList<Object?>);
           break;
       }
@@ -117,7 +117,7 @@ class _$User extends User {
   @override
   final DateTime? last_login;
   @override
-  final BuiltList<String> roles;
+  final BuiltList<TimedRole> roles;
 
   factory _$User([void Function(UserBuilder)? updates]) =>
       (new UserBuilder()..update(updates))._build();
@@ -209,9 +209,10 @@ class UserBuilder implements Builder<User, UserBuilder> {
   DateTime? get last_login => _$this._last_login;
   set last_login(DateTime? last_login) => _$this._last_login = last_login;
 
-  ListBuilder<String>? _roles;
-  ListBuilder<String> get roles => _$this._roles ??= new ListBuilder<String>();
-  set roles(ListBuilder<String>? roles) => _$this._roles = roles;
+  ListBuilder<TimedRole>? _roles;
+  ListBuilder<TimedRole> get roles =>
+      _$this._roles ??= new ListBuilder<TimedRole>();
+  set roles(ListBuilder<TimedRole>? roles) => _$this._roles = roles;
 
   UserBuilder();
 

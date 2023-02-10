@@ -1,40 +1,63 @@
-import 'package:falcon_net/Model/Database/Role.dart';
+import 'package:built_collection/built_collection.dart';
 import 'package:falcon_net/Structure/Components/LoadingShimmer.dart';
-import 'package:falcon_net/Structure/Pages/TaskManagement/Tasks/Delegation/DelegationData.dart';
 import 'package:flutter/material.dart';
 import  'package:string_similarity/string_similarity.dart';
 
+import '../../../../../Model/Database/Delegate.dart';
+import '../../../../../Model/Database/TimedRole.dart';
 import 'DelegateBar.dart';
 import 'DelegationForm.dart';
 
 ///Applet for supervisors to assign time based roles to subordinates
 ///Allows for both adding, removing, and editing of roles of subordinates
-class Delegation extends StatefulWidget {
-  const Delegation({super.key});
+class DelegationTask extends StatefulWidget {
+  final List<TimedRole> owner;
+
+  const DelegationTask({super.key, required this.owner});
 
   @override
-  State<StatefulWidget> createState() => DelegationState();
+  State<StatefulWidget> createState() => DelegationTaskState();
 }
 
-class DelegationState extends State<Delegation> {
-  late Future<DelegationData> connection;
+class DelegationTaskState extends State<DelegationTask> {
+  late Future<BuiltList<Delegate>> connection;
   String query = "";
 
   @override
   void initState() {
     super.initState();
-    connection = Future.delayed(Duration(milliseconds: 250), () => DelegationData(
-        delegates: [
-          Delegate(name: "Rylie Anderson", id: "ra", roles: [TimedRole(role: Role.cwoc, start: DateTime(2022, 11, 24), end: DateTime(2023, 1, 23))]),
-          Delegate(name: "Ethan Chapman", id: "ec", roles: []),
-          Delegate(name: "Enrique Oti", id: "eo", roles: [TimedRole(role: Role.sdo, start: DateTime(2022, 11, 24), end: DateTime(2023, 1, 21))]),
-          Delegate(name: "David Petzold", id: "dp", roles: []),
-        ],
-
-        owner: [
-          TimedRole(role: Role.wing_admin, start: DateTime(2022, 11, 23), end: DateTime(2023, 1, 22)),
-        ]
-    ));
+    connection = Future.delayed(Duration(milliseconds: 250), () => BuiltList([
+      Delegate((b) => b
+          ..name = "Rylie Anderson"
+          ..id = "ra"
+          ..roles = BuiltList<TimedRole>([
+            TimedRole((t) => t
+                ..role = "cwoc"
+                ..start = DateTime(2022, 11, 24)
+                ..end = DateTime(2023, 1, 23))
+          ]).toBuilder()
+      ),
+      Delegate((b) => b
+        ..name = "Ethan Chapman"
+        ..id = "ec"
+        ..roles = BuiltList<TimedRole>([
+          TimedRole((t) => t
+            ..role = "sdo"
+            ..start = DateTime(2022, 11, 24)
+            ..end = DateTime(2023, 1, 23))
+        ]).toBuilder()
+      ),
+      Delegate((b) => b
+        ..name = "Enrique Oti"
+        ..id = "eo"
+        ..roles = BuiltList<TimedRole>([]).toBuilder()
+      ),
+      Delegate((b) => b
+        ..name = "David Petzold"
+        ..id = "dp"
+        ..roles = BuiltList<TimedRole>([]).toBuilder()
+      ),
+    ]));
   }
 
   ///Assigns a delegate to a list of roles
@@ -48,7 +71,10 @@ class DelegationState extends State<Delegation> {
       var current = await connection;
 
       setState(() {
-        connection = Future.value(current.assign(delegate, roles));
+        var others = current.toList().where((d) => d.id != d.id).toList();
+        var modified = delegate.rebuild((d) => d.roles.addAll(roles));
+
+        connection = Future.value(BuiltList(others + [modified]));
       });
     }
     else {
@@ -119,7 +145,7 @@ class DelegationState extends State<Delegation> {
             future: connection,
             builder: (context, snapshot) {
               if (snapshot.data != null) {
-                var ordered = search(snapshot.data!.delegates, query);
+                var ordered = search(snapshot.data!.toList(), query);
                 return ListView.builder(
                     shrinkWrap: true,
                     primary: false,
@@ -139,7 +165,7 @@ class DelegationState extends State<Delegation> {
 
                       return DelegateBar(
                           delegate: ordered[index - 1],
-                          onAssign: (delegate) => openDelegationForm(context, delegate, snapshot.data!.owner)
+                          onAssign: (delegate) => openDelegationForm(context, delegate, widget.owner)
                       );
                     }
                 );

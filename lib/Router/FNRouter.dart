@@ -1,7 +1,11 @@
+import 'package:async_redux/async_redux.dart';
+import 'package:falcon_net/Structure/Components/ViewModel.dart';
 import 'package:falcon_net/Structure/Pages/TaskManagement/TaskManagement.dart';
-import 'package:falcon_net/Structure/Pages/TaskManagement/Tasks/Delegation/Delegation.dart';
+import 'package:falcon_net/Structure/Pages/TaskManagement/Tasks/Delegation/DelegationTask.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import '../Model/Database/TimedRole.dart';
+import '../Model/Store/GlobalStateModel.dart';
 import '../Structure/FNScaffold.dart';
 import '../Structure/Pages/Dashboard/Dashboard.dart';
 import '../Structure/Pages/Grades.dart';
@@ -71,7 +75,10 @@ final GoRouter fnRouter = GoRouter(routes: [
                     GoRoute(
                       path: "delegation",
                       builder: (context, state) =>
-                          const FNBackground(child: Delegation()),
+                        StoreConnector<GlobalState, ViewModel<List<TimedRole>>>(
+                          converter: (store) => ViewModel(store: store, content: store.state.user.roles.toList()),
+                          builder: (context, model) => FNBackground(child: DelegationTask(owner: model.content)),
+                        )
                     ),
                   ]),
             ])

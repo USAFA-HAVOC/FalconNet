@@ -3,6 +3,7 @@ import 'package:built_value/built_value.dart';
 import 'package:built_value/iso_8601_date_time_serializer.dart';
 import 'package:built_value/serializer.dart';
 import 'package:built_value/standard_json_plugin.dart';
+import 'package:falcon_net/Model/Database/TimedRole.dart';
 
 import 'CadetAccountability.dart';
 import 'CadetPassAllocation.dart';
@@ -19,7 +20,7 @@ abstract class User implements Built<User, UserBuilder> {
   CadetPassAllocation? get pass_allocation;
   CadetAccountability? get accountability;
   DateTime? get last_login;
-  BuiltList<String> get roles;
+  BuiltList<TimedRole> get roles;
 
   User sign() {
     CadetAccountability signedAccountability =

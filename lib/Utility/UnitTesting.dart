@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:falcon_net/Model/Database/CadetAccountability.dart';
 import 'package:falcon_net/Model/Database/CadetPass.dart';
+import 'package:falcon_net/Model/Database/TimedRole.dart';
 import 'package:falcon_net/Model/Database/UnitData.dart';
 import 'package:falcon_net/Model/Database/UnitSummary.dart';
 import 'package:falcon_net/Model/Database/UserPersonalInfo.dart';
@@ -56,7 +57,7 @@ List<User> generateMembers(int count, String status, String unit) {
           ..current_pass = pass?.toBuilder()
       ).toBuilder()
       ..id = randString(15)
-      ..roles = BuiltList<String>().toBuilder()
+      ..roles = BuiltList<TimedRole>().toBuilder()
     ));
   }
 

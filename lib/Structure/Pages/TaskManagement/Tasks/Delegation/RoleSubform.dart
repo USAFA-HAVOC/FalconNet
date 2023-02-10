@@ -1,4 +1,3 @@
-import 'package:falcon_net/Model/Database/Role.dart';
 import 'package:falcon_net/Structure/Components/DateFormField.dart';
 import 'package:falcon_net/Utility/TemporalFormatting.dart';
 import 'package:flutter/material.dart';
@@ -25,10 +24,10 @@ class RoleSubform extends StatelessWidget {
 
     //If role permissions extend beyond owners, role is uneditable
     var editable = applicable.any((given) {
-      return given.role.isGreaterThan(value.role);
+      return given.isGreaterThan(value);
     });
 
-    print(applicable.map((e) => e.role).toList().highest!);
+    var highest = applicable.reduce((value, role) => value.isGreaterThan(role) ? value : role);
 
     if (!editable) {
       return DecoratedBox(
@@ -47,6 +46,10 @@ class RoleSubform extends StatelessWidget {
           )
       );
     }
+
+    var earliest = applicable.firstWhere((r) => r.role == value.role).start.toUtc();
+    var latest = applicable.firstWhere((r) => r.role == value.role).end.toUtc();
+
     return DecoratedBox(
       decoration: BoxDecoration(
         border: Border.all(color: Theme.of(context).dividerColor, width: 5),
@@ -58,26 +61,26 @@ class RoleSubform extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            DropdownButtonFormField<Role>(
+            DropdownButtonFormField<String>(
               value: value.role,
               decoration: InputDecoration(
                   labelStyle: Theme.of(context).textTheme.bodyLarge,
                   labelText: "Role"
               ),
-              items: applicable.map((e) => e.role).toList().highest!.delegable.map<DropdownMenuItem<Role>?>((possible) {
-                return DropdownMenuItem<Role>(
+              items: highest.delegable().map<DropdownMenuItem<String>?>((possible) {
+                return DropdownMenuItem<String>(
                   value: possible,
-                  child: Text(possible.description),
+                  child: Text(possible),
                 );
               })
                   .where((item) => item != null)
                   .map((e) => e!)
                   .toList(),
               onChanged: (selection) {
-                onChanged(TimedRole(
-                  role: selection!,
-                  start: value.start,
-                  end: value.end,
+                onChanged(TimedRole((b) => b
+                  ..role = selection!
+                  ..start = value.start
+                  ..end = value.end
                 ));
               },
             ),
@@ -92,12 +95,12 @@ class RoleSubform extends StatelessWidget {
                     label: "Start",
                     validator: InputValidation.date(),
                     value: describeDate(value.start),
-                    firstDate: applicable.earliest(role: value.role, last: value.end),
+                    firstDate: earliest.compareTo(DateTime.now().toUtc()) < 0 ? DateTime.now().toUtc() : earliest,
                     lastDate: value.end,
-                    onChanged: (change) => onChanged(TimedRole(
-                      role: value.role,
-                      start: parseDate(change),
-                      end: value.end,
+                    onChanged: (change) => onChanged(TimedRole((b) => b
+                      ..role = value.role
+                      ..start = parseDate(change)
+                      ..end = value.end
                     )),
                   )
                 ),
@@ -111,11 +114,11 @@ class RoleSubform extends StatelessWidget {
                     validator: InputValidation.date(),
                     value: describeDate(value.end),
                     firstDate: value.start,
-                    lastDate: applicable.latest(role: value.role, first: value.start),
-                    onChanged: (change) => onChanged(TimedRole(
-                      role: value.role,
-                      start: value.start,
-                      end: parseDate(change),
+                    lastDate: latest,
+                    onChanged: (change) => onChanged(TimedRole((b) => b
+                      ..role = value.role
+                      ..start = value.start
+                      ..end = parseDate(change)
                     )),
                   )
                 ),

@@ -25,7 +25,13 @@ class DIWidget extends StatelessWidget {
     var messenger = ScaffoldMessenger.of(context);
     return StoreConnector<GlobalState, ViewModel<DITuple>>(
         converter: (store) =>
-            ViewModel<DITuple>(store: store, content: DITuple(accountability: store.state.user.accountability, roles: store.state.user.roles.toList())),
+            ViewModel<DITuple>(
+                store: store,
+                content: DITuple(
+                    accountability: store.state.user.accountability,
+                    roles: store.state.user.roles.map((r) => r.role).toList()
+                )
+            ),
         builder: (context, model) {
 
           //Whether cadet is able to sign own di based on roles
