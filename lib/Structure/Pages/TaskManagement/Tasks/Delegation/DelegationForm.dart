@@ -1,8 +1,8 @@
-import 'package:falcon_net/Model/Database/Role.dart';
 import 'package:falcon_net/Structure/Pages/TaskManagement/Tasks/Delegation/RoleSubform.dart';
 import 'package:flutter/material.dart';
 
-import 'DelegationData.dart';
+import '../../../../../Model/Database/Delegate.dart';
+import '../../../../../Model/Database/TimedRole.dart';
 
 class DelegationForm extends StatefulWidget {
   final Delegate delegate;
@@ -28,7 +28,7 @@ class DelegationFormState extends State<DelegationForm> {
   @override
   void initState() {
     super.initState();
-    roles = widget.delegate.roles;
+    roles = widget.delegate.roles.toList();
   }
 
   @override
@@ -64,10 +64,10 @@ class DelegationFormState extends State<DelegationForm> {
               child: ElevatedButton(
                 onPressed: () => setState(() {
                   roles.add(
-                      TimedRole(
-                          role: Role.sdo,
-                          start: DateTime.now().toUtc(),
-                          end: DateTime.now().toUtc()
+                      TimedRole((b) => b
+                          ..role = "sdo"
+                          ..start = DateTime.now().toUtc()
+                          ..end = DateTime.now().toUtc()
                       )
                   );
                 }),

@@ -1,8 +1,7 @@
-import 'package:falcon_net/Model/Database/Role.dart';
 import 'package:falcon_net/Utility/TemporalFormatting.dart';
 import 'package:flutter/material.dart';
 
-import 'DelegationData.dart';
+import '../../../../../Model/Database/Delegate.dart';
 
 ///Displays a bar showing delegate name, current roles, and an assignment button
 class DelegateBar extends StatelessWidget {
@@ -21,7 +20,7 @@ class DelegateBar extends StatelessWidget {
     }
     else {
       for (var timed in delegate.roles) {
-        roleDescription += "${timed.role.description} (${describeDate(timed.start, true)} - ${describeDate(timed.end, true)}), ";
+        roleDescription += "${timed.role} (${describeDate(timed.start, true)} - ${describeDate(timed.end, true)}), ";
       }
     }
 
