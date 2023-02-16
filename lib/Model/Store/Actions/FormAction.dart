@@ -1,6 +1,8 @@
 import 'package:async_redux/async_redux.dart';
+import 'package:dio/dio.dart';
 import 'package:falcon_net/Model/Database/Forms.dart';
 import 'package:falcon_net/Model/Store/GlobalStateModel.dart';
+import 'package:falcon_net/Utility/ErrorFormatting.dart';
 
 import '../Endpoints.dart';
 
@@ -29,7 +31,8 @@ class FormAction extends ReduxAction<GlobalState> {
       onSucceed?.call();
       return sb.build();
     }
-    catch (_) {
+    catch (e) {
+      displayError(prefix: "Form", exception: e);
       onFail?.call();
       return null;
     }

@@ -43,6 +43,13 @@ class _$CadetPassSerializer implements StructuredSerializer<CadetPass> {
           specifiedType: const FullType(String)),
     ];
     Object? value;
+    value = object.id;
+    if (value != null) {
+      result
+        ..add('id')
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(String)));
+    }
     value = object.sca_number;
     if (value != null) {
       result
@@ -64,6 +71,10 @@ class _$CadetPassSerializer implements StructuredSerializer<CadetPass> {
       iterator.moveNext();
       final Object? value = iterator.current;
       switch (key) {
+        case 'id':
+          result.id = serializers.deserialize(value,
+              specifiedType: const FullType(String)) as String?;
+          break;
         case 'cadet_id':
           result.cadet_id = serializers.deserialize(value,
               specifiedType: const FullType(String))! as String;
@@ -109,6 +120,8 @@ class _$CadetPassSerializer implements StructuredSerializer<CadetPass> {
 
 class _$CadetPass extends CadetPass {
   @override
+  final String? id;
+  @override
   final String cadet_id;
   @override
   final String pass_type;
@@ -131,7 +144,8 @@ class _$CadetPass extends CadetPass {
       (new CadetPassBuilder()..update(updates))._build();
 
   _$CadetPass._(
-      {required this.cadet_id,
+      {this.id,
+      required this.cadet_id,
       required this.pass_type,
       required this.start_time,
       required this.end_time,
@@ -164,6 +178,7 @@ class _$CadetPass extends CadetPass {
   bool operator ==(Object other) {
     if (identical(other, this)) return true;
     return other is CadetPass &&
+        id == other.id &&
         cadet_id == other.cadet_id &&
         pass_type == other.pass_type &&
         start_time == other.start_time &&
@@ -178,6 +193,7 @@ class _$CadetPass extends CadetPass {
   @override
   int get hashCode {
     var _$hash = 0;
+    _$hash = $jc(_$hash, id.hashCode);
     _$hash = $jc(_$hash, cadet_id.hashCode);
     _$hash = $jc(_$hash, pass_type.hashCode);
     _$hash = $jc(_$hash, start_time.hashCode);
@@ -194,6 +210,7 @@ class _$CadetPass extends CadetPass {
   @override
   String toString() {
     return (newBuiltValueToStringHelper(r'CadetPass')
+          ..add('id', id)
           ..add('cadet_id', cadet_id)
           ..add('pass_type', pass_type)
           ..add('start_time', start_time)
@@ -209,6 +226,10 @@ class _$CadetPass extends CadetPass {
 
 class CadetPassBuilder implements Builder<CadetPass, CadetPassBuilder> {
   _$CadetPass? _$v;
+
+  String? _id;
+  String? get id => _$this._id;
+  set id(String? id) => _$this._id = id;
 
   String? _cadet_id;
   String? get cadet_id => _$this._cadet_id;
@@ -251,6 +272,7 @@ class CadetPassBuilder implements Builder<CadetPass, CadetPassBuilder> {
   CadetPassBuilder get _$this {
     final $v = _$v;
     if ($v != null) {
+      _id = $v.id;
       _cadet_id = $v.cadet_id;
       _pass_type = $v.pass_type;
       _start_time = $v.start_time;
@@ -282,6 +304,7 @@ class CadetPassBuilder implements Builder<CadetPass, CadetPassBuilder> {
   _$CadetPass _build() {
     final _$result = _$v ??
         new _$CadetPass._(
+            id: id,
             cadet_id: BuiltValueNullFieldError.checkNotNull(
                 cadet_id, r'CadetPass', 'cadet_id'),
             pass_type: BuiltValueNullFieldError.checkNotNull(

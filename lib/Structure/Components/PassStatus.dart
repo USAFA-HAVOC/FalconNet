@@ -15,7 +15,7 @@ class PassStatus extends StatelessWidget {
       children: [
         Expanded(
           child: StoreConnector<GlobalState, ViewModel<CadetPass?>>(
-              converter: (store) => ViewModel<CadetPass?>(store: store, content: store.state.pass),
+              converter: (store) => ViewModel<CadetPass?>(store: store, content: store.state.user.accountability?.current_pass),
               builder: (context, model) {
                 if (model.content == null) {
                   //Add logic for closed passes
@@ -60,12 +60,13 @@ class PassStatus extends StatelessWidget {
 
                   //If there is a current pass, display pass information
                   //Determine expiration message
-                  CadetPass pass = model.content!;
+                  CadetPass pass = model.content!.toLocal();
                   String expiration;
-                  if (pass.end_time.difference(DateTime.now().toUtc()).compareTo(Duration(hours: 24)) < 0 && pass.end_time.weekday == DateTime.now().toUtc().weekday) {
+
+                  if (pass.end_time.difference(DateTime.now()).compareTo(Duration(hours: 24)) < 0 && pass.end_time.weekday == DateTime.now().weekday) {
                     expiration = "Expires: ${describeTime(TimeOfDay.fromDateTime(pass.end_time))}";
                   }
-                  else if (pass.end_time.difference(DateTime.now().toUtc()).compareTo(Duration(days: 7)) < 0) {
+                  else if (pass.end_time.difference(DateTime.now()).compareTo(Duration(days: 7)) < 0) {
                     expiration = "Expires: ${formatWeekday(pass.end_time.weekday)}, ${describeTime(TimeOfDay.fromDateTime(pass.end_time))}";
                   }
                   else {

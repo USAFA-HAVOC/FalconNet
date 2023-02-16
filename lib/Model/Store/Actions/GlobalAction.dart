@@ -4,13 +4,9 @@ import 'package:async_redux/async_redux.dart';
 import 'package:falcon_net/Model/Store/Actions/GradeAction.dart';
 import 'package:falcon_net/Model/Store/Actions/HistoryAction.dart';
 import 'package:falcon_net/Model/Store/Actions/InfoAction.dart';
-import 'package:falcon_net/Model/Store/Actions/LeaveAction.dart';
 import 'package:falcon_net/Model/Store/Actions/NotificationAction.dart';
 import 'package:falcon_net/Model/Store/Actions/SettingsAction.dart';
 import 'package:falcon_net/Model/Store/GlobalStateModel.dart';
-
-import 'FormAction.dart';
-import 'PassAction.dart';
 
 class GlobalAction extends ReduxAction<GlobalState> {
   final GlobalState? replacement;
@@ -22,27 +18,24 @@ class GlobalAction extends ReduxAction<GlobalState> {
 
   GlobalAction.initialize({this.onFail, this.onSucceed}) : replacement = null, init = true;
 
-
   @override
   Future<GlobalState?> reduce() async {
     bool failed = false;
 
     void fail() {
       failed = true;
-      print("failed");
     }
 
     try {
       if (init) {
 
+        /*
         List<FutureOr> futures = [];
 
         futures.add(dispatch(InfoAction.retrieve(onFail: fail)));
         futures.add(dispatch(GradeAction.retrieve(onFail: fail)));
         futures.add(dispatch(SettingsAction.retrieve(onFail: fail)));
-        futures.add(dispatch(PassAction.retrieve(onFail: fail)));
-        futures.add(dispatch(LeaveAction.retrieve(onFail: fail)));
-        futures.add(dispatch(FormAction.retrieve(onFail: fail)));
+        //futures.add(dispatch(FormAction.retrieve(onFail: fail)));
         futures.add(dispatch(HistoryAction.retrieve(onFail: fail)));
         futures.add(dispatch(NotificationAction.retrieve(onFail: fail)));
 
@@ -50,6 +43,14 @@ class GlobalAction extends ReduxAction<GlobalState> {
         for (var future in futures) {
           await future;
         }
+         */
+
+
+        await dispatch(InfoAction.retrieve(onFail: fail));
+        await dispatch(GradeAction.retrieve(onFail: fail));
+        await dispatch(SettingsAction.retrieve(onFail: fail));
+        await dispatch(HistoryAction.retrieve(onFail: fail));
+        await dispatch(NotificationAction.retrieve(onFail: fail));
 
         if (failed) {
           onFail?.call();

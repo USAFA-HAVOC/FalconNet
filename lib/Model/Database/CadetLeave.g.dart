@@ -28,32 +28,64 @@ class _$CadetLeaveTransportMethodSerializer
       'transport_type',
       serializers.serialize(object.transport_type,
           specifiedType: const FullType(String)),
-      'airline_name',
-      serializers.serialize(object.airline_name,
-          specifiedType: const FullType(String)),
-      'airline_flight_number',
-      serializers.serialize(object.airline_flight_number,
-          specifiedType: const FullType(String)),
-      'airline_flight_departure_time',
-      serializers.serialize(object.airline_flight_departure_time,
-          specifiedType: const FullType(DateTime)),
-      'airline_flight_arrival_time',
-      serializers.serialize(object.airline_flight_arrival_time,
-          specifiedType: const FullType(DateTime)),
-      'vehicle_type',
-      serializers.serialize(object.vehicle_type,
-          specifiedType: const FullType(String)),
-      'vehicle_travel_time_hours',
-      serializers.serialize(object.vehicle_travel_time_hours,
-          specifiedType: const FullType(double)),
-      'vehicle_driver_name',
-      serializers.serialize(object.vehicle_driver_name,
-          specifiedType: const FullType(String)),
-      'other_info',
-      serializers.serialize(object.other_info,
-          specifiedType: const FullType(String)),
     ];
-
+    Object? value;
+    value = object.airline_name;
+    if (value != null) {
+      result
+        ..add('airline_name')
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(String)));
+    }
+    value = object.airline_flight_number;
+    if (value != null) {
+      result
+        ..add('airline_flight_number')
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(String)));
+    }
+    value = object.airline_flight_departure_time;
+    if (value != null) {
+      result
+        ..add('airline_flight_departure_time')
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(DateTime)));
+    }
+    value = object.airline_flight_arrival_time;
+    if (value != null) {
+      result
+        ..add('airline_flight_arrival_time')
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(DateTime)));
+    }
+    value = object.vehicle_type;
+    if (value != null) {
+      result
+        ..add('vehicle_type')
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(String)));
+    }
+    value = object.vehicle_travel_time_hours;
+    if (value != null) {
+      result
+        ..add('vehicle_travel_time_hours')
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(double)));
+    }
+    value = object.vehicle_driver_name;
+    if (value != null) {
+      result
+        ..add('vehicle_driver_name')
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(String)));
+    }
+    value = object.other_info;
+    if (value != null) {
+      result
+        ..add('other_info')
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(String)));
+    }
     return result;
   }
 
@@ -75,35 +107,35 @@ class _$CadetLeaveTransportMethodSerializer
           break;
         case 'airline_name':
           result.airline_name = serializers.deserialize(value,
-              specifiedType: const FullType(String))! as String;
+              specifiedType: const FullType(String)) as String?;
           break;
         case 'airline_flight_number':
           result.airline_flight_number = serializers.deserialize(value,
-              specifiedType: const FullType(String))! as String;
+              specifiedType: const FullType(String)) as String?;
           break;
         case 'airline_flight_departure_time':
           result.airline_flight_departure_time = serializers.deserialize(value,
-              specifiedType: const FullType(DateTime))! as DateTime;
+              specifiedType: const FullType(DateTime)) as DateTime?;
           break;
         case 'airline_flight_arrival_time':
           result.airline_flight_arrival_time = serializers.deserialize(value,
-              specifiedType: const FullType(DateTime))! as DateTime;
+              specifiedType: const FullType(DateTime)) as DateTime?;
           break;
         case 'vehicle_type':
           result.vehicle_type = serializers.deserialize(value,
-              specifiedType: const FullType(String))! as String;
+              specifiedType: const FullType(String)) as String?;
           break;
         case 'vehicle_travel_time_hours':
           result.vehicle_travel_time_hours = serializers.deserialize(value,
-              specifiedType: const FullType(double))! as double;
+              specifiedType: const FullType(double)) as double?;
           break;
         case 'vehicle_driver_name':
           result.vehicle_driver_name = serializers.deserialize(value,
-              specifiedType: const FullType(String))! as String;
+              specifiedType: const FullType(String)) as String?;
           break;
         case 'other_info':
           result.other_info = serializers.deserialize(value,
-              specifiedType: const FullType(String))! as String;
+              specifiedType: const FullType(String)) as String?;
           break;
       }
     }
@@ -156,7 +188,14 @@ class _$CadetLeaveSerializer implements StructuredSerializer<CadetLeave> {
       serializers.serialize(object.return_method,
           specifiedType: const FullType(CadetLeaveTransportMethod)),
     ];
-
+    Object? value;
+    value = object.id;
+    if (value != null) {
+      result
+        ..add('id')
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(String)));
+    }
     return result;
   }
 
@@ -171,6 +210,10 @@ class _$CadetLeaveSerializer implements StructuredSerializer<CadetLeave> {
       iterator.moveNext();
       final Object? value = iterator.current;
       switch (key) {
+        case 'id':
+          result.id = serializers.deserialize(value,
+              specifiedType: const FullType(String)) as String?;
+          break;
         case 'cadet_id':
           result.cadet_id = serializers.deserialize(value,
               specifiedType: const FullType(String))! as String;
@@ -228,21 +271,21 @@ class _$CadetLeaveTransportMethod extends CadetLeaveTransportMethod {
   @override
   final String transport_type;
   @override
-  final String airline_name;
+  final String? airline_name;
   @override
-  final String airline_flight_number;
+  final String? airline_flight_number;
   @override
-  final DateTime airline_flight_departure_time;
+  final DateTime? airline_flight_departure_time;
   @override
-  final DateTime airline_flight_arrival_time;
+  final DateTime? airline_flight_arrival_time;
   @override
-  final String vehicle_type;
+  final String? vehicle_type;
   @override
-  final double vehicle_travel_time_hours;
+  final double? vehicle_travel_time_hours;
   @override
-  final String vehicle_driver_name;
+  final String? vehicle_driver_name;
   @override
-  final String other_info;
+  final String? other_info;
 
   factory _$CadetLeaveTransportMethod(
           [void Function(CadetLeaveTransportMethodBuilder)? updates]) =>
@@ -250,33 +293,17 @@ class _$CadetLeaveTransportMethod extends CadetLeaveTransportMethod {
 
   _$CadetLeaveTransportMethod._(
       {required this.transport_type,
-      required this.airline_name,
-      required this.airline_flight_number,
-      required this.airline_flight_departure_time,
-      required this.airline_flight_arrival_time,
-      required this.vehicle_type,
-      required this.vehicle_travel_time_hours,
-      required this.vehicle_driver_name,
-      required this.other_info})
+      this.airline_name,
+      this.airline_flight_number,
+      this.airline_flight_departure_time,
+      this.airline_flight_arrival_time,
+      this.vehicle_type,
+      this.vehicle_travel_time_hours,
+      this.vehicle_driver_name,
+      this.other_info})
       : super._() {
     BuiltValueNullFieldError.checkNotNull(
         transport_type, r'CadetLeaveTransportMethod', 'transport_type');
-    BuiltValueNullFieldError.checkNotNull(
-        airline_name, r'CadetLeaveTransportMethod', 'airline_name');
-    BuiltValueNullFieldError.checkNotNull(airline_flight_number,
-        r'CadetLeaveTransportMethod', 'airline_flight_number');
-    BuiltValueNullFieldError.checkNotNull(airline_flight_departure_time,
-        r'CadetLeaveTransportMethod', 'airline_flight_departure_time');
-    BuiltValueNullFieldError.checkNotNull(airline_flight_arrival_time,
-        r'CadetLeaveTransportMethod', 'airline_flight_arrival_time');
-    BuiltValueNullFieldError.checkNotNull(
-        vehicle_type, r'CadetLeaveTransportMethod', 'vehicle_type');
-    BuiltValueNullFieldError.checkNotNull(vehicle_travel_time_hours,
-        r'CadetLeaveTransportMethod', 'vehicle_travel_time_hours');
-    BuiltValueNullFieldError.checkNotNull(vehicle_driver_name,
-        r'CadetLeaveTransportMethod', 'vehicle_driver_name');
-    BuiltValueNullFieldError.checkNotNull(
-        other_info, r'CadetLeaveTransportMethod', 'other_info');
   }
 
   @override
@@ -422,26 +449,22 @@ class CadetLeaveTransportMethodBuilder
         new _$CadetLeaveTransportMethod._(
             transport_type: BuiltValueNullFieldError.checkNotNull(
                 transport_type, r'CadetLeaveTransportMethod', 'transport_type'),
-            airline_name: BuiltValueNullFieldError.checkNotNull(
-                airline_name, r'CadetLeaveTransportMethod', 'airline_name'),
-            airline_flight_number: BuiltValueNullFieldError.checkNotNull(
-                airline_flight_number, r'CadetLeaveTransportMethod', 'airline_flight_number'),
-            airline_flight_departure_time: BuiltValueNullFieldError.checkNotNull(
-                airline_flight_departure_time, r'CadetLeaveTransportMethod', 'airline_flight_departure_time'),
-            airline_flight_arrival_time: BuiltValueNullFieldError.checkNotNull(
-                airline_flight_arrival_time, r'CadetLeaveTransportMethod', 'airline_flight_arrival_time'),
-            vehicle_type: BuiltValueNullFieldError.checkNotNull(
-                vehicle_type, r'CadetLeaveTransportMethod', 'vehicle_type'),
-            vehicle_travel_time_hours: BuiltValueNullFieldError.checkNotNull(
-                vehicle_travel_time_hours, r'CadetLeaveTransportMethod', 'vehicle_travel_time_hours'),
-            vehicle_driver_name: BuiltValueNullFieldError.checkNotNull(vehicle_driver_name, r'CadetLeaveTransportMethod', 'vehicle_driver_name'),
-            other_info: BuiltValueNullFieldError.checkNotNull(other_info, r'CadetLeaveTransportMethod', 'other_info'));
+            airline_name: airline_name,
+            airline_flight_number: airline_flight_number,
+            airline_flight_departure_time: airline_flight_departure_time,
+            airline_flight_arrival_time: airline_flight_arrival_time,
+            vehicle_type: vehicle_type,
+            vehicle_travel_time_hours: vehicle_travel_time_hours,
+            vehicle_driver_name: vehicle_driver_name,
+            other_info: other_info);
     replace(_$result);
     return _$result;
   }
 }
 
 class _$CadetLeave extends CadetLeave {
+  @override
+  final String? id;
   @override
   final String cadet_id;
   @override
@@ -469,7 +492,8 @@ class _$CadetLeave extends CadetLeave {
       (new CadetLeaveBuilder()..update(updates))._build();
 
   _$CadetLeave._(
-      {required this.cadet_id,
+      {this.id,
+      required this.cadet_id,
       required this.departure_time,
       required this.return_time,
       required this.final_address,
@@ -515,6 +539,7 @@ class _$CadetLeave extends CadetLeave {
   bool operator ==(Object other) {
     if (identical(other, this)) return true;
     return other is CadetLeave &&
+        id == other.id &&
         cadet_id == other.cadet_id &&
         departure_time == other.departure_time &&
         return_time == other.return_time &&
@@ -531,6 +556,7 @@ class _$CadetLeave extends CadetLeave {
   @override
   int get hashCode {
     var _$hash = 0;
+    _$hash = $jc(_$hash, id.hashCode);
     _$hash = $jc(_$hash, cadet_id.hashCode);
     _$hash = $jc(_$hash, departure_time.hashCode);
     _$hash = $jc(_$hash, return_time.hashCode);
@@ -549,6 +575,7 @@ class _$CadetLeave extends CadetLeave {
   @override
   String toString() {
     return (newBuiltValueToStringHelper(r'CadetLeave')
+          ..add('id', id)
           ..add('cadet_id', cadet_id)
           ..add('departure_time', departure_time)
           ..add('return_time', return_time)
@@ -566,6 +593,10 @@ class _$CadetLeave extends CadetLeave {
 
 class CadetLeaveBuilder implements Builder<CadetLeave, CadetLeaveBuilder> {
   _$CadetLeave? _$v;
+
+  String? _id;
+  String? get id => _$this._id;
+  set id(String? id) => _$this._id = id;
 
   String? _cadet_id;
   String? get cadet_id => _$this._cadet_id;
@@ -624,6 +655,7 @@ class CadetLeaveBuilder implements Builder<CadetLeave, CadetLeaveBuilder> {
   CadetLeaveBuilder get _$this {
     final $v = _$v;
     if ($v != null) {
+      _id = $v.id;
       _cadet_id = $v.cadet_id;
       _departure_time = $v.departure_time;
       _return_time = $v.return_time;
@@ -659,6 +691,7 @@ class CadetLeaveBuilder implements Builder<CadetLeave, CadetLeaveBuilder> {
     try {
       _$result = _$v ??
           new _$CadetLeave._(
+              id: id,
               cadet_id: BuiltValueNullFieldError.checkNotNull(
                   cadet_id, r'CadetLeave', 'cadet_id'),
               departure_time: BuiltValueNullFieldError.checkNotNull(

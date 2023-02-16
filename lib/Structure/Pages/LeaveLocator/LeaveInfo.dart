@@ -13,11 +13,36 @@ import 'LeaveLocatorForm.dart';
 class LeaveInfo extends StatelessWidget {
   const LeaveInfo({super.key});
 
+  String describeTransport(CadetLeaveTransportMethod method) {
+    switch (method.transport_type) {
+      case "vehicle": {
+        var type = method.vehicle_type;
+        if (type == "Uber/Lyft") {
+          return "Using rideshare service.";
+        }
+        else {
+          return "Driven by ${method.vehicle_driver_name} in ${method.vehicle_type} for ${method.vehicle_travel_time_hours!.toStringAsPrecision(2)} hours";
+        }
+      }
+      case "airline": {
+        var departure = method.airline_flight_departure_time!;
+        var arrival = method.airline_flight_arrival_time!;
+        return "Flying with ${method.airline_name} on flight #${method.airline_flight_number}. "
+            "Departing at ${describeTime(TimeOfDay.fromDateTime(departure))} on ${describeDate(departure)}. "
+            "Arriving at ${describeTime(TimeOfDay.fromDateTime(arrival))} on ${describeDate(arrival)}. ";
+      }
+      case "other": {
+        return "Other: ${method.other_info!}";
+      }
+      default: return "Error: cannot read transport type";
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     var messenger = ScaffoldMessenger.of(context);
     return StoreConnector<GlobalState, ViewModel<CadetLeave?>>(
-        converter: (store) => ViewModel(store: store, content: store.state.leave),
+        converter: (store) => ViewModel(store: store, content: store.state.user.accountability!.current_leave?.toLocal()),
         builder: (context, model) {
           CadetLeave leave = model.content!;
           return Column(
@@ -65,7 +90,7 @@ class LeaveInfo extends StatelessWidget {
               Padding(
                 padding: EdgeInsets.symmetric(vertical: 10),
                 child: Text(
-                  leave.departure_method.transport_type,
+                  describeTransport(leave.departure_method),
                   style: Theme.of(context).textTheme.bodyMedium,
                 ),
               ),
@@ -80,7 +105,7 @@ class LeaveInfo extends StatelessWidget {
               Padding(
                 padding: EdgeInsets.symmetric(vertical: 10),
                 child: Text(
-                  leave.return_method.transport_type,
+                  describeTransport(leave.return_method),
                   style: Theme.of(context).textTheme.bodyMedium,
                 ),
               ),
@@ -106,7 +131,7 @@ class LeaveInfo extends StatelessWidget {
                                         Padding(
                                           padding: EdgeInsets.all(10),
                                           child: LeaveLocatorForm(
-                                            existing: leave,
+                                            editing: leave,
                                             dialog: true,
                                           ),
                                         )

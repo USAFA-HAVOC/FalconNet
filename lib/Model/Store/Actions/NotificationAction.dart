@@ -4,6 +4,8 @@ import 'package:falcon_net/Model/Database/UserNotification.dart';
 import 'package:falcon_net/Model/Store/GlobalStateModel.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../../../Utility/ErrorFormatting.dart';
+
 class NotificationAction extends ReduxAction<GlobalState> {
   final UserNotification? notification;
   final bool all;
@@ -43,8 +45,7 @@ class NotificationAction extends ReduxAction<GlobalState> {
         return (state.toBuilder()..notifications.clear()).build();
       }
       else if (add) {
-        List<UserNotification> mutated = state.notifications.toList(growable: false);
-        mutated.add(notification!);
+        List<UserNotification> mutated = state.notifications.toList(growable: false) + [notification!];
         await preferences.setStringList("notifications", mutated.map((n) => n.stringify()).toList());
         onSucceed?.call();
         return (state.toBuilder()..notifications=ListBuilder<UserNotification>(mutated)).build();
@@ -59,14 +60,14 @@ class NotificationAction extends ReduxAction<GlobalState> {
         ).build();
       }
       else {
-        List<UserNotification> mutated = state.notifications.toList(growable: false);
-        mutated.remove(notification);
+        List<UserNotification> mutated = state.notifications.toList(growable: false).where((n) => n != notification!).toList();
         await preferences.setStringList("notifications", mutated.map((n) => n.stringify()).toList());
         onSucceed?.call();
         return (state.toBuilder()..notifications=ListBuilder<UserNotification>(mutated)).build();
       }
     }
-    catch (_) {
+    catch (e) {
+      displayError(prefix: "Notification", exception: e);
       onFail?.call();
       return null;
     }

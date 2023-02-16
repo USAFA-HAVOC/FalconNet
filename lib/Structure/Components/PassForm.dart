@@ -20,7 +20,8 @@ class PassForm extends StatefulWidget {
   //Existing pass to be edited
   final CadetPass? existing;
 
-  const PassForm({super.key, required this.onSubmit, required this.onCancel, this.existing});
+  PassForm({super.key, required this.onSubmit, required this.onCancel, CadetPass? editing}) :
+        existing = editing?.toLocal();
 
   @override
   State<PassForm> createState() => PassFormState();
@@ -56,15 +57,15 @@ class PassFormState extends State<PassForm> with SingleTickerProviderStateMixin 
   @override
   void initState() {
     super.initState();
-    type = DateTime.now().toUtc().weekday < 5 ? "weekday" : "weekend";
+    type = DateTime.now().weekday < 5 ? "weekday" : "weekend";
     
     if (widget.existing != null) {
       dateValue = describeDate(widget.existing!.end_time);
       timeValue = describeTime(TimeOfDay.fromDateTime(widget.existing!.end_time));
     }
     else {
-      dateValue = describeDate(DateTime.now().toUtc());
-      timeValue = describeTime(TimeOfDay(hour: 19, minute: 50));
+      dateValue = describeDate(DateTime.now());
+      timeValue = describeTime(const TimeOfDay(hour: 19, minute: 50));
     }
     
     scaController = TextEditingController(text: widget.existing?.sca_number);
@@ -84,7 +85,12 @@ class PassFormState extends State<PassForm> with SingleTickerProviderStateMixin 
   void maximizePass() {
 
     //Implement a model call to determine latest possible time
-    var last = DateTime.now().toUtc().toLocal().add(Duration(days: 2, hours: 5));
+    DateTime now = DateTime.now();
+    DateTime last = DateTime(now.year, now.month, now.day, 19, 50);
+
+    if (now.weekday > 4) {
+      last = last.add(Duration(days: 7 - now.weekday));
+    }
 
     setState(() {
       dateValue = describeDate(last);
@@ -95,27 +101,28 @@ class PassFormState extends State<PassForm> with SingleTickerProviderStateMixin 
   ///Format pass object based on form data
   ///Requires valid inputs in all fields
   ///Should only be called after form has been validated
-  CadetPass formatPass() {
+  CadetPass formatPass(String id) {
     var endDate = parseDate(dateValue);
     var endTime = parseTime(timeValue);
     return CadetPass((b) => b
-      ..cadet_id = "change later"
-      ..start_time = widget.existing?.start_time ?? DateTime.now().toUtc()
-      ..end_time = combineDate(endDate, endTime).toUtc()
+      ..id = widget.existing?.id
+      ..cadet_id = id
+      ..start_time = widget.existing?.start_time ?? DateTime.now()
+      ..end_time = combineDate(endDate, endTime)
       ..pass_type = type
       ..description = descriptionController.text
       ..sca_number = scaController.text == "" ? null : scaController.text
       ..city = cityController.text
       ..state = state
       ..zip_code = zipController.text
-    );
+    ).toUtc();
   }
 
   ///Builds type options based on current date
   List<DropdownMenuItem<String>> buildTypeOptions() {
     Map<String, String> options = <String, String>{};
 
-    if (DateTime.now().toUtc().weekday < 5) {
+    if (DateTime.now().weekday < 5) {
       options.addAll({"Weekday Sign-Out Period" : "weekday"});
     }
     else {
@@ -158,20 +165,20 @@ class PassFormState extends State<PassForm> with SingleTickerProviderStateMixin 
 
     //Map the strings to menu items
     return options.map((key) => DropdownMenuItem<String>(
-            value: key,
-            child: Text(
-                key,
-                style: Theme.of(context).textTheme.bodyLarge
-            )
+        value: key,
+        child: Text(
+          key,
+          style: Theme.of(context).textTheme.bodyLarge
         )
+      )
     ).toList();
   }
 
   @override
   Widget build(BuildContext context) {
-    return StoreConnector<GlobalState, ViewModel<void>>(
-        converter: (store) => ViewModel<void>(store: store, content: null),
-        builder: (context, f) => Form(
+    return StoreConnector<GlobalState, ViewModel<String>>(
+        converter: (store) => ViewModel<String>(store: store, content: store.state.user.id!),
+        builder: (context, model) => Form(
             key: key,
             child: ListView(
               primary: false,
@@ -361,7 +368,7 @@ class PassFormState extends State<PassForm> with SingleTickerProviderStateMixin 
 
                                   //If form entries are valid, call submission closure with formatted pass
                                   if (key.currentState!.validate()) {
-                                    widget.onSubmit(formatPass());
+                                    widget.onSubmit(formatPass(model.content));
                                   }
                                 },
                                 child: Padding(

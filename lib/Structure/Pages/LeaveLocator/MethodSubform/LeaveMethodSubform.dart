@@ -51,7 +51,12 @@ class LeaveMethodSubformState extends State<LeaveMethodSubform> {
   late Widget newChild;
 
   String describeMethod(CadetLeaveTransportMethod method) {
-    return method.transport_type;
+    switch (method.transport_type) {
+      case "other": return "Other";
+      case "airline": return "Airline";
+      case "vehicle": return "Vehicle";
+      default: return "Select";
+    }
   }
 
   ///Initializes controller values from given leave method data

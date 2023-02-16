@@ -38,8 +38,8 @@ class VehicleMethodSubformState extends State<VehicleMethodSubform> with SingleT
     super.initState();
     if (widget.controller.value != null && widget.controller.value!.transport_type == "vehicle") {
       CadetLeaveTransportMethod method = widget.controller.value!;
-      vehicleType = method.vehicle_type;
-      time = TextEditingController(text: method.vehicle_travel_time_hours.toStringAsPrecision(1));
+      vehicleType = method.vehicle_type!;
+      time = TextEditingController(text: method.vehicle_travel_time_hours!.toStringAsPrecision(1));
       name = TextEditingController(text: method.vehicle_driver_name);
     }
     else {
@@ -85,11 +85,11 @@ class VehicleMethodSubformState extends State<VehicleMethodSubform> with SingleT
           ..vehicle_driver_name = name.text
           ..vehicle_travel_time_hours = double.parse(time.text)
           ..vehicle_type = vehicleType
-          ..other_info = ""
-          ..airline_flight_arrival_time = DateTime(3000).toUtc()
-          ..airline_flight_departure_time = DateTime(3001).toUtc()
-          ..airline_flight_number = ""
-          ..airline_name = ""
+          ..other_info = null
+          ..airline_flight_arrival_time = null
+          ..airline_flight_departure_time = null
+          ..airline_flight_number = null
+          ..airline_name = null
       );
     }
     else {
@@ -99,8 +99,8 @@ class VehicleMethodSubformState extends State<VehicleMethodSubform> with SingleT
           ..vehicle_travel_time_hours = 0
           ..vehicle_driver_name = ""
           ..other_info = ""
-          ..airline_flight_arrival_time = DateTime(3000).toUtc()
-          ..airline_flight_departure_time = DateTime(3001).toUtc()
+          ..airline_flight_arrival_time = null
+          ..airline_flight_departure_time = null
           ..airline_flight_number = ""
           ..airline_name = ""
       );

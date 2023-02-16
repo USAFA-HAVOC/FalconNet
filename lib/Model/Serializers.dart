@@ -1,4 +1,3 @@
-import 'package:built_value/iso_8601_date_time_serializer.dart';
 import 'package:built_value/serializer.dart';
 import 'package:built_value/standard_json_plugin.dart';
 import 'package:falcon_net/Model/Database/CadetAccountability.dart';
@@ -19,10 +18,12 @@ import 'package:falcon_net/Model/Database/WingData.dart';
 import 'package:falcon_net/Model/Store/GlobalStateModel.dart';
 
 import 'Database/DIRequest.dart';
-import 'Database/Delegate.dart';
+import 'Database/PassHistoryModel.dart';
+import 'Database/RoleRequest.dart';
 import 'Database/TimedRole.dart';
 import 'Database/UnitData.dart';
 import 'Database/UnitSummary.dart';
+import 'Store/FNDateTimeSerializer.dart';
 
 part 'Serializers.g.dart';
 
@@ -32,7 +33,6 @@ part 'Serializers.g.dart';
   UnitOrder,
   TimedRole,
   GradeSubmission,
-  Delegate,
   CadetLeaveTransportMethod,
   CadetPass,
   CadetPassAllocation,
@@ -41,17 +41,19 @@ part 'Serializers.g.dart';
   WingData,
   UnitData,
   UnitSummary,
+  PassHistoryModel,
   User,
   UserGrades,
   UserNotification,
   UserPersonalInfo,
   UserSettings,
-  GlobalState
+  GlobalState,
+  RoleRequest,
 ])
 
-final Serializers serializers =
-(
+
+final Serializers serializers = (
     _$serializers.toBuilder()
-      ..add(Iso8601DateTimeSerializer())
+      ..add(FNDateTimeSerializer())
       ..addPlugin(StandardJsonPlugin())
 ).build();

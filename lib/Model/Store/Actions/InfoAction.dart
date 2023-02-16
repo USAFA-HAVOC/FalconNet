@@ -3,6 +3,8 @@ import 'package:falcon_net/Model/Database/User.dart';
 import 'package:falcon_net/Model/Store/Endpoints.dart';
 import 'package:falcon_net/Model/Store/GlobalStateModel.dart';
 
+import '../../../Utility/ErrorFormatting.dart';
+
 class InfoAction extends ReduxAction<GlobalState> {
   final UserBuilder Function(UserBuilder c)? modify;
   final bool retrieval;
@@ -18,7 +20,6 @@ class InfoAction extends ReduxAction<GlobalState> {
     try {
       if (retrieval) {
         User c = await Endpoints.profileGet(null);
-        print(c);
         onSucceed?.call();
         return (state.toBuilder()..user=c.toBuilder()).build();
       }
@@ -30,6 +31,7 @@ class InfoAction extends ReduxAction<GlobalState> {
       }
     }
     catch (e) {
+      displayError(prefix: "Info", exception: e);
       onFail?.call();
       return null;
     }

@@ -7,6 +7,8 @@ import 'package:falcon_net/Structure/Components/ViewModel.dart';
 import 'package:falcon_net/Utility/TemporalFormatting.dart';
 import 'package:flutter/material.dart';
 
+import '../../../Model/Database/Roles.dart';
+
 class DITuple {
   final CadetAccountability? accountability;
   final List<String> roles;
@@ -35,13 +37,21 @@ class DIWidget extends StatelessWidget {
         builder: (context, model) {
 
           //Whether cadet is able to sign own di based on roles
-          bool senior = model.content.roles.any((role) => role == "upper_two");
+          bool senior = model.content.roles.any((role) => role == Roles.signable.name);
 
           //Determines whether time is signable
           bool time = DateTime.now().isAfter(combineDate(DateTime.now(), TimeOfDay(hour: 19, minute: 15)));
 
           //Whether cadet has already signed
-          bool signed = (model.content.accountability?.di_last_signed) != null;
+          bool signed = false;
+          if (model.content.accountability?.di_last_signed != null) {
+            var signature = model.content.accountability!.di_last_signed!.toLocal();
+            print(signature);
+            var present = DateTime.now().toLocal();
+            if (signature.year == present.year && signature.month == present.month && signature.day == present.day) {
+              signed = true;
+            }
+          }
 
           bool signable = !signed && senior && time;
 
@@ -53,6 +63,15 @@ class DIWidget extends StatelessWidget {
               style: Theme.of(context).textTheme.headlineMedium,
             )];
           }
+          else if (signed) {
+            text = [Text(
+              "DI Signed by ${model.content.accountability!.di_signed_by!}",
+              style: TextStyle(
+                fontSize: Theme.of(context).textTheme.headlineMedium?.fontSize,
+                color: Colors.black,
+              ),
+            )];
+          }
           else if (!senior) {
             text = [Text(
               "Cannot Sign Own DI",
@@ -62,18 +81,9 @@ class DIWidget extends StatelessWidget {
               ),
             )];
           }
-          else if (!time) {
-            text = [Text(
-              "DI Opens at 19:50",
-              style: TextStyle(
-                fontSize: Theme.of(context).textTheme.headlineMedium?.fontSize,
-                color: Colors.black,
-              ),
-            )];
-          }
           else {
             text = [Text(
-              "DI Signed by ${model.content.accountability!.di_signed_by!}",
+              "DI Opens at 19:50",
               style: TextStyle(
                 fontSize: Theme.of(context).textTheme.headlineMedium?.fontSize,
                 color: Colors.black,

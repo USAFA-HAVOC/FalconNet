@@ -3,45 +3,47 @@ import 'package:falcon_net/Model/Database/CadetPass.dart';
 import 'package:falcon_net/Model/Store/Endpoints.dart';
 import 'package:falcon_net/Model/Store/GlobalStateModel.dart';
 
+import '../../../Utility/ErrorFormatting.dart';
+
 class PassAction extends ReduxAction<GlobalState> {
   final CadetPass? pass;
   final bool updated;
-  final bool retrieve;
   final void Function()? onFail;
   final void Function()? onSucceed;
 
-  PassAction.open(this.pass, {this.onFail, this.onSucceed}) : updated = false, retrieve = false;
+  PassAction.open(this.pass, {this.onFail, this.onSucceed}) : updated = false;
 
-  PassAction.update(this.pass, {this.onFail, this.onSucceed}) : updated = true, retrieve = false;
+  PassAction.update(this.pass, {this.onFail, this.onSucceed}) : updated = true;
 
-  PassAction.close({this.onFail, this.onSucceed}) : pass = null, updated = false, retrieve = false;
-
-  PassAction.retrieve({this.onFail, this.onSucceed}) : pass = null, updated = false, retrieve = true;
+  PassAction.close({this.onFail, this.onSucceed}) : pass = null, updated = false;
 
   @override
   Future<GlobalState?> reduce() async {
     try {
-      if (retrieve) {
-        var pass = await Endpoints.passGet(null);
-        onSucceed?.call();
-        return (state.toBuilder()..pass=pass.toBuilder()).build();
-      }
       if (pass == null) {
         await Endpoints.passClose(null);
         onSucceed?.call();
-        return (state.toBuilder()..pass=null).build();
+        return (state.toBuilder()..user.accountability.current_pass=null).build();
       }
 
-      await Endpoints.passSet(pass!);
+      print(pass!);
 
       var sb = state.toBuilder();
-      sb.pass = pass!.toBuilder();
-      if (updated) sb.history.sublist(1);
-      sb.history.insert(0, pass!);
+
+      if (updated) {
+        await Endpoints.passUpdate(pass!);
+      }
+      else {
+        var assigned = await Endpoints.passCreate(pass!);
+        sb.user.accountability.current_pass = assigned.toBuilder();
+      }
+
       onSucceed?.call();
       return sb.build();
     }
-    catch (_) {
+
+    catch (e) {
+      displayError(prefix: "Pass", exception: e);
       onFail?.call();
       return null;
     }

@@ -135,7 +135,7 @@ class InputBlockState extends State<InputBlock> {
             onChanged: (change) => setState(() {
               value = change;
             }),
-            onSubmitted: (value) => attemptSubmit(value),
+            //onSubmitted: (value) => attemptSubmit(value),
             style: Theme.of(context).textTheme.bodyMedium,
 
             /*

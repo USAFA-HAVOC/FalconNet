@@ -12,6 +12,7 @@ import 'package:flutter/material.dart';
 import 'package:built_collection/built_collection.dart';
 
 import '../../../../../Model/Database/User.dart';
+import '../../../../../Utility/ErrorFormatting.dart';
 
 ///Page displaying information for CWOC controllers
 ///Shows statistics for groups as well as individual units
@@ -63,6 +64,7 @@ class CWOCTaskState extends State<CWOCTask> {
       });
     }
     catch (e) {
+      displayError(prefix: "CWOC", exception: e);
       messenger.showSnackBar(
         const SnackBar(content: Text("Failed to sign"))
       );
@@ -76,15 +78,16 @@ class CWOCTaskState extends State<CWOCTask> {
       return;
     }
 
-    /// todo: replace with api call
     try {
-      UnitData actual = await Endpoints.sdo(unit);
+      UnitData actual = await Endpoints.sdo(null);
       setState(() {
         connection = Future.value(wing.set(actual));
         loaded.add(actual);
       });
     }
+
     catch (e) {
+      displayError(prefix: "CWOC", exception: e);
       messenger.showSnackBar(
           SnackBar(content: Text("Failed to load data for $unit"))
       );
@@ -144,14 +147,45 @@ class CWOCTaskState extends State<CWOCTask> {
     );
   }
 
+  /*
+  Widget buildStatusGrid(List<UnitSummary> units) {
+    List<String> groups = Set<String>.from(units.where((unit) => unit.group != null).map((u) => u.group!)).toList();
+    groups.sort();
+
+    List<Widget> children = [];
+    for (int g = 0; g < groups.length; g++) {
+      var left = groups[g];
+      var right = (g + 1) < groups.length ? groups[g + 1] : null;
+
+      if (right != null)  {
+        children.add(
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              CWOCStatusWidget(units: units.where((unit) => unit.group == left).toList(), label: left),
+
+              SizedBox(height: 20,),
+
+              CWOCStatusWidget(units: units.where((unit) => unit.group == right).toList(), label: right),
+            ],
+          ),
+        );
+      }
+      else {
+
+      }
+    }
+  }
+  */
+
   @override
   Widget build(BuildContext context) {
     return ListView(
         shrinkWrap: true,
-        padding: EdgeInsets.all(20),
+        padding: const EdgeInsets.all(20),
         children: [
           Padding(
-            padding: EdgeInsets.only(bottom: 20),
+            padding: const EdgeInsets.only(bottom: 20),
             child: Text(
                 "CWOC",
                 style: Theme.of(context).textTheme.titleLarge
@@ -161,6 +195,7 @@ class CWOCTaskState extends State<CWOCTask> {
           FutureBuilder(
             future: connection,
             builder: (context, snapshot) {
+
               var units = snapshot.data?.units.toList() ?? [];
               return LayoutBuilder(
                 builder: (context, constraints) {
@@ -239,12 +274,12 @@ class CWOCTaskState extends State<CWOCTask> {
 
                       expansionCallback: (index, status) {
                         var unit = units.toList()[index];
-                        if (unit is! UnitData) {
+                        if (!loaded.any((u) => unit.name == u.name) && !status) {
                           loadUnit(unit.name, ScaffoldMessenger.of(context));
                         }
 
                         setState(() {
-                          expansions[units[index].name] = !status;
+                          expansions[unit.name] = !status;
                         });
                       },
                     );

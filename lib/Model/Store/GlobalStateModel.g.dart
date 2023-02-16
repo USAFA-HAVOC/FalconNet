@@ -22,8 +22,7 @@ class _$GlobalStateSerializer implements StructuredSerializer<GlobalState> {
       serializers.serialize(object.user, specifiedType: const FullType(User)),
       'history',
       serializers.serialize(object.history,
-          specifiedType:
-              const FullType(BuiltList, const [const FullType(CadetPass)])),
+          specifiedType: const FullType(PassHistoryModel)),
       'notifications',
       serializers.serialize(object.notifications,
           specifiedType: const FullType(
@@ -74,9 +73,8 @@ class _$GlobalStateSerializer implements StructuredSerializer<GlobalState> {
           break;
         case 'history':
           result.history.replace(serializers.deserialize(value,
-                  specifiedType: const FullType(
-                      BuiltList, const [const FullType(CadetPass)]))!
-              as BuiltList<Object?>);
+                  specifiedType: const FullType(PassHistoryModel))!
+              as PassHistoryModel);
           break;
         case 'notifications':
           result.notifications.replace(serializers.deserialize(value,
@@ -117,7 +115,7 @@ class _$GlobalState extends GlobalState {
   @override
   final User user;
   @override
-  final BuiltList<CadetPass> history;
+  final PassHistoryModel history;
   @override
   final BuiltList<UserNotification> notifications;
   @override
@@ -211,10 +209,10 @@ class GlobalStateBuilder implements Builder<GlobalState, GlobalStateBuilder> {
   UserBuilder get user => _$this._user ??= new UserBuilder();
   set user(UserBuilder? user) => _$this._user = user;
 
-  ListBuilder<CadetPass>? _history;
-  ListBuilder<CadetPass> get history =>
-      _$this._history ??= new ListBuilder<CadetPass>();
-  set history(ListBuilder<CadetPass>? history) => _$this._history = history;
+  PassHistoryModelBuilder? _history;
+  PassHistoryModelBuilder get history =>
+      _$this._history ??= new PassHistoryModelBuilder();
+  set history(PassHistoryModelBuilder? history) => _$this._history = history;
 
   ListBuilder<UserNotification>? _notifications;
   ListBuilder<UserNotification> get notifications =>

@@ -26,7 +26,6 @@ class InputValidation {
         return "Requires ${(length ?? 0).toString()} characters";
       }
     }
-    print(emptyMessage);
     return emptyMessage ?? "Please enter something";
   };
 
@@ -37,7 +36,6 @@ class InputValidation {
         return null;
       }
     }
-    print("failed date");
     return emptyMessage ?? "Please enter a date";
   };
 
@@ -49,14 +47,12 @@ class InputValidation {
         TimeOfDay time = parseTime(content);
         DateTime givenDate = DateTime(date.year, date.month, date.day, time.hour, time.minute);
         DateTime present = DateTime.now().toUtc();
-        print(describeDate(givenDate));
         if (givenDate.compareTo(present) < 0) {
           return "Time in past";
         }
         return null;
       }
     }
-    print("failed time");
     return "Please enter a time";
   };
 
@@ -67,7 +63,6 @@ class InputValidation {
         return null;
       }
     }
-    print("failed dropdown");
     return emptyMessage ?? "Please select an option";
   };
 
@@ -80,7 +75,6 @@ class InputValidation {
         }
       }
     }
-    print("failed number");
     return emptyMessage ?? "Please enter a number";
   };
 

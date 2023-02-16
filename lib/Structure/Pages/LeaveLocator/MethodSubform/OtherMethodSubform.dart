@@ -39,13 +39,13 @@ class OtherMethodSubformState extends State<OtherMethodSubform> {
     return CadetLeaveTransportMethod((b) => b
         ..transport_type = "other"
         ..other_info = info.text
-        ..vehicle_driver_name = ""
-        ..vehicle_travel_time_hours = 0.0
-        ..vehicle_type = ""
-        ..airline_flight_arrival_time = DateTime(3000).toUtc()
-        ..airline_flight_departure_time = DateTime(3001).toUtc()
-        ..airline_flight_number = ""
-        ..airline_name = ""
+        ..vehicle_driver_name = null
+        ..vehicle_travel_time_hours = null
+        ..vehicle_type = null
+        ..airline_flight_arrival_time = null
+        ..airline_flight_departure_time = null
+        ..airline_flight_number = null
+        ..airline_name = null
     );
   }
 

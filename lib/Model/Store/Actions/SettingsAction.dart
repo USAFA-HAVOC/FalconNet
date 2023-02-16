@@ -4,6 +4,8 @@ import 'package:falcon_net/Model/Serializers.dart';
 import 'package:falcon_net/Model/Store/GlobalStateModel.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../../../Utility/ErrorFormatting.dart';
+
 class SettingsAction extends ReduxAction<GlobalState> {
   final UserSettingsBuilder Function(UserSettingsBuilder b)? modify;
   final void Function()? onFail;
@@ -38,6 +40,7 @@ class SettingsAction extends ReduxAction<GlobalState> {
       }
     }
     catch (e) {
+      displayError(prefix: "Settings", exception: e);
       onFail?.call();
       return null;
     }

@@ -39,18 +39,18 @@ class AirlineMethodSubformState extends State<AirlineMethodSubform> {
       var method = widget.controller.value!;
       airline = TextEditingController(text: method.airline_name);
       number = TextEditingController(text: method.airline_flight_number);
-      depDate = describeDate(method.airline_flight_departure_time);
-      arrDate = describeDate(method.airline_flight_arrival_time);
-      depTime = describeTime(timeOf(method.airline_flight_departure_time));
-      arrTime = describeTime(timeOf(method.airline_flight_arrival_time));
+      depDate = describeDate(method.airline_flight_departure_time!);
+      arrDate = describeDate(method.airline_flight_arrival_time!);
+      depTime = describeTime(timeOf(method.airline_flight_departure_time!));
+      arrTime = describeTime(timeOf(method.airline_flight_arrival_time!));
     }
 
     //Otherwise populates with defaults
     else {
       airline = TextEditingController();
       number = TextEditingController();
-      depDate = describeDate(DateTime.now().toUtc());
-      arrDate = describeDate(DateTime.now().toUtc());
+      depDate = describeDate(DateTime.now());
+      arrDate = describeDate(DateTime.now());
       depTime = describeTime(TimeOfDay.now());
       arrTime = describeTime(TimeOfDay.now());
     }
@@ -71,14 +71,14 @@ class AirlineMethodSubformState extends State<AirlineMethodSubform> {
     var flightArrivalTime = combineDate(fArrDate, fArrTime);
     return CadetLeaveTransportMethod((b) => b
         ..transport_type = "airline"
-        ..airline_flight_departure_time = flightDepartureTime.toUtc()
-        ..airline_flight_arrival_time = flightArrivalTime.toUtc()
+        ..airline_flight_departure_time = flightDepartureTime
+        ..airline_flight_arrival_time = flightArrivalTime
         ..airline_flight_number = number.text
         ..airline_name = airline.text
-        ..other_info = ""
-        ..vehicle_driver_name = ""
-        ..vehicle_travel_time_hours = 0.0
-        ..vehicle_type = ""
+        ..other_info = null
+        ..vehicle_driver_name = null
+        ..vehicle_travel_time_hours = null
+        ..vehicle_type = null
     );
   }
 

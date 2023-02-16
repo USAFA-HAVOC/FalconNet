@@ -13,11 +13,12 @@ Serializers _$serializers = (new Serializers().toBuilder()
       ..add(CadetPass.serializer)
       ..add(CadetPassAllocation.serializer)
       ..add(DIRequest.serializer)
-      ..add(Delegate.serializer)
       ..add(FormOne.serializer)
       ..add(GlobalState.serializer)
       ..add(Grade.serializer)
       ..add(GradeSubmission.serializer)
+      ..add(PassHistoryModel.serializer)
+      ..add(RoleRequest.serializer)
       ..add(TimedRole.serializer)
       ..add(UnitData.serializer)
       ..add(UnitOrder.serializer)
@@ -31,12 +32,6 @@ Serializers _$serializers = (new Serializers().toBuilder()
       ..addBuilderFactory(
           const FullType(BuiltList, const [const FullType(CadetPass)]),
           () => new ListBuilder<CadetPass>())
-      ..addBuilderFactory(
-          const FullType(BuiltList, const [const FullType(UserNotification)]),
-          () => new ListBuilder<UserNotification>())
-      ..addBuilderFactory(
-          const FullType(BuiltList, const [const FullType(FormOne)]),
-          () => new ListBuilder<FormOne>())
       ..addBuilderFactory(
           const FullType(BuiltList, const [const FullType(Grade)]),
           () => new ListBuilder<Grade>())
@@ -54,7 +49,13 @@ Serializers _$serializers = (new Serializers().toBuilder()
           () => new ListBuilder<UnitSummary>())
       ..addBuilderFactory(
           const FullType(BuiltList, const [const FullType(User)]),
-          () => new ListBuilder<User>()))
+          () => new ListBuilder<User>())
+      ..addBuilderFactory(
+          const FullType(BuiltList, const [const FullType(UserNotification)]),
+          () => new ListBuilder<UserNotification>())
+      ..addBuilderFactory(
+          const FullType(BuiltList, const [const FullType(FormOne)]),
+          () => new ListBuilder<FormOne>()))
     .build();
 
 // ignore_for_file: deprecated_member_use_from_same_package,type=lint

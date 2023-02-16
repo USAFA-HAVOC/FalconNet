@@ -1,57 +1,72 @@
 import 'package:built_value/built_value.dart';
 import 'package:built_value/serializer.dart';
 
+import 'Roles.dart';
+
 part 'TimedRole.g.dart';
 
 abstract class TimedRole implements Built<TimedRole, TimedRoleBuilder> {
   static Serializer<TimedRole> get serializer => _$timedRoleSerializer;
 
   String get role;
-  DateTime get start;
-  DateTime get end;
+
+  DateTime? get start;
+  DateTime? get end;
+
+  TimedRole toUtc() {
+    return rebuild((r) => r
+        ..start = start?.toUtc()
+        ..end = end?.toUtc()
+    );
+  }
+
+  TimedRole toLocal() {
+    return rebuild((r) => r
+      ..start = start?.toUtc()
+      ..end = end?.toUtc()
+    );
+  }
 
   List<String> delegable() {
-    List<String> delegates = ["sdo", "jdo", "unrecognized", "recognized", "signable"];
-    switch (role) {
-      case "fn_admin": {
-        return ["fn_admin", "wing_admin", "unit_admin"] + delegates;
-      }
-      case "wing_admin": {
-        return ["unit_admin"] + delegates;
-      }
-      case "unit_admin": return delegates;
+    List<String> delegates = [
+      Roles.sdo.name,
+      Roles.jdo.name,
+      Roles.recognized.name,
+      Roles.signable.name,
+      Roles.stan_eval.name,
+      Roles.cadet.name
+    ];
+
+    if (role == Roles.fn_admin.name) {
+      return [Roles.fn_admin.name, Roles.wing_admin.name, Roles.unit_admin.name, Roles.cwoc.name] + delegates;
     }
+
+    else if (role == Roles.wing_admin.name) {
+      return [Roles.unit_admin.name, Roles.cwoc.name] + delegates;
+    }
+
+    else if (role == Roles.unit_admin.name) {
+      return delegates;
+    }
+
     return [];
   }
 
+  bool isAdmin() {
+    return role == Roles.fn_admin.name || role == Roles.wing_admin.name || role == Roles.unit_admin.name;
+  }
+
   bool isGreaterThan(TimedRole other) {
-    switch (role) {
-      case "fn_admin": {
-        switch (other.role) {
-          case "fn_admin": return false;
-          default: return true;
-        }
-      }
-
-      case "wing_admin": {
-        switch (other.role) {
-          case "wing_admin": return false;
-          case "fn_admin": return false;
-          default: return true;
-        }
-      }
-
-      case "unit_admin": {
-        switch (other.role) {
-          case "unit_admin": return false;
-          case "wing_admin": return false;
-          case "fn_admin": return false;
-          default: return true;
-        }
-      }
-
-      default: return false;
+    if (role == Roles.fn_admin.name) {
+      return true;
     }
+    if (role == Roles.wing_admin.name) {
+      return other.role != Roles.fn_admin.name && other.role != Roles.wing_admin.name;
+    }
+    if (role == Roles.unit_admin.name) {
+      return !other.isAdmin();
+    }
+    return false;
   }
 
   TimedRole._();

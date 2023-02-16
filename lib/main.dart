@@ -63,7 +63,7 @@ void main() {
       (
         UserNotificationBuilder()
           ..message = "Logged In"
-          ..destination = "/"
+          ..destination = "/profile"
       ).build()
   ));
 

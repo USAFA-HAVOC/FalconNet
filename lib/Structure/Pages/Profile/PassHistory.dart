@@ -15,7 +15,7 @@ class PassHistory extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return StoreConnector<GlobalState, ViewModel<List<CadetPass>>>(
-        converter: (store) => ViewModel<List<CadetPass>>(store: store, content: store.state.history.toList()),
+        converter: (store) => ViewModel<List<CadetPass>>(store: store, content: store.state.history.history.toList()),
         builder: (context, model) {
 
           //Generate list view dynamically as list is scrolled with builder constructor

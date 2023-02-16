@@ -1,11 +1,12 @@
 import 'package:falcon_net/Structure/Pages/TaskManagement/Tasks/Delegation/RoleSubform.dart';
 import 'package:flutter/material.dart';
 
-import '../../../../../Model/Database/Delegate.dart';
+import '../../../../../Model/Database/Roles.dart';
 import '../../../../../Model/Database/TimedRole.dart';
+import '../../../../../Model/Database/User.dart';
 
 class DelegationForm extends StatefulWidget {
-  final Delegate delegate;
+  final User delegate;
   final List<TimedRole> applicable;
   final void Function(List<TimedRole>)? onSubmit;
   final void Function()? onCancel;
@@ -42,10 +43,10 @@ class DelegationFormState extends State<DelegationForm> {
           mainAxisSize: MainAxisSize.min,
           children: [
             ...roles.map(
-                    (role) => Padding(
+                (role) => Padding(
                   padding: EdgeInsets.all(10),
                   child: RoleSubform(
-                    value: role,
+                    existing: role,
                     applicable: widget.applicable,
                     onRemove: () => setState(() {
                       roles.remove(role);
@@ -65,9 +66,9 @@ class DelegationFormState extends State<DelegationForm> {
                 onPressed: () => setState(() {
                   roles.add(
                       TimedRole((b) => b
-                          ..role = "sdo"
-                          ..start = DateTime.now().toUtc()
-                          ..end = DateTime.now().toUtc()
+                          ..role = Roles.sdo.name
+                          ..start = DateTime.now()
+                          ..end = DateTime.now()
                       )
                   );
                 }),

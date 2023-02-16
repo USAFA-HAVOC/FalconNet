@@ -10,6 +10,13 @@ import '../../Components/DateFormField.dart';
 import '../../Components/TimeFormField.dart';
 import 'MethodSubform/LeaveMethodSubform.dart';
 
+class LeaveModelTuple {
+  CadetLeave? leave;
+  String id;
+
+  LeaveModelTuple({required this.leave, required this.id});
+}
+
 ///Leave locator form
 ///Animates sub form expansion to ensure all required data is acquired
 class LeaveLocatorForm extends StatefulWidget {
@@ -21,7 +28,8 @@ class LeaveLocatorForm extends StatefulWidget {
   //Closure called on submission
   final void Function()? onSubmit;
 
-  const LeaveLocatorForm({super.key, this.existing, this.dialog = true, this.onSubmit});
+  LeaveLocatorForm({super.key, CadetLeave? editing, this.dialog = true, this.onSubmit}) :
+      existing = editing?.toLocal();
 
   @override
   State<LeaveLocatorForm> createState() => LeaveLocatorFormState();
@@ -58,10 +66,10 @@ class LeaveLocatorFormState extends State<LeaveLocatorForm> {
     state = widget.existing?.final_state ?? "Colorado";
     nameController = TextEditingController(text: widget.existing?.emergency_contact_name);
     phoneController = TextEditingController(text: widget.existing?.emergency_contact_phone);
-    depDateValue = describeDate(widget.existing?.departure_time ?? DateTime.now().toUtc());
-    depTimeValue = describeTime(timeOf(widget.existing?.departure_time ?? DateTime.now().toUtc()));
-    retDateValue = describeDate(widget.existing?.return_time ?? DateTime.now().toUtc());
-    retTimeValue = describeTime(timeOf(widget.existing?.return_time ?? DateTime.now().toUtc()));
+    depDateValue = describeDate(widget.existing?.departure_time ?? DateTime.now());
+    depTimeValue = describeTime(timeOf(widget.existing?.departure_time ?? DateTime.now()));
+    retDateValue = describeDate(widget.existing?.return_time ?? DateTime.now());
+    retTimeValue = describeTime(timeOf(widget.existing?.return_time ?? DateTime.now()));
     depMethodController = SubformController<CadetLeaveTransportMethod>(value: widget.existing?.departure_method);
     retMethodController = SubformController<CadetLeaveTransportMethod>(value: widget.existing?.return_method);
   }
@@ -100,8 +108,14 @@ class LeaveLocatorFormState extends State<LeaveLocatorForm> {
         flex: 5,
         child: Padding(
           padding: EdgeInsets.symmetric(vertical: 20),
-          child: StoreConnector<GlobalState, ViewModel<CadetLeave?>>(
-            converter: (store) => ViewModel<CadetLeave?>(store: store, content: store.state.leave),
+          child: StoreConnector<GlobalState, ViewModel<LeaveModelTuple>>(
+            converter: (store) => ViewModel<LeaveModelTuple>(
+                store: store,
+                content: LeaveModelTuple(
+                  leave: store.state.user.accountability?.current_leave,
+                  id: store.state.user.id!
+                )
+            ),
             builder: (context, model) {
               return ElevatedButton(
 
@@ -115,7 +129,7 @@ class LeaveLocatorFormState extends State<LeaveLocatorForm> {
                       Navigator.of(context).pop();
                     }
                     model.dispatch(LeaveAction.set(
-                      formatLeave(),
+                      formatLeave(model.content.id),
                       onSucceed: () {
                         messenger.showSnackBar(const SnackBar(content: Text("Leave Data Submitted")));
                       },
@@ -168,7 +182,7 @@ class LeaveLocatorFormState extends State<LeaveLocatorForm> {
   }
 
   ///Formats leave object based on field values
-  CadetLeave formatLeave() {
+  CadetLeave formatLeave(String id) {
     return CadetLeave((b) => b
         ..departure_method = depMethodController.retrieve().toBuilder()
         ..return_method = retMethodController.retrieve().toBuilder()
@@ -178,10 +192,11 @@ class LeaveLocatorFormState extends State<LeaveLocatorForm> {
         ..final_state = state
         ..final_city = cityController.text
         ..final_address = addressController.text
-        ..departure_time = combineDate(parseDate(depDateValue), parseTime(depTimeValue)).toUtc()
-        ..return_time = combineDate(parseDate(retDateValue), parseTime(retTimeValue)).toUtc()
-        ..cadet_id = "Change this later"
-    );
+        ..departure_time = combineDate(parseDate(depDateValue), parseTime(depTimeValue))
+        ..return_time = combineDate(parseDate(retDateValue), parseTime(retTimeValue))
+        ..cadet_id = id
+        ..id = widget.existing?.id
+    ).toUtc();
   }
 
 

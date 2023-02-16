@@ -1,10 +1,14 @@
 import 'package:built_collection/built_collection.dart';
+import 'package:falcon_net/Model/Database/RoleRequest.dart';
+import 'package:falcon_net/Model/Database/UnitData.dart';
 import 'package:falcon_net/Structure/Components/LoadingShimmer.dart';
+import 'package:falcon_net/Utility/ErrorFormatting.dart';
 import 'package:flutter/material.dart';
 import  'package:string_similarity/string_similarity.dart';
 
-import '../../../../../Model/Database/Delegate.dart';
 import '../../../../../Model/Database/TimedRole.dart';
+import '../../../../../Model/Database/User.dart';
+import '../../../../../Model/Store/Endpoints.dart';
 import 'DelegateBar.dart';
 import 'DelegationForm.dart';
 
@@ -20,63 +24,41 @@ class DelegationTask extends StatefulWidget {
 }
 
 class DelegationTaskState extends State<DelegationTask> {
-  late Future<BuiltList<Delegate>> connection;
+  late Future<UnitData> connection;
   String query = "";
 
   @override
   void initState() {
     super.initState();
-    connection = Future.delayed(Duration(milliseconds: 250), () => BuiltList([
-      Delegate((b) => b
-          ..name = "Rylie Anderson"
-          ..id = "ra"
-          ..roles = BuiltList<TimedRole>([
-            TimedRole((t) => t
-                ..role = "cwoc"
-                ..start = DateTime(2022, 11, 24)
-                ..end = DateTime(2023, 1, 23))
-          ]).toBuilder()
-      ),
-      Delegate((b) => b
-        ..name = "Ethan Chapman"
-        ..id = "ec"
-        ..roles = BuiltList<TimedRole>([
-          TimedRole((t) => t
-            ..role = "sdo"
-            ..start = DateTime(2022, 11, 24)
-            ..end = DateTime(2023, 1, 23))
-        ]).toBuilder()
-      ),
-      Delegate((b) => b
-        ..name = "Enrique Oti"
-        ..id = "eo"
-        ..roles = BuiltList<TimedRole>([]).toBuilder()
-      ),
-      Delegate((b) => b
-        ..name = "David Petzold"
-        ..id = "dp"
-        ..roles = BuiltList<TimedRole>([]).toBuilder()
-      ),
-    ]));
+    connection = Endpoints.sdo(null);
   }
 
   ///Assigns a delegate to a list of roles
   ///Makes api call and displays error message on failure
-  void assign(Delegate delegate, List<TimedRole> roles, ScaffoldMessengerState messenger) async {
+  void assign(User delegate, List<TimedRole> roles, ScaffoldMessengerState messenger) async {
+    bool success = false;
+    try {
+      success = await Endpoints.rolesSet(RoleRequest((r) => r
+        ..user_id = delegate.id
+        ..roles_to_add = roles.toBuiltList().toBuilder()
+      ));
+    }
 
-    /// todo: replace with api call
-    var success = await Future.delayed(Duration(milliseconds: 250), () => true);
+    catch (e) {
+      displayError(prefix: "Delegation", exception: e);
+    }
 
     if (success) {
       var current = await connection;
 
       setState(() {
-        var others = current.toList().where((d) => d.id != d.id).toList();
-        var modified = delegate.rebuild((d) => d.roles.addAll(roles));
+        var others = current.members.toList().where((d) => d.id != d.id).toList();
+        var modified = delegate.rebuild((d) => d..roles = roles.toBuiltList().toBuilder());
 
-        connection = Future.value(BuiltList(others + [modified]));
+        connection = Future.value(current.rebuild((u) => u..members = BuiltList<User>(others + [modified]).toBuilder()));
       });
     }
+
     else {
       messenger.showSnackBar(
         const SnackBar(
@@ -87,7 +69,7 @@ class DelegationTaskState extends State<DelegationTask> {
   }
 
   ///Opens a dialog for the form for editing a delegates roles
-  void openDelegationForm(BuildContext context, Delegate delegate, List<TimedRole> applicable) {
+  void openDelegationForm(BuildContext context, User delegate, List<TimedRole> applicable) {
     showDialog(context: context, builder: (context) => Dialog(
       insetPadding: EdgeInsets.all(10),
       child: Padding(
@@ -107,11 +89,11 @@ class DelegationTaskState extends State<DelegationTask> {
     ));
   }
 
-  List<Delegate> search(List<Delegate> applicable, String q) {
+  List<User> search(List<User> applicable, String q) {
     var mutable = applicable;
     mutable.sort((a, b) {
-      var first = a.name.toLowerCase();
-      var second = b.name.toLowerCase();
+      var first = a.personal_info.full_name.toLowerCase();
+      var second = b.personal_info.full_name.toLowerCase();
       var query = q.toLowerCase();
       var firstScore = first.similarityTo(query);
       var secondScore = second.similarityTo(query);
@@ -145,7 +127,7 @@ class DelegationTaskState extends State<DelegationTask> {
             future: connection,
             builder: (context, snapshot) {
               if (snapshot.data != null) {
-                var ordered = search(snapshot.data!.toList(), query);
+                var ordered = search(snapshot.data!.members.toList(), query);
                 return ListView.builder(
                     shrinkWrap: true,
                     primary: false,

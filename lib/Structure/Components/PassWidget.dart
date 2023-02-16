@@ -21,7 +21,7 @@ class PassWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     var messenger = ScaffoldMessenger.of(context);
     return StoreConnector<GlobalState, ViewModel<CadetPass?>>(
-        converter: (store) => ViewModel<CadetPass?>(store: store, content: store.state.pass),
+        converter: (store) => ViewModel<CadetPass?>(store: store, content: store.state.user.accountability?.current_pass),
         builder: (context, model) {
 
           //List of children to filled
@@ -101,7 +101,7 @@ class PassWidget extends StatelessWidget {
                             child: PassForm(
 
                               //Passes existing data
-                              existing: model.content,
+                              editing: model.content,
 
                               //Closes dialog and dispatches update pass action
                               onSubmit: (pass) {

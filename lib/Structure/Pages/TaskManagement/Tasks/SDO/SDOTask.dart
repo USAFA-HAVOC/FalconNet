@@ -24,7 +24,7 @@ class SDOTaskState extends State<SDOTask> {
   void initState() {
     super.initState();
 
-    future = Endpoints.sdo("self");
+    future = Endpoints.sdo(null);
   }
 
   void sign(User member, ScaffoldMessengerState messenger) async {

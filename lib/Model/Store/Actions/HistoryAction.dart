@@ -1,7 +1,7 @@
 import 'package:async_redux/async_redux.dart';
-import 'package:falcon_net/Model/Database/UserGrades.dart';
 import 'package:falcon_net/Model/Store/Endpoints.dart';
 
+import '../../../Utility/ErrorFormatting.dart';
 import '../GlobalStateModel.dart';
 
 class HistoryAction extends ReduxAction<GlobalState> {
@@ -19,7 +19,8 @@ class HistoryAction extends ReduxAction<GlobalState> {
       onSucceed?.call();
       return sb.build();
     }
-    catch (_) {
+    catch (e) {
+      displayError(prefix: "History", exception: e);
       onFail?.call();
       return null;
     }

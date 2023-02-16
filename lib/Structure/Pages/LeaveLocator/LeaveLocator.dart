@@ -36,13 +36,13 @@ class LeaveLocator extends StatelessWidget {
 
                     //Displays form or existing data depending on state
                     child: StoreConnector<GlobalState, ViewModel<CadetLeave?>>(
-                      converter: (store) => ViewModel<CadetLeave?>(store: store, content: store.state.leave),
+                      converter: (store) => ViewModel<CadetLeave?>(store: store, content: store.state.user.accountability?.current_leave),
                       builder: (context, model) {
                         if (model.content == null) {
-                          return LeaveLocatorForm(dialog: false, existing: test,);
+                          return LeaveLocatorForm(dialog: false, editing: test);
                         }
                         else {
-                          return LeaveInfo();
+                          return const LeaveInfo();
                         }
                       },
                     )

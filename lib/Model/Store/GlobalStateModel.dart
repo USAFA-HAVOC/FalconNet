@@ -8,6 +8,8 @@ import 'package:falcon_net/Model/Database/User.dart';
 import 'package:falcon_net/Model/Database/UserNotification.dart';
 import 'package:falcon_net/Model/Database/UserSettings.dart';
 
+import '../../Structure/Pages/Profile/PassHistory.dart';
+import '../Database/PassHistoryModel.dart';
 import '../Database/UserGrades.dart';
 
 
@@ -17,7 +19,7 @@ abstract class GlobalState implements Built<GlobalState, GlobalStateBuilder> {
   static Serializer<GlobalState> get serializer => _$globalStateSerializer;
 
   User get user;
-  BuiltList<CadetPass> get history;
+  PassHistoryModel get history;
   BuiltList<UserNotification> get notifications;
   UserSettings get settings;
   UserGrades get grades;

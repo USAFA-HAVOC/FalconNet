@@ -2,6 +2,8 @@ import 'package:async_redux/async_redux.dart';
 import 'package:falcon_net/Model/Store/Endpoints.dart';
 import 'package:falcon_net/Model/Store/GlobalStateModel.dart';
 
+import '../../../Utility/ErrorFormatting.dart';
+
 class SignAction extends ReduxAction<GlobalState> {
   final void Function()? onFail;
   final void Function()? onSucceed;
@@ -18,7 +20,8 @@ class SignAction extends ReduxAction<GlobalState> {
         ..user.accountability.di_last_signed=DateTime.now().toUtc()
       ).build();
     }
-    catch (_) {
+    catch (e) {
+      displayError(prefix: "Form", exception: e);
       onFail?.call();
       return null;
     }
