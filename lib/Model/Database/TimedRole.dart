@@ -60,12 +60,15 @@ abstract class TimedRole implements Built<TimedRole, TimedRoleBuilder> {
     if (role == Roles.fn_admin.name) {
       return true;
     }
+
     if (role == Roles.wing_admin.name) {
       return other.role != Roles.fn_admin.name && other.role != Roles.wing_admin.name;
     }
+
     if (role == Roles.unit_admin.name) {
       return !other.isAdmin();
     }
+
     return false;
   }
 

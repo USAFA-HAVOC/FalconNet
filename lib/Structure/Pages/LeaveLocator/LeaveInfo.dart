@@ -21,7 +21,7 @@ class LeaveInfo extends StatelessWidget {
           return "Using rideshare service.";
         }
         else {
-          return "Driven by ${method.vehicle_driver_name} in ${method.vehicle_type} for ${method.vehicle_travel_time_hours!.toStringAsPrecision(2)} hours";
+          return "Driven by ${method.vehicle_driver_name} in ${method.vehicle_type} for ${method.vehicle_travel_time_hours!.toStringAsFixed(1)} hours";
         }
       }
       case "airline": {

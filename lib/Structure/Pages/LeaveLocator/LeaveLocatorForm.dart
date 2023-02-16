@@ -309,11 +309,15 @@ class LeaveLocatorFormState extends State<LeaveLocatorForm> {
                 Expanded(
                   flex: 4,
                   child: DateFormField(
+                    firstDate: DateTime.now().subtract(const Duration(days: 30)),
                     value: depDateValue,
                     label: "Departure Date",
                     validator: InputValidation.date(),
                     onChanged: (change) => setState(() {
                       depDateValue = change;
+                      if (!parseDate(depDateValue).isBefore(parseDate(retDateValue))) {
+                        retDateValue = change;
+                      }
                     }),
                   ),
                 ),
@@ -353,6 +357,7 @@ class LeaveLocatorFormState extends State<LeaveLocatorForm> {
                 Expanded(
                   flex: 4,
                   child: DateFormField(
+                    firstDate: parseDate(depDateValue),
                     value: retDateValue,
                     label: "Return Date",
                     validator: InputValidation.date(),

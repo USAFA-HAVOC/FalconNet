@@ -39,7 +39,7 @@ class VehicleMethodSubformState extends State<VehicleMethodSubform> with SingleT
     if (widget.controller.value != null && widget.controller.value!.transport_type == "vehicle") {
       CadetLeaveTransportMethod method = widget.controller.value!;
       vehicleType = method.vehicle_type!;
-      time = TextEditingController(text: method.vehicle_travel_time_hours!.toStringAsPrecision(1));
+      time = TextEditingController(text: method.vehicle_travel_time_hours!.toStringAsFixed(1));
       name = TextEditingController(text: method.vehicle_driver_name);
     }
     else {
@@ -51,6 +51,9 @@ class VehicleMethodSubformState extends State<VehicleMethodSubform> with SingleT
     //Sets animation value to closed if field extension not required
     if (!requiresInfo(vehicleType)){
       animationController.value = 0;
+    }
+    else {
+      animationController.value = 1;
     }
 
     //Initializes controller retrieval method to own build method
@@ -138,7 +141,7 @@ class VehicleMethodSubformState extends State<VehicleMethodSubform> with SingleT
               }
 
               //Otherwise, extend time and name fields
-              else if (!requiresInfo(vehicleType)){
+              else if (!requiresInfo(vehicleType)) {
                 animationController.animateTo(1.0);
               }
 

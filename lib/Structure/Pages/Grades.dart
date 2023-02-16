@@ -17,6 +17,7 @@ class Grades extends StatefulWidget {
 class GradesState extends State<Grades> {
   List<bool> amiExtensions = List<bool>.filled(7, false);
   List<bool> samiExtensions = List<bool>.filled(2, false);
+  List<bool> paiExtensions = List<bool>.filled(2, false);
 
   ///Builds an extension panel for a particular grade with expansion state
   ///Works for both sami and ami grades
@@ -149,6 +150,7 @@ class GradesState extends State<Grades> {
                           setState(() {
                             amiExtensions = List<bool>.filled(7, false);
                             samiExtensions = List<bool>.filled(2, false);
+                            paiExtensions = List<bool>.filled(2, false);
                             amiExtensions[index] = !status;
                           });
                         },
@@ -178,6 +180,7 @@ class GradesState extends State<Grades> {
                           setState(() {
                             samiExtensions = List<bool>.filled(2, false);
                             amiExtensions = List<bool>.filled(7, false);
+                            paiExtensions = List<bool>.filled(2, false);
                             samiExtensions[index] = !status;
                           });
                         },
@@ -190,6 +193,38 @@ class GradesState extends State<Grades> {
                               "SAMI #${(key + 1).toString()}",
                               value,
                               samiExtensions[key]
+                            )
+                          )
+                        ).values.toList(),
+                      ),
+
+                      Text(
+                        "PAIs",
+                        style: Theme.of(context).textTheme.titleMedium,
+                      ),
+
+                      ExpansionPanelList(
+
+                        //Closes all panels other than current one
+                        expansionCallback: (index, status) {
+                          setState(() {
+                            samiExtensions = List<bool>.filled(2, false);
+                            amiExtensions = List<bool>.filled(7, false);
+                            paiExtensions = List<bool>.filled(2, false);
+                            paiExtensions[index] = !status;
+                          });
+                        },
+
+                        ///todo: make pais a thing
+
+                        children: model.content.samis.asMap().map(
+                          (key, value) => MapEntry(
+                            key,
+                            buildGradePanel(
+                              context,
+                              "PAI #${(key + 1).toString()}",
+                              value,
+                              paiExtensions[key]
                             )
                           )
                         ).values.toList(),

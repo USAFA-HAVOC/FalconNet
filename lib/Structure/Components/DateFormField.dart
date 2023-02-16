@@ -54,7 +54,7 @@ class DateFormFieldState extends State<DateFormField> {
           context: context,
           initialDate: parseDate(value),
           firstDate: widget.firstDate ?? DateTime.now().toUtc(),
-          lastDate: widget.lastDate ?? DateTime(2100),
+          lastDate: widget.lastDate ?? DateTime(2300),
         );
 
         //If picked date isn't null, set text editing state

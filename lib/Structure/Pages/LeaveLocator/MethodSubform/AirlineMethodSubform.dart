@@ -132,6 +132,7 @@ class AirlineMethodSubformState extends State<AirlineMethodSubform> {
             Expanded(
               flex: 4,
               child: DateFormField(
+                firstDate: DateTime.now().subtract(const Duration(days: 30)),
                 value: depDate,
                 label: "Takeoff Date",
                 validator: InputValidation.override(
@@ -140,6 +141,9 @@ class AirlineMethodSubformState extends State<AirlineMethodSubform> {
                 ),
                 onChanged: (change) => setState(() {
                   depDate = change;
+                  if (!parseDate(depDate).isBefore(parseDate(arrDate))) {
+                    arrDate = change;
+                  }
                 }),
               ),
             ),
@@ -168,6 +172,7 @@ class AirlineMethodSubformState extends State<AirlineMethodSubform> {
             Expanded(
               flex: 4,
               child: DateFormField(
+                firstDate: parseDate(depDate),
                 value: arrDate,
                 label: "Landing Date",
                 validator: InputValidation.override(

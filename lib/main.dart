@@ -59,13 +59,18 @@ void main() {
       )
   );
 
-  store.dispatch(NotificationAction.add(
-      (
-        UserNotificationBuilder()
-          ..message = "Logged In"
-          ..destination = "/profile"
-      ).build()
-  ));
+  if (!APIData.authenticated) {
+    String s = html.window.location.toString();
+    if (s.contains("code=")) {
+      html.window.history.pushState(null, 'FalconNet', '');
+      String token = s.split("code=").last;
+      login(token);
+      store.dispatch(GlobalAction.initialize());
+    }
+    else {
+      html.window.open('https://api.ethanchapman.dev/', "_self");
+    }
+  }
 
   runApp(FNApp(store: store));
 }
@@ -78,19 +83,6 @@ class FNApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    if (!APIData.authenticated) {
-      String s = html.window.location.toString();
-      if (s.contains("code=")) {
-        html.window.history.pushState(null, 'FalconNet', '');
-        String token = s.split("code=").last;
-        login(token);
-        store.dispatch(GlobalAction.initialize());
-      }
-      else {
-        html.window.open('https://api.ethanchapman.dev/', "_self");
-      }
-    }
-
     //Surrounds the app with a store provider so all child widgets can access global state
     return StoreProvider(
       store: store,

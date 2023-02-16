@@ -40,25 +40,29 @@ class NotificationAction extends ReduxAction<GlobalState> {
   Future<GlobalState?> reduce() async {
     try {
       var preferences = await SharedPreferences.getInstance();
+
       if (all) {
         await preferences.setStringList("notifications", <String>[]);
         return (state.toBuilder()..notifications.clear()).build();
       }
+
       else if (add) {
-        List<UserNotification> mutated = state.notifications.toList(growable: false) + [notification!];
+        List<UserNotification> existing = (preferences.getStringList("notifications") ?? []).map((s) => UserNotification.fromString(s)).toList();
+        List<UserNotification> mutated = existing + [notification!];
         await preferences.setStringList("notifications", mutated.map((n) => n.stringify()).toList());
         onSucceed?.call();
         return (state.toBuilder()..notifications=ListBuilder<UserNotification>(mutated)).build();
       }
+
       else if (retrieve) {
+        var sb = state.toBuilder();
+        sb.notifications=ListBuilder<UserNotification>(
+          (preferences.getStringList("notifications") ?? []).map((n) => UserNotification.fromString(n)).toList()
+        );
         onSucceed?.call();
-        return (
-          state.toBuilder()
-            ..notifications=ListBuilder<UserNotification>(
-              (preferences.getStringList("notifications") ?? []).map((n) => UserNotification.fromString(n)).toList()
-            )
-        ).build();
+        return sb.build();
       }
+
       else {
         List<UserNotification> mutated = state.notifications.toList(growable: false).where((n) => n != notification!).toList();
         await preferences.setStringList("notifications", mutated.map((n) => n.stringify()).toList());
