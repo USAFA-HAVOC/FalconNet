@@ -11,6 +11,7 @@ ThemeData lightTheme = ThemeData(
   fontFamily: "Roboto",
   iconTheme: const IconThemeData(color: Colors.black),
   canvasColor: Colors.white70,
+  errorColor: Colors.redAccent,
   buttonTheme: const ButtonThemeData(
     buttonColor: Colors.blue,
     shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(20)))

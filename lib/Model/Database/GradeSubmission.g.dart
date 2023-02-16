@@ -20,10 +20,15 @@ class _$GradeSubmissionSerializer
   Iterable<Object?> serialize(Serializers serializers, GradeSubmission object,
       {FullType specifiedType = FullType.unspecified}) {
     final result = <Object?>[
-      'id',
-      serializers.serialize(object.id, specifiedType: const FullType(String)),
-      'ami',
-      serializers.serialize(object.ami, specifiedType: const FullType(bool)),
+      'cadets',
+      serializers.serialize(object.cadets,
+          specifiedType:
+              const FullType(BuiltList, const [const FullType(String)])),
+      'grader_id',
+      serializers.serialize(object.grader_id,
+          specifiedType: const FullType(String)),
+      'type',
+      serializers.serialize(object.type, specifiedType: const FullType(String)),
       'number',
       serializers.serialize(object.number, specifiedType: const FullType(int)),
       'value',
@@ -32,7 +37,14 @@ class _$GradeSubmissionSerializer
       serializers.serialize(object.description,
           specifiedType: const FullType(String)),
     ];
-
+    Object? value;
+    value = object.id;
+    if (value != null) {
+      result
+        ..add('id')
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(String)));
+    }
     return result;
   }
 
@@ -50,11 +62,21 @@ class _$GradeSubmissionSerializer
       switch (key) {
         case 'id':
           result.id = serializers.deserialize(value,
+              specifiedType: const FullType(String)) as String?;
+          break;
+        case 'cadets':
+          result.cadets.replace(serializers.deserialize(value,
+                  specifiedType: const FullType(
+                      BuiltList, const [const FullType(String)]))!
+              as BuiltList<Object?>);
+          break;
+        case 'grader_id':
+          result.grader_id = serializers.deserialize(value,
               specifiedType: const FullType(String))! as String;
           break;
-        case 'ami':
-          result.ami = serializers.deserialize(value,
-              specifiedType: const FullType(bool))! as bool;
+        case 'type':
+          result.type = serializers.deserialize(value,
+              specifiedType: const FullType(String))! as String;
           break;
         case 'number':
           result.number = serializers.deserialize(value,
@@ -77,9 +99,13 @@ class _$GradeSubmissionSerializer
 
 class _$GradeSubmission extends GradeSubmission {
   @override
-  final String id;
+  final String? id;
   @override
-  final bool ami;
+  final BuiltList<String> cadets;
+  @override
+  final String grader_id;
+  @override
+  final String type;
   @override
   final int number;
   @override
@@ -91,14 +117,18 @@ class _$GradeSubmission extends GradeSubmission {
       (new GradeSubmissionBuilder()..update(updates))._build();
 
   _$GradeSubmission._(
-      {required this.id,
-      required this.ami,
+      {this.id,
+      required this.cadets,
+      required this.grader_id,
+      required this.type,
       required this.number,
       required this.value,
       required this.description})
       : super._() {
-    BuiltValueNullFieldError.checkNotNull(id, r'GradeSubmission', 'id');
-    BuiltValueNullFieldError.checkNotNull(ami, r'GradeSubmission', 'ami');
+    BuiltValueNullFieldError.checkNotNull(cadets, r'GradeSubmission', 'cadets');
+    BuiltValueNullFieldError.checkNotNull(
+        grader_id, r'GradeSubmission', 'grader_id');
+    BuiltValueNullFieldError.checkNotNull(type, r'GradeSubmission', 'type');
     BuiltValueNullFieldError.checkNotNull(number, r'GradeSubmission', 'number');
     BuiltValueNullFieldError.checkNotNull(value, r'GradeSubmission', 'value');
     BuiltValueNullFieldError.checkNotNull(
@@ -118,7 +148,9 @@ class _$GradeSubmission extends GradeSubmission {
     if (identical(other, this)) return true;
     return other is GradeSubmission &&
         id == other.id &&
-        ami == other.ami &&
+        cadets == other.cadets &&
+        grader_id == other.grader_id &&
+        type == other.type &&
         number == other.number &&
         value == other.value &&
         description == other.description;
@@ -128,7 +160,9 @@ class _$GradeSubmission extends GradeSubmission {
   int get hashCode {
     var _$hash = 0;
     _$hash = $jc(_$hash, id.hashCode);
-    _$hash = $jc(_$hash, ami.hashCode);
+    _$hash = $jc(_$hash, cadets.hashCode);
+    _$hash = $jc(_$hash, grader_id.hashCode);
+    _$hash = $jc(_$hash, type.hashCode);
     _$hash = $jc(_$hash, number.hashCode);
     _$hash = $jc(_$hash, value.hashCode);
     _$hash = $jc(_$hash, description.hashCode);
@@ -140,7 +174,9 @@ class _$GradeSubmission extends GradeSubmission {
   String toString() {
     return (newBuiltValueToStringHelper(r'GradeSubmission')
           ..add('id', id)
-          ..add('ami', ami)
+          ..add('cadets', cadets)
+          ..add('grader_id', grader_id)
+          ..add('type', type)
           ..add('number', number)
           ..add('value', value)
           ..add('description', description))
@@ -156,9 +192,18 @@ class GradeSubmissionBuilder
   String? get id => _$this._id;
   set id(String? id) => _$this._id = id;
 
-  bool? _ami;
-  bool? get ami => _$this._ami;
-  set ami(bool? ami) => _$this._ami = ami;
+  ListBuilder<String>? _cadets;
+  ListBuilder<String> get cadets =>
+      _$this._cadets ??= new ListBuilder<String>();
+  set cadets(ListBuilder<String>? cadets) => _$this._cadets = cadets;
+
+  String? _grader_id;
+  String? get grader_id => _$this._grader_id;
+  set grader_id(String? grader_id) => _$this._grader_id = grader_id;
+
+  String? _type;
+  String? get type => _$this._type;
+  set type(String? type) => _$this._type = type;
 
   int? _number;
   int? get number => _$this._number;
@@ -178,7 +223,9 @@ class GradeSubmissionBuilder
     final $v = _$v;
     if ($v != null) {
       _id = $v.id;
-      _ami = $v.ami;
+      _cadets = $v.cadets.toBuilder();
+      _grader_id = $v.grader_id;
+      _type = $v.type;
       _number = $v.number;
       _value = $v.value;
       _description = $v.description;
@@ -202,18 +249,33 @@ class GradeSubmissionBuilder
   GradeSubmission build() => _build();
 
   _$GradeSubmission _build() {
-    final _$result = _$v ??
-        new _$GradeSubmission._(
-            id: BuiltValueNullFieldError.checkNotNull(
-                id, r'GradeSubmission', 'id'),
-            ami: BuiltValueNullFieldError.checkNotNull(
-                ami, r'GradeSubmission', 'ami'),
-            number: BuiltValueNullFieldError.checkNotNull(
-                number, r'GradeSubmission', 'number'),
-            value: BuiltValueNullFieldError.checkNotNull(
-                value, r'GradeSubmission', 'value'),
-            description: BuiltValueNullFieldError.checkNotNull(
-                description, r'GradeSubmission', 'description'));
+    _$GradeSubmission _$result;
+    try {
+      _$result = _$v ??
+          new _$GradeSubmission._(
+              id: id,
+              cadets: cadets.build(),
+              grader_id: BuiltValueNullFieldError.checkNotNull(
+                  grader_id, r'GradeSubmission', 'grader_id'),
+              type: BuiltValueNullFieldError.checkNotNull(
+                  type, r'GradeSubmission', 'type'),
+              number: BuiltValueNullFieldError.checkNotNull(
+                  number, r'GradeSubmission', 'number'),
+              value: BuiltValueNullFieldError.checkNotNull(
+                  value, r'GradeSubmission', 'value'),
+              description: BuiltValueNullFieldError.checkNotNull(
+                  description, r'GradeSubmission', 'description'));
+    } catch (_) {
+      late String _$failedField;
+      try {
+        _$failedField = 'cadets';
+        cadets.build();
+      } catch (e) {
+        throw new BuiltValueNestedFieldError(
+            r'GradeSubmission', _$failedField, e.toString());
+      }
+      rethrow;
+    }
     replace(_$result);
     return _$result;
   }

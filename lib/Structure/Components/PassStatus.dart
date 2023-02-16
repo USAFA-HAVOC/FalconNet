@@ -62,8 +62,14 @@ class PassStatus extends StatelessWidget {
                   //Determine expiration message
                   CadetPass pass = model.content!.toLocal();
                   String expiration;
+                  bool expired = false;
 
-                  if (pass.end_time.difference(DateTime.now()).compareTo(Duration(hours: 24)) < 0 && pass.end_time.weekday == DateTime.now().weekday) {
+                  if (pass.end_time.isBefore(DateTime.now())) {
+                    expiration = "Expired: ${describeDate(pass.end_time)} ${describeTime(TimeOfDay.fromDateTime(pass.end_time))}";
+                    expired = true;
+                  }
+
+                  else if (pass.end_time.difference(DateTime.now()).compareTo(Duration(hours: 24)) < 0 && pass.end_time.weekday == DateTime.now().weekday) {
                     expiration = "Expires: ${describeTime(TimeOfDay.fromDateTime(pass.end_time))}";
                   }
                   else if (pass.end_time.difference(DateTime.now()).compareTo(Duration(days: 7)) < 0) {
@@ -75,7 +81,7 @@ class PassStatus extends StatelessWidget {
 
                   //Display a gray card with expiration time/date
                   return Card(
-                    color: Theme.of(context).canvasColor,
+                    color: !expired ? Theme.of(context).canvasColor : Theme.of(context).errorColor,
                     child: Padding(
                       padding: EdgeInsets.all(20),
                       child: Column(

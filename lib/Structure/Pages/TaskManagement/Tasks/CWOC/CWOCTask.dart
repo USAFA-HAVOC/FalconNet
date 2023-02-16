@@ -147,36 +147,66 @@ class CWOCTaskState extends State<CWOCTask> {
     );
   }
 
-  /*
+
   Widget buildStatusGrid(List<UnitSummary> units) {
     List<String> groups = Set<String>.from(units.where((unit) => unit.group != null).map((u) => u.group!)).toList();
     groups.sort();
 
-    List<Widget> children = [];
+    List<Widget> left = [];
+    List<Widget> right = [];
     for (int g = 0; g < groups.length; g++) {
-      var left = groups[g];
-      var right = (g + 1) < groups.length ? groups[g + 1] : null;
+      var group = groups[g];
 
-      if (right != null)  {
-        children.add(
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              CWOCStatusWidget(units: units.where((unit) => unit.group == left).toList(), label: left),
-
-              SizedBox(height: 20,),
-
-              CWOCStatusWidget(units: units.where((unit) => unit.group == right).toList(), label: right),
-            ],
-          ),
-        );
-      }
-      else {
-
-      }
+      (g % 2 == 0 ? left : right).addAll(
+        [
+          CWOCStatusWidget(units: units.where((unit) => unit.group == group).toList(), label: group),
+          SizedBox(height: 20,)
+        ]
+      );
     }
+
+    return Row(
+      children: [
+        Expanded(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: left,
+          ),
+        ),
+
+        SizedBox(width: 20,),
+
+        Expanded(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: right,
+          ),
+        ),
+      ],
+    );
   }
-  */
+
+  Widget buildStatusColumn(List<UnitSummary> units) {
+    List<String> groups = Set<String>.from(units.where((unit) => unit.group != null).map((u) => u.group!)).toList();
+    groups.sort();
+
+    List<Widget> children = [];
+
+    for (var group in groups) {
+      children.addAll([
+        CWOCStatusWidget(units: units.where((u) => u.group == group).toList(), label: group),
+
+        SizedBox(height: 20,),
+      ]);
+    }
+
+    return Column(
+      children: children,
+    );
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -203,59 +233,12 @@ class CWOCTaskState extends State<CWOCTask> {
 
                   //Displays a group data as grid if screen is wide enough
                   if (constraints.maxWidth > 700) {
-                    status = Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Expanded(
-                          child: Column(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              CWOCStatusWidget(units: units.where((unit) => unit.group == "1").toList(), label: "Group One"),
-
-                              SizedBox(height: 20,),
-
-                              CWOCStatusWidget(units: units.where((unit) => unit.group == "3").toList(), label: "Group Three"),
-                            ],
-                          ),
-                        ),
-
-                        SizedBox(width: 20,),
-
-                        Expanded(
-                          child: Column(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              CWOCStatusWidget(units: units.where((unit) => unit.group == "2").toList(), label: "Group Two"),
-
-                              SizedBox(height: 20,),
-
-                              CWOCStatusWidget(units: units.where((unit) => unit.group == "4").toList(), label: "Group Four"),
-                            ],
-                          ),
-                        )
-                      ],
-                    );
+                    status = buildStatusGrid(units);
                   }
 
                   //Otherwise, displays in a simple column
                   else {
-                    status = Column(
-                      children: [
-                        CWOCStatusWidget(units: units.where((unit) => unit.group == "1").toList(), label: "Group One"),
-
-                        SizedBox(height: 20,),
-
-                        CWOCStatusWidget(units: units.where((unit) => unit.group == "2").toList(), label: "Group Two"),
-
-                        SizedBox(height: 20,),
-
-                        CWOCStatusWidget(units: units.where((unit) => unit.group == "3").toList(), label: "Group Three"),
-
-                        SizedBox(height: 20,),
-
-                        CWOCStatusWidget(units: units.where((unit) => unit.group == "4").toList(), label: "Group Four"),
-                      ],
-                    );
+                    status = buildStatusColumn(units);
                   }
 
                   Widget unitList;

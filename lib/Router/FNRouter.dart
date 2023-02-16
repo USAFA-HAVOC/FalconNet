@@ -8,7 +8,7 @@ import '../Model/Database/TimedRole.dart';
 import '../Model/Store/GlobalStateModel.dart';
 import '../Structure/FNScaffold.dart';
 import '../Structure/Pages/Dashboard/Dashboard.dart';
-import '../Structure/Pages/Grades.dart';
+import '../Structure/Pages/Grades/Grades.dart';
 import '../Structure/Pages/LeaveLocator/LeaveLocator.dart';
 import '../Structure/Pages/PassManagement/PassManagement.dart';
 import '../Structure/Pages/Profile/Profile.dart';

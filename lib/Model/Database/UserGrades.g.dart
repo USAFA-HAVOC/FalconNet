@@ -78,7 +78,15 @@ class _$UserGradesSerializer implements StructuredSerializer<UserGrades> {
           specifiedType:
               const FullType(BuiltList, const [const FullType(Grade)])),
     ];
-
+    Object? value;
+    value = object.pais;
+    if (value != null) {
+      result
+        ..add('pais')
+        ..add(serializers.serialize(value,
+            specifiedType:
+                const FullType(BuiltList, const [const FullType(Grade)])));
+    }
     return result;
   }
 
@@ -101,6 +109,12 @@ class _$UserGradesSerializer implements StructuredSerializer<UserGrades> {
           break;
         case 'samis':
           result.samis.replace(serializers.deserialize(value,
+                  specifiedType:
+                      const FullType(BuiltList, const [const FullType(Grade)]))!
+              as BuiltList<Object?>);
+          break;
+        case 'pais':
+          result.pais.replace(serializers.deserialize(value,
                   specifiedType:
                       const FullType(BuiltList, const [const FullType(Grade)]))!
               as BuiltList<Object?>);
@@ -211,11 +225,14 @@ class _$UserGrades extends UserGrades {
   final BuiltList<Grade> amis;
   @override
   final BuiltList<Grade> samis;
+  @override
+  final BuiltList<Grade>? pais;
 
   factory _$UserGrades([void Function(UserGradesBuilder)? updates]) =>
       (new UserGradesBuilder()..update(updates))._build();
 
-  _$UserGrades._({required this.amis, required this.samis}) : super._() {
+  _$UserGrades._({required this.amis, required this.samis, this.pais})
+      : super._() {
     BuiltValueNullFieldError.checkNotNull(amis, r'UserGrades', 'amis');
     BuiltValueNullFieldError.checkNotNull(samis, r'UserGrades', 'samis');
   }
@@ -230,7 +247,10 @@ class _$UserGrades extends UserGrades {
   @override
   bool operator ==(Object other) {
     if (identical(other, this)) return true;
-    return other is UserGrades && amis == other.amis && samis == other.samis;
+    return other is UserGrades &&
+        amis == other.amis &&
+        samis == other.samis &&
+        pais == other.pais;
   }
 
   @override
@@ -238,6 +258,7 @@ class _$UserGrades extends UserGrades {
     var _$hash = 0;
     _$hash = $jc(_$hash, amis.hashCode);
     _$hash = $jc(_$hash, samis.hashCode);
+    _$hash = $jc(_$hash, pais.hashCode);
     _$hash = $jf(_$hash);
     return _$hash;
   }
@@ -246,7 +267,8 @@ class _$UserGrades extends UserGrades {
   String toString() {
     return (newBuiltValueToStringHelper(r'UserGrades')
           ..add('amis', amis)
-          ..add('samis', samis))
+          ..add('samis', samis)
+          ..add('pais', pais))
         .toString();
   }
 }
@@ -262,6 +284,10 @@ class UserGradesBuilder implements Builder<UserGrades, UserGradesBuilder> {
   ListBuilder<Grade> get samis => _$this._samis ??= new ListBuilder<Grade>();
   set samis(ListBuilder<Grade>? samis) => _$this._samis = samis;
 
+  ListBuilder<Grade>? _pais;
+  ListBuilder<Grade> get pais => _$this._pais ??= new ListBuilder<Grade>();
+  set pais(ListBuilder<Grade>? pais) => _$this._pais = pais;
+
   UserGradesBuilder();
 
   UserGradesBuilder get _$this {
@@ -269,6 +295,7 @@ class UserGradesBuilder implements Builder<UserGrades, UserGradesBuilder> {
     if ($v != null) {
       _amis = $v.amis.toBuilder();
       _samis = $v.samis.toBuilder();
+      _pais = $v.pais?.toBuilder();
       _$v = null;
     }
     return this;
@@ -291,8 +318,9 @@ class UserGradesBuilder implements Builder<UserGrades, UserGradesBuilder> {
   _$UserGrades _build() {
     _$UserGrades _$result;
     try {
-      _$result =
-          _$v ?? new _$UserGrades._(amis: amis.build(), samis: samis.build());
+      _$result = _$v ??
+          new _$UserGrades._(
+              amis: amis.build(), samis: samis.build(), pais: _pais?.build());
     } catch (_) {
       late String _$failedField;
       try {
@@ -300,6 +328,8 @@ class UserGradesBuilder implements Builder<UserGrades, UserGradesBuilder> {
         amis.build();
         _$failedField = 'samis';
         samis.build();
+        _$failedField = 'pais';
+        _pais?.build();
       } catch (e) {
         throw new BuiltValueNestedFieldError(
             r'UserGrades', _$failedField, e.toString());

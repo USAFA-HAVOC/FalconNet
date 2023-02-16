@@ -2,7 +2,6 @@ import 'package:falcon_net/Structure/Components/LoadingShimmer.dart';
 import 'package:flutter/material.dart';
 
 import '../../../../../Model/Database/UnitData.dart';
-import '../../../../../Model/Database/User.dart';
 import '../../../../Components/PageWidget.dart';
 
 ///Displays present status of SDO signing based on di object
@@ -23,24 +22,9 @@ class SDOStatusWidget extends StatelessWidget {
       );
     }
 
-    String status(User member) {
-      var status = "unsigned";
-      if (member.accountability != null) {
-        if (member.accountability!.current_pass != null) {
-          status = "out";
-        }
-        if (member.accountability!.di_last_signed != null) {
-          if (DateTime.now().toUtc().difference(member.accountability!.di_last_signed!.toUtc()).compareTo(Duration(days: 1)) < 0) {
-            status = "signed";
-          }
-        }
-      }
-      return status;
-    }
-
-    var unsignedCount = di!.members.where((signee) => status(signee) == "unsigned").length;
-    var signedCount = di!.members.where((signee) => status(signee) == "signed").length;
-    var outCount = di!.members.where((signee) => status(signee) == "out").length;
+    var unsignedCount = di!.members.where((signee) => signee.status() == "unsigned").length;
+    var signedCount = di!.members.where((signee) => signee.status() == "signed").length;
+    var outCount = di!.members.where((signee) => signee.status() == "out").length;
 
     double percent;
     if (di!.members.isEmpty) {

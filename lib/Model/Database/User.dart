@@ -35,7 +35,9 @@ abstract class User implements Built<User, UserBuilder> {
         status = "out";
       }
       if (accountability!.di_last_signed != null) {
-        if (DateTime.now().toUtc().difference(accountability!.di_last_signed!.toUtc()).compareTo(Duration(days: 1)) < 0) {
+        DateTime signature = accountability!.di_last_signed!.toLocal();
+        DateTime present = DateTime.now().toLocal();
+        if (signature.year == present.year && signature.month == present.month && signature.day == present.day) {
           status = "signed";
         }
       }

@@ -32,7 +32,9 @@ class PassAction extends ReduxAction<GlobalState> {
 
       if (updated) {
         await Endpoints.passUpdate(pass!);
+        sb.user.accountability.current_pass = pass!.toBuilder();
       }
+
       else {
         var assigned = await Endpoints.passCreate(pass!);
         sb.user.accountability.current_pass = assigned.toBuilder();

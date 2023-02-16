@@ -39,6 +39,12 @@ Serializers _$serializers = (new Serializers().toBuilder()
           const FullType(BuiltList, const [const FullType(Grade)]),
           () => new ListBuilder<Grade>())
       ..addBuilderFactory(
+          const FullType(BuiltList, const [const FullType(Grade)]),
+          () => new ListBuilder<Grade>())
+      ..addBuilderFactory(
+          const FullType(BuiltList, const [const FullType(String)]),
+          () => new ListBuilder<String>())
+      ..addBuilderFactory(
           const FullType(BuiltList, const [const FullType(TimedRole)]),
           () => new ListBuilder<TimedRole>())
       ..addBuilderFactory(
