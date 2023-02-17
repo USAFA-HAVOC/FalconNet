@@ -52,8 +52,6 @@ class CWOCTaskState extends State<CWOCTask> {
   ///Signs for an individual signee in a given unit
   void signFor(WingData wing, UnitData unit, User signee, ScaffoldMessengerState messenger) async {
 
-    /// todo: replace with api call
-
     try {
       await Endpoints.sdoSign(DIRequest((b) => b..cadet_id = signee.id));
 

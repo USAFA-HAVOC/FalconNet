@@ -18,12 +18,15 @@ class PassHistory extends StatelessWidget {
         converter: (store) => ViewModel<List<CadetPass>>(store: store, content: store.state.history.history.toList()),
         builder: (context, model) {
 
+          var mutable = model.content;
+          mutable.sort((a, b) => b.start_time.compareTo(a.start_time));
+
           //Generate list view dynamically as list is scrolled with builder constructor
           return ListView.builder(
             shrinkWrap: true,
             primary: false,
             itemCount: model.content.length,
-            itemBuilder: (context, index) => PassRecord(pass: model.content[index]),
+            itemBuilder: (context, index) => PassRecord(pass: mutable[index]),
           );
         }
     );

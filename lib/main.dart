@@ -6,16 +6,16 @@ import 'package:falcon_net/Model/Database/User.dart';
 import 'package:falcon_net/Model/Database/UserNotification.dart';
 import 'package:falcon_net/Model/Database/UserPersonalInfo.dart';
 import 'package:falcon_net/Model/Store/Actions/GlobalAction.dart';
-import 'package:falcon_net/Model/Store/Actions/NotificationAction.dart';
 import 'package:falcon_net/Model/Store/Endpoints.dart';
 import 'package:falcon_net/Model/Store/GlobalStateModel.dart';
+import 'package:falcon_net/Theme/Dark/DarkTheme.dart';
+import 'package:falcon_net/Theme/Light/LightTheme.dart';
+import 'package:falcon_net/Theme/Random/RandomTheme.dart';
 import 'package:flutter/material.dart';
 
 import 'Model/Database/UserSettings.dart';
 import 'Router/FNRouter.dart';
 import 'Structure/Components/ViewModel.dart';
-import 'Theme/Dark/DarkTheme.dart';
-import 'Theme/Light/LightTheme.dart';
 
 import 'dart:html' as html;
 
@@ -50,7 +50,7 @@ void main() {
           ).toBuilder()
           ..notifications = ListBuilder<UserNotification>([])
           ..settings = UserSettings((b2) => b2
-              ..darkTheme = false
+              ..theme = "light"
               ..taskPush = true
               ..diPush = true
               ..passPush = true
@@ -86,10 +86,10 @@ class FNApp extends StatelessWidget {
     //Surrounds the app with a store provider so all child widgets can access global state
     return StoreProvider(
       store: store,
-      child: StoreConnector<GlobalState, ViewModel<bool>>(
-        converter: (store) => ViewModel(store: store, content: store.state.settings.darkTheme),
+      child: StoreConnector<GlobalState, ViewModel<String>>(
+        converter: (store) => ViewModel(store: store, content: store.state.settings.theme),
         builder: (context, model) => MaterialApp.router(
-          theme: model.content ? darkTheme : lightTheme,
+          theme: model.content == "light" ? lightTheme : (model.content == "dark" ? darkTheme : randomTheme),
           routerConfig: fnRouter,
         ),
       ),

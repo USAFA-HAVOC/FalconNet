@@ -57,11 +57,9 @@ class CadetInfo extends StatelessWidget {
 
               InputBlock(
                 label: "Squadron",
-                onSubmit: (value) => model.dispatch(InfoAction(modify: (b) => b..personal_info.squadron = int.parse(value!))),
-                validator: (String? value) => 0 < (int.tryParse(value ?? "0") ?? 0) && (int.tryParse(value ?? "0") ?? 41) < 41,
-                error: "Enter a valid squadron",
-                hint: "squadron",
+                disabled: true,
                 initial: model.content.personal_info.squadron.toString(),
+                onSubmit: (input) {  },
               ),
             ],
           );
@@ -78,8 +76,9 @@ class InputBlock extends StatefulWidget {
   final String? initial;
   final String? error;
   final String? label;
+  final bool disabled;
 
-  const InputBlock({super.key, required this.onSubmit, this.validator, this.hint, this.error, this.initial, this.label});
+  const InputBlock({super.key, required this.onSubmit, this.validator, this.hint, this.error, this.initial, this.label, this.disabled = false});
 
   @override
   State<InputBlock> createState() => InputBlockState();
@@ -131,6 +130,7 @@ class InputBlockState extends State<InputBlock> {
           }),
 
           child: TextField(
+            readOnly: widget.disabled,
             controller: controller,
             onChanged: (change) => setState(() {
               value = change;
@@ -157,7 +157,7 @@ class InputBlockState extends State<InputBlock> {
                         color: Theme.of(context).focusColor
                     ),
                 ),
-                filled: !selected,
+                filled: !selected || widget.disabled,
                 fillColor: Theme.of(context).focusColor,
             ),
           ),

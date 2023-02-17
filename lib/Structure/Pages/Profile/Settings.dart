@@ -32,11 +32,35 @@ class Settings extends StatelessWidget {
                   Expanded(
                       flex: 2,
                       child: Switch(
-                        value: model.content.darkTheme,
+                        value: model.content.theme == "dark",
 
                         //Dispatches set setting action with new value
                         onChanged: (value) {
-                          model.dispatch(SettingsAction(modify: (b) => b..darkTheme = value));
+                          model.dispatch(SettingsAction(modify: (b) => b..theme = value ? "dark" : "light"));
+                        },
+                      )
+                  ),
+                ],
+              ),
+
+              Row(
+                children: [
+                  Expanded(
+                      flex: 10,
+                      child: Text(
+                        "Random Theme",
+                        style: Theme.of(context).textTheme.titleMedium,
+                      )
+                  ),
+
+                  Expanded(
+                      flex: 2,
+                      child: Switch(
+                        value: model.content.theme == "random",
+
+                        //Dispatches set setting action with new value
+                        onChanged: (value) {
+                          model.dispatch(SettingsAction(modify: (b) => b..theme = value ? "random" : "light"));
                         },
                       )
                   ),

@@ -9,7 +9,7 @@ part 'UserSettings.g.dart';
 abstract class UserSettings implements Built<UserSettings, UserSettingsBuilder> {
   static Serializer<UserSettings> get serializer => _$userSettingsSerializer;
 
-  bool get darkTheme;
+  String get theme;
   bool get pushNotifications;
   bool get diPush;
   bool get passPush;

@@ -19,9 +19,9 @@ class _$UserSettingsSerializer implements StructuredSerializer<UserSettings> {
   Iterable<Object?> serialize(Serializers serializers, UserSettings object,
       {FullType specifiedType = FullType.unspecified}) {
     final result = <Object?>[
-      'darkTheme',
-      serializers.serialize(object.darkTheme,
-          specifiedType: const FullType(bool)),
+      'theme',
+      serializers.serialize(object.theme,
+          specifiedType: const FullType(String)),
       'pushNotifications',
       serializers.serialize(object.pushNotifications,
           specifiedType: const FullType(bool)),
@@ -50,9 +50,9 @@ class _$UserSettingsSerializer implements StructuredSerializer<UserSettings> {
       iterator.moveNext();
       final Object? value = iterator.current;
       switch (key) {
-        case 'darkTheme':
-          result.darkTheme = serializers.deserialize(value,
-              specifiedType: const FullType(bool))! as bool;
+        case 'theme':
+          result.theme = serializers.deserialize(value,
+              specifiedType: const FullType(String))! as String;
           break;
         case 'pushNotifications':
           result.pushNotifications = serializers.deserialize(value,
@@ -79,7 +79,7 @@ class _$UserSettingsSerializer implements StructuredSerializer<UserSettings> {
 
 class _$UserSettings extends UserSettings {
   @override
-  final bool darkTheme;
+  final String theme;
   @override
   final bool pushNotifications;
   @override
@@ -93,14 +93,13 @@ class _$UserSettings extends UserSettings {
       (new UserSettingsBuilder()..update(updates))._build();
 
   _$UserSettings._(
-      {required this.darkTheme,
+      {required this.theme,
       required this.pushNotifications,
       required this.diPush,
       required this.passPush,
       required this.taskPush})
       : super._() {
-    BuiltValueNullFieldError.checkNotNull(
-        darkTheme, r'UserSettings', 'darkTheme');
+    BuiltValueNullFieldError.checkNotNull(theme, r'UserSettings', 'theme');
     BuiltValueNullFieldError.checkNotNull(
         pushNotifications, r'UserSettings', 'pushNotifications');
     BuiltValueNullFieldError.checkNotNull(diPush, r'UserSettings', 'diPush');
@@ -121,7 +120,7 @@ class _$UserSettings extends UserSettings {
   bool operator ==(Object other) {
     if (identical(other, this)) return true;
     return other is UserSettings &&
-        darkTheme == other.darkTheme &&
+        theme == other.theme &&
         pushNotifications == other.pushNotifications &&
         diPush == other.diPush &&
         passPush == other.passPush &&
@@ -131,7 +130,7 @@ class _$UserSettings extends UserSettings {
   @override
   int get hashCode {
     var _$hash = 0;
-    _$hash = $jc(_$hash, darkTheme.hashCode);
+    _$hash = $jc(_$hash, theme.hashCode);
     _$hash = $jc(_$hash, pushNotifications.hashCode);
     _$hash = $jc(_$hash, diPush.hashCode);
     _$hash = $jc(_$hash, passPush.hashCode);
@@ -143,7 +142,7 @@ class _$UserSettings extends UserSettings {
   @override
   String toString() {
     return (newBuiltValueToStringHelper(r'UserSettings')
-          ..add('darkTheme', darkTheme)
+          ..add('theme', theme)
           ..add('pushNotifications', pushNotifications)
           ..add('diPush', diPush)
           ..add('passPush', passPush)
@@ -156,9 +155,9 @@ class UserSettingsBuilder
     implements Builder<UserSettings, UserSettingsBuilder> {
   _$UserSettings? _$v;
 
-  bool? _darkTheme;
-  bool? get darkTheme => _$this._darkTheme;
-  set darkTheme(bool? darkTheme) => _$this._darkTheme = darkTheme;
+  String? _theme;
+  String? get theme => _$this._theme;
+  set theme(String? theme) => _$this._theme = theme;
 
   bool? _pushNotifications;
   bool? get pushNotifications => _$this._pushNotifications;
@@ -182,7 +181,7 @@ class UserSettingsBuilder
   UserSettingsBuilder get _$this {
     final $v = _$v;
     if ($v != null) {
-      _darkTheme = $v.darkTheme;
+      _theme = $v.theme;
       _pushNotifications = $v.pushNotifications;
       _diPush = $v.diPush;
       _passPush = $v.passPush;
@@ -209,8 +208,8 @@ class UserSettingsBuilder
   _$UserSettings _build() {
     final _$result = _$v ??
         new _$UserSettings._(
-            darkTheme: BuiltValueNullFieldError.checkNotNull(
-                darkTheme, r'UserSettings', 'darkTheme'),
+            theme: BuiltValueNullFieldError.checkNotNull(
+                theme, r'UserSettings', 'theme'),
             pushNotifications: BuiltValueNullFieldError.checkNotNull(
                 pushNotifications, r'UserSettings', 'pushNotifications'),
             diPush: BuiltValueNullFieldError.checkNotNull(
