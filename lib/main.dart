@@ -1,3 +1,8 @@
+import 'package:aad_oauth/aad_oauth.dart';
+import 'package:aad_oauth/helper/mobile_oauth.dart';
+import 'package:aad_oauth/model/config.dart';
+import 'package:aad_oauth/model/failure.dart';
+import 'package:aad_oauth/model/token.dart';
 import 'package:async_redux/async_redux.dart';
 import 'package:built_collection/src/list.dart';
 import 'package:falcon_net/Model/Database/CadetAccountability.dart';
@@ -11,6 +16,7 @@ import 'package:falcon_net/Model/Store/GlobalStateModel.dart';
 import 'package:falcon_net/Theme/Dark/DarkTheme.dart';
 import 'package:falcon_net/Theme/Light/LightTheme.dart';
 import 'package:falcon_net/Theme/Random/RandomTheme.dart';
+import 'package:falcon_net/Utility/CustomOAuth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
@@ -73,6 +79,8 @@ class FNApp extends StatefulWidget {
   State<StatefulWidget> createState() => FNAppState();
 }
 
+final navigatorKey = GlobalKey<NavigatorState>();
+
 class FNAppState extends State<FNApp> {
   late bool signed;
 
@@ -101,24 +109,44 @@ class FNAppState extends State<FNApp> {
     }
   }
 
+  void appLogin() async {
+    const String APP_CLIENT_ID = '198ea96e-078e-4bdc-9b90-0dea3a9ea43b';
+    const String TENANT_ID = '7ab80a06-f029-45c0-84d1-7dad19ce3c61';
+
+    final Config config = Config(
+      tenant: TENANT_ID,
+      clientId: APP_CLIENT_ID,
+      scope: "$APP_CLIENT_ID/FalconNet",
+      // redirectUri is Optional as a default is calculated based on app type/web location
+      redirectUri: "https://api.ethanchapman.dev",
+      navigatorKey: navigatorKey,
+      webUseRedirect: true, // default is false - on web only, forces a redirect flow instead of popup auth
+      //Optional parameter: Centered CircularProgressIndicator while rendering web page in WebView
+      loader: const Center(child: CircularProgressIndicator()),
+    );
+
+    final CustomOAuth oauth = CustomOAuth(config);
+
+    var res = await oauth.login();
+    
+    Token? t = res.fold((l) => null, (r) => r);
+
+    login(t!.accessToken!);
+
+    widget.store.dispatch(GlobalAction.initialize());
+
+    setState(() {
+      signed = true;
+    });
+  }
+
   Widget build(BuildContext context) {
     if (!signed) {
       if (kIsWeb) {
         webLogin();
       }
       else {
-        return MaterialApp(
-          home: LoginView(
-            onLogin: (code) {
-              print(code);
-              login(code);
-              widget.store.dispatch(GlobalAction.initialize());
-              setState(() {
-                signed = true;
-              });
-            },
-          )
-        );
+        appLogin();
       }
     }
 

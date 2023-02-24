@@ -2,6 +2,7 @@ import 'package:async_redux/async_redux.dart';
 import 'package:falcon_net/Structure/Components/ViewModel.dart';
 import 'package:falcon_net/Structure/Pages/TaskManagement/TaskManagement.dart';
 import 'package:falcon_net/Structure/Pages/TaskManagement/Tasks/Delegation/DelegationTask.dart';
+import 'package:falcon_net/main.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import '../Model/Database/TimedRole.dart';
@@ -22,6 +23,8 @@ import '../Structure/Pages/TaskManagement/Tasks/SDO/SDOTask.dart';
 final GoRouter fnRouter = GoRouter(routes: [
   //Shell route places contents of all sub-routes as child of the scaffold
   ShellRoute(
+      navigatorKey: navigatorKey,
+
       builder: (context, state, child) {
         return FNScaffold(child: child);
       },

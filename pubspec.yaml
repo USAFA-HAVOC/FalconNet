@@ -50,6 +50,7 @@ dependencies:
   built_collection: ^5.1.1
   universal_html: ^2.0.9
   flutter_inappwebview: ^5.7.2+3
+  aad_oauth: 0.4.2
 
 dev_dependencies:
   flutter_test:
