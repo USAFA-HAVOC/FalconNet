@@ -11,15 +11,17 @@ import 'package:falcon_net/Model/Store/GlobalStateModel.dart';
 import 'package:falcon_net/Theme/Dark/DarkTheme.dart';
 import 'package:falcon_net/Theme/Light/LightTheme.dart';
 import 'package:falcon_net/Theme/Random/RandomTheme.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 
 import 'Model/Database/UserSettings.dart';
 import 'Router/FNRouter.dart';
 import 'Structure/Components/ViewModel.dart';
-
-import 'dart:html' as html;
+import "package:universal_html/html.dart" as html;
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
 
   //Initialize a default store
   //Replace the default global state with an api call
@@ -59,33 +61,70 @@ void main() {
       )
   );
 
-  if (!APIData.authenticated) {
-    String s = html.window.location.toString();
-    if (s.contains("code=")) {
-      html.window.history.pushState(null, 'FalconNet', '');
-      String token = s.split("code=").last;
-      login(token);
-      store.dispatch(GlobalAction.initialize());
-    }
-    else {
-      html.window.open('https://api.ethanchapman.dev/', "_self");
-    }
-  }
-
   runApp(FNApp(store: store));
 }
 
-class FNApp extends StatelessWidget {
+class FNApp extends StatefulWidget {
   final Store<GlobalState> store;
 
   const FNApp({super.key, required this.store});
 
-  // This widget is the root of your application.
   @override
+  State<StatefulWidget> createState() => FNAppState();
+}
+
+class FNAppState extends State<FNApp> {
+  late bool signed;
+
+  @override
+  void initState() {
+    /// todo: session management
+    signed = false;
+    super.initState();
+  }
+
+  void webLogin() {
+    if (!APIData.authenticated) {
+      String s = html.window.location.toString();
+      if (s.contains("code=")) {
+        html.window.history.pushState(null, 'FalconNet', '');
+        String token = s.split("code=").last;
+        login(token);
+        widget.store.dispatch(GlobalAction.initialize());
+        setState(() {
+          signed = true;
+        });
+      }
+      else {
+        html.window.open('https://api.ethanchapman.dev/', "_self");
+      }
+    }
+  }
+
   Widget build(BuildContext context) {
+    if (!signed) {
+      if (kIsWeb) {
+        webLogin();
+      }
+      else {
+        return MaterialApp(
+          home: LoginView(
+            onLogin: (code) {
+              print(code);
+              login(code);
+              widget.store.dispatch(GlobalAction.initialize());
+              setState(() {
+                signed = true;
+              });
+            },
+          )
+        );
+      }
+    }
+
     //Surrounds the app with a store provider so all child widgets can access global state
     return StoreProvider(
-      store: store,
+      store: widget.store,
       child: StoreConnector<GlobalState, ViewModel<String>>(
         converter: (store) => ViewModel(store: store, content: store.state.settings.theme),
         builder: (context, model) => MaterialApp.router(
@@ -93,6 +132,33 @@ class FNApp extends StatelessWidget {
           routerConfig: fnRouter,
         ),
       ),
+    );
+  }
+}
+
+class LoginView extends StatefulWidget {
+  final void Function(String) onLogin;
+  final void Function()? onCancel;
+
+  const LoginView({super.key, required this.onLogin, this.onCancel});
+
+  @override
+  State<LoginView> createState() => LoginViewState();
+}
+
+class LoginViewState extends State<LoginView> {
+  final GlobalKey webKey = GlobalKey();
+  InAppWebViewController? webController;
+
+  @override
+  Widget build(BuildContext context) {
+    return InAppWebView(
+      key: webKey,
+      initialUrlRequest: URLRequest(url: Uri.parse("https://api.ethanchapman.dev/")),
+      onWebViewCreated: (controller) {
+        webController = controller;
+        print("created webview");
+      },
     );
   }
 }
