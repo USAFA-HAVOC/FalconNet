@@ -94,6 +94,33 @@ class RoleSubform extends StatelessWidget {
 
             Row(
               children: [
+                Text(
+                  "Timed",
+                  style: Theme.of(context).textTheme.bodyLarge,
+                  textAlign: TextAlign.left,
+                ),
+                Checkbox(value: value.start != null, onChanged: (change) {
+                  change ??= false;
+                  if (change) {
+                    onChanged(TimedRole((b) => b
+                      ..role = value.role
+                      ..start = DateTime.now().subtract(const Duration(days: 1))
+                      ..end = DateTime.now().add(const Duration(days: 7))
+                    ).toUtc());
+                  } else {
+                    onChanged(TimedRole((b) => b
+                      ..role = value.role
+                      ..start = null
+                      ..end = null
+                    ).toUtc());
+                  }
+                })
+              ],
+            ),
+
+            value.start != null && value.end != null ?
+            Row(
+              children: [
                 Expanded(
                   flex: 5,
                   child: DateFormField(
@@ -128,7 +155,7 @@ class RoleSubform extends StatelessWidget {
                   )
                 ),
               ],
-            ),
+            ) : SizedBox(),
 
             SizedBox(height: 20,),
 

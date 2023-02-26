@@ -21,7 +21,15 @@ class DelegateBar extends StatelessWidget {
     }
     else {
       for (var timed in delegate.roles) {
-        roleDescription += "${RoleNames.parseDirect(timed.role).description()} (${describeDate(timed.start ?? DateTime.now(), true)} - ${describeDate(timed.end ?? DateTime.now(), true)}), ";
+        if (timed.start != null && timed.end != null) {
+          roleDescription +=
+          "${RoleNames.parseDirect(timed.role).description()} (${describeDate(
+              timed.start ?? DateTime.now(), true)} - ${describeDate(
+              timed.end ?? DateTime.now(), true)}), ";
+        } else {
+          roleDescription +=
+          "${RoleNames.parseDirect(timed.role).description()} (Indefinite), ";
+        }
       }
     }
 
