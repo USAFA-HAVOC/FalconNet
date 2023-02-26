@@ -1,5 +1,5 @@
 import 'package:async_redux/async_redux.dart';
-import 'package:badges/badges.dart';
+import 'package:badges/badges.dart' as badges;
 import 'package:falcon_net/Model/Database/UserNotification.dart';
 import 'package:falcon_net/Model/Store/GlobalStateModel.dart';
 import 'package:falcon_net/Structure/Components/ViewModel.dart';
@@ -110,12 +110,12 @@ class FNNavigationBar extends StatelessWidget {
                                     //Badge icon containing number of notifications
                                     child: Padding(
                                       padding: EdgeInsets.symmetric(vertical: 25),
-                                      child: Badge(
+                                      child: badges.Badge(
                                         badgeContent: Text(model.content.length.toString()),
                                         badgeColor: Theme.of(context).indicatorColor,
 
                                         //Very empirical formula
-                                        position: BadgePosition.topEnd(end: -15 + MediaQuery.of(context).size.width / 17),
+                                        position: badges.BadgePosition.topEnd(end: -15 + MediaQuery.of(context).size.width / 17),
                                         child: Icon(Icons.notifications),
                                       ),
                                     ),
