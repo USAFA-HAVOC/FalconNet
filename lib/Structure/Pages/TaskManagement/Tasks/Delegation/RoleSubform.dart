@@ -48,8 +48,20 @@ class RoleSubform extends StatelessWidget {
       );
     }
 
-    var earliest = (applicable.firstWhere((r) => r.isGreaterThan(value)).start ?? DateTime(2000));
-    var latest = (applicable.firstWhere((r) => r.isGreaterThan(value)).end ?? DateTime(3000));
+    var scope = value.delegationScope(applicable);
+
+    var earliest = scope.key;
+    var latest = scope.value;
+
+    // if (earliest != null || latest != null) {
+    //   if (value.start == null || value.end == null) {
+    //     onChanged(TimedRole((b) => b
+    //       ..role = value.role
+    //       ..start = earliest
+    //       ..end = latest
+    //     ).toUtc());
+    //   }
+    // }
 
     return DecoratedBox(
       decoration: BoxDecoration(
@@ -81,17 +93,18 @@ class RoleSubform extends StatelessWidget {
                 .map((e) => e!)
                 .toList(),
 
-              onChanged: (selection) {
+              onChanged: !(!(earliest == null && latest == null) && (value.start == null || value.end == null)) ? (selection) {
                 onChanged(TimedRole((b) => b
                   ..role = selection!
                   ..start = value.start
                   ..end = value.end
                 ).toUtc());
-              },
+              } : null,
             ),
 
             SizedBox(height: 20,),
 
+            !(!(earliest == null && latest == null) && (value.start == null || value.end == null)) ?
             Row(
               children: [
                 Text(
@@ -99,7 +112,7 @@ class RoleSubform extends StatelessWidget {
                   style: Theme.of(context).textTheme.bodyLarge,
                   textAlign: TextAlign.left,
                 ),
-                Checkbox(value: value.start != null, onChanged: (change) {
+                Checkbox(value: value.start != null || !(earliest == null && latest == null), onChanged: (earliest == null && latest == null) ? (change) {
                   change ??= false;
                   if (change) {
                     onChanged(TimedRole((b) => b
@@ -114,11 +127,12 @@ class RoleSubform extends StatelessWidget {
                       ..end = null
                     ).toUtc());
                   }
-                })
+                } : null)
               ],
-            ),
+            // ),
+            ) : const SizedBox(),
 
-            value.start != null && value.end != null ?
+            ((value.start != null && value.end != null) || !(earliest == null && latest == null)) && !(!(earliest == null && latest == null) && (value.start == null || value.end == null)) ?
             Row(
               children: [
                 Expanded(
@@ -126,7 +140,7 @@ class RoleSubform extends StatelessWidget {
                   child: DateFormField(
                     label: "Start",
                     validator: InputValidation.date(),
-                    value: describeDate(value.start ?? earliest),
+                    value: (value.start ?? earliest) == null ? null : describeDate(value.start ?? earliest!),
                     firstDate: earliest,
                     lastDate: value.end,
                     onChanged: (change) => onChanged(TimedRole((b) => b
@@ -144,7 +158,7 @@ class RoleSubform extends StatelessWidget {
                   child: DateFormField(
                     label: "End",
                     validator: InputValidation.date(),
-                    value: describeDate(value.end ?? latest),
+                    value: (value.end ?? latest) == null ? null : describeDate(value.end ?? latest!),
                     firstDate: value.start,
                     lastDate: latest,
                     onChanged: (change) => onChanged(TimedRole((b) => b
@@ -160,7 +174,7 @@ class RoleSubform extends StatelessWidget {
             SizedBox(height: 20,),
 
             ElevatedButton(
-                onPressed: onRemove,
+                onPressed: !(!(earliest == null && latest == null) && (value.start == null || value.end == null)) ? onRemove : null,
                 child: Padding(
                   padding: EdgeInsets.symmetric(vertical: 10),
                   child: Text("Remove"),
