@@ -51,6 +51,8 @@ dependencies:
   universal_html: ^2.0.9
   flutter_inappwebview: ^5.7.2+3
   aad_oauth: 0.4.2
+  webview_flutter: ^4.0.5
+  dartz: ^0.10.1
 
 dev_dependencies:
   flutter_test:

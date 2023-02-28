@@ -1,10 +1,7 @@
-import 'package:aad_oauth/aad_oauth.dart';
-import 'package:aad_oauth/helper/mobile_oauth.dart';
 import 'package:aad_oauth/model/config.dart';
-import 'package:aad_oauth/model/failure.dart';
 import 'package:aad_oauth/model/token.dart';
 import 'package:async_redux/async_redux.dart';
-import 'package:built_collection/src/list.dart';
+import 'package:built_collection/built_collection.dart';
 import 'package:falcon_net/Model/Database/CadetAccountability.dart';
 import 'package:falcon_net/Model/Database/CadetPassAllocation.dart';
 import 'package:falcon_net/Model/Database/User.dart';
@@ -16,10 +13,9 @@ import 'package:falcon_net/Model/Store/GlobalStateModel.dart';
 import 'package:falcon_net/Theme/Dark/DarkTheme.dart';
 import 'package:falcon_net/Theme/Light/LightTheme.dart';
 import 'package:falcon_net/Theme/Random/RandomTheme.dart';
-import 'package:falcon_net/Utility/CustomOAuth.dart';
+import 'package:falcon_net/Utility/FNOAuth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 
 
 import 'Model/Database/UserSettings.dart';
@@ -80,10 +76,9 @@ class FNApp extends StatefulWidget {
   State<StatefulWidget> createState() => FNAppState();
 }
 
-final navigatorKey = GlobalKey<NavigatorState>();
-
 class FNAppState extends State<FNApp> {
   late bool signed;
+  final navigatorKey = GlobalKey<NavigatorState>();
 
   @override
   void initState() {
@@ -111,13 +106,13 @@ class FNAppState extends State<FNApp> {
   }
 
   void appLogin() async {
-    const String APP_CLIENT_ID = '198ea96e-078e-4bdc-9b90-0dea3a9ea43b';
-    const String TENANT_ID = '7ab80a06-f029-45c0-84d1-7dad19ce3c61';
+    const String clientId = '198ea96e-078e-4bdc-9b90-0dea3a9ea43b';
+    const String tenant = '7ab80a06-f029-45c0-84d1-7dad19ce3c61';
 
     final Config config = Config(
-      tenant: TENANT_ID,
-      clientId: APP_CLIENT_ID,
-      scope: "$APP_CLIENT_ID/FalconNet",
+      tenant: tenant,
+      clientId: clientId,
+      scope: "$clientId/FalconNet",
       // redirectUri is Optional as a default is calculated based on app type/web location
       redirectUri: "https://api.ethanchapman.dev",
       navigatorKey: navigatorKey,
@@ -126,7 +121,7 @@ class FNAppState extends State<FNApp> {
       loader: const Center(child: CircularProgressIndicator()),
     );
 
-    final CustomOAuth oauth = CustomOAuth(config);
+    final FNOAuth oauth = FNOAuth(config);
 
     var res = await oauth.login();
     
@@ -141,6 +136,7 @@ class FNAppState extends State<FNApp> {
     });
   }
 
+  @override
   Widget build(BuildContext context) {
     if (!signed) {
       if (kIsWeb) {
@@ -158,36 +154,9 @@ class FNAppState extends State<FNApp> {
         converter: (store) => ViewModel(store: store, content: store.state.settings.theme),
         builder: (context, model) => MaterialApp.router(
           theme: model.content == "light" ? lightTheme : (model.content == "dark" ? darkTheme : randomTheme),
-          routerConfig: fnRouter,
+          routerConfig: fnRouter(navigatorKey),
         ),
       ),
-    );
-  }
-}
-
-class LoginView extends StatefulWidget {
-  final void Function(String) onLogin;
-  final void Function()? onCancel;
-
-  const LoginView({super.key, required this.onLogin, this.onCancel});
-
-  @override
-  State<LoginView> createState() => LoginViewState();
-}
-
-class LoginViewState extends State<LoginView> {
-  final GlobalKey webKey = GlobalKey();
-  InAppWebViewController? webController;
-
-  @override
-  Widget build(BuildContext context) {
-    return InAppWebView(
-      key: webKey,
-      initialUrlRequest: URLRequest(url: Uri.parse("https://api.ethanchapman.dev/")),
-      onWebViewCreated: (controller) {
-        webController = controller;
-        print("created webview");
-      },
     );
   }
 }
