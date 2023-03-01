@@ -39,6 +39,13 @@ class _$CadetAccountabilitySerializer
         ..add(serializers.serialize(value,
             specifiedType: const FullType(String)));
     }
+    value = object.di_signed_name;
+    if (value != null) {
+      result
+        ..add('di_signed_name')
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(String)));
+    }
     value = object.current_pass;
     if (value != null) {
       result
@@ -76,6 +83,10 @@ class _$CadetAccountabilitySerializer
           result.di_signed_by = serializers.deserialize(value,
               specifiedType: const FullType(String)) as String?;
           break;
+        case 'di_signed_name':
+          result.di_signed_name = serializers.deserialize(value,
+              specifiedType: const FullType(String)) as String?;
+          break;
         case 'current_pass':
           result.current_pass.replace(serializers.deserialize(value,
               specifiedType: const FullType(CadetPass))! as CadetPass);
@@ -97,6 +108,8 @@ class _$CadetAccountability extends CadetAccountability {
   @override
   final String? di_signed_by;
   @override
+  final String? di_signed_name;
+  @override
   final CadetPass? current_pass;
   @override
   final CadetLeave? current_leave;
@@ -108,6 +121,7 @@ class _$CadetAccountability extends CadetAccountability {
   _$CadetAccountability._(
       {this.di_last_signed,
       this.di_signed_by,
+      this.di_signed_name,
       this.current_pass,
       this.current_leave})
       : super._();
@@ -127,6 +141,7 @@ class _$CadetAccountability extends CadetAccountability {
     return other is CadetAccountability &&
         di_last_signed == other.di_last_signed &&
         di_signed_by == other.di_signed_by &&
+        di_signed_name == other.di_signed_name &&
         current_pass == other.current_pass &&
         current_leave == other.current_leave;
   }
@@ -136,6 +151,7 @@ class _$CadetAccountability extends CadetAccountability {
     var _$hash = 0;
     _$hash = $jc(_$hash, di_last_signed.hashCode);
     _$hash = $jc(_$hash, di_signed_by.hashCode);
+    _$hash = $jc(_$hash, di_signed_name.hashCode);
     _$hash = $jc(_$hash, current_pass.hashCode);
     _$hash = $jc(_$hash, current_leave.hashCode);
     _$hash = $jf(_$hash);
@@ -147,6 +163,7 @@ class _$CadetAccountability extends CadetAccountability {
     return (newBuiltValueToStringHelper(r'CadetAccountability')
           ..add('di_last_signed', di_last_signed)
           ..add('di_signed_by', di_signed_by)
+          ..add('di_signed_name', di_signed_name)
           ..add('current_pass', current_pass)
           ..add('current_leave', current_leave))
         .toString();
@@ -165,6 +182,11 @@ class CadetAccountabilityBuilder
   String? _di_signed_by;
   String? get di_signed_by => _$this._di_signed_by;
   set di_signed_by(String? di_signed_by) => _$this._di_signed_by = di_signed_by;
+
+  String? _di_signed_name;
+  String? get di_signed_name => _$this._di_signed_name;
+  set di_signed_name(String? di_signed_name) =>
+      _$this._di_signed_name = di_signed_name;
 
   CadetPassBuilder? _current_pass;
   CadetPassBuilder get current_pass =>
@@ -185,6 +207,7 @@ class CadetAccountabilityBuilder
     if ($v != null) {
       _di_last_signed = $v.di_last_signed;
       _di_signed_by = $v.di_signed_by;
+      _di_signed_name = $v.di_signed_name;
       _current_pass = $v.current_pass?.toBuilder();
       _current_leave = $v.current_leave?.toBuilder();
       _$v = null;
@@ -213,6 +236,7 @@ class CadetAccountabilityBuilder
           new _$CadetAccountability._(
               di_last_signed: di_last_signed,
               di_signed_by: di_signed_by,
+              di_signed_name: di_signed_name,
               current_pass: _current_pass?.build(),
               current_leave: _current_leave?.build());
     } catch (_) {

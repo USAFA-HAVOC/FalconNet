@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:aad_oauth/model/config.dart';
 import 'package:aad_oauth/model/token.dart';
 import 'package:async_redux/async_redux.dart';
@@ -8,6 +10,7 @@ import 'package:falcon_net/Model/Database/User.dart';
 import 'package:falcon_net/Model/Database/UserNotification.dart';
 import 'package:falcon_net/Model/Database/UserPersonalInfo.dart';
 import 'package:falcon_net/Model/Store/Actions/GlobalAction.dart';
+import 'package:falcon_net/Model/Store/Actions/InfoAction.dart';
 import 'package:falcon_net/Model/Store/Endpoints.dart';
 import 'package:falcon_net/Model/Store/GlobalStateModel.dart';
 import 'package:falcon_net/Theme/Dark/DarkTheme.dart';
@@ -16,6 +19,7 @@ import 'package:falcon_net/Theme/Random/RandomTheme.dart';
 import 'package:falcon_net/Utility/FNOAuth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 
 import 'Model/Database/UserSettings.dart';
@@ -79,11 +83,17 @@ class FNApp extends StatefulWidget {
 class FNAppState extends State<FNApp> {
   late bool signed;
   final navigatorKey = GlobalKey<NavigatorState>();
+  late GoRouter router= fnRouter(navigatorKey);
 
   @override
   void initState() {
     /// todo: session management
     signed = false;
+    Timer.periodic(const Duration(minutes: 1), (timer) {
+      if (signed) {
+        widget.store.dispatch(InfoAction.retrieve());
+      }
+    });
     super.initState();
   }
 
@@ -154,7 +164,7 @@ class FNAppState extends State<FNApp> {
         converter: (store) => ViewModel(store: store, content: store.state.settings.theme),
         builder: (context, model) => MaterialApp.router(
           theme: model.content == "light" ? lightTheme : (model.content == "dark" ? darkTheme : randomTheme),
-          routerConfig: fnRouter(navigatorKey),
+          routerConfig: router,
         ),
       ),
     );

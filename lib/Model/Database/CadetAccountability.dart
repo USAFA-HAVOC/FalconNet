@@ -15,6 +15,7 @@ abstract class CadetAccountability implements Built<CadetAccountability, CadetAc
 
   DateTime? get di_last_signed;
   String? get di_signed_by;
+  String? get di_signed_name;
   CadetPass? get current_pass;
   CadetLeave? get current_leave;
 

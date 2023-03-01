@@ -8,12 +8,16 @@ import 'package:falcon_net/Model/Database/RoleRequest.dart';
 import 'package:falcon_net/Model/Database/UnitData.dart';
 import 'package:falcon_net/Model/Database/User.dart';
 import 'package:falcon_net/Model/Database/UserGrades.dart';
+import 'package:falcon_net/Model/Database/UserSummaryList.dart';
 import 'package:falcon_net/Model/Serializers.dart';
 import 'package:built_collection/built_collection.dart';
 
 import '../Database/CadetLeave.dart';
 import '../Database/CadetPass.dart';
 import '../Database/DIRequest.dart';
+import '../Database/GradeSubmission.dart';
+import '../Database/SquadronAssignRequest.dart';
+import '../Database/UnitAssignRequest.dart';
 import '../Database/WingData.dart';
 
 final options = BaseOptions(
@@ -73,8 +77,12 @@ class Endpoints {
   static Endpoint<void, WingData> cwoc = Endpoint("/pages/cwoc", get: true);
   static Endpoint<void, UnitData> sdo = Endpoint("/pages/sdo", get: true);
   static Endpoint<void, UserGrades> grades = Endpoint("/grades/info", get: true);
+  static Endpoint<GradeSubmission, bool> gradesSet = Endpoint("/grades/set");
   static Endpoint<void, BuiltList<FormOne>> formsGet = Endpoint("/forms/info", get: true);
   static Endpoint<RoleRequest, bool> rolesSet = Endpoint("/roles/set");
+  static Endpoint<SquadronAssignRequest, bool> squadAssign = Endpoint("squadron/assign");
+  static Endpoint<UnitAssignRequest, bool> unitAssign = Endpoint("unit/assign");
+  static Endpoint<void, UserSummaryList> assignmentGet = Endpoint("unit/assignment-get");
 }
 
 class APIData {
