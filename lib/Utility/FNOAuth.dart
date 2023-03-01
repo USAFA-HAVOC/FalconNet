@@ -13,14 +13,14 @@ import 'package:dio/dio.dart';
 import 'package:falcon_net/Model/Store/Endpoints.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class CustomOAuth extends CoreOAuth {
+class FNOAuth extends CoreOAuth {
   final AuthStorage _authStorage;
   final RequestCode _requestCode;
   final RequestToken _requestToken;
 
   /// Instantiating MobileAadOAuth authentication.
   /// [config] Parameters according to official Microsoft Documentation.
-  CustomOAuth(Config config)
+  FNOAuth(Config config)
       : _authStorage = AuthStorage(
           tokenIdentifier: config.tokenIdentifier,
           aOptions: config.aOptions,
