@@ -149,12 +149,12 @@ class FNAppState extends State<FNApp> {
   @override
   Widget build(BuildContext context) {
     if (!signed) {
-      if (kIsWeb) {
-        webLogin();
-      }
-      else {
+      // if (kIsWeb) {
+      //   webLogin();
+      // }
+      // else {
         appLogin();
-      }
+      // }
     }
 
     //Surrounds the app with a store provider so all child widgets can access global state
