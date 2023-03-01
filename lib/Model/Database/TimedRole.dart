@@ -1,6 +1,9 @@
+import 'dart:math';
+
 import 'package:built_value/built_value.dart';
 import 'package:built_value/serializer.dart';
 
+import '../../Utility/Pair.dart';
 import 'Roles.dart';
 
 part 'TimedRole.g.dart';
@@ -25,6 +28,23 @@ abstract class TimedRole implements Built<TimedRole, TimedRoleBuilder> {
       ..start = start?.toUtc()
       ..end = end?.toUtc()
     );
+  }
+
+  MapEntry<DateTime?, DateTime?> delegationScope(List<TimedRole> applicable) {
+    DateTime? start;
+    DateTime? end;
+
+    for (var role in applicable) {
+      if (role.isGreaterThan(this)) {
+        if (role.start == null || role.end == null) return const MapEntry(null, null);
+        start ??= role.start!;
+        start = start.isBefore(role.start!) ? start : role.start!;
+        end ??= role.end!;
+        end = start.isBefore(role.end!) ? end : role.end!;
+      }
+    }
+
+    return MapEntry(start, end);
   }
 
   List<String> delegable() {

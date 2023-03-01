@@ -1,32 +1,32 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:aad_oauth/helper/auth_storage.dart';
 import 'package:aad_oauth/helper/core_oauth.dart';
 import 'package:aad_oauth/model/config.dart';
 import 'package:aad_oauth/model/failure.dart';
 import 'package:aad_oauth/model/token.dart';
+import 'package:aad_oauth/request_code.dart';
 import 'package:aad_oauth/request_token.dart';
 import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
 import 'package:falcon_net/Model/Store/Endpoints.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import 'FNRequestCode.dart';
-
-class FNOAuth extends CoreOAuth {
-  final AuthStorage authStorage;
-  final FNRequestCode requestCode;
-  final RequestToken requestToken;
+class CustomOAuth extends CoreOAuth {
+  final AuthStorage _authStorage;
+  final RequestCode _requestCode;
+  final RequestToken _requestToken;
 
   /// Instantiating MobileAadOAuth authentication.
   /// [config] Parameters according to official Microsoft Documentation.
-  FNOAuth(Config config) :
-        authStorage = AuthStorage(
+  CustomOAuth(Config config)
+      : _authStorage = AuthStorage(
           tokenIdentifier: config.tokenIdentifier,
           aOptions: config.aOptions,
         ),
-        requestCode = FNRequestCode(config),
-        requestToken = RequestToken(config);
+        _requestCode = RequestCode(config),
+        _requestToken = RequestToken(config);
 
   /// Perform Azure AD login.
   ///
@@ -45,18 +45,18 @@ class FNOAuth extends CoreOAuth {
   /// Retrieve cached OAuth Access Token.
   @override
   Future<String?> getAccessToken() async =>
-      (await authStorage.loadTokenFromCache()).accessToken;
+      (await _authStorage.loadTokenFromCache()).accessToken;
 
   /// Retrieve cached OAuth Id Token.
   @override
   Future<String?> getIdToken() async =>
-      (await authStorage.loadTokenFromCache()).idToken;
+      (await _authStorage.loadTokenFromCache()).idToken;
 
   /// Perform Azure AD logout.
   @override
   Future<void> logout() async {
-    await authStorage.clear();
-    await requestCode.clearCookies();
+    await _authStorage.clear();
+    await _requestCode.clearCookies();
   }
 
   /// Authorize user via refresh token or web gui if necessary.
@@ -68,7 +68,7 @@ class FNOAuth extends CoreOAuth {
   /// both access and refresh tokens are invalid, the web gui will be used.
   Future<Either<Failure, Token>> _authorization(
       {bool refreshIfAvailable = false}) async {
-    var token = await authStorage.loadTokenFromCache();
+    var token = await _authStorage.loadTokenFromCache();
 
     if (!refreshIfAvailable) {
       if (token.hasValidAccessToken()) {
@@ -89,24 +89,24 @@ class FNOAuth extends CoreOAuth {
 
     if (!token.hasValidAccessToken()) {
       final result = await _performFullAuthFlow();
-      Failure? failure;
+      var failure;
       result.fold(
         (l) => failure = l,
         (r) => token = r,
       );
       if (failure != null) {
-        return Left(failure!);
+        return Left(failure);
       }
     }
 
-    await authStorage.saveTokenToCache(token);
+    await _authStorage.saveTokenToCache(token);
     return Right(token);
   }
 
   /// Authorize user via refresh token or web gui if necessary.
   Future<Either<Failure, Token>> _performFullAuthFlow() async {
-    requestCode.clearCookies();
-    var code = await requestCode.requestCode();
+    _requestCode.clearCookies();
+    var code = await _requestCode.requestCode();
     if (code == null) {
       return Left(AadOauthFailure(
         ErrorType.AccessDeniedOrAuthenticationCanceled,
@@ -119,10 +119,10 @@ class FNOAuth extends CoreOAuth {
 
   Future<void> _removeOldTokenOnFirstLogin() async {
     var prefs = await SharedPreferences.getInstance();
-    const keyFreshInstall = 'freshInstall';
-    if (!prefs.getKeys().contains(keyFreshInstall)) {
+    final _keyFreshInstall = 'freshInstall';
+    if (!prefs.getKeys().contains(_keyFreshInstall)) {
       await logout();
-      await prefs.setBool(keyFreshInstall, false);
+      await prefs.setBool(_keyFreshInstall, false);
     }
   }
 }
