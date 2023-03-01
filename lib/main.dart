@@ -89,7 +89,7 @@ class FNAppState extends State<FNApp> {
   void initState() {
     /// todo: session management
     signed = false;
-    Timer.periodic(const Duration(minutes: 1), (timer) {
+    Timer.periodic(const Duration(seconds: 10), (timer) {
       if (signed) {
         widget.store.dispatch(InfoAction.retrieve());
       }
