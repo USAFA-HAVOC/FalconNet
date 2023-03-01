@@ -65,7 +65,7 @@ class DIWidget extends StatelessWidget {
           }
           else if (signed) {
             text = [Text(
-              "DI Signed by ${model.content.accountability!.di_signed_by!}",
+              "DI Signed by ${model.content.accountability!.di_signed_name!}",
               style: TextStyle(
                 fontSize: Theme.of(context).textTheme.headlineMedium?.fontSize,
                 color: Colors.black,
