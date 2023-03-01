@@ -105,7 +105,7 @@ class FNOAuth extends CoreOAuth {
 
   /// Authorize user via refresh token or web gui if necessary.
   Future<Either<Failure, Token>> _performFullAuthFlow() async {
-    _requestCode.clearCookies();
+    // _requestCode.clearCookies();
     var code = await _requestCode.requestCode();
     if (code == null) {
       return Left(AadOauthFailure(

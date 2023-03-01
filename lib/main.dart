@@ -99,10 +99,10 @@ class FNAppState extends State<FNApp> {
 
   void webLogin() {
     if (!APIData.authenticated) {
-      String s = html.window.location.toString();
-      if (s.contains("code=")) {
+      Uri s = Uri.parse(html.window.location.toString());
+      if (s.queryParameters.containsKey("code")) {
         html.window.history.pushState(null, 'FalconNet', '');
-        String token = s.split("code=").last;
+        String token = s.queryParameters["code"]!;
         login(token);
         widget.store.dispatch(GlobalAction.initialize());
         setState(() {
