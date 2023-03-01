@@ -115,14 +115,14 @@ class FNAppState extends State<FNApp> {
     }
   }
 
-  void appLogin() async {
+  void appLogin(String? auth_token) async {
     const String clientId = '198ea96e-078e-4bdc-9b90-0dea3a9ea43b';
     const String tenant = '7ab80a06-f029-45c0-84d1-7dad19ce3c61';
 
     final Config config = Config(
       tenant: tenant,
       clientId: clientId,
-      scope: "$clientId/FalconNet",
+      scope: "$clientId/FalconNet offline_access",
       // redirectUri is Optional as a default is calculated based on app type/web location
       redirectUri: "https://api.ethanchapman.dev",
       navigatorKey: navigatorKey,
@@ -131,7 +131,8 @@ class FNAppState extends State<FNApp> {
       loader: const Center(child: CircularProgressIndicator()),
     );
 
-    final FNOAuth oauth = FNOAuth(config);
+
+    final FNOAuth oauth = FNOAuth(config, auth_token);
 
     var res = await oauth.login();
     
@@ -148,12 +149,25 @@ class FNAppState extends State<FNApp> {
 
   @override
   Widget build(BuildContext context) {
+    String? auth_token;
+
     if (!signed) {
       // if (kIsWeb) {
       //   webLogin();
       // }
       // else {
-        appLogin();
+
+      if (kIsWeb) {
+        Uri s = Uri.parse(html.window.location.toString());
+        print(s.queryParameters);
+        if (s.queryParameters.containsKey("code")) {
+          html.window.history.pushState(null, 'FalconNet', '');
+          auth_token = s.queryParameters["code"];
+        }
+      }
+
+      print(auth_token);
+      appLogin(auth_token);
       // }
     }
 

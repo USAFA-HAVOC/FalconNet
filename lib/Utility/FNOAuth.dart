@@ -17,17 +17,18 @@ import "package:universal_html/html.dart" as html;
 
 class FNOAuth extends CoreOAuth {
   final AuthStorage _authStorage;
-  final RequestCode _requestCode;
+  final String? _code;
+  final RequestCode? _requestCode;
   final RequestToken _requestToken;
 
   /// Instantiating MobileAadOAuth authentication.
   /// [config] Parameters according to official Microsoft Documentation.
-  FNOAuth(Config config)
+  FNOAuth(Config config, this._code)
       : _authStorage = AuthStorage(
           tokenIdentifier: config.tokenIdentifier,
           aOptions: config.aOptions,
         ),
-        _requestCode = RequestCode(config),
+        _requestCode = kIsWeb ? null : RequestCode(config),
         _requestToken = RequestToken(config);
 
   /// Perform Azure AD login.
@@ -58,7 +59,7 @@ class FNOAuth extends CoreOAuth {
   @override
   Future<void> logout() async {
     await _authStorage.clear();
-    await _requestCode.clearCookies();
+    await _requestCode?.clearCookies();
   }
 
   /// Authorize user via refresh token or web gui if necessary.
@@ -109,11 +110,8 @@ class FNOAuth extends CoreOAuth {
   Future<Either<Failure, Token>> _performFullAuthFlow() async {
     // _requestCode.clearCookies();
     if (kIsWeb) {
-      Uri s = Uri.parse(html.window.location.toString());
-      if (s.queryParameters.containsKey("code")) {
-        html.window.history.pushState(null, 'FalconNet', '');
-        String tokenJson = s.queryParameters["code"]!;
-        return Right(Token.fromJson(json.decode(tokenJson)));
+      if (_code != null) {
+        return Right(Token.fromJson(json.decode(_code!)));
       }
       else {
         html.window.open('https://api.ethanchapman.dev/', "_self");
@@ -123,7 +121,7 @@ class FNOAuth extends CoreOAuth {
         ));
       }
     } else {
-      var code = await _requestCode.requestCode();
+      var code = await _requestCode?.requestCode();
       if (code == null) {
         return Left(AadOauthFailure(
           ErrorType.AccessDeniedOrAuthenticationCanceled,
