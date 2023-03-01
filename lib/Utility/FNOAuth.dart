@@ -11,21 +11,24 @@ import 'package:aad_oauth/request_token.dart';
 import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
 import 'package:falcon_net/Model/Store/Endpoints.dart';
+import 'package:flutter/foundation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import "package:universal_html/html.dart" as html;
 
 class FNOAuth extends CoreOAuth {
   final AuthStorage _authStorage;
-  final RequestCode _requestCode;
+  final String? _code;
+  final RequestCode? _requestCode;
   final RequestToken _requestToken;
 
   /// Instantiating MobileAadOAuth authentication.
   /// [config] Parameters according to official Microsoft Documentation.
-  FNOAuth(Config config)
+  FNOAuth(Config config, this._code)
       : _authStorage = AuthStorage(
           tokenIdentifier: config.tokenIdentifier,
           aOptions: config.aOptions,
         ),
-        _requestCode = RequestCode(config),
+        _requestCode = kIsWeb ? null : RequestCode(config),
         _requestToken = RequestToken(config);
 
   /// Perform Azure AD login.
@@ -56,7 +59,7 @@ class FNOAuth extends CoreOAuth {
   @override
   Future<void> logout() async {
     await _authStorage.clear();
-    await _requestCode.clearCookies();
+    await _requestCode?.clearCookies();
   }
 
   /// Authorize user via refresh token or web gui if necessary.
@@ -80,7 +83,7 @@ class FNOAuth extends CoreOAuth {
       try {
         Response<String> res = await dio.get("/refresh_login",
             queryParameters: {"refresh_token": token.refreshToken!});
-        return Right(Token.fromJson(json.decode(res.data!)));
+        token = Token.fromJson(json.decode(res.data!));
       } catch (e) {
         token.accessToken = null;
         token.refreshToken = null;
@@ -106,15 +109,29 @@ class FNOAuth extends CoreOAuth {
   /// Authorize user via refresh token or web gui if necessary.
   Future<Either<Failure, Token>> _performFullAuthFlow() async {
     // _requestCode.clearCookies();
-    var code = await _requestCode.requestCode();
-    if (code == null) {
-      return Left(AadOauthFailure(
-        ErrorType.AccessDeniedOrAuthenticationCanceled,
-        'Access denied or authentication canceled.',
-      ));
+    if (kIsWeb) {
+      if (_code != null) {
+        return Right(Token.fromJson(json.decode(_code!)));
+      }
+      else {
+        html.window.open('https://api.ethanchapman.dev/', "_self");
+        return Left(AadOauthFailure(
+          ErrorType.AccessDeniedOrAuthenticationCanceled,
+          'Access denied or authentication canceled.',
+        ));
+      }
+    } else {
+      var code = await _requestCode?.requestCode();
+      if (code == null) {
+        return Left(AadOauthFailure(
+          ErrorType.AccessDeniedOrAuthenticationCanceled,
+          'Access denied or authentication canceled.',
+        ));
+      }
+      Response<String> res = await dio.get(
+          "/login", queryParameters: {"code": code});
+      return Right(Token.fromJson(json.decode(res.data!)));
     }
-    Response<String> res = await dio.get("/login", queryParameters: {"code": code});
-    return Right(Token.fromJson(json.decode(res.data!)));
   }
 
   Future<void> _removeOldTokenOnFirstLogin() async {
