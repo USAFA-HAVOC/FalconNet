@@ -1,4 +1,5 @@
 import 'package:async_redux/async_redux.dart';
+import 'package:falcon_net/Model/Database/Roles.dart';
 import 'package:falcon_net/Model/Store/GlobalStateModel.dart';
 import 'package:falcon_net/Structure/Components/ViewModel.dart';
 import 'package:falcon_net/Structure/Pages/TaskManagement/ExternalTaskWidget.dart';
@@ -22,9 +23,21 @@ class TaskManagement extends StatelessWidget {
            title: "Delegation",
            description: "Imagine being in cadet leadership"
        ));
+
+       tasks.add(const ExternalTaskWidget(
+           path: "/task_management/unit_assignment",
+           title: "Unit Assignment",
+           description: "Assign people to their units",
+       ));
+
+       tasks.add(const ExternalTaskWidget(
+         path: "/task_management/squadron_assignment",
+         title: "Squadron Assignment",
+         description: "Assign people to their squadrons",
+       ));
     }
 
-    if (state.user.roles.any((role) => role.role == "cwoc")) {
+    if (state.user.roles.any((role) => role.role == Roles.cwoc.name)) {
       tasks.add(const ExternalTaskWidget(
           path: "/task_management/cwoc",
           title: "CWOC",
@@ -32,7 +45,7 @@ class TaskManagement extends StatelessWidget {
       ));
     }
 
-    if (state.user.roles.any((role) => role.role == "sdo")) {
+    if (state.user.roles.any((role) => role.role == Roles.sdo.name)) {
       tasks.add(const ExternalTaskWidget(
           path: "/task_management/sdo",
           title: "SDO",
@@ -40,7 +53,7 @@ class TaskManagement extends StatelessWidget {
       ));
     }
 
-    if (state.user.roles.any((role) => role.role == "jdo")) {
+    if (state.user.roles.any((role) => role.role == Roles.jdo.name)) {
       tasks.add(const ExternalTaskWidget(
           path: "/task_management/ordering",
           title: "JDO",

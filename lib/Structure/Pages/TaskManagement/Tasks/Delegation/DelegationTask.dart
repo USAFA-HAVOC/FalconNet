@@ -2,6 +2,7 @@ import 'package:built_collection/built_collection.dart';
 import 'package:falcon_net/Model/Database/RoleRequest.dart';
 import 'package:falcon_net/Model/Database/UnitData.dart';
 import 'package:falcon_net/Structure/Components/LoadingShimmer.dart';
+import 'package:falcon_net/Structure/Components/PageWidget.dart';
 import 'package:falcon_net/Utility/ErrorFormatting.dart';
 import 'package:flutter/material.dart';
 import  'package:string_similarity/string_similarity.dart';
@@ -52,10 +53,10 @@ class DelegationTaskState extends State<DelegationTask> {
       var current = await connection;
 
       setState(() {
-        var others = current.members.toList().where((d) => d.id != d.id).toList();
+        var others = current.members.toList().where((d) => d.id != delegate.id).toList();
         var modified = delegate.rebuild((d) => d..roles = roles.toBuiltList().toBuilder());
-
-        connection = Future.value(current.rebuild((u) => u..members = BuiltList<User>(others + [modified]).toBuilder()));
+        var full = others + [modified];
+        connection = Future.value(current.rebuild((u) => u..members = BuiltList<User>(full).toBuilder()));
       });
     }
 
@@ -128,28 +129,33 @@ class DelegationTaskState extends State<DelegationTask> {
             builder: (context, snapshot) {
               if (snapshot.data != null) {
                 var ordered = search(snapshot.data!.members.toList(), query);
-                return ListView.builder(
-                    shrinkWrap: true,
-                    primary: false,
-                    itemCount: ordered.length + 1,
-                    itemBuilder: (context, index) {
-                      if (index == 0) {
-                        return TextField(
-                          decoration: InputDecoration(
-                              border: OutlineInputBorder(borderSide: BorderSide(color: Theme.of(context).dividerColor), borderRadius: BorderRadius.circular(10)),
-                              labelStyle: Theme.of(context).textTheme.bodyLarge,
-                              labelText: "Search",
-                              suffixIcon: Icon(Icons.search)
-                          ),
-                          onChanged: (q) => setState(() => query = q),
-                        );
-                      }
+                return PageWidget(
+                    title: "Members",
+                    children: [
+                      ListView.builder(
+                          shrinkWrap: true,
+                          primary: false,
+                          itemCount: ordered.length + 1,
+                          itemBuilder: (context, index) {
+                            if (index == 0) {
+                              return TextField(
+                                decoration: InputDecoration(
+                                    border: OutlineInputBorder(borderSide: BorderSide(color: Theme.of(context).dividerColor), borderRadius: BorderRadius.circular(10)),
+                                    labelStyle: Theme.of(context).textTheme.bodyLarge,
+                                    labelText: "Search",
+                                    suffixIcon: Icon(Icons.search)
+                                ),
+                                onChanged: (q) => setState(() => query = q),
+                              );
+                            }
 
-                      return DelegateBar(
-                          delegate: ordered[index - 1],
-                          onAssign: (delegate) => openDelegationForm(context, delegate, widget.owner)
-                      );
-                    }
+                            return DelegateBar(
+                                delegate: ordered[index - 1],
+                                onAssign: (delegate) => openDelegationForm(context, delegate, widget.owner)
+                            );
+                          }
+                      ),
+                    ]
                 );
               }
               else {

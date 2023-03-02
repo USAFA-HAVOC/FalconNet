@@ -152,10 +152,6 @@ class FNAppState extends State<FNApp> {
     String? auth_token;
 
     if (!signed) {
-      // if (kIsWeb) {
-      //   webLogin();
-      // }
-      // else {
 
       if (kIsWeb) {
         Uri s = Uri.parse(html.window.location.toString());
@@ -168,7 +164,6 @@ class FNAppState extends State<FNApp> {
 
       print(auth_token);
       appLogin(auth_token);
-      // }
     }
 
     //Surrounds the app with a store provider so all child widgets can access global state

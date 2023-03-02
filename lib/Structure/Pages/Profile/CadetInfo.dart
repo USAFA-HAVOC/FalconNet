@@ -158,7 +158,7 @@ class InputBlockState extends State<InputBlock> {
                     ),
                 ),
                 filled: !selected || widget.disabled,
-                fillColor: Theme.of(context).focusColor,
+                fillColor: widget.disabled ? Theme.of(context).disabledColor : Theme.of(context).focusColor,
             ),
           ),
         )

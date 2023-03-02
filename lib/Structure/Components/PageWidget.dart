@@ -8,7 +8,7 @@ class PageWidget extends StatelessWidget {
   final String title;
   final List<Widget> children;
 
-  const PageWidget({required this.title, required this.children});
+  const PageWidget({super.key, required this.title, required this.children});
 
   @override
   Widget build(BuildContext context) {

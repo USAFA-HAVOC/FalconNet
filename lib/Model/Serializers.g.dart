@@ -19,8 +19,11 @@ Serializers _$serializers = (new Serializers().toBuilder()
       ..add(GradeSubmission.serializer)
       ..add(PassHistoryModel.serializer)
       ..add(RoleRequest.serializer)
+      ..add(SquadronAssignRequest.serializer)
       ..add(TimedRole.serializer)
+      ..add(UnitAssignRequest.serializer)
       ..add(UnitData.serializer)
+      ..add(UnitList.serializer)
       ..add(UnitOrder.serializer)
       ..add(UnitSummary.serializer)
       ..add(User.serializer)
@@ -28,6 +31,8 @@ Serializers _$serializers = (new Serializers().toBuilder()
       ..add(UserNotification.serializer)
       ..add(UserPersonalInfo.serializer)
       ..add(UserSettings.serializer)
+      ..add(UserSummary.serializer)
+      ..add(UserSummaryList.serializer)
       ..add(WingData.serializer)
       ..addBuilderFactory(
           const FullType(BuiltList, const [const FullType(CadetPass)]),
@@ -41,6 +46,15 @@ Serializers _$serializers = (new Serializers().toBuilder()
       ..addBuilderFactory(
           const FullType(BuiltList, const [const FullType(Grade)]),
           () => new ListBuilder<Grade>())
+      ..addBuilderFactory(
+          const FullType(BuiltList, const [const FullType(String)]),
+          () => new ListBuilder<String>())
+      ..addBuilderFactory(
+          const FullType(BuiltList, const [const FullType(String)]),
+          () => new ListBuilder<String>())
+      ..addBuilderFactory(
+          const FullType(BuiltList, const [const FullType(String)]),
+          () => new ListBuilder<String>())
       ..addBuilderFactory(
           const FullType(BuiltList, const [const FullType(String)]),
           () => new ListBuilder<String>())
@@ -61,7 +75,10 @@ Serializers _$serializers = (new Serializers().toBuilder()
           () => new ListBuilder<UserNotification>())
       ..addBuilderFactory(
           const FullType(BuiltList, const [const FullType(FormOne)]),
-          () => new ListBuilder<FormOne>()))
+          () => new ListBuilder<FormOne>())
+      ..addBuilderFactory(
+          const FullType(BuiltList, const [const FullType(UserSummary)]),
+          () => new ListBuilder<UserSummary>()))
     .build();
 
 // ignore_for_file: deprecated_member_use_from_same_package,type=lint

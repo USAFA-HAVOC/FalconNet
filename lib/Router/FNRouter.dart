@@ -1,10 +1,13 @@
 import 'package:async_redux/async_redux.dart';
+import 'package:falcon_net/Model/Database/Roles.dart';
 import 'package:falcon_net/Structure/Components/ViewModel.dart';
 import 'package:falcon_net/Structure/Pages/TaskManagement/TaskManagement.dart';
+import 'package:falcon_net/Structure/Pages/TaskManagement/Tasks/Assignment/AssignmentTask.dart';
 import 'package:falcon_net/Structure/Pages/TaskManagement/Tasks/Delegation/DelegationTask.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import '../Model/Database/TimedRole.dart';
+import '../Model/Database/User.dart';
 import '../Model/Store/GlobalStateModel.dart';
 import '../Structure/FNScaffold.dart';
 import '../Structure/Pages/Dashboard/Dashboard.dart';
@@ -44,18 +47,22 @@ GoRouter fnRouter(GlobalKey<NavigatorState> key) => GoRouter(
                   path: "profile",
                   builder: (context, state) => const Profile(),
                 ),
+
                 GoRoute(
                   path: "grades",
                   builder: (context, state) => const Grades(),
                 ),
+
                 GoRoute(
                   path: "leave_locator",
-                  builder: (context, state) => LeaveLocator(),
+                  builder: (context, state) => const LeaveLocator(),
                 ),
+
                 GoRoute(
                   path: "pass_management",
                   builder: (context, state) => const PassManagement(),
                 ),
+
                 GoRoute(
                     path: "task_management",
                     builder: (context, state) => const TaskManagement(),
@@ -64,14 +71,48 @@ GoRouter fnRouter(GlobalKey<NavigatorState> key) => GoRouter(
                         path: "sdo",
                         builder: (context, state) => const SDOTask(),
                       ),
+
                       GoRoute(
                         path: "ordering",
                         builder: (context, state) => const OrderingTask(),
                       ),
+
                       GoRoute(
                         path: "cwoc",
                         builder: (context, state) => const CWOCTask(),
                       ),
+
+                      GoRoute(
+                        path: "unit_assignment",
+                        builder: (context, state) => StoreConnector<GlobalState, ViewModel<User>>(
+                          converter: (store) => ViewModel(store: store, content: store.state.user),
+                          builder: (context, model) => AssignmentTask(
+                              info: model.content.personal_info,
+                              type: AssignmentType.unit,
+                              scope: model.content.roles.any((r) => r.role == Roles.fn_admin.name || r.role == Roles.wing_admin.name) ?
+                                  AssignmentScope.all : AssignmentScope.own,
+                          ),
+                        ),
+                      ),
+
+                      GoRoute(
+                        path: "squadron_assignment",
+                          builder: (context, state) => StoreConnector<GlobalState, ViewModel<User>>(
+                            converter: (store) => ViewModel(store: store, content: store.state.user),
+                            builder: (context, model) => AssignmentTask(
+                                info: model.content.personal_info,
+                                type: AssignmentType.squadron,
+                                scope: model.content.roles.any((r) => r.role == Roles.fn_admin.name || r.role == Roles.wing_admin.name) ?
+                                    AssignmentScope.all : AssignmentScope.own,
+                            ),
+                          )
+                      ),
+
+                      GoRoute(
+                        path: "cwoc",
+                        builder: (context, state) => const CWOCTask(),
+                      ),
+
                       GoRoute(
                         path: "delegation",
                         builder: (context, state) =>
