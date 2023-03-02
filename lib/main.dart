@@ -55,6 +55,7 @@ void main() {
               ..accountability = CadetAccountability((b3) => b3
                   ..di_last_signed = DateTime.now().toUtc()
                   ..di_signed_by = ""
+                  ..di_signed_name = ""
               ).toBuilder()
           ).toBuilder()
           ..notifications = ListBuilder<UserNotification>([])
@@ -89,7 +90,7 @@ class FNAppState extends State<FNApp> {
   void initState() {
     /// todo: session management
     signed = false;
-    Timer.periodic(const Duration(minutes: 1), (timer) {
+    Timer.periodic(const Duration(seconds: 10), (timer) {
       if (signed) {
         widget.store.dispatch(InfoAction.retrieve());
       }
