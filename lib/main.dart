@@ -55,6 +55,7 @@ void main() {
               ..accountability = CadetAccountability((b3) => b3
                   ..di_last_signed = DateTime.now().toUtc()
                   ..di_signed_by = ""
+                  ..di_signed_name = ""
               ).toBuilder()
           ).toBuilder()
           ..notifications = ListBuilder<UserNotification>([])
