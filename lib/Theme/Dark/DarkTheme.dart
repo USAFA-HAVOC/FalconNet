@@ -5,12 +5,13 @@ import 'DarkTextTheme.dart';
 
 ThemeData darkTheme = ThemeData(
   primaryColor: const Color.fromARGB(255, 24, 24, 24),
-  focusColor: Color.fromARGB(255, 40, 40, 40),
+  focusColor: const Color.fromARGB(255, 40, 40, 40),
   indicatorColor: Colors.grey,
   textTheme: darkTextTheme,
   cardTheme: darkCardTheme,
+  disabledColor: const Color.fromARGB(255, 40, 40, 40),
   fontFamily: "Roboto",
-  canvasColor: Color.fromARGB(255, 24, 24, 24),
+  canvasColor: const Color.fromARGB(255, 24, 24, 24),
   dialogBackgroundColor: darkCardTheme.color,
   iconTheme: const IconThemeData(color: Colors.white),
   buttonTheme: const ButtonThemeData(
