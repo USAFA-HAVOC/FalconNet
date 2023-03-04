@@ -26,29 +26,30 @@ class DIWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     var messenger = ScaffoldMessenger.of(context);
     return StoreConnector<GlobalState, ViewModel<DITuple>>(
-        converter: (store) =>
-            ViewModel<DITuple>(
-                store: store,
-                content: DITuple(
-                    accountability: store.state.user.accountability,
-                    roles: store.state.user.roles.map((r) => r.role).toList()
-                )
-            ),
+        converter: (store) => ViewModel<DITuple>(
+            store: store,
+            content: DITuple(
+                accountability: store.state.user.accountability,
+                roles: store.state.user.roles.map((r) => r.role).toList())),
         builder: (context, model) {
-
           //Whether cadet is able to sign own di based on roles
-          bool senior = model.content.roles.any((role) => role == Roles.signable.name);
+          bool senior =
+              model.content.roles.any((role) => role == Roles.signable.name);
 
           //Determines whether time is signable
-          bool time = DateTime.now().isAfter(combineDate(DateTime.now(), TimeOfDay(hour: 19, minute: 15)));
+          bool time = DateTime.now().isAfter(
+              combineDate(DateTime.now(), TimeOfDay(hour: 19, minute: 15)));
 
           //Whether cadet has already signed
           bool signed = false;
           if (model.content.accountability?.di_last_signed != null) {
-            var signature = model.content.accountability!.di_last_signed!.toLocal();
+            var signature =
+                model.content.accountability!.di_last_signed!.toLocal();
             print(signature);
             var present = DateTime.now().toLocal();
-            if (signature.year == present.year && signature.month == present.month && signature.day == present.day) {
+            if (signature.year == present.year &&
+                signature.month == present.month &&
+                signature.day == present.day) {
               signed = true;
             }
           }
@@ -58,68 +59,75 @@ class DIWidget extends StatelessWidget {
           //Determine text based on state values
           List<Widget> text;
           if (signable) {
-            text = [Text(
-              "DI is Open",
-              style: Theme.of(context).textTheme.headlineMedium,
-            )];
-          }
-          else if (signed) {
-            text = [Text(
-              "DI Signed by ${model.content.accountability!.di_signed_name ?? "Himothy"}",
-              style: TextStyle(
-                fontSize: Theme.of(context).textTheme.headlineMedium?.fontSize,
-                color: Colors.black,
-              ),
-            )];
-          }
-          else if (!senior) {
-            text = [Text(
-              "Cannot Sign Own DI",
-              style: TextStyle(
-                fontSize: Theme.of(context).textTheme.headlineMedium?.fontSize,
-                color: Colors.black,
-              ),
-            )];
-          }
-          else {
-            text = [Text(
-              "DI Opens at 19:50",
-              style: TextStyle(
-                fontSize: Theme.of(context).textTheme.headlineMedium?.fontSize,
-                color: Colors.black,
-              ),
-            )];
+            text = [
+              Text(
+                "DI is Open",
+                style: Theme.of(context).textTheme.headlineMedium,
+              )
+            ];
+          } else if (signed) {
+            text = [
+              Text(
+                "DI Signed by ${model.content.accountability!.di_signed_name ?? "Himothy"}",
+                style: TextStyle(
+                  fontSize:
+                      Theme.of(context).textTheme.headlineMedium?.fontSize,
+                  color: Theme.of(context).textTheme.bodyMedium?.color,
+                ),
+              )
+            ];
+          } else if (!senior) {
+            text = [
+              Text(
+                "Cannot Sign Own DI",
+                style: TextStyle(
+                  fontSize:
+                      Theme.of(context).textTheme.headlineMedium?.fontSize,
+                  color: Colors.black,
+                ),
+              )
+            ];
+          } else {
+            text = [
+              Text(
+                "DI Opens at 19:50",
+                style: TextStyle(
+                  fontSize:
+                      Theme.of(context).textTheme.headlineMedium?.fontSize,
+                  color: Colors.black,
+                ),
+              )
+            ];
           }
 
           //Sets content to card with info text
           List<Widget> content = [
             Card(
-                color: signable ? Theme.of(context).focusColor : Theme.of(context).canvasColor,
+                color: signable
+                    ? Theme.of(context).focusColor
+                    : Theme.of(context).focusColor,
                 child: Padding(
                   padding: EdgeInsets.all(20),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: text,
                   ),
-                )
-            ),
+                )),
           ];
 
           //If signable, add button to sign di
           if (signable) {
             content.add(
               ElevatedButton(
-
                 //Dispatch sign di action
                 onPressed: () {
-                  model.dispatch(SignAction(
-                    onSucceed: () {
-                      messenger.showSnackBar(const SnackBar(content: Text("DI Signed Successfully")));
-                    },
-                    onFail: () {
-                      messenger.showSnackBar(const SnackBar(content: Text("Failed to Sign DI")));
-                    }
-                  ));
+                  model.dispatch(SignAction(onSucceed: () {
+                    messenger.showSnackBar(const SnackBar(
+                        content: Text("DI Signed Successfully")));
+                  }, onFail: () {
+                    messenger.showSnackBar(
+                        const SnackBar(content: Text("Failed to Sign DI")));
+                  }));
                 },
 
                 child: Padding(
@@ -131,11 +139,7 @@ class DIWidget extends StatelessWidget {
           }
 
           //Return Page Widget with given content
-          return PageWidget(
-              title: title,
-              children: content
-          );
-        }
-    );
+          return PageWidget(title: title, children: content);
+        });
   }
 }
