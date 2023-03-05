@@ -10,9 +10,9 @@ import 'package:falcon_net/Utility/TemporalFormatting.dart';
 import 'package:falcon_net/Structure/Components/TimeFormField.dart';
 import 'package:flutter/material.dart';
 
+
 ///Form for submitting or editing a pass
 class PassForm extends StatefulWidget {
-
   //Closures for submission and cancellation
   final void Function(CadetPass pass) onSubmit;
   final void Function() onCancel;
@@ -20,15 +20,19 @@ class PassForm extends StatefulWidget {
   //Existing pass to be edited
   final CadetPass? existing;
 
-  PassForm({super.key, required this.onSubmit, required this.onCancel, CadetPass? editing}) :
-        existing = editing?.toLocal();
+  PassForm(
+      {super.key,
+      required this.onSubmit,
+      required this.onCancel,
+      CadetPass? editing})
+      : existing = editing?.toLocal();
 
   @override
   State<PassForm> createState() => PassFormState();
 }
 
-class PassFormState extends State<PassForm> with SingleTickerProviderStateMixin {
-
+class PassFormState extends State<PassForm>
+    with SingleTickerProviderStateMixin {
   //Key for maintaining access to form state across redraws
   final key = GlobalKey<FormState>();
 
@@ -58,21 +62,24 @@ class PassFormState extends State<PassForm> with SingleTickerProviderStateMixin 
   void initState() {
     super.initState();
     type = DateTime.now().weekday < 5 ? "weekday" : "weekend";
-    
+
     if (widget.existing != null) {
       dateValue = describeDate(widget.existing!.end_time);
-      timeValue = describeTime(TimeOfDay.fromDateTime(widget.existing!.end_time));
-    }
-    else {
+      timeValue =
+          describeTime(TimeOfDay.fromDateTime(widget.existing!.end_time));
+    } else {
       dateValue = describeDate(DateTime.now());
       timeValue = describeTime(const TimeOfDay(hour: 19, minute: 50));
     }
-    
+
     scaController = TextEditingController(text: widget.existing?.sca_number);
-    descriptionController = TextEditingController(text: widget.existing?.description);
+    descriptionController =
+        TextEditingController(text: widget.existing?.description);
     state = widget.existing?.state ?? "Colorado";
-    cityController = TextEditingController(text: widget.existing?.city ?? "Colorado Springs");
-    zipController = TextEditingController(text: widget.existing?.zip_code ?? "80841");
+    cityController = TextEditingController(
+        text: widget.existing?.city ?? "Colorado Springs");
+    zipController =
+        TextEditingController(text: widget.existing?.zip_code ?? "80841");
   }
 
   @override
@@ -83,7 +90,6 @@ class PassFormState extends State<PassForm> with SingleTickerProviderStateMixin 
 
   ///Maximizes pass duration based on pass type and current time
   void maximizePass() {
-
     //Implement a model call to determine latest possible time
     DateTime now = DateTime.now();
     DateTime last = DateTime(now.year, now.month, now.day, 19, 50);
@@ -114,8 +120,7 @@ class PassFormState extends State<PassForm> with SingleTickerProviderStateMixin 
       ..sca_number = scaController.text == "" ? null : scaController.text
       ..city = cityController.text
       ..state = state
-      ..zip_code = zipController.text
-    ).toUtc();
+      ..zip_code = zipController.text).toUtc();
   }
 
   ///Builds type options based on current date
@@ -123,61 +128,112 @@ class PassFormState extends State<PassForm> with SingleTickerProviderStateMixin 
     Map<String, String> options = <String, String>{};
 
     if (DateTime.now().weekday < 5) {
-      options.addAll({"Weekday Sign-Out Period" : "weekday"});
-    }
-    else {
-      options.addAll({"Weekend Sign-Out Period" : "weekend"});
+      options.addAll({"Weekday Sign-Out Period": "weekday"});
+    } else {
+      options.addAll({"Weekend Sign-Out Period": "weekend"});
     }
 
     options.addAll({
-      "Discretionary" : "discretionary",
-      "SCA" : "sca",
-      "eSSS" : "esss",
+      "Discretionary": "discretionary",
+      "SCA": "sca",
+      "eSSS": "esss",
     });
 
-    return options.map((key, value) => MapEntry(key, DropdownMenuItem<String>(
-        value: value,
-        child: Text(
+    return options
+        .map(
+          (key, value) => MapEntry(
             key,
-            style: Theme.of(context).textTheme.bodyLarge
+            DropdownMenuItem<String>(
+              value: value,
+              child: Text(
+                key,
+                style: Theme.of(context).textTheme.bodyLarge,
+              ),
+            ),
+          ),
         )
-    ))).values.toList();
+        .values
+        .toList();
   }
 
   ///Builds state menu options
   List<DropdownMenuItem<String>> buildStateOptions() {
     List<String> options = <String>[
-      "Alaska", "Alabama", "Arkansas", "Arizona", "California",
-      "Colorado", "Connecticut", "District of Columbia", "Delaware", "Florida", "Georgia",
-      "Hawaii", "Iowa", "Idaho", "Illinois", "Indiana", "Kansas",
-      "Kentucky", "Louisiana", "Massachusetts", "Maryland",
-      "Maine", "Michigan", "Minnesota", "Missouri", "Mississippi",
-      "Montana", "North Carolina", "North Dakota", "Nebraska",
-      "New Hampshire", "New Jersey", "New Mexico", "Nevada",
-      "New York", "Ohio", "Oklahoma", "Oregon", "Pennsylvania",
-      "Rhode Island", "South Carolina", "South Dakota", "Tennessee",
-      "Texas", "Utah", "Virginia", "Vermont", "Washington", "Wisconsin",
-      "West Virginia", "Wyoming",
+      "Alaska",
+      "Alabama",
+      "Arkansas",
+      "Arizona",
+      "California",
+      "Colorado",
+      "Connecticut",
+      "District of Columbia",
+      "Delaware",
+      "Florida",
+      "Georgia",
+      "Hawaii",
+      "Iowa",
+      "Idaho",
+      "Illinois",
+      "Indiana",
+      "Kansas",
+      "Kentucky",
+      "Louisiana",
+      "Massachusetts",
+      "Maryland",
+      "Maine",
+      "Michigan",
+      "Minnesota",
+      "Missouri",
+      "Mississippi",
+      "Montana",
+      "North Carolina",
+      "North Dakota",
+      "Nebraska",
+      "New Hampshire",
+      "New Jersey",
+      "New Mexico",
+      "Nevada",
+      "New York",
+      "Ohio",
+      "Oklahoma",
+      "Oregon",
+      "Pennsylvania",
+      "Rhode Island",
+      "South Carolina",
+      "South Dakota",
+      "Tennessee",
+      "Texas",
+      "Utah",
+      "Virginia",
+      "Vermont",
+      "Washington",
+      "Wisconsin",
+      "West Virginia",
+      "Wyoming",
     ];
 
     //Asserts there are still fifty of them (plus select)
     assert(options.length == 51);
 
     //Map the strings to menu items
-    return options.map((key) => DropdownMenuItem<String>(
-        value: key,
-        child: Text(
-          key,
-          style: Theme.of(context).textTheme.bodyLarge
+    return options
+        .map(
+          (key) => DropdownMenuItem<String>(
+            value: key,
+            child: Text(
+              key,
+              style: Theme.of(context).textTheme.bodyLarge,
+            ),
+          ),
         )
-      )
-    ).toList();
+        .toList();
   }
 
   @override
   Widget build(BuildContext context) {
     return StoreConnector<GlobalState, ViewModel<String>>(
-        converter: (store) => ViewModel<String>(store: store, content: store.state.user.id!),
+        converter: (store) =>
+            ViewModel<String>(store: store, content: store.state.user.id!),
         builder: (context, model) => Form(
             key: key,
             child: ListView(
@@ -192,12 +248,10 @@ class PassFormState extends State<PassForm> with SingleTickerProviderStateMixin 
                       value: type,
                       decoration: InputDecoration(
                           labelStyle: Theme.of(context).textTheme.bodyLarge,
-                          labelText: "Pass Type"
-                      ),
+                          labelText: "Pass Type"),
 
                       //Called when a new type options is selected
                       onChanged: (value) {
-
                         //If sca is selected, extend sca number option
                         if (value == "sca") {
                           animationController.animateTo(1.0);
@@ -215,7 +269,9 @@ class PassFormState extends State<PassForm> with SingleTickerProviderStateMixin 
                       items: buildTypeOptions(),
                     ),
 
-                    SizedBox(height: 10,),
+                    SizedBox(
+                      height: 10,
+                    ),
 
                     //Animation for extending the sca form option
                     SizeTransition(
@@ -227,20 +283,23 @@ class PassFormState extends State<PassForm> with SingleTickerProviderStateMixin 
                           TextFormField(
                             controller: scaController,
                             decoration: InputDecoration(
-                                labelStyle: Theme.of(context).textTheme.bodyLarge,
-                                labelText: "SCA Number"
-                            ),
+                                labelStyle:
+                                    Theme.of(context).textTheme.bodyLarge,
+                                labelText: "SCA Number"),
                             style: Theme.of(context).textTheme.bodyLarge,
 
                             //Requires input only if selected pass type is sca
                             validator: (content) {
                               if (type == "sca") {
-                                return InputValidation.stringLength(emptyMessage: "Please enter an SCA number")(content);
+                                return InputValidation.stringLength(
+                                    emptyMessage:
+                                        "Please enter an SCA number")(content);
                               }
                             },
                           ),
-
-                          SizedBox(height: 10,),
+                          SizedBox(
+                            height: 10,
+                          ),
                         ],
                       ),
                     ),
@@ -249,20 +308,21 @@ class PassFormState extends State<PassForm> with SingleTickerProviderStateMixin 
                       controller: descriptionController,
                       decoration: InputDecoration(
                           labelStyle: Theme.of(context).textTheme.bodyLarge,
-                          labelText: "Description"
-                      ),
+                          labelText: "Description"),
                       style: Theme.of(context).textTheme.bodyLarge,
-                      validator: InputValidation.stringLength(emptyMessage: "Please enter a description"),
+                      validator: InputValidation.stringLength(
+                          emptyMessage: "Please enter a description"),
                     ),
 
-                    SizedBox(height: 10,),
+                    SizedBox(
+                      height: 10,
+                    ),
 
                     DropdownButtonFormField(
                       value: state,
                       decoration: InputDecoration(
                           labelStyle: Theme.of(context).textTheme.bodyLarge,
-                          labelText: "State"
-                      ),
+                          labelText: "State"),
                       onChanged: (value) {
                         setState(() {
                           state = value!;
@@ -272,7 +332,9 @@ class PassFormState extends State<PassForm> with SingleTickerProviderStateMixin 
                       items: buildStateOptions(),
                     ),
 
-                    SizedBox(height: 10,),
+                    SizedBox(
+                      height: 10,
+                    ),
 
                     Row(
                       children: [
@@ -281,32 +343,34 @@ class PassFormState extends State<PassForm> with SingleTickerProviderStateMixin 
                           child: TextFormField(
                             controller: cityController,
                             decoration: InputDecoration(
-                                labelStyle: Theme.of(context).textTheme.bodyLarge,
-                                labelText: "City"
-                            ),
+                                labelStyle:
+                                    Theme.of(context).textTheme.bodyLarge,
+                                labelText: "City"),
                             style: Theme.of(context).textTheme.bodyLarge,
-                            validator: InputValidation.stringLength(emptyMessage: "Please enter a city"),
+                            validator: InputValidation.stringLength(
+                                emptyMessage: "Please enter a city"),
                           ),
                         ),
-
                         Spacer(flex: 1),
-
                         Expanded(
                           flex: 3,
                           child: TextFormField(
                             controller: zipController,
                             decoration: InputDecoration(
-                                labelStyle: Theme.of(context).textTheme.bodyLarge,
-                                labelText: "Zip"
-                            ),
+                                labelStyle:
+                                    Theme.of(context).textTheme.bodyLarge,
+                                labelText: "Zip"),
                             style: Theme.of(context).textTheme.bodyLarge,
-                            validator: InputValidation.stringLength(emptyMessage: "Please enter a zip code"),
+                            validator: InputValidation.stringLength(
+                                emptyMessage: "Please enter a zip code"),
                           ),
                         ),
                       ],
                     ),
 
-                    SizedBox(height: 10,),
+                    SizedBox(
+                      height: 10,
+                    ),
 
                     Row(
                       children: [
@@ -323,15 +387,14 @@ class PassFormState extends State<PassForm> with SingleTickerProviderStateMixin 
                             },
                           ),
                         ),
-
                         Spacer(flex: 1),
-
                         Expanded(
                           flex: 4,
                           child: TimeFormField(
                             value: timeValue,
                             label: "Return Time",
-                            validator: InputValidation.time(date: parseDate(dateValue)),
+                            validator: InputValidation.time(
+                                date: parseDate(dateValue)),
                             onChanged: (change) {
                               setState(() {
                                 timeValue = change;
@@ -342,7 +405,9 @@ class PassFormState extends State<PassForm> with SingleTickerProviderStateMixin 
                       ],
                     ),
 
-                    SizedBox(height: 10,),
+                    SizedBox(
+                      height: 10,
+                    ),
 
                     ElevatedButton(
                       onPressed: () {
@@ -350,45 +415,49 @@ class PassFormState extends State<PassForm> with SingleTickerProviderStateMixin 
                       },
                       child: Padding(
                         padding: EdgeInsets.symmetric(vertical: 5),
-                        child: const Text('Max Duration'),
+                        child: Text(
+                          'Max Duration',
+                          style: Theme.of(context).textTheme.labelLarge,
+                        ),
                       ),
                     ),
 
-                    SizedBox(height: 20,),
+                    SizedBox(
+                      height: 20,
+                    ),
 
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
                         Expanded(
-                            flex: 5,
-                            child: Padding(
-                              padding: EdgeInsets.symmetric(vertical: 20),
-                              child: ElevatedButton(
-                                onPressed: () {
-
-                                  //If form entries are valid, call submission closure with formatted pass
-                                  if (key.currentState!.validate()) {
-                                    widget.onSubmit(formatPass(model.content));
-                                  }
-                                },
-                                child: Padding(
-                                  padding: EdgeInsets.symmetric(vertical: 10),
-                                  child: const Text('Submit'),
-                                ),
+                          flex: 5,
+                          child: Padding(
+                            padding: EdgeInsets.symmetric(vertical: 20),
+                            child: ElevatedButton(
+                              onPressed: () {
+                                //If form entries are valid, call submission closure with formatted pass
+                                if (key.currentState!.validate()) {
+                                  widget.onSubmit(formatPass(model.content));
+                                }
+                              },
+                              child: Padding(
+                                padding: EdgeInsets.symmetric(vertical: 10),
+                                child: Text('Submit',
+                                    style:
+                                        Theme.of(context).textTheme.labelLarge),
                               ),
                             ),
+                          ),
                         ),
-
                         Spacer(flex: 1),
-
                         Expanded(
                           flex: 5,
                           child: ElevatedButton(
                             style: ButtonStyle(
-                              backgroundColor: MaterialStateColor.resolveWith((states) => Colors.grey),
+                              backgroundColor: MaterialStateColor.resolveWith(
+                                  (states) => Colors.grey),
                             ),
                             onPressed: () {
-
                               //Perform cancellation closure
                               widget.onCancel();
                             },
@@ -403,8 +472,6 @@ class PassFormState extends State<PassForm> with SingleTickerProviderStateMixin 
                   ],
                 ),
               ],
-            )
-        )
-    );
+            )));
   }
 }

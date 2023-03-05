@@ -15,7 +15,9 @@ class PassStatus extends StatelessWidget {
       children: [
         Expanded(
           child: StoreConnector<GlobalState, ViewModel<CadetPass?>>(
-              converter: (store) => ViewModel<CadetPass?>(store: store, content: store.state.user.accountability?.current_pass),
+              converter: (store) => ViewModel<CadetPass?>(
+                  store: store,
+                  content: store.state.user.accountability?.current_pass),
               builder: (context, model) {
                 if (model.content == null) {
                   //Add logic for closed passes
@@ -29,35 +31,30 @@ class PassStatus extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.center,
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: [
-
                             Padding(
                               padding: const EdgeInsets.only(bottom: 10),
                               child: Text(
-                                "Pass Status",
-                                style: Theme.of(context).textTheme.headlineMedium,
+                                "Pass Status:",
+                                style:
+                                    Theme.of(context).textTheme.headlineLarge,
                               ),
                             ),
-
                             Text(
                               "Here",
                               style: Theme.of(context).textTheme.headlineLarge,
                             ),
-
                             Padding(
                               padding: const EdgeInsets.only(top: 10),
                               child: Text(
                                 "Passes are Open",
-                                style: Theme.of(context).textTheme.headlineMedium,
+                                style:
+                                    Theme.of(context).textTheme.headlineSmall,
                               ),
                             ),
-
                           ],
                         ),
-                      )
-                  );
-                }
-                else {
-
+                      ));
+                } else {
                   //If there is a current pass, display pass information
                   //Determine expiration message
                   CadetPass pass = model.content!.toLocal();
@@ -65,67 +62,62 @@ class PassStatus extends StatelessWidget {
                   bool expired = false;
 
                   if (pass.end_time.isBefore(DateTime.now())) {
-                    expiration = "Expired: ${describeDate(pass.end_time)} ${describeTime(TimeOfDay.fromDateTime(pass.end_time))}";
+                    expiration =
+                        "Expired: ${describeDate(pass.end_time)} ${describeTime(TimeOfDay.fromDateTime(pass.end_time))}";
                     expired = true;
-                  }
-
-                  else if (pass.end_time.difference(DateTime.now()).compareTo(Duration(hours: 24)) < 0 && pass.end_time.weekday == DateTime.now().weekday) {
-                    expiration = "Expires: ${describeTime(TimeOfDay.fromDateTime(pass.end_time))}";
-                  }
-                  else if (pass.end_time.difference(DateTime.now()).compareTo(Duration(days: 7)) < 0) {
-                    expiration = "Expires: ${formatWeekday(pass.end_time.weekday)}, ${describeTime(TimeOfDay.fromDateTime(pass.end_time))}";
-                  }
-                  else {
-                    expiration = "Expires: ${describeDate(pass.end_time)}, ${describeTime(TimeOfDay.fromDateTime(pass.end_time))}";
+                  } else if (pass.end_time
+                              .difference(DateTime.now())
+                              .compareTo(Duration(hours: 24)) <
+                          0 &&
+                      pass.end_time.weekday == DateTime.now().weekday) {
+                    expiration =
+                        "Expires: ${describeTime(TimeOfDay.fromDateTime(pass.end_time))}";
+                  } else if (pass.end_time
+                          .difference(DateTime.now())
+                          .compareTo(Duration(days: 7)) <
+                      0) {
+                    expiration =
+                        "Expires: ${formatWeekday(pass.end_time.weekday)}, ${describeTime(TimeOfDay.fromDateTime(pass.end_time))}";
+                  } else {
+                    expiration =
+                        "Expires: ${describeDate(pass.end_time)}, ${describeTime(TimeOfDay.fromDateTime(pass.end_time))}";
                   }
 
                   //Display a gray card with expiration time/date
                   return Card(
-                    color: !expired ? Theme.of(context).canvasColor : Theme.of(context).errorColor,
+                    color: !expired
+                        ? Theme.of(context).canvasColor
+                        : Theme.of(context).errorColor,
                     child: Padding(
                       padding: EdgeInsets.all(20),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.center,
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
-
                           Padding(
                             padding: const EdgeInsets.only(bottom: 10),
                             child: Text(
-                              "Pass Status",
-                              style: TextStyle(
-                                  fontSize: Theme.of(context).textTheme.headlineMedium!.fontSize,
-                                  color: Colors.black
-                              ),
+                              "Pass Status:",
+                              style: Theme.of(context).textTheme.bodyLarge,
                             ),
                           ),
-
                           Text(
                             "Signed-Out",
-                            style: TextStyle(
-                                fontSize: Theme.of(context).textTheme.headlineLarge!.fontSize,
-                                color: Colors.black
-                            ),
+                            style: Theme.of(context).textTheme.headlineLarge,
                           ),
-
                           Padding(
                             padding: const EdgeInsets.only(top: 10),
                             child: Text(
                               expiration,
-                              style: TextStyle(
-                                  fontSize: Theme.of(context).textTheme.headlineMedium!.fontSize,
-                                  color: Colors.black
-                              ),
+                              style: Theme.of(context).textTheme.headlineSmall,
                             ),
                           ),
-
                         ],
                       ),
                     ),
                   );
                 }
-              }
-          ),
+              }),
         )
       ],
     );
