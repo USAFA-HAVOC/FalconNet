@@ -28,15 +28,15 @@ class LeaveLocatorForm extends StatefulWidget {
   //Closure called on submission
   final void Function()? onSubmit;
 
-  LeaveLocatorForm({super.key, CadetLeave? editing, this.dialog = true, this.onSubmit}) :
-      existing = editing?.toLocal();
+  LeaveLocatorForm(
+      {super.key, CadetLeave? editing, this.dialog = true, this.onSubmit})
+      : existing = editing?.toLocal();
 
   @override
   State<LeaveLocatorForm> createState() => LeaveLocatorFormState();
 }
 
 class LeaveLocatorFormState extends State<LeaveLocatorForm> {
-
   //Global key for maintaining form state
   final key = GlobalKey<FormState>();
 
@@ -60,45 +60,91 @@ class LeaveLocatorFormState extends State<LeaveLocatorForm> {
   @override
   void initState() {
     super.initState();
-    addressController = TextEditingController(text: widget.existing?.final_address);
+    addressController =
+        TextEditingController(text: widget.existing?.final_address);
     cityController = TextEditingController(text: widget.existing?.final_city);
     zipController = TextEditingController(text: widget.existing?.final_zip);
     state = widget.existing?.final_state ?? "Colorado";
-    nameController = TextEditingController(text: widget.existing?.emergency_contact_name);
-    phoneController = TextEditingController(text: widget.existing?.emergency_contact_phone);
-    depDateValue = describeDate(widget.existing?.departure_time ?? DateTime.now());
-    depTimeValue = describeTime(timeOf(widget.existing?.departure_time ?? DateTime.now()));
+    nameController =
+        TextEditingController(text: widget.existing?.emergency_contact_name);
+    phoneController =
+        TextEditingController(text: widget.existing?.emergency_contact_phone);
+    depDateValue =
+        describeDate(widget.existing?.departure_time ?? DateTime.now());
+    depTimeValue =
+        describeTime(timeOf(widget.existing?.departure_time ?? DateTime.now()));
     retDateValue = describeDate(widget.existing?.return_time ?? DateTime.now());
-    retTimeValue = describeTime(timeOf(widget.existing?.return_time ?? DateTime.now()));
-    depMethodController = SubformController<CadetLeaveTransportMethod>(value: widget.existing?.departure_method);
-    retMethodController = SubformController<CadetLeaveTransportMethod>(value: widget.existing?.return_method);
+    retTimeValue =
+        describeTime(timeOf(widget.existing?.return_time ?? DateTime.now()));
+    depMethodController = SubformController<CadetLeaveTransportMethod>(
+        value: widget.existing?.departure_method);
+    retMethodController = SubformController<CadetLeaveTransportMethod>(
+        value: widget.existing?.return_method);
   }
 
   ///Build state options
   List<DropdownMenuItem<String>> buildStateOptions() {
     List<String> options = <String>[
-      "Alaska", "Alabama", "Arkansas", "Arizona", "California",
-      "Colorado", "Connecticut", "District of Columbia", "Delaware", "Florida", "Georgia",
-      "Hawaii", "Iowa", "Idaho", "Illinois", "Indiana", "Kansas",
-      "Kentucky", "Louisiana", "Massachusetts", "Maryland",
-      "Maine", "Michigan", "Minnesota", "Missouri", "Mississippi",
-      "Montana", "North Carolina", "North Dakota", "Nebraska",
-      "New Hampshire", "New Jersey", "New Mexico", "Nevada",
-      "New York", "Ohio", "Oklahoma", "Oregon", "Pennsylvania",
-      "Rhode Island", "South Carolina", "South Dakota", "Tennessee",
-      "Texas", "Utah", "Virginia", "Vermont", "Washington", "Wisconsin",
-      "West Virginia", "Wyoming", "Select"
+      "Alaska",
+      "Alabama",
+      "Arkansas",
+      "Arizona",
+      "California",
+      "Colorado",
+      "Connecticut",
+      "District of Columbia",
+      "Delaware",
+      "Florida",
+      "Georgia",
+      "Hawaii",
+      "Iowa",
+      "Idaho",
+      "Illinois",
+      "Indiana",
+      "Kansas",
+      "Kentucky",
+      "Louisiana",
+      "Massachusetts",
+      "Maryland",
+      "Maine",
+      "Michigan",
+      "Minnesota",
+      "Missouri",
+      "Mississippi",
+      "Montana",
+      "North Carolina",
+      "North Dakota",
+      "Nebraska",
+      "New Hampshire",
+      "New Jersey",
+      "New Mexico",
+      "Nevada",
+      "New York",
+      "Ohio",
+      "Oklahoma",
+      "Oregon",
+      "Pennsylvania",
+      "Rhode Island",
+      "South Carolina",
+      "South Dakota",
+      "Tennessee",
+      "Texas",
+      "Utah",
+      "Virginia",
+      "Vermont",
+      "Washington",
+      "Wisconsin",
+      "West Virginia",
+      "Wyoming",
+      "Select"
     ];
 
     //Map each to a menu item
-    return options.map((key) => DropdownMenuItem<String>(
-        value: key,
-        child: Text(
-            key,
-            style: Theme.of(context).textTheme.bodyLarge
-        )
-    )
-    ).toList();
+    return options
+        .map((key) => DropdownMenuItem<String>(
+            value: key,
+            child: Text(key, style: Theme.of(context).textTheme.bodyLarge)))
+        .toList();
   }
 
   //Builds submission bar based on present state
@@ -107,56 +153,53 @@ class LeaveLocatorFormState extends State<LeaveLocatorForm> {
     Widget submit = Expanded(
         flex: 5,
         child: Padding(
-          padding: EdgeInsets.symmetric(vertical: 20),
-          child: StoreConnector<GlobalState, ViewModel<LeaveModelTuple>>(
-            converter: (store) => ViewModel<LeaveModelTuple>(
-                store: store,
-                content: LeaveModelTuple(
-                  leave: store.state.user.accountability?.current_leave,
-                  id: store.state.user.id!
-                )
-            ),
-            builder: (context, model) {
-              return ElevatedButton(
-
-                //Attempts to validate form, then closes dialog if applicable
-                //Then, dispatches set leave action with leave data
-                onPressed: () {
-                  print("attempting");
-                  if (key.currentState!.validate()) {
-                    print("valid");
-                    if (widget.dialog) {
-                      Navigator.of(context).pop();
-                    }
-                    model.dispatch(LeaveAction.set(
-                      formatLeave(model.content.id),
-                      onSucceed: () {
-                        messenger.showSnackBar(const SnackBar(content: Text("Leave Data Submitted")));
-                      },
-                      onFail: () {
-                        messenger.showSnackBar(const SnackBar(content: Text("Failed to Submit Leave Data")));
+            padding: EdgeInsets.symmetric(vertical: 20),
+            child: StoreConnector<GlobalState, ViewModel<LeaveModelTuple>>(
+              converter: (store) => ViewModel<LeaveModelTuple>(
+                  store: store,
+                  content: LeaveModelTuple(
+                      leave: store.state.user.accountability?.current_leave,
+                      id: store.state.user.id!)),
+              builder: (context, model) {
+                return ElevatedButton(
+                  //Attempts to validate form, then closes dialog if applicable
+                  //Then, dispatches set leave action with leave data
+                  onPressed: () {
+                    print("attempting");
+                    if (key.currentState!.validate()) {
+                      print("valid");
+                      if (widget.dialog) {
+                        Navigator.of(context).pop();
                       }
-                    ));
-                  }
-                },
+                      model.dispatch(LeaveAction.set(
+                          formatLeave(model.content.id), onSucceed: () {
+                        messenger.showSnackBar(const SnackBar(
+                            content: Text("Leave Data Submitted")));
+                      }, onFail: () {
+                        messenger.showSnackBar(const SnackBar(
+                            content: Text("Failed to Submit Leave Data")));
+                      }));
+                    }
+                  },
 
-                child: Padding(
-                  padding: EdgeInsets.symmetric(vertical: 10),
-                  child: const Text('Submit'),
-                ),
-              );
-            },
-          )
-        )
-    );
+                  child: Padding(
+                    padding: EdgeInsets.symmetric(vertical: 10),
+                    child: Text(
+                      'Submit',
+                      style: Theme.of(context).textTheme.labelLarge,
+                    ),
+                  ),
+                );
+              },
+            )));
     List<Widget> cancel = [
       Spacer(flex: 1),
-
       Expanded(
         flex: 5,
         child: ElevatedButton(
           style: ButtonStyle(
-            backgroundColor: MaterialStateColor.resolveWith((states) => Colors.grey),
+            backgroundColor:
+                MaterialStateColor.resolveWith((states) => Colors.grey),
           ),
 
           //Closes dialog if nessecary
@@ -177,28 +220,28 @@ class LeaveLocatorFormState extends State<LeaveLocatorForm> {
     //Includes cancel button only if in dialog
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-      children: widget.dialog ? [submit] + cancel: [submit],
+      children: widget.dialog ? [submit] + cancel : [submit],
     );
   }
 
   ///Formats leave object based on field values
   CadetLeave formatLeave(String id) {
     return CadetLeave((b) => b
-        ..departure_method = depMethodController.retrieve().toBuilder()
-        ..return_method = retMethodController.retrieve().toBuilder()
-        ..emergency_contact_name = nameController.text
-        ..emergency_contact_phone = phoneController.text
-        ..final_zip = zipController.text
-        ..final_state = state
-        ..final_city = cityController.text
-        ..final_address = addressController.text
-        ..departure_time = combineDate(parseDate(depDateValue), parseTime(depTimeValue))
-        ..return_time = combineDate(parseDate(retDateValue), parseTime(retTimeValue))
-        ..cadet_id = id
-        ..id = widget.existing?.id
-    ).toUtc();
+      ..departure_method = depMethodController.retrieve().toBuilder()
+      ..return_method = retMethodController.retrieve().toBuilder()
+      ..emergency_contact_name = nameController.text
+      ..emergency_contact_phone = phoneController.text
+      ..final_zip = zipController.text
+      ..final_state = state
+      ..final_city = cityController.text
+      ..final_address = addressController.text
+      ..departure_time =
+          combineDate(parseDate(depDateValue), parseTime(depTimeValue))
+      ..return_time =
+          combineDate(parseDate(retDateValue), parseTime(retTimeValue))
+      ..cadet_id = id
+      ..id = widget.existing?.id).toUtc();
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -212,124 +255,117 @@ class LeaveLocatorFormState extends State<LeaveLocatorForm> {
               "Destination",
               style: Theme.of(context).textTheme.titleSmall,
             ),
-
             TextFormField(
               controller: addressController,
               decoration: InputDecoration(
                   labelStyle: Theme.of(context).textTheme.bodyLarge,
-                  labelText: "Final Address"
-              ),
+                  labelText: "Final Address"),
               style: Theme.of(context).textTheme.bodyLarge,
-              validator: InputValidation.stringLength(emptyMessage: "Please enter an address"),
+              validator: InputValidation.stringLength(
+                  emptyMessage: "Please enter an address"),
             ),
-
             Row(
               children: [
                 Expanded(
-                    flex: 5,
-                    child: TextFormField(
-                      controller: cityController,
-                      decoration: InputDecoration(
-                          labelStyle: Theme.of(context).textTheme.bodyLarge,
-                          labelText: "City"
-                      ),
-                      style: Theme.of(context).textTheme.bodyLarge,
-                      validator: InputValidation.stringLength(emptyMessage: "Please enter a city"),
-                    ),
+                  flex: 5,
+                  child: TextFormField(
+                    controller: cityController,
+                    decoration: InputDecoration(
+                        labelStyle: Theme.of(context).textTheme.bodyLarge,
+                        labelText: "City"),
+                    style: Theme.of(context).textTheme.bodyLarge,
+                    validator: InputValidation.stringLength(
+                        emptyMessage: "Please enter a city"),
+                  ),
                 ),
-
-                Spacer(flex: 1,),
-
+                Spacer(
+                  flex: 1,
+                ),
                 Expanded(
                   flex: 2,
                   child: TextFormField(
                     controller: zipController,
                     decoration: InputDecoration(
                         labelStyle: Theme.of(context).textTheme.bodyLarge,
-                        labelText: "Zip"
-                    ),
+                        labelText: "Zip"),
                     style: Theme.of(context).textTheme.bodyLarge,
-                    validator: InputValidation.stringLength(emptyMessage: "Please enter a zip code"),
+                    validator: InputValidation.stringLength(
+                        emptyMessage: "Please enter a zip code"),
                   ),
                 ),
               ],
             ),
-
             DropdownButtonFormField(
               value: state,
               decoration: InputDecoration(
                   labelStyle: Theme.of(context).textTheme.bodyLarge,
-                  labelText: "State"
-              ),
+                  labelText: "State"),
 
               //Set value
               onChanged: (value) {
                 setState(() {
                   state = value!;
-                });;
+                });
+                ;
               },
               validator: InputValidation.dropdown(),
               items: buildStateOptions(),
             ),
-
             TextFormField(
               controller: nameController,
               decoration: InputDecoration(
                   labelStyle: Theme.of(context).textTheme.bodyLarge,
-                  labelText: "Emergency Contact Name"
-              ),
+                  labelText: "Emergency Contact Name"),
               style: Theme.of(context).textTheme.bodyLarge,
-              validator: InputValidation.stringLength(emptyMessage: "Please enter a name"),
+              validator: InputValidation.stringLength(
+                  emptyMessage: "Please enter a name"),
             ),
-
             TextFormField(
               controller: phoneController,
               decoration: InputDecoration(
                   labelStyle: Theme.of(context).textTheme.bodyLarge,
-                  labelText: "Emergency Contact Phone"
-              ),
+                  labelText: "Emergency Contact Phone"),
               style: Theme.of(context).textTheme.bodyLarge,
-              validator: InputValidation.stringLength(emptyMessage: "Please enter a phone number"),
+              validator: InputValidation.stringLength(
+                  emptyMessage: "Please enter a phone number"),
             ),
-
             Divider(
               thickness: 1,
               height: 40,
               indent: 10,
               endIndent: 10,
             ),
-
             Text(
               "Departure",
               style: Theme.of(context).textTheme.titleSmall,
             ),
-
             Row(
               children: [
                 Expanded(
                   flex: 4,
                   child: DateFormField(
-                    firstDate: DateTime.now().subtract(const Duration(days: 30)),
+                    firstDate:
+                        DateTime.now().subtract(const Duration(days: 30)),
                     value: depDateValue,
                     label: "Departure Date",
                     validator: InputValidation.date(),
                     onChanged: (change) => setState(() {
                       depDateValue = change;
-                      if (!parseDate(depDateValue).isBefore(parseDate(retDateValue))) {
+                      if (!parseDate(depDateValue)
+                          .isBefore(parseDate(retDateValue))) {
                         retDateValue = change;
                       }
                     }),
                   ),
                 ),
-
                 Spacer(flex: 1),
-
                 Expanded(
                   flex: 4,
                   child: TimeFormField(
                     value: depTimeValue,
                     label: "Departure Time",
-                    validator: InputValidation.time(date: parseDate(depDateValue)),
+                    validator:
+                        InputValidation.time(date: parseDate(depDateValue)),
                     onChanged: (change) => setState(() {
                       depTimeValue = change;
                     }),
@@ -337,21 +373,20 @@ class LeaveLocatorFormState extends State<LeaveLocatorForm> {
                 )
               ],
             ),
-
-            LeaveMethodSubform(type: LeaveMethodSubformType.departure, controller: depMethodController,),
-
+            LeaveMethodSubform(
+              type: LeaveMethodSubformType.departure,
+              controller: depMethodController,
+            ),
             Divider(
               thickness: 1,
               height: 40,
               indent: 10,
               endIndent: 10,
             ),
-
             Text(
               "Return",
               style: Theme.of(context).textTheme.titleSmall,
             ),
-
             Row(
               children: [
                 Expanded(
@@ -366,15 +401,14 @@ class LeaveLocatorFormState extends State<LeaveLocatorForm> {
                     }),
                   ),
                 ),
-
                 Spacer(flex: 1),
-
                 Expanded(
                   flex: 4,
                   child: TimeFormField(
                     value: retTimeValue,
                     label: "Return Time",
-                    validator: InputValidation.time(date: parseDate(retDateValue)),
+                    validator:
+                        InputValidation.time(date: parseDate(retDateValue)),
                     onChanged: (change) => setState(() {
                       retTimeValue = change;
                     }),
@@ -382,12 +416,11 @@ class LeaveLocatorFormState extends State<LeaveLocatorForm> {
                 )
               ],
             ),
-
-            LeaveMethodSubform(type: LeaveMethodSubformType.arrival, controller: retMethodController),
-
+            LeaveMethodSubform(
+                type: LeaveMethodSubformType.arrival,
+                controller: retMethodController),
             buildSubmissionBar(context),
           ],
-        )
-    );
+        ));
   }
 }

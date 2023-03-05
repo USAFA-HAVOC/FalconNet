@@ -36,7 +36,7 @@ TextTheme lightTextTheme = const TextTheme(
   ),
   headlineMedium: TextStyle(
     fontSize: 20,
-    color: Colors.white,
+    color: Colors.black,
   ),
   headlineSmall: TextStyle(
     fontSize: 18,

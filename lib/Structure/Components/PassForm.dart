@@ -10,7 +10,6 @@ import 'package:falcon_net/Utility/TemporalFormatting.dart';
 import 'package:falcon_net/Structure/Components/TimeFormField.dart';
 import 'package:flutter/material.dart';
 
-
 ///Form for submitting or editing a pass
 class PassForm extends StatefulWidget {
   //Closures for submission and cancellation
@@ -463,7 +462,10 @@ class PassFormState extends State<PassForm>
                             },
                             child: Padding(
                               padding: EdgeInsets.symmetric(vertical: 10),
-                              child: const Text('Cancel'),
+                              child: Text(
+                                'Cancel',
+                                style: Theme.of(context).textTheme.labelLarge,
+                              ),
                             ),
                           ),
                         ),

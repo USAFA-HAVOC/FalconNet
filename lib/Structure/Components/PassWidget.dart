@@ -73,7 +73,7 @@ class PassWidget extends StatelessWidget {
                   padding: EdgeInsets.symmetric(vertical: 10),
                   child: Text(
                     "New Pass",
-                    style: Theme.of(context).textTheme.headlineMedium,
+                    style: Theme.of(context).textTheme.labelLarge,
                   ),
                 ),
               ),
@@ -106,14 +106,20 @@ class PassWidget extends StatelessWidget {
                                         model.dispatch(PassAction.update(
                                           pass,
                                           onFail: () {
-                                            messenger.showSnackBar(const SnackBar(
+                                            messenger.showSnackBar(
+                                              const SnackBar(
                                                 content: Text(
-                                                    "Unable to Update Pass")));
+                                                    "Unable to Update Pass"),
+                                              ),
+                                            );
                                           },
                                           onSucceed: () {
-                                            messenger.showSnackBar(const SnackBar(
+                                            messenger.showSnackBar(
+                                              const SnackBar(
                                                 content: Text(
-                                                    "Pass Updated Successfully")));
+                                                    "Pass Updated Successfully"),
+                                              ),
+                                            );
                                           },
                                         ));
                                       },
@@ -130,12 +136,12 @@ class PassWidget extends StatelessWidget {
                         padding: EdgeInsets.symmetric(vertical: 10),
                         child: Text(
                           "Update Pass",
-                          style: Theme.of(context).textTheme.headlineMedium,
+                          style: Theme.of(context).textTheme.labelLarge,
                         ),
                       ),
                     ),
                   ),
-                  Spacer(
+                  const Spacer(
                     flex: 1,
                   ),
                   Expanded(
@@ -160,9 +166,12 @@ class PassWidget extends StatelessWidget {
                         ));
                       },
 
-                      child: const Padding(
+                      child: Padding(
                         padding: EdgeInsets.symmetric(vertical: 10),
-                        child: Text("Close Pass"),
+                        child: Text(
+                          "Close Pass",
+                          style: Theme.of(context).textTheme.labelLarge,
+                        ),
                       ),
                     ),
                   ),

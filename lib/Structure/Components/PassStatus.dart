@@ -98,7 +98,7 @@ class PassStatus extends StatelessWidget {
                             padding: const EdgeInsets.only(bottom: 10),
                             child: Text(
                               "Pass Status:",
-                              style: Theme.of(context).textTheme.bodyLarge,
+                              style: Theme.of(context).textTheme.headlineLarge,
                             ),
                           ),
                           Text(
