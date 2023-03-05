@@ -35,42 +35,46 @@ class PassWidget extends StatelessWidget {
                 //Opens a pass form dialog
                 onPressed: () {
                   showDialog(
-                      context: context,
-                      builder: (context) => Dialog(
-                            backgroundColor: Theme.of(context).cardTheme.color,
-                            child: Padding(
-                              padding: EdgeInsets.all(10),
-                              child: PassForm(
-                                //Closes dialog and dispatches open pass action
-                                onSubmit: (pass) {
-                                  Navigator.of(context).pop();
-                                  model.dispatch(PassAction.open(
-                                    pass,
-                                    onFail: () {
-                                      messenger.showSnackBar(const SnackBar(
-                                          content:
-                                              Text("Unable to Open Pass")));
-                                    },
-                                    onSucceed: () {
-                                      messenger.showSnackBar(const SnackBar(
-                                          content: Text(
-                                              "Pass Opened Successfully")));
-                                    },
-                                  ));
-                                },
+                    context: context,
+                    builder: (context) => Dialog(
+                      backgroundColor: Theme.of(context).cardTheme.color,
+                      child: Padding(
+                        padding: EdgeInsets.all(10),
+                        child: PassForm(
+                          //Closes dialog and dispatches open pass action
+                          onSubmit: (pass) {
+                            Navigator.of(context).pop();
+                            model.dispatch(PassAction.open(
+                              pass,
+                              onFail: () {
+                                messenger.showSnackBar(const SnackBar(
+                                    content: Text("Unable to Open Pass")));
+                              },
+                              onSucceed: () {
+                                messenger.showSnackBar(const SnackBar(
+                                    content: Text("Pass Opened Successfully")));
+                              },
+                            ));
+                          },
 
-                                //Closes dialog
-                                onCancel: () {
-                                  Navigator.of(context).pop();
-                                },
-                              ),
-                            ),
-                          ));
+                          //Closes dialog
+                          onCancel: () {
+                            Navigator.of(context).pop();
+                          },
+                        ),
+                      ),
+                    ),
+                  );
                 },
 
-                child: const Padding(
+                style: Theme.of(context).elevatedButtonTheme.style,
+
+                child: Padding(
                   padding: EdgeInsets.symmetric(vertical: 10),
-                  child: Text("New Pass"),
+                  child: Text(
+                    "New Pass",
+                    style: Theme.of(context).textTheme.headlineMedium,
+                  ),
                 ),
               ),
             ];

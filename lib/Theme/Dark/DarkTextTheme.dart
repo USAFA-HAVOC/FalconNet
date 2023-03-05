@@ -21,15 +21,15 @@ TextTheme darkTextTheme = const TextTheme(
   //Label is used for contrast against light colors
   labelLarge: TextStyle(
     fontSize: 20,
-    color: Colors.black,
+    color: Colors.white,
   ),
   labelMedium: TextStyle(
     fontSize: 15,
-    color: Colors.black,
+    color: Colors.white,
   ),
   labelSmall: TextStyle(
     fontSize: 10,
-    color: Colors.black,
+    color: Colors.white,
   ),
 
   //Used on status widgets
@@ -42,7 +42,7 @@ TextTheme darkTextTheme = const TextTheme(
     color: Color.fromARGB(255, 255, 255, 255),
   ),
   headlineSmall: TextStyle(
-    fontSize: 15,
+    fontSize: 18,
     color: Color.fromARGB(255, 255, 255, 255),
   ),
 

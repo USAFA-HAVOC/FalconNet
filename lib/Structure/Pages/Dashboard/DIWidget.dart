@@ -83,7 +83,6 @@ class DIWidget extends StatelessWidget {
                 style: TextStyle(
                   fontSize:
                       Theme.of(context).textTheme.headlineMedium?.fontSize,
-                  color: Colors.black,
                 ),
               )
             ];
@@ -94,7 +93,6 @@ class DIWidget extends StatelessWidget {
                 style: TextStyle(
                   fontSize:
                       Theme.of(context).textTheme.headlineMedium?.fontSize,
-                  color: Colors.black,
                 ),
               )
             ];
