@@ -81,10 +81,11 @@ class FNApp extends StatefulWidget {
   State<StatefulWidget> createState() => FNAppState();
 }
 
+final navigatorKey = GlobalKey<NavigatorState>();
+
 class FNAppState extends State<FNApp> {
   late bool signed;
-  final navigatorKey = GlobalKey<NavigatorState>();
-  late GoRouter router= fnRouter(navigatorKey);
+  late GoRouter router = fnRouter(navigatorKey);
 
   @override
   void initState() {
@@ -116,30 +117,8 @@ class FNAppState extends State<FNApp> {
     }
   }
 
-  void appLogin(String? auth_token) async {
-    const String clientId = '198ea96e-078e-4bdc-9b90-0dea3a9ea43b';
-    const String tenant = '7ab80a06-f029-45c0-84d1-7dad19ce3c61';
-
-    final Config config = Config(
-      tenant: tenant,
-      clientId: clientId,
-      scope: "$clientId/FalconNet offline_access",
-      // redirectUri is Optional as a default is calculated based on app type/web location
-      redirectUri: "https://api.ethanchapman.dev",
-      navigatorKey: navigatorKey,
-      webUseRedirect: true, // default is false - on web only, forces a redirect flow instead of popup auth
-      //Optional parameter: Centered CircularProgressIndicator while rendering web page in WebView
-      loader: const Center(child: CircularProgressIndicator()),
-    );
-
-
-    final FNOAuth oauth = FNOAuth(config, auth_token);
-
-    var res = await oauth.login();
-    
-    Token? t = res.fold((l) => null, (r) => r);
-
-    login(t!.accessToken!);
+  void appLogin() async {
+    await authLogin();
 
     widget.store.dispatch(GlobalAction.initialize());
 
@@ -153,7 +132,6 @@ class FNAppState extends State<FNApp> {
     String? auth_token;
 
     if (!signed) {
-
       if (kIsWeb) {
         Uri s = Uri.parse(html.window.location.toString());
         print(s.queryParameters);
@@ -163,8 +141,8 @@ class FNAppState extends State<FNApp> {
         }
       }
 
-      print(auth_token);
-      appLogin(auth_token);
+      oauth.setCode(auth_token);
+      appLogin();
     }
 
     //Surrounds the app with a store provider so all child widgets can access global state

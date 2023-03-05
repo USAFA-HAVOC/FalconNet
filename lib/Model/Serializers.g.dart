@@ -21,8 +21,10 @@ Serializers _$serializers = (new Serializers().toBuilder()
       ..add(RoleRequest.serializer)
       ..add(SquadronAssignRequest.serializer)
       ..add(TimedRole.serializer)
+      ..add(Unit.serializer)
       ..add(UnitAssignRequest.serializer)
       ..add(UnitData.serializer)
+      ..add(UnitDataRequest.serializer)
       ..add(UnitList.serializer)
       ..add(UnitOrder.serializer)
       ..add(UnitSummary.serializer)
@@ -56,14 +58,14 @@ Serializers _$serializers = (new Serializers().toBuilder()
           const FullType(BuiltList, const [const FullType(String)]),
           () => new ListBuilder<String>())
       ..addBuilderFactory(
-          const FullType(BuiltList, const [const FullType(String)]),
-          () => new ListBuilder<String>())
-      ..addBuilderFactory(
           const FullType(BuiltList, const [const FullType(TimedRole)]),
           () => new ListBuilder<TimedRole>())
       ..addBuilderFactory(
           const FullType(BuiltList, const [const FullType(TimedRole)]),
           () => new ListBuilder<TimedRole>())
+      ..addBuilderFactory(
+          const FullType(BuiltList, const [const FullType(UnitSummary)]),
+          () => new ListBuilder<UnitSummary>())
       ..addBuilderFactory(
           const FullType(BuiltList, const [const FullType(UnitSummary)]),
           () => new ListBuilder<UnitSummary>())

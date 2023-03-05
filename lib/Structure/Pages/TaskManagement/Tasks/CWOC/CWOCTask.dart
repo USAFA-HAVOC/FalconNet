@@ -2,6 +2,7 @@ import 'dart:core';
 
 import 'package:falcon_net/Model/Database/DIRequest.dart';
 import 'package:falcon_net/Model/Database/UnitData.dart';
+import 'package:falcon_net/Model/Database/UnitDataRequest.dart';
 import 'package:falcon_net/Model/Database/UnitSummary.dart';
 import 'package:falcon_net/Model/Database/WingData.dart';
 import 'package:falcon_net/Model/Store/Endpoints.dart';
@@ -40,11 +41,14 @@ class CWOCTaskState extends State<CWOCTask> {
 
     /// todo: replace with api call for unit summaries
 
-    connection = Endpoints.cwoc(null);
+    connection = Endpoints.cwoc(null).onError((error, stackTrace) {
+      displayError(prefix: "CWOC", exception: error!);
+      return WingData();
+    });
 
     connection.then((value) => setState(() {
       for (var unit in value?.units.toList() ?? <UnitSummary>[]) {
-        expansions[unit.name] = false;
+        expansions[unit.unit.name] = false;
       }
     }));
   }
@@ -58,7 +62,7 @@ class CWOCTaskState extends State<CWOCTask> {
       setState(() {
         UnitData signed = unit.sign(signee);
         connection = Future.value(wing.set(signed));
-        loaded = loaded.where((u) => signed.name != u.name).toList() + [signed];
+        loaded = loaded.where((u) => signed.unit.name != u.unit.name).toList() + [signed];
       });
     }
     catch (e) {
@@ -77,7 +81,8 @@ class CWOCTaskState extends State<CWOCTask> {
     }
 
     try {
-      UnitData actual = await Endpoints.sdo(null);
+      UnitData actual = await Endpoints.unitData(UnitDataRequest((b) => b..unit = unit));
+      print(actual);
       setState(() {
         connection = Future.value(wing.set(actual));
         loaded.add(actual);
@@ -99,8 +104,8 @@ class CWOCTaskState extends State<CWOCTask> {
     Widget body;
 
     //Displays signing widget if full unit data is available
-    if (loaded.any((u) => u.name == unit.name)) {
-      var data = loaded.firstWhere((u) => u.name == unit.name);
+    if (loaded.any((u) => u.unit.name == unit.unit.name)) {
+      var data = loaded.firstWhere((u) => u.unit.name == unit.unit.name);
       body = SigningWidget(
         di: data,
         onSign: (signee) => signFor(wing, data, data.members.firstWhere((m) => m.id == signee.id), ScaffoldMessenger.of(context)),
@@ -113,7 +118,7 @@ class CWOCTaskState extends State<CWOCTask> {
     }
 
     return ExpansionPanel(
-        isExpanded: expansions[unit.name]!,
+        isExpanded: expansions[unit.unit.name]!,
         backgroundColor: Theme.of(context).cardTheme.color,
         headerBuilder: (context, expanded) => Padding(
           padding: EdgeInsets.all(20),
@@ -122,14 +127,14 @@ class CWOCTaskState extends State<CWOCTask> {
             children: [
               Expanded(
                   child: Text(
-                    unit.name,
+                    unit.unit.name,
                     style: Theme.of(context).textTheme.titleSmall,
                   )
               ),
 
               Expanded(
                 child: Text(
-                  "${(unit.signed + unit.out)}/${unit.unsigned + unit.signed + unit.out}",
+                  "${(unit.signed! + unit.out!)}/${unit.total!}",
                   style: Theme.of(context).textTheme.titleSmall,
                   textAlign: TextAlign.end,
                 ),
@@ -147,7 +152,7 @@ class CWOCTaskState extends State<CWOCTask> {
 
 
   Widget buildStatusGrid(List<UnitSummary> units) {
-    List<String> groups = Set<String>.from(units.where((unit) => unit.group != null).map((u) => u.group!)).toList();
+    List<String> groups = Set<String>.from(units.where((unit) => unit.unit.group != null).map((u) => u.unit.group!)).toList();
     groups.sort();
 
     List<Widget> left = [];
@@ -157,7 +162,7 @@ class CWOCTaskState extends State<CWOCTask> {
 
       (g % 2 == 0 ? left : right).addAll(
         [
-          CWOCStatusWidget(units: units.where((unit) => unit.group == group).toList(), label: group),
+          CWOCStatusWidget(units: units.where((unit) => unit.unit.group == group).toList(), label: group),
           SizedBox(height: 20,)
         ]
       );
@@ -187,14 +192,14 @@ class CWOCTaskState extends State<CWOCTask> {
   }
 
   Widget buildStatusColumn(List<UnitSummary> units) {
-    List<String> groups = Set<String>.from(units.where((unit) => unit.group != null).map((u) => u.group!)).toList();
+    List<String> groups = Set<String>.from(units.where((unit) => unit.unit.group != null).map((u) => u.unit.group!)).toList();
     groups.sort();
 
     List<Widget> children = [];
 
     for (var group in groups) {
       children.addAll([
-        CWOCStatusWidget(units: units.where((u) => u.group == group).toList(), label: group),
+        CWOCStatusWidget(units: units.where((u) => u.unit.group == group).toList(), label: group),
 
         SizedBox(height: 20,),
       ]);
@@ -255,12 +260,12 @@ class CWOCTaskState extends State<CWOCTask> {
 
                       expansionCallback: (index, status) {
                         var unit = units.toList()[index];
-                        if (!loaded.any((u) => unit.name == u.name) && !status) {
-                          loadUnit(unit.name, ScaffoldMessenger.of(context));
+                        if (!loaded.any((u) => unit.unit.name == u.unit.name) && !status) {
+                          loadUnit(unit.unit.name, ScaffoldMessenger.of(context));
                         }
 
                         setState(() {
-                          expansions[unit.name] = !status;
+                          expansions[unit.unit.name] = !status;
                         });
                       },
                     );
@@ -270,7 +275,7 @@ class CWOCTaskState extends State<CWOCTask> {
                     children: [
                       status,
 
-                      SizedBox(height: 20,),
+                      const SizedBox(height: 20,),
 
                       unitList,
                     ],

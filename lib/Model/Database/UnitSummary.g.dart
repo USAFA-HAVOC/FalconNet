@@ -18,25 +18,33 @@ class _$UnitSummarySerializer implements StructuredSerializer<UnitSummary> {
   Iterable<Object?> serialize(Serializers serializers, UnitSummary object,
       {FullType specifiedType = FullType.unspecified}) {
     final result = <Object?>[
-      'signed',
-      serializers.serialize(object.signed, specifiedType: const FullType(int)),
-      'unsigned',
-      serializers.serialize(object.unsigned,
-          specifiedType: const FullType(int)),
-      'out',
-      serializers.serialize(object.out, specifiedType: const FullType(int)),
-      'total',
-      serializers.serialize(object.total, specifiedType: const FullType(int)),
-      'name',
-      serializers.serialize(object.name, specifiedType: const FullType(String)),
+      'unit',
+      serializers.serialize(object.unit, specifiedType: const FullType(Unit)),
     ];
     Object? value;
-    value = object.group;
+    value = object.signed;
     if (value != null) {
       result
-        ..add('group')
-        ..add(serializers.serialize(value,
-            specifiedType: const FullType(String)));
+        ..add('signed')
+        ..add(serializers.serialize(value, specifiedType: const FullType(int)));
+    }
+    value = object.unsigned;
+    if (value != null) {
+      result
+        ..add('unsigned')
+        ..add(serializers.serialize(value, specifiedType: const FullType(int)));
+    }
+    value = object.out;
+    if (value != null) {
+      result
+        ..add('out')
+        ..add(serializers.serialize(value, specifiedType: const FullType(int)));
+    }
+    value = object.total;
+    if (value != null) {
+      result
+        ..add('total')
+        ..add(serializers.serialize(value, specifiedType: const FullType(int)));
     }
     return result;
   }
@@ -54,27 +62,23 @@ class _$UnitSummarySerializer implements StructuredSerializer<UnitSummary> {
       switch (key) {
         case 'signed':
           result.signed = serializers.deserialize(value,
-              specifiedType: const FullType(int))! as int;
+              specifiedType: const FullType(int)) as int?;
           break;
         case 'unsigned':
           result.unsigned = serializers.deserialize(value,
-              specifiedType: const FullType(int))! as int;
+              specifiedType: const FullType(int)) as int?;
           break;
         case 'out':
           result.out = serializers.deserialize(value,
-              specifiedType: const FullType(int))! as int;
+              specifiedType: const FullType(int)) as int?;
           break;
         case 'total':
           result.total = serializers.deserialize(value,
-              specifiedType: const FullType(int))! as int;
+              specifiedType: const FullType(int)) as int?;
           break;
-        case 'group':
-          result.group = serializers.deserialize(value,
-              specifiedType: const FullType(String)) as String?;
-          break;
-        case 'name':
-          result.name = serializers.deserialize(value,
-              specifiedType: const FullType(String))! as String;
+        case 'unit':
+          result.unit.replace(serializers.deserialize(value,
+              specifiedType: const FullType(Unit))! as Unit);
           break;
       }
     }
@@ -85,34 +89,23 @@ class _$UnitSummarySerializer implements StructuredSerializer<UnitSummary> {
 
 class _$UnitSummary extends UnitSummary {
   @override
-  final int signed;
+  final int? signed;
   @override
-  final int unsigned;
+  final int? unsigned;
   @override
-  final int out;
+  final int? out;
   @override
-  final int total;
+  final int? total;
   @override
-  final String? group;
-  @override
-  final String name;
+  final Unit unit;
 
   factory _$UnitSummary([void Function(UnitSummaryBuilder)? updates]) =>
       (new UnitSummaryBuilder()..update(updates))._build();
 
   _$UnitSummary._(
-      {required this.signed,
-      required this.unsigned,
-      required this.out,
-      required this.total,
-      this.group,
-      required this.name})
+      {this.signed, this.unsigned, this.out, this.total, required this.unit})
       : super._() {
-    BuiltValueNullFieldError.checkNotNull(signed, r'UnitSummary', 'signed');
-    BuiltValueNullFieldError.checkNotNull(unsigned, r'UnitSummary', 'unsigned');
-    BuiltValueNullFieldError.checkNotNull(out, r'UnitSummary', 'out');
-    BuiltValueNullFieldError.checkNotNull(total, r'UnitSummary', 'total');
-    BuiltValueNullFieldError.checkNotNull(name, r'UnitSummary', 'name');
+    BuiltValueNullFieldError.checkNotNull(unit, r'UnitSummary', 'unit');
   }
 
   @override
@@ -130,8 +123,7 @@ class _$UnitSummary extends UnitSummary {
         unsigned == other.unsigned &&
         out == other.out &&
         total == other.total &&
-        group == other.group &&
-        name == other.name;
+        unit == other.unit;
   }
 
   @override
@@ -141,8 +133,7 @@ class _$UnitSummary extends UnitSummary {
     _$hash = $jc(_$hash, unsigned.hashCode);
     _$hash = $jc(_$hash, out.hashCode);
     _$hash = $jc(_$hash, total.hashCode);
-    _$hash = $jc(_$hash, group.hashCode);
-    _$hash = $jc(_$hash, name.hashCode);
+    _$hash = $jc(_$hash, unit.hashCode);
     _$hash = $jf(_$hash);
     return _$hash;
   }
@@ -154,8 +145,7 @@ class _$UnitSummary extends UnitSummary {
           ..add('unsigned', unsigned)
           ..add('out', out)
           ..add('total', total)
-          ..add('group', group)
-          ..add('name', name))
+          ..add('unit', unit))
         .toString();
   }
 }
@@ -179,13 +169,9 @@ class UnitSummaryBuilder implements Builder<UnitSummary, UnitSummaryBuilder> {
   int? get total => _$this._total;
   set total(int? total) => _$this._total = total;
 
-  String? _group;
-  String? get group => _$this._group;
-  set group(String? group) => _$this._group = group;
-
-  String? _name;
-  String? get name => _$this._name;
-  set name(String? name) => _$this._name = name;
+  UnitBuilder? _unit;
+  UnitBuilder get unit => _$this._unit ??= new UnitBuilder();
+  set unit(UnitBuilder? unit) => _$this._unit = unit;
 
   UnitSummaryBuilder();
 
@@ -196,8 +182,7 @@ class UnitSummaryBuilder implements Builder<UnitSummary, UnitSummaryBuilder> {
       _unsigned = $v.unsigned;
       _out = $v.out;
       _total = $v.total;
-      _group = $v.group;
-      _name = $v.name;
+      _unit = $v.unit.toBuilder();
       _$v = null;
     }
     return this;
@@ -218,19 +203,26 @@ class UnitSummaryBuilder implements Builder<UnitSummary, UnitSummaryBuilder> {
   UnitSummary build() => _build();
 
   _$UnitSummary _build() {
-    final _$result = _$v ??
-        new _$UnitSummary._(
-            signed: BuiltValueNullFieldError.checkNotNull(
-                signed, r'UnitSummary', 'signed'),
-            unsigned: BuiltValueNullFieldError.checkNotNull(
-                unsigned, r'UnitSummary', 'unsigned'),
-            out: BuiltValueNullFieldError.checkNotNull(
-                out, r'UnitSummary', 'out'),
-            total: BuiltValueNullFieldError.checkNotNull(
-                total, r'UnitSummary', 'total'),
-            group: group,
-            name: BuiltValueNullFieldError.checkNotNull(
-                name, r'UnitSummary', 'name'));
+    _$UnitSummary _$result;
+    try {
+      _$result = _$v ??
+          new _$UnitSummary._(
+              signed: signed,
+              unsigned: unsigned,
+              out: out,
+              total: total,
+              unit: unit.build());
+    } catch (_) {
+      late String _$failedField;
+      try {
+        _$failedField = 'unit';
+        unit.build();
+      } catch (e) {
+        throw new BuiltValueNestedFieldError(
+            r'UnitSummary', _$failedField, e.toString());
+      }
+      rethrow;
+    }
     replace(_$result);
     return _$result;
   }
