@@ -6,7 +6,7 @@ ElevatedButtonThemeData lightButtonTheme = ElevatedButtonThemeData(
     backgroundColor: const Color.fromARGB(255, 31, 81, 255),
     shape: const RoundedRectangleBorder(
       borderRadius: BorderRadius.all(
-        Radius.circular(15),
+        Radius.circular(10),
       ),
     ),
   ),

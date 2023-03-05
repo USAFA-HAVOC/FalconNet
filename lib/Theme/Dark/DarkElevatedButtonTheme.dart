@@ -6,7 +6,7 @@ ElevatedButtonThemeData darkButtonTheme = ElevatedButtonThemeData(
     backgroundColor: const Color.fromARGB(255, 0, 89, 179),
     shape: const RoundedRectangleBorder(
       borderRadius: BorderRadius.all(
-        Radius.circular(15),
+        Radius.circular(10),
       ),
     ),
   ),
