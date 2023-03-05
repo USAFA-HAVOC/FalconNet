@@ -126,9 +126,12 @@ class PassWidget extends StatelessWidget {
                                   ),
                                 ));
                       },
-                      child: const Padding(
+                      child: Padding(
                         padding: EdgeInsets.symmetric(vertical: 10),
-                        child: Text("Update Pass"),
+                        child: Text(
+                          "Update Pass",
+                          style: Theme.of(context).textTheme.headlineMedium,
+                        ),
                       ),
                     ),
                   ),

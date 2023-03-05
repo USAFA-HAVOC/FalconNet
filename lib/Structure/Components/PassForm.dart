@@ -10,6 +10,7 @@ import 'package:falcon_net/Utility/TemporalFormatting.dart';
 import 'package:falcon_net/Structure/Components/TimeFormField.dart';
 import 'package:flutter/material.dart';
 
+
 ///Form for submitting or editing a pass
 class PassForm extends StatefulWidget {
   //Closures for submission and cancellation

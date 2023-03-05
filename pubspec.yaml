@@ -53,6 +53,7 @@ dependencies:
   aad_oauth: 0.4.2
   webview_flutter: ^4.0.5
   dartz: ^0.10.1
+  flutter_time_picker_spinner: ^2.0.0
 
 dev_dependencies:
   flutter_test:

@@ -97,34 +97,19 @@ class PassStatus extends StatelessWidget {
                           Padding(
                             padding: const EdgeInsets.only(bottom: 10),
                             child: Text(
-                              "Pass Status",
-                              style: TextStyle(
-                                  fontSize: Theme.of(context)
-                                      .textTheme
-                                      .headlineMedium!
-                                      .fontSize,
-                                  color: Colors.black),
+                              "Pass Status:",
+                              style: Theme.of(context).textTheme.bodyLarge,
                             ),
                           ),
                           Text(
                             "Signed-Out",
-                            style: TextStyle(
-                                fontSize: Theme.of(context)
-                                    .textTheme
-                                    .headlineLarge!
-                                    .fontSize,
-                                color: Colors.black),
+                            style: Theme.of(context).textTheme.headlineLarge,
                           ),
                           Padding(
                             padding: const EdgeInsets.only(top: 10),
                             child: Text(
                               expiration,
-                              style: TextStyle(
-                                  fontSize: Theme.of(context)
-                                      .textTheme
-                                      .headlineMedium!
-                                      .fontSize,
-                                  color: Colors.black),
+                              style: Theme.of(context).textTheme.headlineSmall,
                             ),
                           ),
                         ],
