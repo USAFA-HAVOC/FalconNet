@@ -34,11 +34,11 @@ TextTheme darkTextTheme = const TextTheme(
 
   //Used on status widgets
   headlineLarge: TextStyle(
-    fontSize: 25,
+    fontSize: 24,
     color: Color.fromARGB(255, 255, 255, 255),
   ),
   headlineMedium: TextStyle(
-    fontSize: 20,
+    fontSize: 22,
     color: Color.fromARGB(255, 255, 255, 255),
   ),
   headlineSmall: TextStyle(
@@ -48,11 +48,11 @@ TextTheme darkTextTheme = const TextTheme(
 
   //Used for textual information other than titles
   bodyLarge: TextStyle(
-    fontSize: 15,
+    fontSize: 16,
     color: Color.fromARGB(255, 255, 255, 255),
   ),
   bodyMedium: TextStyle(
-    fontSize: 13,
+    fontSize: 14,
     color: Color.fromARGB(255, 255, 255, 255),
   ),
   bodySmall: TextStyle(

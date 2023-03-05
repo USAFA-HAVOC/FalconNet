@@ -7,6 +7,7 @@ ThemeData lightTheme = ThemeData(
   primaryColor: Colors.white,
   focusColor: Colors.grey[200],
   indicatorColor: Colors.blue,
+  disabledColor: Color.fromARGB(255, 179, 179, 179),
   textTheme: lightTextTheme,
   cardTheme: lightCardTheme,
   elevatedButtonTheme: lightButtonTheme,

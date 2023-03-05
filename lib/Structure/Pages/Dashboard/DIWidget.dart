@@ -69,31 +69,21 @@ class DIWidget extends StatelessWidget {
             text = [
               Text(
                 "DI Signed by ${model.content.accountability!.di_signed_name ?? "Himothy"}",
-                style: TextStyle(
-                  fontSize:
-                      Theme.of(context).textTheme.headlineMedium?.fontSize,
-                  color: Theme.of(context).textTheme.bodyMedium?.color,
-                ),
+                style: Theme.of(context).textTheme.headlineMedium,
               )
             ];
           } else if (!senior) {
             text = [
               Text(
                 "Cannot Sign Own DI",
-                style: TextStyle(
-                  fontSize:
-                      Theme.of(context).textTheme.headlineMedium?.fontSize,
-                ),
+                style: Theme.of(context).textTheme.headlineMedium,
               )
             ];
           } else {
             text = [
               Text(
                 "DI Opens at 19:50",
-                style: TextStyle(
-                  fontSize:
-                      Theme.of(context).textTheme.headlineMedium?.fontSize,
-                ),
+                style: Theme.of(context).textTheme.headlineMedium,
               )
             ];
           }
@@ -105,7 +95,7 @@ class DIWidget extends StatelessWidget {
                     ? Theme.of(context).focusColor
                     : Theme.of(context).focusColor,
                 child: Padding(
-                  padding: EdgeInsets.all(20),
+                  padding: const EdgeInsets.all(20),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: text,

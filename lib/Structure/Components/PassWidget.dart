@@ -73,7 +73,7 @@ class PassWidget extends StatelessWidget {
                   padding: EdgeInsets.symmetric(vertical: 10),
                   child: Text(
                     "New Pass",
-                    style: Theme.of(context).textTheme.headlineMedium,
+                    style: Theme.of(context).textTheme.labelLarge,
                   ),
                 ),
               ),
@@ -106,14 +106,20 @@ class PassWidget extends StatelessWidget {
                                         model.dispatch(PassAction.update(
                                           pass,
                                           onFail: () {
-                                            messenger.showSnackBar(const SnackBar(
+                                            messenger.showSnackBar(
+                                              const SnackBar(
                                                 content: Text(
-                                                    "Unable to Update Pass")));
+                                                    "Unable to Update Pass"),
+                                              ),
+                                            );
                                           },
                                           onSucceed: () {
-                                            messenger.showSnackBar(const SnackBar(
+                                            messenger.showSnackBar(
+                                              const SnackBar(
                                                 content: Text(
-                                                    "Pass Updated Successfully")));
+                                                    "Pass Updated Successfully"),
+                                              ),
+                                            );
                                           },
                                         ));
                                       },
@@ -129,40 +135,51 @@ class PassWidget extends StatelessWidget {
                       child: Padding(
                         padding: EdgeInsets.symmetric(vertical: 10),
                         child: Text(
-                          "Update Pass",
-                          style: Theme.of(context).textTheme.headlineMedium,
+                          "Update",
+                          style: Theme.of(context).textTheme.labelLarge,
                         ),
                       ),
                     ),
                   ),
-                  Spacer(
+                  const Spacer(
                     flex: 1,
                   ),
                   Expanded(
                     flex: 10,
                     child: ElevatedButton(
                       style: ButtonStyle(
-                        backgroundColor: MaterialStateColor.resolveWith(
-                            (states) => Colors.grey),
+                        backgroundColor: MaterialStateProperty.all(
+                          Color.fromARGB(
+                              255, 169, 169, 169), // "Close" button color
+                        ),
                       ),
 
                       //Dispatches close pass action
                       onPressed: () {
                         model.dispatch(PassAction.close(
                           onFail: () {
-                            messenger.showSnackBar(const SnackBar(
-                                content: Text("Unable to Close Pass")));
+                            messenger.showSnackBar(
+                              const SnackBar(
+                                content: Text("Unable to Close Pass"),
+                              ),
+                            );
                           },
                           onSucceed: () {
-                            messenger.showSnackBar(const SnackBar(
-                                content: Text("Pass Closed Successfully")));
+                            messenger.showSnackBar(
+                              const SnackBar(
+                                content: Text("Pass Closed Successfully"),
+                              ),
+                            );
                           },
                         ));
                       },
 
-                      child: const Padding(
+                      child: Padding(
                         padding: EdgeInsets.symmetric(vertical: 10),
-                        child: Text("Close Pass"),
+                        child: Text(
+                          "Close",
+                          style: Theme.of(context).textTheme.labelLarge,
+                        ),
                       ),
                     ),
                   ),
