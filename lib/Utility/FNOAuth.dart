@@ -17,7 +17,7 @@ import "package:universal_html/html.dart" as html;
 
 class FNOAuth extends CoreOAuth {
   final AuthStorage _authStorage;
-  final String? _code;
+  String? _code;
   final RequestCode? _requestCode;
   final RequestToken _requestToken;
 
@@ -43,6 +43,10 @@ class FNOAuth extends CoreOAuth {
       {bool refreshIfAvailable = false}) async {
     await _removeOldTokenOnFirstLogin();
     return await _authorization(refreshIfAvailable: refreshIfAvailable);
+  }
+
+  void setCode(String? code) {
+    _code = code;
   }
 
   /// Retrieve cached OAuth Access Token.
