@@ -9,6 +9,7 @@ import 'package:falcon_net/Model/Database/UnitSummary.dart';
 import 'package:falcon_net/Model/Database/UserPersonalInfo.dart';
 
 import '../Model/Database/User.dart';
+import '../Model/Database/Unit.dart';
 
 ///For local testing purposes only
 List<User> generateMembers(int count, String status, String unit) {
@@ -66,17 +67,21 @@ List<User> generateMembers(int count, String status, String unit) {
 
 ///For local testing purposes only
 UnitData generateUnit(UnitSummary info) {
-  var members = generateMembers(info.signed, "signed", info.name) +
-      generateMembers(info.unsigned, "unsigned", info.name) +
-      generateMembers(info.out, "out", info.name);
+  var members = generateMembers(info.signed!, "signed", info.unit.name) +
+      generateMembers(info.unsigned!, "unsigned", info.unit.name) +
+      generateMembers(info.out!, "out", info.unit.name);
   return UnitData((b) => b
-      ..name = info.name
-      ..group = info.group
       ..members = BuiltList<User>(members).toBuilder()
       ..unsigned = info.unsigned
       ..signed = info.signed
       ..out = info.out
       ..total = info.total
+      ..unit = (UnitBuilder()
+          ..name = info.unit.name
+          ..group = info.unit.group
+          ..is_squadron = info.unit.is_squadron
+          ..pass_status = info.unit.pass_status
+      )
   );
 }
 
@@ -92,7 +97,11 @@ UnitSummary generateInfo(String name, int group, [int? count]) {
       ..signed = signed
       ..out = out
       ..unsigned = unsigned
-      ..group = group.toString()
-      ..name = name
+      ..unit = (UnitBuilder()
+          ..pass_status = "OPEN"
+          ..is_squadron = false
+          ..name = name
+          ..group = "CG${group.toString()}"
+      )
   );
 }

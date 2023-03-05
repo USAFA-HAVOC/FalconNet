@@ -1,9 +1,11 @@
 import 'package:async_redux/async_redux.dart';
 import 'package:falcon_net/Model/Database/Roles.dart';
+import 'package:falcon_net/Router/FNTransitions.dart';
 import 'package:falcon_net/Structure/Components/ViewModel.dart';
 import 'package:falcon_net/Structure/Pages/TaskManagement/TaskManagement.dart';
 import 'package:falcon_net/Structure/Pages/TaskManagement/Tasks/Assignment/AssignmentTask.dart';
 import 'package:falcon_net/Structure/Pages/TaskManagement/Tasks/Delegation/DelegationTask.dart';
+import 'package:falcon_net/Structure/Pages/TaskManagement/Tasks/UnitEditor/UnitEditorTask.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import '../Model/Database/TimedRole.dart';
@@ -27,118 +29,112 @@ GoRouter fnRouter(GlobalKey<NavigatorState> key) => GoRouter(
   routes: [
     GoRoute(
       path: "/login",
-      builder: (context, state) => state.extra as Widget,
+      pageBuilder: (context, state) => fullSlideUp(state.extra as Widget)(context, state),
     ),
 
     //Shell route places contents of all sub-routes as child of the scaffold
     ShellRoute(
         builder: (context, state, child) {
-          return FNScaffold(child: FNBackground(child: child,));
+          return FNScaffold(child: child);
         },
 
         //Each route builds a page under the application scaffold
         routes: [
           GoRoute(
               path: "/",
-              builder: (context, state) => const Dashboard(),
+              pageBuilder: fullSlide(const Dashboard()),
 
               routes: [
                 GoRoute(
                   path: "profile",
-                  builder: (context, state) => const Profile(),
+                  pageBuilder: fullSlide(const Profile()),
                 ),
 
                 GoRoute(
                   path: "grades",
-                  builder: (context, state) => const Grades(),
+                  pageBuilder: fullSlide(const Grades()),
                 ),
 
                 GoRoute(
                   path: "leave_locator",
-                  builder: (context, state) => const LeaveLocator(),
+                  pageBuilder: fullSlide(const LeaveLocator()),
                 ),
 
                 GoRoute(
                   path: "pass_management",
-                  builder: (context, state) => const PassManagement(),
+                  pageBuilder: fullSlide(const PassManagement()),
                 ),
 
                 GoRoute(
                     path: "task_management",
-                    builder: (context, state) => const TaskManagement(),
+                    pageBuilder: fullSlide(const TaskManagement()),
                     routes: [
                       GoRoute(
                         path: "sdo",
-                        builder: (context, state) => const SDOTask(),
+                        pageBuilder: fullSlide(const SDOTask()),
                       ),
 
                       GoRoute(
                         path: "ordering",
-                        builder: (context, state) => const OrderingTask(),
+                        pageBuilder: fullSlide(const OrderingTask()),
                       ),
 
                       GoRoute(
                         path: "cwoc",
-                        builder: (context, state) => const CWOCTask(),
+                        pageBuilder: fullSlide(const CWOCTask()),
                       ),
 
                       GoRoute(
                         path: "unit_assignment",
-                        builder: (context, state) => StoreConnector<GlobalState, ViewModel<User>>(
-                          converter: (store) => ViewModel(store: store, content: store.state.user),
-                          builder: (context, model) => AssignmentTask(
+                        pageBuilder: fullSlide(
+                          StoreConnector<GlobalState, ViewModel<User>>(
+                            converter: (store) => ViewModel(store: store, content: store.state.user),
+                            builder: (context, model) => AssignmentTask(
                               info: model.content.personal_info,
                               type: AssignmentType.unit,
                               scope: model.content.roles.any((r) => r.role == Roles.fn_admin.name || r.role == Roles.wing_admin.name) ?
-                                  AssignmentScope.all : AssignmentScope.own,
+                              AssignmentScope.all : AssignmentScope.own,
+                            ),
                           ),
                         ),
                       ),
 
                       GoRoute(
                         path: "squadron_assignment",
-                          builder: (context, state) => StoreConnector<GlobalState, ViewModel<User>>(
+                        pageBuilder: fullSlide(
+                          StoreConnector<GlobalState, ViewModel<User>>(
                             converter: (store) => ViewModel(store: store, content: store.state.user),
                             builder: (context, model) => AssignmentTask(
-                                info: model.content.personal_info,
-                                type: AssignmentType.squadron,
-                                scope: model.content.roles.any((r) => r.role == Roles.fn_admin.name || r.role == Roles.wing_admin.name) ?
-                                    AssignmentScope.all : AssignmentScope.own,
+                              info: model.content.personal_info,
+                              type: AssignmentType.squadron,
+                              scope: model.content.roles.any((r) => r.role == Roles.fn_admin.name || r.role == Roles.wing_admin.name) ?
+                              AssignmentScope.all : AssignmentScope.own,
                             ),
                           )
+                        ),
                       ),
 
                       GoRoute(
                         path: "cwoc",
-                        builder: (context, state) => const CWOCTask(),
+                        pageBuilder: fullSlide(const CWOCTask()),
+                      ),
+
+                      GoRoute(
+                        path: "unit_editor",
+                        pageBuilder: fullSlide(const UnitEditorTask()),
                       ),
 
                       GoRoute(
                         path: "delegation",
-                        builder: (context, state) =>
+                        pageBuilder: fullSlide(
                           StoreConnector<GlobalState, ViewModel<List<TimedRole>>>(
                             converter: (store) => ViewModel(store: store, content: store.state.user.roles.toList()),
                             builder: (context, model) => DelegationTask(owner: model.content),
                           )
+                        ),
                       ),
                     ]),
               ])
         ])
   ]
 );
-
-///Common background for all falcon net pages
-///Cannot be included in shell path to prevent transparency effects
-class FNBackground extends StatelessWidget {
-  final Widget child;
-
-  const FNBackground({super.key, required this.child});
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      color: Theme.of(context).canvasColor,
-      child: child,
-    );
-  }
-}

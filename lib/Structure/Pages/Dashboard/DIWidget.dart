@@ -94,7 +94,7 @@ class DIWidget extends StatelessWidget {
           //Sets content to card with info text
           List<Widget> content = [
             Card(
-                color: signable ? Theme.of(context).focusColor : Theme.of(context).canvasColor,
+                color: signable ? Theme.of(context).focusColor : Theme.of(context).disabledColor,
                 child: Padding(
                   padding: EdgeInsets.all(20),
                   child: Column(
