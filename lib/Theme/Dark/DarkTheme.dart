@@ -6,12 +6,12 @@ import 'DarkElevatedButtonTheme.dart';
 
 ThemeData darkTheme = ThemeData(
   primaryColor: const Color.fromARGB(255, 24, 24, 24),
-  focusColor: const Color.fromARGB(255, 40, 40, 40),
+  focusColor: const Color.fromARGB(255, 83, 83, 83),
   indicatorColor: Colors.grey,
+  disabledColor: Color.fromARGB(255, 45, 45, 45),
   textTheme: darkTextTheme,
   cardTheme: darkCardTheme,
   elevatedButtonTheme: darkButtonTheme, // Button Color
-  disabledColor: const Color.fromARGB(255, 40, 40, 40),
   fontFamily: "Inter",
   canvasColor: const Color.fromARGB(255, 24, 24, 24), // Darkest
   dialogBackgroundColor: darkCardTheme.color,

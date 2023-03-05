@@ -25,11 +25,10 @@ class UnitEditorTaskState extends State<UnitEditorTask> {
 
   @override
   void initState() {
-    connection = Endpoints.unitsGet(null)
-        .onError((error, stackTrace) {
-          displayError(prefix: "Unit Editor", exception: error!);
-          return UnitList();
-        });
+    connection = Endpoints.unitsGet(null).onError((error, stackTrace) {
+      displayError(prefix: "Unit Editor", exception: error!);
+      return UnitList();
+    });
     super.initState();
   }
 
@@ -40,21 +39,21 @@ class UnitEditorTaskState extends State<UnitEditorTask> {
 
       setState(() {
         connection = Future<UnitList>.value(UnitList((w) => w
-          ..units = ListBuilder(units + [UnitSummary((s) => s
-              ..total = unit.total
-              ..unsigned = unit.unsigned
-              ..out = unit.out
-              ..signed = unit.signed
-              ..unit = complete.toBuilder()
-          )])
-        ));
+          ..units = ListBuilder(units +
+              [
+                UnitSummary((s) => s
+                  ..total = unit.total
+                  ..unsigned = unit.unsigned
+                  ..out = unit.out
+                  ..signed = unit.signed
+                  ..unit = complete.toBuilder())
+              ])));
       });
 
       messenger.showSnackBar(const SnackBar(
         content: Text("Successfully Added Unit"),
       ));
-    }
-    catch (e) {
+    } catch (e) {
       displayError(prefix: "Unit Editor", exception: e);
       messenger.showSnackBar(const SnackBar(
         content: Text("Failed to Add Unit"),
@@ -70,16 +69,14 @@ class UnitEditorTaskState extends State<UnitEditorTask> {
 
       setState(() {
         connection = Future<UnitList>.value(UnitList((w) => w
-          ..units = ListBuilder(units.where((u) => u.unit.name != unit.unit.name))
-        ));
+          ..units =
+              ListBuilder(units.where((u) => u.unit.name != unit.unit.name))));
       });
 
       messenger.showSnackBar(const SnackBar(
         content: Text("Successfully Delete Unit"),
       ));
-    }
-
-    catch (e) {
+    } catch (e) {
       displayError(prefix: "Unit Editor", exception: e);
       messenger.showSnackBar(const SnackBar(
         content: Text("Failed to Delete Unit"),
@@ -95,15 +92,16 @@ class UnitEditorTaskState extends State<UnitEditorTask> {
 
       setState(() {
         connection = Future<UnitList>.value(UnitList((w) => w
-          ..units = ListBuilder([units.firstWhere((u) => u.unit.name == unit.unit.name)] + units.where((u) => u.unit.name != unit.unit.name).toList())
-        ));
+          ..units = ListBuilder([
+                units.firstWhere((u) => u.unit.name == unit.unit.name)
+              ] +
+              units.where((u) => u.unit.name != unit.unit.name).toList())));
       });
 
       messenger.showSnackBar(const SnackBar(
         content: Text("Successfully Edit Unit"),
       ));
-    }
-    catch (e) {
+    } catch (e) {
       displayError(prefix: "Unit Editor", exception: e);
       messenger.showSnackBar(const SnackBar(
         content: Text("Failed to Edit Unit"),
@@ -112,7 +110,10 @@ class UnitEditorTaskState extends State<UnitEditorTask> {
   }
 
   UnitList search(UnitList list) {
-    var scores = list.units.toList().map((u) => MapEntry(u, u.unit.name.similarityTo(query))).toList();
+    var scores = list.units
+        .toList()
+        .map((u) => MapEntry(u, u.unit.name.similarityTo(query)))
+        .toList();
     scores.sort((a, b) {
       var value = -a.value.compareTo(b.value);
       if (value == 0) {
@@ -120,7 +121,8 @@ class UnitEditorTaskState extends State<UnitEditorTask> {
       }
       return value;
     });
-    return UnitList((l) => l..units = scores.map((u) => u.key).toList().build().toBuilder());
+    return UnitList((l) =>
+        l..units = scores.map((u) => u.key).toList().build().toBuilder());
   }
 
   @override
@@ -141,20 +143,16 @@ class UnitEditorTaskState extends State<UnitEditorTask> {
                     style: Theme.of(context).textTheme.titleLarge,
                   ),
                 ),
-
                 Padding(
                   padding: const EdgeInsets.symmetric(vertical: 10),
-                  child: PageWidget(
-                      title: "New Unit",
-                      children: [
-                        UnitForm(
-                          onSubmit: (unit) => add(ScaffoldMessenger.of(context), unit),
-                          list: list,
-                        )
-                      ]
-                  ),
+                  child: PageWidget(title: "New Unit", children: [
+                    UnitForm(
+                      onSubmit: (unit) =>
+                          add(ScaffoldMessenger.of(context), unit),
+                      list: list,
+                    )
+                  ]),
                 ),
-
                 Padding(
                   padding: const EdgeInsets.symmetric(vertical: 10),
                   child: PageWidget(
@@ -168,19 +166,24 @@ class UnitEditorTaskState extends State<UnitEditorTask> {
                           if (index == 0) {
                             return TextField(
                               decoration: InputDecoration(
-                                  border: OutlineInputBorder(borderSide: BorderSide(color: Theme.of(context).dividerColor), borderRadius: BorderRadius.circular(10)),
-                                  labelStyle: Theme.of(context).textTheme.bodyLarge,
+                                  border: OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                          color:
+                                              Theme.of(context).dividerColor),
+                                      borderRadius: BorderRadius.circular(10)),
+                                  labelStyle:
+                                      Theme.of(context).textTheme.bodyLarge,
                                   labelText: "Search",
-                                  suffixIcon: const Icon(Icons.search)
-                              ),
+                                  suffixIcon: const Icon(Icons.search)),
                               onChanged: (q) => setState(() => query = q),
                             );
-                          }
-                          else {
+                          } else {
                             return UnitBar(
                               unit: list.units[index - 1],
-                              onDelete: (unit) => delete(ScaffoldMessenger.of(context), unit),
-                              onEdit: (unit) => edit(ScaffoldMessenger.of(context), unit),
+                              onDelete: (unit) =>
+                                  delete(ScaffoldMessenger.of(context), unit),
+                              onEdit: (unit) =>
+                                  edit(ScaffoldMessenger.of(context), unit),
                               list: list,
                             );
                           }
@@ -191,9 +194,7 @@ class UnitEditorTaskState extends State<UnitEditorTask> {
                 )
               ],
             );
-          }
-
-          else {
+          } else {
             return ListView(
               padding: const EdgeInsets.all(20),
               shrinkWrap: true,
@@ -205,15 +206,15 @@ class UnitEditorTaskState extends State<UnitEditorTask> {
                     style: Theme.of(context).textTheme.titleLarge,
                   ),
                 ),
-
                 const Padding(
                   padding: EdgeInsets.symmetric(vertical: 10),
-                  child: LoadingShimmer(height: 200,),
+                  child: LoadingShimmer(
+                    height: 200,
+                  ),
                 )
               ],
             );
           }
-        }
-    );
+        });
   }
 }

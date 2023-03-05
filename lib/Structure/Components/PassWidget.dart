@@ -135,7 +135,7 @@ class PassWidget extends StatelessWidget {
                       child: Padding(
                         padding: EdgeInsets.symmetric(vertical: 10),
                         child: Text(
-                          "Update Pass",
+                          "Update",
                           style: Theme.of(context).textTheme.labelLarge,
                         ),
                       ),
@@ -148,20 +148,28 @@ class PassWidget extends StatelessWidget {
                     flex: 10,
                     child: ElevatedButton(
                       style: ButtonStyle(
-                        backgroundColor: MaterialStateColor.resolveWith(
-                            (states) => Colors.grey),
+                        backgroundColor: MaterialStateProperty.all(
+                          Color.fromARGB(
+                              255, 169, 169, 169), // "Close" button color
+                        ),
                       ),
 
                       //Dispatches close pass action
                       onPressed: () {
                         model.dispatch(PassAction.close(
                           onFail: () {
-                            messenger.showSnackBar(const SnackBar(
-                                content: Text("Unable to Close Pass")));
+                            messenger.showSnackBar(
+                              const SnackBar(
+                                content: Text("Unable to Close Pass"),
+                              ),
+                            );
                           },
                           onSucceed: () {
-                            messenger.showSnackBar(const SnackBar(
-                                content: Text("Pass Closed Successfully")));
+                            messenger.showSnackBar(
+                              const SnackBar(
+                                content: Text("Pass Closed Successfully"),
+                              ),
+                            );
                           },
                         ));
                       },
@@ -169,7 +177,7 @@ class PassWidget extends StatelessWidget {
                       child: Padding(
                         padding: EdgeInsets.symmetric(vertical: 10),
                         child: Text(
-                          "Close Pass",
+                          "Close",
                           style: Theme.of(context).textTheme.labelLarge,
                         ),
                       ),
