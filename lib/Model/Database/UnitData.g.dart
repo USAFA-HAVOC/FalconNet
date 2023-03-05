@@ -27,21 +27,14 @@ class _$UnitDataSerializer implements StructuredSerializer<UnitData> {
       serializers.serialize(object.out, specifiedType: const FullType(int)),
       'total',
       serializers.serialize(object.total, specifiedType: const FullType(int)),
-      'name',
-      serializers.serialize(object.name, specifiedType: const FullType(String)),
+      'unit',
+      serializers.serialize(object.unit, specifiedType: const FullType(Unit)),
       'members',
       serializers.serialize(object.members,
           specifiedType:
               const FullType(BuiltList, const [const FullType(User)])),
     ];
-    Object? value;
-    value = object.group;
-    if (value != null) {
-      result
-        ..add('group')
-        ..add(serializers.serialize(value,
-            specifiedType: const FullType(String)));
-    }
+
     return result;
   }
 
@@ -72,13 +65,9 @@ class _$UnitDataSerializer implements StructuredSerializer<UnitData> {
           result.total = serializers.deserialize(value,
               specifiedType: const FullType(int))! as int;
           break;
-        case 'group':
-          result.group = serializers.deserialize(value,
-              specifiedType: const FullType(String)) as String?;
-          break;
-        case 'name':
-          result.name = serializers.deserialize(value,
-              specifiedType: const FullType(String))! as String;
+        case 'unit':
+          result.unit.replace(serializers.deserialize(value,
+              specifiedType: const FullType(Unit))! as Unit);
           break;
         case 'members':
           result.members.replace(serializers.deserialize(value,
@@ -103,9 +92,7 @@ class _$UnitData extends UnitData {
   @override
   final int total;
   @override
-  final String? group;
-  @override
-  final String name;
+  final Unit unit;
   @override
   final BuiltList<User> members;
 
@@ -117,15 +104,14 @@ class _$UnitData extends UnitData {
       required this.unsigned,
       required this.out,
       required this.total,
-      this.group,
-      required this.name,
+      required this.unit,
       required this.members})
       : super._() {
     BuiltValueNullFieldError.checkNotNull(signed, r'UnitData', 'signed');
     BuiltValueNullFieldError.checkNotNull(unsigned, r'UnitData', 'unsigned');
     BuiltValueNullFieldError.checkNotNull(out, r'UnitData', 'out');
     BuiltValueNullFieldError.checkNotNull(total, r'UnitData', 'total');
-    BuiltValueNullFieldError.checkNotNull(name, r'UnitData', 'name');
+    BuiltValueNullFieldError.checkNotNull(unit, r'UnitData', 'unit');
     BuiltValueNullFieldError.checkNotNull(members, r'UnitData', 'members');
   }
 
@@ -144,8 +130,7 @@ class _$UnitData extends UnitData {
         unsigned == other.unsigned &&
         out == other.out &&
         total == other.total &&
-        group == other.group &&
-        name == other.name &&
+        unit == other.unit &&
         members == other.members;
   }
 
@@ -156,8 +141,7 @@ class _$UnitData extends UnitData {
     _$hash = $jc(_$hash, unsigned.hashCode);
     _$hash = $jc(_$hash, out.hashCode);
     _$hash = $jc(_$hash, total.hashCode);
-    _$hash = $jc(_$hash, group.hashCode);
-    _$hash = $jc(_$hash, name.hashCode);
+    _$hash = $jc(_$hash, unit.hashCode);
     _$hash = $jc(_$hash, members.hashCode);
     _$hash = $jf(_$hash);
     return _$hash;
@@ -170,8 +154,7 @@ class _$UnitData extends UnitData {
           ..add('unsigned', unsigned)
           ..add('out', out)
           ..add('total', total)
-          ..add('group', group)
-          ..add('name', name)
+          ..add('unit', unit)
           ..add('members', members))
         .toString();
   }
@@ -196,13 +179,9 @@ class UnitDataBuilder implements Builder<UnitData, UnitDataBuilder> {
   int? get total => _$this._total;
   set total(int? total) => _$this._total = total;
 
-  String? _group;
-  String? get group => _$this._group;
-  set group(String? group) => _$this._group = group;
-
-  String? _name;
-  String? get name => _$this._name;
-  set name(String? name) => _$this._name = name;
+  UnitBuilder? _unit;
+  UnitBuilder get unit => _$this._unit ??= new UnitBuilder();
+  set unit(UnitBuilder? unit) => _$this._unit = unit;
 
   ListBuilder<User>? _members;
   ListBuilder<User> get members => _$this._members ??= new ListBuilder<User>();
@@ -217,8 +196,7 @@ class UnitDataBuilder implements Builder<UnitData, UnitDataBuilder> {
       _unsigned = $v.unsigned;
       _out = $v.out;
       _total = $v.total;
-      _group = $v.group;
-      _name = $v.name;
+      _unit = $v.unit.toBuilder();
       _members = $v.members.toBuilder();
       _$v = null;
     }
@@ -252,13 +230,13 @@ class UnitDataBuilder implements Builder<UnitData, UnitDataBuilder> {
                   out, r'UnitData', 'out'),
               total: BuiltValueNullFieldError.checkNotNull(
                   total, r'UnitData', 'total'),
-              group: group,
-              name: BuiltValueNullFieldError.checkNotNull(
-                  name, r'UnitData', 'name'),
+              unit: unit.build(),
               members: members.build());
     } catch (_) {
       late String _$failedField;
       try {
+        _$failedField = 'unit';
+        unit.build();
         _$failedField = 'members';
         members.build();
       } catch (e) {

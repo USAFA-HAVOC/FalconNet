@@ -2,6 +2,7 @@ import 'package:falcon_net/Model/Database/DIRequest.dart';
 import 'package:falcon_net/Model/Store/Endpoints.dart';
 import 'package:falcon_net/Structure/Pages/TaskManagement/Tasks/Shared/SigningWidget.dart';
 import 'package:falcon_net/Structure/Pages/TaskManagement/Tasks/SDO/SDOStatusWidget.dart';
+import 'package:falcon_net/Utility/ErrorFormatting.dart';
 import 'package:flutter/material.dart';
 
 import '../../../../../Model/Database/UnitData.dart';
@@ -24,7 +25,11 @@ class SDOTaskState extends State<SDOTask> {
   void initState() {
     super.initState();
 
-    future = Endpoints.sdo(null);
+    future = Endpoints.sdo(null)
+        .catchError((error, stackTrace) {
+          displayError(prefix: "SDO", exception: error);
+          return UnitData();
+        });
   }
 
   void sign(User member, ScaffoldMessengerState messenger) async {

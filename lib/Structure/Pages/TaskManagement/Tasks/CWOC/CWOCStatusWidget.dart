@@ -28,10 +28,10 @@ class CWOCStatusWidget extends StatelessWidget {
     double percent;
 
     for (var unit in units) {
-      signedCount += unit.signed;
-      unsignedCount += unit.unsigned;
-      signedOutCount += unit.out;
-      total += unit.out + unit.signed + unit.unsigned;
+      signedCount += unit.signed!;
+      unsignedCount += unit.unsigned!;
+      signedOutCount += unit.out!;
+      total += unit.out! + unit.signed! + unit.unsigned!;
     }
 
     if (total == 0) {

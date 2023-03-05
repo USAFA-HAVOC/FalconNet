@@ -26,7 +26,7 @@ enum AssignmentScope {
 
 class AssignmentTaskData {
   final UserSummaryList summaries;
-  final UnitList units;
+  final UnitList? units;
 
   const AssignmentTaskData({required this.summaries, required this.units});
 }
@@ -52,22 +52,29 @@ class AssignmentTaskState extends State<AssignmentTask> {
   @override
   void initState() {
     connection = retrieveData();
+
     if (widget.type == AssignmentType.unit) {
       selected = widget.info.unit!;
     }
+
     else {
       selected = widget.info.squadron!.toString();
     }
+
     super.initState();
   }
 
   Future<AssignmentTaskData> retrieveData() async {
     try {
       var summaries = await Endpoints.assignmentGet(null);
-      var units = UnitList((u) => u..units = ListBuilder([widget.info.unit!]));
+      UnitList? units;
       if (widget.scope == AssignmentScope.all && widget.type == AssignmentType.unit) {
-        //var units = await Endpoints.unitsGet(null);
+        units = await Endpoints.unitsGet(null);
+        //units.rebuild((u) => u..units.add("CS00"));
       }
+
+      print(units);
+
       return AssignmentTaskData(summaries: summaries, units: units);
     }
 
@@ -97,7 +104,7 @@ class AssignmentTaskState extends State<AssignmentTask> {
 
         if (valid) {
           var squad = SquadronAssignRequest((s) => s
-            ..squadron = widget.info.squadron!
+            ..squadron = present
             ..users = additions.map((e) => e.user_id).toBuiltList().toBuilder()
           );
           await Endpoints.squadAssign(squad);
@@ -169,16 +176,17 @@ class AssignmentTaskState extends State<AssignmentTask> {
 
                   if (widget.scope == AssignmentScope.all) {
                     if (widget.type == AssignmentType.unit) {
-                      var units = snapshot.data!.units.units.toList();
+                      var units = snapshot.data!.units!.units.toList();
                       selection = [DropdownButton<String>(
                           items: units.map((u) => DropdownMenuItem<String>(
-                              value: u,
-                              child: Text(u),
+                              value: u.unit.name,
+                              child: Text(u.unit.name),
                           )).toList(),
                           value: selected,
                           onChanged: (change) => setState(() => selected = change!)
                       )];
                     }
+
                     else {
                       int? present = int.tryParse(selected);
                       var valid = present != null ? present <= 40 && present > 0 : false;

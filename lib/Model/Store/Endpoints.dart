@@ -17,7 +17,10 @@ import '../Database/CadetPass.dart';
 import '../Database/DIRequest.dart';
 import '../Database/GradeSubmission.dart';
 import '../Database/SquadronAssignRequest.dart';
+import '../Database/Unit.dart';
 import '../Database/UnitAssignRequest.dart';
+import '../Database/UnitDataRequest.dart';
+import '../Database/UnitList.dart';
 import '../Database/WingData.dart';
 
 final options = BaseOptions(
@@ -36,7 +39,7 @@ class Endpoint<Req, Res> {
   Endpoint(this.path, {this.protected = false, this.get = false});
 
   Future<Res> call(Req request, {String? token}) async {
-    var data;
+    dynamic data;
 
     if (request is String || request is FormData || request is Map || request == null) {
       data = request;
@@ -76,6 +79,7 @@ class Endpoints {
   static Endpoint<DIRequest, bool> sdoSign = Endpoint("/accountability/sdo-sign");
   static Endpoint<void, WingData> cwoc = Endpoint("/pages/cwoc", get: true);
   static Endpoint<void, UnitData> sdo = Endpoint("/pages/sdo", get: true);
+  static Endpoint<UnitDataRequest, UnitData> unitData = Endpoint("/pages/sdo", get: true);
   static Endpoint<void, UserGrades> grades = Endpoint("/grades/info", get: true);
   static Endpoint<GradeSubmission, bool> gradesSet = Endpoint("/grades/set");
   static Endpoint<void, BuiltList<FormOne>> formsGet = Endpoint("/forms/info", get: true);
@@ -83,33 +87,16 @@ class Endpoints {
   static Endpoint<SquadronAssignRequest, bool> squadAssign = Endpoint("squadron/assign");
   static Endpoint<UnitAssignRequest, bool> unitAssign = Endpoint("unit/assign");
   static Endpoint<void, UserSummaryList> assignmentGet = Endpoint("unit/assignment-get");
+  static Endpoint<void, UnitList> unitsGet = Endpoint("unit/list");
+  static Endpoint<Unit, Unit> unitCreate = Endpoint("unit/create");
+  static Endpoint<Unit, bool> unitEdit = Endpoint("unit/modify");
+  static Endpoint<Unit, bool> unitDelete = Endpoint("unit/delete");
 }
 
 class APIData {
   static bool authenticated = false;
   static User? userData;
 }
-
-// User defaultCadet = User((b) => b
-//   ..id = ""
-//   ..personal_info = CadetPersonalInfo((b2) => b2
-//     ..email = ""
-//     ..full_name = ""
-//     ..phone_number = ""
-//     ..room_number = ""
-//     ..squadron = 0
-//     ..group = "CG00"
-//     ..unit = ""
-//   ).toBuilder()
-//   ..pass_allocation = C4CPassAllocation((b2) => b2
-//     ..weekend_overnight_passes = 0
-//     ..weekday_overnight_passes = 0
-//     ..weekday_day_passes = 0
-//   ).toBuilder()
-//   ..di_time = DateTime.now().toUtc()
-//   ..last_login = DateTime.now().toUtc()
-//   ..individual_pass_status = "OPEN"
-// );
 
 Future<void> login(String token) async {
   dio.options.headers = {"Authorization": "Bearer $token"};

@@ -2,6 +2,7 @@ import 'package:built_collection/built_collection.dart';
 import 'package:built_value/built_value.dart';
 import 'package:built_value/serializer.dart';
 
+import 'Unit.dart';
 import 'User.dart';
 
 part 'UnitData.g.dart';
@@ -13,8 +14,7 @@ abstract class UnitData implements Built<UnitData, UnitDataBuilder> {
   int get unsigned;
   int get out;
   int get total;
-  String? get group;
-  String get name;
+  Unit get unit;
   BuiltList<User> get members;
 
   UnitData sign(User member) {

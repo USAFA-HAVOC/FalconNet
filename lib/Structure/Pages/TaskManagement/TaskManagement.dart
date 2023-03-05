@@ -17,6 +17,14 @@ class TaskManagement extends StatelessWidget {
     var tasks = <Widget>[];
 
     //Add tasks in order of precedent based on roles and available forms
+    if (state.user.roles.any((r) => r.role == Roles.fn_admin.name || r.role == Roles.wing_admin.name)) {
+      tasks.add(const ExternalTaskWidget(
+          path: "/task_management/unit_editor",
+          title: "Unit Editor",
+          description: "Create new units and edit existing ones"
+      ));
+    }
+
     if (state.user.roles.any((role) => role.isAdmin())) {
        tasks.add(const ExternalTaskWidget(
            path: "/task_management/delegation",
