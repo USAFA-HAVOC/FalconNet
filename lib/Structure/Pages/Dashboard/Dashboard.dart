@@ -1,3 +1,4 @@
+import 'package:falcon_net/Structure/Components/FNPage.dart';
 import 'package:falcon_net/Structure/Components/PassWidget.dart';
 import 'package:flutter/material.dart';
 
@@ -9,34 +10,13 @@ class Dashboard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListView(
-      children: [
-        Padding(
-            padding: EdgeInsets.all(20),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Padding(
-                  padding: EdgeInsets.only(bottom: 10),
-                  child: Text(
-                      "Dashboard",
-                      style: Theme.of(context).textTheme.titleLarge
-                  ),
-                ),
+    return const FNPage(
+        title: "Dashboard",
+        children: [
+          PassWidget(),
 
-                Padding(
-                  padding: EdgeInsets.symmetric(vertical: 10),
-                  child: PassWidget(),
-                ),
-
-                Padding(
-                  padding: EdgeInsets.symmetric(vertical: 10),
-                  child: DIWidget(),
-                )
-              ],
-            )
-        )
-      ],
+          DIWidget(),
+        ]
     );
   }
 }

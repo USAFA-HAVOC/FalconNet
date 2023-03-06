@@ -11,6 +11,7 @@ import 'package:string_similarity/string_similarity.dart';
 
 import '../../../../../Model/Database/Unit.dart';
 import '../../../../../Model/Store/Endpoints.dart';
+import '../../../../Components/FNPage.dart';
 
 class UnitEditorTask extends StatefulWidget {
   const UnitEditorTask({super.key});
@@ -130,87 +131,63 @@ class UnitEditorTaskState extends State<UnitEditorTask> {
         builder: (context, snapshot) {
           if (snapshot.data != null) {
             var list = search(snapshot.data!);
-            return ListView(
-              shrinkWrap: true,
-              padding: const EdgeInsets.all(20),
+            return FNPage(
+              title: "Unit Editor",
               children: [
-                Padding(
-                  padding: const EdgeInsets.only(bottom: 20),
-                  child: Text(
-                    "Unit Editor",
-                    style: Theme.of(context).textTheme.titleLarge,
-                  ),
-                ),
-
-                Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 10),
-                  child: PageWidget(
-                      title: "New Unit",
-                      children: [
-                        UnitForm(
-                          onSubmit: (unit) => add(ScaffoldMessenger.of(context), unit),
-                          list: list,
-                        )
-                      ]
-                  ),
-                ),
-
-                Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 10),
-                  child: PageWidget(
-                    title: "Edit Units",
+                PageWidget(
+                    title: "New Unit",
                     children: [
-                      ListView.builder(
-                        itemCount: list.units.length + 1,
-                        shrinkWrap: true,
-                        primary: false,
-                        itemBuilder: (context, index) {
-                          if (index == 0) {
-                            return TextField(
-                              decoration: InputDecoration(
-                                  border: OutlineInputBorder(borderSide: BorderSide(color: Theme.of(context).dividerColor), borderRadius: BorderRadius.circular(10)),
-                                  labelStyle: Theme.of(context).textTheme.bodyLarge,
-                                  labelText: "Search",
-                                  suffixIcon: const Icon(Icons.search)
-                              ),
-                              onChanged: (q) => setState(() => query = q),
-                            );
-                          }
-                          else {
-                            return UnitBar(
-                              unit: list.units[index - 1],
-                              onDelete: (unit) => delete(ScaffoldMessenger.of(context), unit),
-                              onEdit: (unit) => edit(ScaffoldMessenger.of(context), unit),
-                              list: list,
-                            );
-                          }
-                        },
-                      ),
-                    ],
-                  ),
-                )
+                      UnitForm(
+                        onSubmit: (unit) => add(ScaffoldMessenger.of(context), unit),
+                        list: list,
+                      )
+                    ]
+                ),
+
+                PageWidget(
+                  title: "Edit Units",
+                  children: [
+                    ListView.builder(
+                      itemCount: list.units.length + 1,
+                      shrinkWrap: true,
+                      primary: false,
+                      itemBuilder: (context, index) {
+                        if (index == 0) {
+                          return TextField(
+                            decoration: InputDecoration(
+                                border: OutlineInputBorder(borderSide: BorderSide(color: Theme.of(context).dividerColor), borderRadius: BorderRadius.circular(10)),
+                                labelStyle: Theme.of(context).textTheme.bodyLarge,
+                                labelText: "Search",
+                                suffixIcon: const Icon(Icons.search)
+                            ),
+                            onChanged: (q) => setState(() => query = q),
+                          );
+                        }
+
+                        else {
+                          return UnitBar(
+                            unit: list.units[index - 1],
+                            onDelete: (unit) => delete(ScaffoldMessenger.of(context), unit),
+                            onEdit: (unit) => edit(ScaffoldMessenger.of(context), unit),
+                            list: list,
+                          );
+                        }
+                      },
+                    ),
+                  ],
+                ),
               ],
             );
           }
 
           else {
-            return ListView(
-              padding: const EdgeInsets.all(20),
-              shrinkWrap: true,
+            return const FNPage(
+              title: "Unit Editor",
               children: [
-                Padding(
-                  padding: const EdgeInsets.only(bottom: 20),
-                  child: Text(
-                    "Unit Editor",
-                    style: Theme.of(context).textTheme.titleLarge,
-                  ),
-                ),
+                LoadingShimmer(height: 200,),
 
-                const Padding(
-                  padding: EdgeInsets.symmetric(vertical: 10),
-                  child: LoadingShimmer(height: 200,),
-                )
-              ],
+                LoadingShimmer(height: 200,),
+              ]
             );
           }
         }

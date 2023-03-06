@@ -1,6 +1,7 @@
 import 'package:built_collection/built_collection.dart';
 import 'package:falcon_net/Model/Database/RoleRequest.dart';
 import 'package:falcon_net/Model/Database/UnitData.dart';
+import 'package:falcon_net/Structure/Components/FNPage.dart';
 import 'package:falcon_net/Structure/Components/LoadingShimmer.dart';
 import 'package:falcon_net/Structure/Components/PageWidget.dart';
 import 'package:falcon_net/Utility/ErrorFormatting.dart';
@@ -72,9 +73,9 @@ class DelegationTaskState extends State<DelegationTask> {
   ///Opens a dialog for the form for editing a delegates roles
   void openDelegationForm(BuildContext context, User delegate, List<TimedRole> applicable) {
     showDialog(context: context, builder: (context) => Dialog(
-      insetPadding: EdgeInsets.all(10),
+      insetPadding: const EdgeInsets.all(10),
       child: Padding(
-        padding: EdgeInsets.all(5),
+        padding: const EdgeInsets.all(5),
 
         //Builds a delegation form with applicable roles
         child: DelegationForm(
@@ -112,58 +113,53 @@ class DelegationTaskState extends State<DelegationTask> {
 
   @override
   Widget build(BuildContext context) {
-    return ListView(
-      shrinkWrap: true,
-      padding: EdgeInsets.all(20),
-      children: [
-        Padding(
-          padding: EdgeInsets.only(bottom: 20),
-          child: Text(
-            "Role Delegation",
-            style: Theme.of(context).textTheme.titleLarge
-          ),
-        ),
+    return FutureBuilder(
+        future: connection,
+        builder: (context, snapshot) {
+          Widget child;
+          if (snapshot.data != null) {
+            var ordered = search(snapshot.data!.members.toList(), query);
+            child = PageWidget(
+                title: "Members",
+                children: [
+                  ListView.builder(
+                      shrinkWrap: true,
+                      primary: false,
+                      itemCount: ordered.length + 1,
+                      itemBuilder: (context, index) {
+                        if (index == 0) {
+                          return TextField(
+                            decoration: InputDecoration(
+                                border: OutlineInputBorder(borderSide: BorderSide(color: Theme.of(context).dividerColor), borderRadius: BorderRadius.circular(10)),
+                                labelStyle: Theme.of(context).textTheme.bodyLarge,
+                                labelText: "Search",
+                                suffixIcon: const Icon(Icons.search)
+                            ),
+                            onChanged: (q) => setState(() => query = q),
+                          );
+                        }
 
-        FutureBuilder(
-            future: connection,
-            builder: (context, snapshot) {
-              if (snapshot.data != null) {
-                var ordered = search(snapshot.data!.members.toList(), query);
-                return PageWidget(
-                    title: "Members",
-                    children: [
-                      ListView.builder(
-                          shrinkWrap: true,
-                          primary: false,
-                          itemCount: ordered.length + 1,
-                          itemBuilder: (context, index) {
-                            if (index == 0) {
-                              return TextField(
-                                decoration: InputDecoration(
-                                    border: OutlineInputBorder(borderSide: BorderSide(color: Theme.of(context).dividerColor), borderRadius: BorderRadius.circular(10)),
-                                    labelStyle: Theme.of(context).textTheme.bodyLarge,
-                                    labelText: "Search",
-                                    suffixIcon: Icon(Icons.search)
-                                ),
-                                onChanged: (q) => setState(() => query = q),
-                              );
-                            }
+                        return DelegateBar(
+                            delegate: ordered[index - 1],
+                            onAssign: (delegate) => openDelegationForm(context, delegate, widget.owner)
+                        );
+                      }
+                  ),
+                ]
+            );
+          }
+          else {
+            child = const LoadingShimmer(height: 200,);
+          }
 
-                            return DelegateBar(
-                                delegate: ordered[index - 1],
-                                onAssign: (delegate) => openDelegationForm(context, delegate, widget.owner)
-                            );
-                          }
-                      ),
-                    ]
-                );
-              }
-              else {
-                return const LoadingShimmer(height: 200,);
-              }
-            }
-        ),
-      ]
+          return FNPage(
+              title: "Delegation",
+              children: [
+                child
+              ]
+          );
+        }
+
     );
   }
 }

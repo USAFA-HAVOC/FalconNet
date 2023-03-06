@@ -135,7 +135,7 @@ class PassWidget extends StatelessWidget {
                       child: Padding(
                         padding: EdgeInsets.symmetric(vertical: 10),
                         child: Text(
-                          "Update Pass",
+                          "Update",
                           style: Theme.of(context).textTheme.labelLarge,
                         ),
                       ),
@@ -169,7 +169,7 @@ class PassWidget extends StatelessWidget {
                       child: Padding(
                         padding: EdgeInsets.symmetric(vertical: 10),
                         child: Text(
-                          "Close Pass",
+                          "Close",
                           style: Theme.of(context).textTheme.labelLarge,
                         ),
                       ),
