@@ -30,7 +30,7 @@ class FormBar extends StatelessWidget {
             ),
 
             child: Padding(
-              padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 10),
+              padding: const EdgeInsets.all(10),
               child: Row(
                 children: [
                   Expanded(
@@ -46,11 +46,12 @@ class FormBar extends StatelessWidget {
                       child: Text(
                         "$completion%",
                         style: Theme.of(context).textTheme.titleSmall,
+                        textAlign: TextAlign.end,
                       )
                   ),
 
                   Expanded(
-                    flex: 2,
+                    flex: 1,
                     child: IconButton(
                       icon: const Icon(Icons.delete),
                       onPressed: () => showDialog(context: context, builder: (context) => ConfirmationDialog(

@@ -19,31 +19,28 @@ class ExternalTaskWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.symmetric(vertical: 10),
-      child: PageWidget(
-        title: title,
-        children: [
-          Text(
-            description,
-            style: Theme.of(context).textTheme.bodyLarge,
-          ),
-          ElevatedButton(
-            //Navigate to the tasks destination
-            onPressed: () {
-              context.go(path);
-            },
+    return PageWidget(
+      title: title,
+      children: [
+        Text(
+          description,
+          style: Theme.of(context).textTheme.bodyLarge,
+        ),
+        ElevatedButton(
+          //Navigate to the tasks destination
+          onPressed: () {
+            context.go(path);
+          },
 
-            child: Padding(
-              padding: EdgeInsets.symmetric(vertical: 10),
-              child: Text(
-                "Begin",
-                style: Theme.of(context).textTheme.labelLarge,
-              ),
+          child: Padding(
+            padding: EdgeInsets.symmetric(vertical: 10),
+            child: Text(
+              "Begin",
+              style: Theme.of(context).textTheme.labelLarge,
             ),
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 }
