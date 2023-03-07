@@ -40,18 +40,12 @@ class ConfirmationDialog extends StatelessWidget {
                     children: [
                       Expanded(
                         flex: 5,
-                        child: Padding(
-                          padding: EdgeInsets.symmetric(vertical: 20),
-                          child: ElevatedButton(
-                            onPressed: () {
-                              Navigator.of(context).pop();
-                              onConfirm();
-                            },
-                            child: Padding(
-                              padding: EdgeInsets.symmetric(vertical: 10),
-                              child: const Text('Confirm'),
-                            ),
-                          ),
+                        child: ElevatedButton(
+                          onPressed: () {
+                            Navigator.of(context).pop();
+                            onConfirm();
+                          },
+                          child: const Text('Confirm'),
                         ),
                       ),
 
@@ -69,10 +63,7 @@ class ConfirmationDialog extends StatelessWidget {
                               onCancel!();
                             }
                           },
-                          child: Padding(
-                            padding: EdgeInsets.symmetric(vertical: 10),
-                            child: const Text('Cancel'),
-                          ),
+                          child: const Text('Cancel'),
                         ),
                       ),
                     ],

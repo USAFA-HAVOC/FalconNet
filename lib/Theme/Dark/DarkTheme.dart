@@ -6,6 +6,7 @@ import 'DarkElevatedButtonTheme.dart';
 
 ThemeData darkTheme = ThemeData(
   primaryColor: const Color.fromARGB(255, 24, 24, 24),
+  highlightColor: const Color.fromARGB(255, 196, 196, 196),
   focusColor: const Color.fromARGB(255, 40, 40, 40),
   indicatorColor: Colors.grey,
   textTheme: darkTextTheme,
