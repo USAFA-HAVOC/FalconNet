@@ -395,9 +395,11 @@ class PassFormState extends State<PassForm>
                             validator: InputValidation.time(
                                 date: parseDate(dateValue)),
                             onChanged: (change) {
-                              setState(() {
-                                timeValue = change;
-                              });
+                              setState(
+                                () {
+                                  timeValue = change;
+                                },
+                              );
                             },
                           ),
                         )
