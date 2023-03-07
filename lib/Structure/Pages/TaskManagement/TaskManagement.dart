@@ -1,6 +1,7 @@
 import 'package:async_redux/async_redux.dart';
 import 'package:falcon_net/Model/Database/Roles.dart';
 import 'package:falcon_net/Model/Store/GlobalStateModel.dart';
+import 'package:falcon_net/Structure/Components/FNPage.dart';
 import 'package:falcon_net/Structure/Components/ViewModel.dart';
 import 'package:falcon_net/Structure/Pages/TaskManagement/ExternalTaskWidget.dart';
 import 'package:falcon_net/Structure/Pages/TaskManagement/FormOneWidget.dart';
@@ -43,6 +44,14 @@ class TaskManagement extends StatelessWidget {
          title: "Squadron Assignment",
          description: "Assign people to their squadrons",
        ));
+    }
+
+    if (state.user.roles.any((role) => role.role == Roles.unit_admin.name)) {
+      tasks.add(const ExternalTaskWidget(
+          path: "/task_management/unit_management",
+          title: "Unit Management",
+          description: "Manage your unit here"
+      ));
     }
 
     if (state.user.roles.any((role) => role.role == Roles.cwoc.name)) {
@@ -101,26 +110,9 @@ class TaskManagement extends StatelessWidget {
     return StoreConnector<GlobalState, ViewModel<GlobalState>>(
         converter: (store) => ViewModel<GlobalState>(store: store, content: store.state),
         builder: (context, model) {
-          return ListView(
-            children: [
-              Padding(
-                padding: EdgeInsets.all(20),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Padding(
-                      padding: EdgeInsets.only(bottom: 20),
-                      child: Text(
-                          "Task Management",
-                          style: Theme.of(context).textTheme.titleLarge
-                      ),
-                    ),
-
-                    ...buildTasks(model.content, context),
-                  ],
-                ),
-              ),
-            ],
+          return FNPage(
+              title: "Task Management",
+              children: buildTasks(model.content, context)
           );
         }
     );

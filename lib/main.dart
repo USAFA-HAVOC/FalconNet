@@ -1,7 +1,5 @@
 import 'dart:async';
 
-import 'package:aad_oauth/model/config.dart';
-import 'package:aad_oauth/model/token.dart';
 import 'package:async_redux/async_redux.dart';
 import 'package:built_collection/built_collection.dart';
 import 'package:falcon_net/Model/Database/CadetAccountability.dart';
@@ -11,12 +9,12 @@ import 'package:falcon_net/Model/Database/UserNotification.dart';
 import 'package:falcon_net/Model/Database/UserPersonalInfo.dart';
 import 'package:falcon_net/Model/Store/Actions/GlobalAction.dart';
 import 'package:falcon_net/Model/Store/Actions/InfoAction.dart';
+import 'package:falcon_net/Model/Store/Actions/SettingsAction.dart';
 import 'package:falcon_net/Model/Store/Endpoints.dart';
 import 'package:falcon_net/Model/Store/GlobalStateModel.dart';
 import 'package:falcon_net/Theme/Dark/DarkTheme.dart';
 import 'package:falcon_net/Theme/Light/LightTheme.dart';
 import 'package:falcon_net/Theme/Random/RandomTheme.dart';
-import 'package:falcon_net/Utility/FNOAuth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -68,6 +66,8 @@ void main() {
           ).toBuilder()
       )
   );
+
+  store.dispatch(SettingsAction.retrieve());
 
   runApp(FNApp(store: store));
 }
@@ -129,19 +129,18 @@ class FNAppState extends State<FNApp> {
 
   @override
   Widget build(BuildContext context) {
-    String? auth_token;
+    String? authToken;
 
     if (!signed) {
       if (kIsWeb) {
         Uri s = Uri.parse(html.window.location.toString());
-        print(s.queryParameters);
         if (s.queryParameters.containsKey("code")) {
           html.window.history.pushState(null, 'FalconNet', '');
-          auth_token = s.queryParameters["code"];
+          authToken = s.queryParameters["code"];
         }
       }
 
-      oauth.setCode(auth_token);
+      oauth.setCode(authToken);
       appLogin();
     }
 

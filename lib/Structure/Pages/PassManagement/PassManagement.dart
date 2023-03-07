@@ -1,3 +1,4 @@
+import 'package:falcon_net/Structure/Components/FNPage.dart';
 import 'package:flutter/material.dart';
 import '../../Components/PassWidget.dart';
 import 'AllotmentWidget.dart';
@@ -8,34 +9,13 @@ class PassManagement extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListView(
-      children: [
-        Padding(
-          padding: EdgeInsets.all(20),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Padding(
-                padding: EdgeInsets.only(bottom: 10),
-                child: Text(
-                    "Pass Management",
-                    style: Theme.of(context).textTheme.titleLarge
-                ),
-              ),
+    return const FNPage(
+        title: "Pass Management",
+        children: [
+          PassWidget(title: "Current Status",),
 
-              Padding(
-                padding: EdgeInsets.symmetric(vertical: 10),
-                child: PassWidget(title: "Current Status",),
-              ),
-
-              Padding(
-                padding: EdgeInsets.symmetric(vertical: 10),
-                child: AllotmentWidget(),
-              ),
-            ],
-          ),
-        ),
-      ],
+          AllotmentWidget(),
+        ]
     );
   }
 }

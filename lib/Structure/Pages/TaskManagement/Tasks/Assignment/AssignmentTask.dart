@@ -1,6 +1,7 @@
 import 'package:built_collection/built_collection.dart';
 import 'package:falcon_net/Model/Database/UserPersonalInfo.dart';
 import 'package:falcon_net/Model/Database/UserSummaryList.dart';
+import 'package:falcon_net/Structure/Components/FNPage.dart';
 import 'package:falcon_net/Structure/Pages/TaskManagement/Tasks/Assignment/AssignmentBar.dart';
 import 'package:flutter/material.dart';
 import 'package:string_similarity/string_similarity.dart';
@@ -72,8 +73,6 @@ class AssignmentTaskState extends State<AssignmentTask> {
         units = await Endpoints.unitsGet(null);
         //units.rebuild((u) => u..units.add("CS00"));
       }
-
-      print(units);
 
       return AssignmentTaskData(summaries: summaries, units: units);
     }
@@ -154,147 +153,124 @@ class AssignmentTaskState extends State<AssignmentTask> {
 
   @override
   Widget build(BuildContext context) {
-    return ListView(
-        shrinkWrap: true,
-        padding: const EdgeInsets.all(20),
-        children: [
-          Padding(
-            padding: const EdgeInsets.only(bottom: 20),
-            child: Text(
-              "${widget.type == AssignmentType.unit ? "Unit" : "Squadron"} Assignment",
-              style: Theme.of(context).textTheme.titleLarge
-            ),
-          ),
+    return FutureBuilder(
+        future: connection,
+        builder: (context, snapshot) {
+          if (snapshot.data != null) {
+            var potential = snapshot.data!.summaries.users.toList();
 
-          FutureBuilder(
-              future: connection,
-              builder: (context, snapshot) {
-                if (snapshot.data != null) {
-                  var potential = snapshot.data!.summaries.users.toList();
+            List<Widget> selection = [];
 
-                  List<Widget> selection = [];
+            if (widget.scope == AssignmentScope.all) {
+              if (widget.type == AssignmentType.unit) {
+                var units = snapshot.data!.units!.units.toList();
+                selection = [DropdownButton<String>(
+                  items: units.map((u) => DropdownMenuItem<String>(
+                    value: u.unit.name,
+                    child: Text(u.unit.name),
+                  )).toList(),
+                  value: selected,
+                  onChanged: (change) => setState(() => selected = change!),
 
-                  if (widget.scope == AssignmentScope.all) {
-                    if (widget.type == AssignmentType.unit) {
-                      var units = snapshot.data!.units!.units.toList();
-                      selection = [DropdownButton<String>(
-                          items: units.map((u) => DropdownMenuItem<String>(
-                              value: u.unit.name,
-                              child: Text(u.unit.name),
-                          )).toList(),
-                          value: selected,
-                          onChanged: (change) => setState(() => selected = change!)
-                      )];
-                    }
+                )];
+              }
 
-                    else {
-                      int? present = int.tryParse(selected);
-                      var valid = present != null ? present <= 40 && present > 0 : false;
-                      selection = [
-                        TextField(
-                          keyboardType: TextInputType.number,
-                          decoration: InputDecoration(
-                              border: OutlineInputBorder(borderSide: BorderSide(color: Theme.of(context).dividerColor), borderRadius: BorderRadius.circular(10)),
-                              labelStyle: Theme.of(context).textTheme.bodyLarge,
-                              labelText: "Squadron",
-                              suffixIcon: const Icon(Icons.numbers),
-                              errorText: valid ? null: "Please enter a valid squadron"
-                          ),
-                          onChanged: (q) => setState(() => selected = q),
-                        )
-                      ];
-                    }
-                  }
-
-                  List<Widget> addContent;
-                  if (additions.isEmpty) {
-                    addContent = [
-                      ...selection,
-                      Padding(
-                        padding: const EdgeInsets.all(20),
-                        child: Text(
-                          "No new members selected",
-                          style: Theme.of(context).textTheme.bodyLarge,
-                          textAlign: TextAlign.center,
-                        ),
-                      )
-                    ];
-                  }
-
-                  else {
-                    addContent = [
-                      ...selection,
-                      ElevatedButton(
-                        onPressed: () => submit(ScaffoldMessenger.of(context)),
-                        child: const Text("Add Members")
-                      )
-                    ];
-                    addContent.addAll(additions.map((summary) => AssignmentBar(
-                        summary: summary,
-                        status: AssignmentStatus.included,
-                        onToggle: removeUser
-                    )));
-                  }
-
-                  var adds = PageWidget(
-                      title: "Selected",
-                      children: addContent
-                  );
-
-                  List<Widget> removeContent = [TextField(
+              else {
+                int? present = int.tryParse(selected);
+                var valid = present != null ? present <= 40 && present > 0 : false;
+                selection = [
+                  TextField(
+                    keyboardType: TextInputType.number,
                     decoration: InputDecoration(
                         border: OutlineInputBorder(borderSide: BorderSide(color: Theme.of(context).dividerColor), borderRadius: BorderRadius.circular(10)),
                         labelStyle: Theme.of(context).textTheme.bodyLarge,
-                        labelText: "Search",
-                        suffixIcon: const Icon(Icons.search)
+                        labelText: "Squadron",
+                        suffixIcon: const Icon(Icons.numbers),
+                        errorText: valid ? null: "Please enter a valid squadron"
                     ),
-                    onChanged: (q) => setState(() => query = q),
-                  )];
-
-                  removeContent.addAll(search(potential, query).map((summary) => AssignmentBar(
-                      summary: summary,
-                      status: AssignmentStatus.excluded,
-                      onToggle: addUser
-                  )));
-
-                  var rems = PageWidget(
-                      title: "Select Members",
-                      children: removeContent
-                  );
-
-                  return Column(
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 10),
-                        child: adds,
-                      ),
-
-                      Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 10),
-                        child: rems,
-                      )
-                    ],
-                  );
-                }
-
-                else {
-                  return Column(
-                    children: const [
-                      Padding(
-                        padding: EdgeInsets.symmetric(vertical: 10),
-                        child: LoadingShimmer(height: 200,),
-                      ),
-
-                      Padding(
-                        padding: EdgeInsets.symmetric(vertical: 10),
-                        child: LoadingShimmer(height: 200,),
-                      ),
-                    ],
-                  );
-                }
+                    onChanged: (q) => setState(() => selected = q),
+                  )
+                ];
               }
-          ),
-        ]
+            }
+
+            List<Widget> addContent;
+            if (additions.isEmpty) {
+              addContent = [
+                ...selection,
+                Padding(
+                  padding: const EdgeInsets.all(20),
+                  child: Text(
+                    "No new members selected",
+                    style: Theme.of(context).textTheme.bodyLarge,
+                    textAlign: TextAlign.center,
+                  ),
+                )
+              ];
+            }
+
+            else {
+              addContent = [
+                ...selection,
+                ElevatedButton(
+                    onPressed: () => submit(ScaffoldMessenger.of(context)),
+                    child: const Text("Add Members")
+                )
+              ];
+              addContent.addAll(additions.map((summary) => AssignmentBar(
+                  summary: summary,
+                  status: AssignmentStatus.included,
+                  onToggle: removeUser
+              )));
+            }
+
+            var adds = PageWidget(
+                title: "Selected",
+                children: addContent
+            );
+
+            List<Widget> removeContent = [TextField(
+              decoration: InputDecoration(
+                  border: OutlineInputBorder(borderSide: BorderSide(color: Theme.of(context).dividerColor), borderRadius: BorderRadius.circular(10)),
+                  labelStyle: Theme.of(context).textTheme.bodyLarge,
+                  labelText: "Search",
+                  suffixIcon: const Icon(Icons.search)
+              ),
+              onChanged: (q) => setState(() => query = q),
+            )];
+
+            removeContent.addAll(search(potential, query).map((summary) => AssignmentBar(
+                summary: summary,
+                status: AssignmentStatus.excluded,
+                onToggle: addUser
+            )));
+
+            var rems = PageWidget(
+                title: "Select Members",
+                children: removeContent
+            );
+
+            return FNPage(
+                title: "${widget.type == AssignmentType.unit ? "Unit" : "Squadron"} Assignment",
+                children: [
+                  adds,
+
+                  rems
+                ],
+            );
+          }
+
+          else {
+            return FNPage(
+              title: "${widget.type == AssignmentType.unit ? "Unit" : "Squadron"} Assignment",
+              children: const [
+                LoadingShimmer(height: 200,),
+
+                LoadingShimmer(height: 200,)
+              ],
+            );
+          }
+        }
     );
   }
 }

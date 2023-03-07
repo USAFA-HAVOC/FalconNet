@@ -30,6 +30,7 @@ import 'Database/UnitData.dart';
 import 'Database/UnitList.dart';
 import 'Database/UnitSummary.dart';
 import 'Database/UserSummaryList.dart';
+import 'Database/FormData.dart';
 import 'Store/FNDateTimeSerializer.dart';
 
 part 'Serializers.g.dart';
@@ -62,7 +63,8 @@ part 'Serializers.g.dart';
   SquadronAssignRequest,
   UnitList,
   Unit,
-  UnitDataRequest
+  UnitDataRequest,
+  FormData
 ])
 
 

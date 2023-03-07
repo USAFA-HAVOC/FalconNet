@@ -6,6 +6,7 @@ import 'package:falcon_net/Theme/Light/LightElevatedButtonTheme.dart';
 ThemeData lightTheme = ThemeData(
   primaryColor: Colors.white,
   focusColor: Colors.grey[200],
+  highlightColor: const Color.fromARGB(255, 147, 170, 255),
   indicatorColor: Colors.blue,
   disabledColor: Color.fromARGB(255, 179, 179, 179),
   textTheme: lightTextTheme,

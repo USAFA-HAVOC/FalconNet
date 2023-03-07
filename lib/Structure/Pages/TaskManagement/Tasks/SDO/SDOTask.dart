@@ -1,5 +1,6 @@
 import 'package:falcon_net/Model/Database/DIRequest.dart';
 import 'package:falcon_net/Model/Store/Endpoints.dart';
+import 'package:falcon_net/Structure/Components/FNPage.dart';
 import 'package:falcon_net/Structure/Pages/TaskManagement/Tasks/Shared/SigningWidget.dart';
 import 'package:falcon_net/Structure/Pages/TaskManagement/Tasks/SDO/SDOStatusWidget.dart';
 import 'package:falcon_net/Utility/ErrorFormatting.dart';
@@ -56,37 +57,19 @@ class SDOTaskState extends State<SDOTask> {
       future: future,
       builder: (context, snapshot) {
         var di = snapshot.data;
-
         var messenger = ScaffoldMessenger.of(context);
+        return FNPage(
+          title: "SDO",
+          children: [
+            SDOStatusWidget(di: di),
 
-        return Padding(
-          padding: EdgeInsets.all(20),
-          child: ListView(
-            children: [
-              Padding(
-                padding: EdgeInsets.only(bottom: 20),
-                child: Text(
-                    "SDO",
-                    style: Theme.of(context).textTheme.titleLarge
-                ),
-              ),
-
-              Padding(
-                padding: EdgeInsets.symmetric(vertical: 10),
-                child: SDOStatusWidget(di: di),
-              ),
-
-              Padding(
-                padding: EdgeInsets.symmetric(vertical: 10),
-                child: PageWidget(
-                  title: "Inspections",
-                  children: [
-                    SigningWidget(di: di, onSign: (member) => sign(member, messenger),),
-                  ],
-                )
-              ),
-            ],
-          ),
+            PageWidget(
+              title: "Inspections",
+              children: [
+                SigningWidget(di: di, onSign: (member) => sign(member, messenger),),
+              ],
+            )
+          ]
         );
       }
     );
