@@ -86,8 +86,8 @@ class PassStatus extends StatelessWidget {
                   //Display a gray card with expiration time/date
                   return Card(
                     color: !expired
-                        ? Theme.of(context).canvasColor
-                        : Theme.of(context).errorColor,
+                        ? Theme.of(context).focusColor
+                        : Colors.red, // Area around the words on the card
                     child: Padding(
                       padding: EdgeInsets.all(20),
                       child: Column(
@@ -98,7 +98,7 @@ class PassStatus extends StatelessWidget {
                             padding: const EdgeInsets.only(bottom: 10),
                             child: Text(
                               "Pass Status:",
-                              style: Theme.of(context).textTheme.headlineLarge,
+                              style: Theme.of(context).textTheme.headlineMedium,
                             ),
                           ),
                           Text(
@@ -109,7 +109,7 @@ class PassStatus extends StatelessWidget {
                             padding: const EdgeInsets.only(top: 10),
                             child: Text(
                               expiration,
-                              style: Theme.of(context).textTheme.headlineSmall,
+                              style: Theme.of(context).textTheme.headlineMedium,
                             ),
                           ),
                         ],
