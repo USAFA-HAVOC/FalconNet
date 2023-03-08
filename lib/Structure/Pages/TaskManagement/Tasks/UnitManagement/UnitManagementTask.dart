@@ -29,6 +29,8 @@ class UnitManagementTaskState extends State<UnitManagementTask> {
   TextEditingController title = TextEditingController();
   TextEditingController content = TextEditingController();
   String query = "";
+  String? titleValid;
+  String? contentValid;
 
   @override
   void initState() {
@@ -71,9 +73,20 @@ class UnitManagementTaskState extends State<UnitManagementTask> {
 
   void addForm(ScaffoldMessengerState messenger, FormData form) async {
     try {
+      if (content.text.isEmpty || title.text.isEmpty) {
+        if (content.text.isEmpty) {
+          setState(() {
+            contentValid = "Content cannot be empty";
+          });
+        }
+        if (title.text.isEmpty) {
+          titleValid = "Title cannot be empty";
+        }
+        return;
+      }
       var data = await connection;
       setState(() {
-        connection = Future.value(UnitManagementData(status: data.status, forms: data.forms + [form]));
+        connection = Future.value(UnitManagementData(status: data.status, forms: [form] + data.forms));
       });
 
       messenger.showSnackBar(const SnackBar(
@@ -204,7 +217,7 @@ class UnitManagementTaskState extends State<UnitManagementTask> {
               ),
 
               PageWidget(
-                  title: "New Form One",
+                  title: "New Form",
                   children: [
                     TextField(
                       controller: title,
@@ -212,8 +225,10 @@ class UnitManagementTaskState extends State<UnitManagementTask> {
                           border: OutlineInputBorder(borderSide: BorderSide(color: Theme.of(context).dividerColor), borderRadius: BorderRadius.circular(10)),
                           labelStyle: Theme.of(context).textTheme.bodyLarge,
                           labelText: "Title",
-                          suffixIcon: const Icon(Icons.title)
+                          suffixIcon: const Icon(Icons.title),
+                          errorText: titleValid,
                       ),
+                      onChanged: (_) => setState(() => titleValid = null),
                     ),
 
                     TextField(
@@ -225,23 +240,17 @@ class UnitManagementTaskState extends State<UnitManagementTask> {
                           border: OutlineInputBorder(borderSide: BorderSide(color: Theme.of(context).dividerColor), borderRadius: BorderRadius.circular(10)),
                           labelStyle: Theme.of(context).textTheme.bodyLarge,
                           labelText: "Content",
-                          suffixIcon: const Icon(Icons.description)
+                          suffixIcon: const Icon(Icons.description),
+                          errorText: contentValid,
                       ),
+                      onChanged: (_) => setState(() => contentValid = null),
                     ),
                     
                     ElevatedButton(
                       onPressed: () => addForm(ScaffoldMessenger.of(context), FormData((f) => f
                         ..title = title.text
                         ..description = content.text
-                        ..signatures = Map<UserSummary, bool>.fromEntries([
-                          MapEntry(
-                              UserSummary((u) => u
-                                ..name = "Rylie Anderson"
-                                ..user_id = "dumbfuck"
-                              ),
-                              true
-                          )
-                        ])
+                        ..signatures = <UserSummary, bool>{}
                       )), 
                       child: const Padding(
                         padding: EdgeInsets.symmetric(vertical: 10),

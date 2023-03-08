@@ -18,43 +18,40 @@ class FormOneWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.symmetric(vertical: 10),
-      child: PageWidget(
-        title: form.title,
-        children: [
-          Text(
-            form.description,
-            style: Theme.of(context).textTheme.bodyLarge,
-          ),
+    return PageWidget(
+      title: form.title,
+      children: [
+        Text(
+          form.description,
+          style: Theme.of(context).textTheme.bodyLarge,
+        ),
 
-          StoreConnector<GlobalState, ViewModel<void>>(
-              converter: (store) => ViewModel<void>(store: store, content: null),
-              builder: (context, model) => ElevatedButton(
-                onPressed: () {
-                  showDialog(
-                    context: context,
-                    builder: (context) => ConfirmationDialog(
-                      title: "Confirm Signing",
-                      description: "Please confirm that you have read and understand this Form 1. "
-                          "This action cannot be reversed.",
+        StoreConnector<GlobalState, ViewModel<void>>(
+            converter: (store) => ViewModel<void>(store: store, content: null),
+            builder: (context, model) => ElevatedButton(
+              onPressed: () {
+                showDialog(
+                  context: context,
+                  builder: (context) => ConfirmationDialog(
+                    title: "Confirm Signing",
+                    description: "Please confirm that you have read and understand this Form 1. "
+                        "This action cannot be reversed.",
 
-                      //Dispatches signing action with own form one
-                      onConfirm: () {
-                        model.dispatch(FormAction(form));
-                      },
-                    ),
-                  );
-                },
+                    //Dispatches signing action with own form one
+                    onConfirm: () {
+                      model.dispatch(FormAction(form));
+                    },
+                  ),
+                );
+              },
 
-                child: Padding(
-                  padding: EdgeInsets.symmetric(vertical: 10),
-                  child: Text("Sign"),
-                ),
-              )
-          )
-        ],
-      ),
+              child: Padding(
+                padding: EdgeInsets.symmetric(vertical: 10),
+                child: Text("Sign"),
+              ),
+            )
+        )
+      ],
     );
   }
 }

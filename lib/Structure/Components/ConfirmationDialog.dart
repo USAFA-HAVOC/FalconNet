@@ -14,11 +14,11 @@ class ConfirmationDialog extends StatelessWidget {
   Widget build(BuildContext context) {
     return Dialog(
       child: Padding(
-        padding: EdgeInsets.all(10),
+        padding: const EdgeInsets.all(10),
         child: PaddedColumn(
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.stretch,
-            padding: EdgeInsets.only(top: 10, left: 10, right: 10, bottom: 5),
+            padding: const EdgeInsets.only(top: 10, left: 10, right: 10, bottom: 5),
             children: [
 
               Text(
@@ -28,7 +28,7 @@ class ConfirmationDialog extends StatelessWidget {
 
               PaddedColumn(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
-                padding: EdgeInsets.symmetric(vertical: 5),
+                padding: const EdgeInsets.symmetric(vertical: 5),
                 children: [
                   Text(
                     description,
@@ -49,7 +49,7 @@ class ConfirmationDialog extends StatelessWidget {
                         ),
                       ),
 
-                      Spacer(flex: 1),
+                      const Spacer(flex: 1),
 
                       Expanded(
                         flex: 5,

@@ -17,9 +17,15 @@ class FormStatusDialogState extends State<FormStatusDialog> {
   String query = "";
 
   List<UserSummary> search() {
-    var scores = widget.form.signatures.map((key, value) => MapEntry(key, key.name.similarityTo(query))).entries.toList();
-    scores.sort((a, b) => -a.value.compareTo(b.value));
-    return scores.map((e) => e.key).toList();
+    var scores = widget.form.signatures.map((key, value) => MapEntry(MapEntry(key, value), key.name.similarityTo(query))).entries.toList();
+    scores.sort((a, b) {
+      var value = a.value.compareTo(b.value);
+      if (value == 0) {
+        return a.key.value == b.key.value ? a.key.key.name.compareTo(b.key.key.name) : (b.key.value ? -1 : 1);
+      }
+      return -value;
+    });
+    return scores.map((e) => e.key.key).toList();
   }
 
   @override
@@ -28,7 +34,7 @@ class FormStatusDialogState extends State<FormStatusDialog> {
 
     return Dialog(
         backgroundColor: Theme.of(context).cardTheme.color,
-        insetPadding: EdgeInsets.all(20),
+        insetPadding: const EdgeInsets.all(20),
         child: Padding(
           padding: const EdgeInsets.all(10),
           child: ListView.builder(
@@ -87,7 +93,7 @@ class FormStatusDialogState extends State<FormStatusDialog> {
                                   ),
 
                                   child: Padding(
-                                    padding: EdgeInsets.symmetric(vertical: 10),
+                                    padding: const EdgeInsets.symmetric(vertical: 10),
                                     child: Text(
                                       signed ? "Signed" : "Unsigned",
                                       style: Theme.of(context).textTheme.titleSmall,
