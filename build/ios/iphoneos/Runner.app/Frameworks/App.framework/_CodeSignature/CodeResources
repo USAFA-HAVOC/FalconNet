@@ -10,7 +10,7 @@
 		</data>
 		<key>flutter_assets/AssetManifest.json</key>
 		<data>
-		DsGxva/y8K2UzJ/effSvSTPYwMI=
+		LGQhAoUNwNbMfANWMUDpbH+m0cA=
 		</data>
 		<key>flutter_assets/FontManifest.json</key>
 		<data>
@@ -51,10 +51,6 @@
 		<key>flutter_assets/assets/images/aflogo.png</key>
 		<data>
 		FT6Y2o691idj2T9gju8Y77lPSCY=
-		</data>
-		<key>flutter_assets/assets/splash_screens/.DS_Store</key>
-		<data>
-		EPZGZquU1wUPq5B9OgM/ceZ5lc0=
 		</data>
 		<key>flutter_assets/assets/splash_screens/10.2__iPad_landscape.png</key>
 		<data>
@@ -206,11 +202,11 @@
 		</data>
 		<key>flutter_assets/isolate_snapshot_data</key>
 		<data>
-		Q89/RAA6FqfUQGbeWuBVjaBXHyg=
+		xbo3iIc8fTnuE5W4XE0VFw6QIBI=
 		</data>
 		<key>flutter_assets/kernel_blob.bin</key>
 		<data>
-		MkioNu/YbIy4iHnyAuH1K20LhXA=
+		hdou7wkORqFNoOnIR8PR63cc0kk=
 		</data>
 		<key>flutter_assets/packages/aad_oauth/assets/msalv2.js</key>
 		<data>
@@ -243,7 +239,7 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			QjyOY6F3XZy/YiN8GMyfZ0Wzun4fIsoOBix5bdhBQxo=
+			ibk/GhikqlgJJA5Gjxw19u5OO/rxTj+bO4dVdlklXjM=
 			</data>
 		</dict>
 		<key>flutter_assets/FontManifest.json</key>
@@ -579,14 +575,14 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			inoYvHaJtETSspX245cfRbrJBIn7bG4GEmDqmZwBBQQ=
+			76aJUrz/yLBliHLDcOlVu+tPuICHsFWS91Ovpysst2I=
 			</data>
 		</dict>
 		<key>flutter_assets/kernel_blob.bin</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			nrXaHCm6+1YnPeSw3qOKweP9JqrfHRfaoG4o9VDxSYM=
+			2vNOPpS6sgPKgAnSNTE7uSVCf8aqHSr0mFatXVO2lNo=
 			</data>
 		</dict>
 		<key>flutter_assets/packages/aad_oauth/assets/msalv2.js</key>
