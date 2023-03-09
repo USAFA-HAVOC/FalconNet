@@ -128,6 +128,12 @@
       "languageVersion": "2.18"
     },
     {
+      "name": "cli_util",
+      "rootUri": "file:///Users/davepetzold/.pub-cache/hosted/pub.dev/cli_util-0.3.5",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
+    },
+    {
       "name": "clock",
       "rootUri": "file:///Users/davepetzold/.pub-cache/hosted/pub.dev/clock-1.1.1",
       "packageUri": "lib/",
@@ -234,6 +240,12 @@
       "rootUri": "file:///Users/davepetzold/.pub-cache/hosted/pub.dev/flutter_inappwebview-5.7.2+3",
       "packageUri": "lib/",
       "languageVersion": "2.14"
+    },
+    {
+      "name": "flutter_launcher_icons",
+      "rootUri": "file:///Users/davepetzold/.pub-cache/hosted/pub.dev/flutter_launcher_icons-0.12.0",
+      "packageUri": "lib/",
+      "languageVersion": "2.18"
     },
     {
       "name": "flutter_lints",
@@ -740,7 +752,7 @@
       "languageVersion": "2.18"
     }
   ],
-  "generated": "2023-03-09T00:07:09.129497Z",
+  "generated": "2023-03-09T00:19:27.320795Z",
   "generator": "pub",
   "generatorVersion": "2.19.3"
 }

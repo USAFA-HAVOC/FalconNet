@@ -82,6 +82,10 @@ checked_yaml
 2.18
 file:///Users/davepetzold/.pub-cache/hosted/pub.dev/checked_yaml-2.0.2/
 file:///Users/davepetzold/.pub-cache/hosted/pub.dev/checked_yaml-2.0.2/lib/
+cli_util
+2.12
+file:///Users/davepetzold/.pub-cache/hosted/pub.dev/cli_util-0.3.5/
+file:///Users/davepetzold/.pub-cache/hosted/pub.dev/cli_util-0.3.5/lib/
 clock
 2.12
 file:///Users/davepetzold/.pub-cache/hosted/pub.dev/clock-1.1.1/
@@ -150,6 +154,10 @@ flutter_inappwebview
 2.14
 file:///Users/davepetzold/.pub-cache/hosted/pub.dev/flutter_inappwebview-5.7.2+3/
 file:///Users/davepetzold/.pub-cache/hosted/pub.dev/flutter_inappwebview-5.7.2+3/lib/
+flutter_launcher_icons
+2.18
+file:///Users/davepetzold/.pub-cache/hosted/pub.dev/flutter_launcher_icons-0.12.0/
+file:///Users/davepetzold/.pub-cache/hosted/pub.dev/flutter_launcher_icons-0.12.0/lib/
 flutter_lints
 2.17
 file:///Users/davepetzold/.pub-cache/hosted/pub.dev/flutter_lints-2.0.1/

@@ -68,6 +68,26 @@ dev_dependencies:
   flutter_lints: ^2.0.0
   build_runner: 2.3.0
   built_value_generator:
+  # App icons
+  flutter_launcher_icons: "^0.12.0"
+
+flutter_icons:
+  # image_path: "assets/icon/FalconNet-IOS.png"
+  image_path_android: "assets/icon/FalconNet-Android.png"
+  android: true
+  image_path_ios: "assets/icon/FalconNet-IOS.png"
+  ios: true
+  min_sdk_android: 21 # android min sdk min:16, default 21
+  web:
+    generate: true
+    image_path: "assets/icon/FalconNet-Google-play.png"
+  windows:
+    generate: true
+    image_path: "assets/icon/FalconNet-Google-play.png"
+    icon_size: 48 # min:48, max:256, default: 48
+  macos:
+    generate: true
+    image_path: "assets/icon/FalconNet-Google-play.png"
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
