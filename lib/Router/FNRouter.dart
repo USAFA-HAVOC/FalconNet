@@ -6,6 +6,7 @@ import 'package:falcon_net/Structure/Pages/TaskManagement/TaskManagement.dart';
 import 'package:falcon_net/Structure/Pages/TaskManagement/Tasks/Assignment/AssignmentTask.dart';
 import 'package:falcon_net/Structure/Pages/TaskManagement/Tasks/Delegation/DelegationTask.dart';
 import 'package:falcon_net/Structure/Pages/TaskManagement/Tasks/UnitEditor/UnitEditorTask.dart';
+import 'package:falcon_net/Structure/Pages/TaskManagement/Tasks/UnitManagement/UnitManagementTask.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import '../Model/Database/TimedRole.dart';
@@ -122,6 +123,11 @@ GoRouter fnRouter(GlobalKey<NavigatorState> key) => GoRouter(
                       GoRoute(
                         path: "unit_editor",
                         pageBuilder: fullSlide(const UnitEditorTask()),
+                      ),
+
+                      GoRoute(
+                        path: "unit_management",
+                        pageBuilder: fullSlide(const UnitManagementTask()),
                       ),
 
                       GoRoute(

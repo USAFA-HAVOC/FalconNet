@@ -6,6 +6,7 @@ import 'package:falcon_net/Model/Database/UnitDataRequest.dart';
 import 'package:falcon_net/Model/Database/UnitSummary.dart';
 import 'package:falcon_net/Model/Database/WingData.dart';
 import 'package:falcon_net/Model/Store/Endpoints.dart';
+import 'package:falcon_net/Structure/Components/FNPage.dart';
 import 'package:falcon_net/Structure/Components/LoadingShimmer.dart';
 import 'package:falcon_net/Structure/Pages/TaskManagement/Tasks/CWOC/CWOCStatusWidget.dart';
 import 'package:falcon_net/Structure/Pages/TaskManagement/Tasks/Shared/SigningWidget.dart';
@@ -82,7 +83,6 @@ class CWOCTaskState extends State<CWOCTask> {
 
     try {
       UnitData actual = await Endpoints.unitData(UnitDataRequest((b) => b..unit = unit));
-      print(actual);
       setState(() {
         connection = Future.value(wing.set(actual));
         loaded.add(actual);
@@ -121,7 +121,7 @@ class CWOCTaskState extends State<CWOCTask> {
         isExpanded: expansions[unit.unit.name]!,
         backgroundColor: Theme.of(context).cardTheme.color,
         headerBuilder: (context, expanded) => Padding(
-          padding: EdgeInsets.all(20),
+          padding: const EdgeInsets.all(20),
 
           child: Row(
             children: [
@@ -144,7 +144,7 @@ class CWOCTaskState extends State<CWOCTask> {
         ),
 
         body: Padding(
-          padding: EdgeInsets.all(20),
+          padding: const EdgeInsets.all(20),
           child: body,
         )
     );
@@ -163,7 +163,7 @@ class CWOCTaskState extends State<CWOCTask> {
       (g % 2 == 0 ? left : right).addAll(
         [
           CWOCStatusWidget(units: units.where((unit) => unit.unit.group == group).toList(), label: group),
-          SizedBox(height: 20,)
+          const SizedBox(height: 20,)
         ]
       );
     }
@@ -178,7 +178,7 @@ class CWOCTaskState extends State<CWOCTask> {
           ),
         ),
 
-        SizedBox(width: 20,),
+        const SizedBox(width: 20,),
 
         Expanded(
           child: Column(
@@ -201,7 +201,7 @@ class CWOCTaskState extends State<CWOCTask> {
       children.addAll([
         CWOCStatusWidget(units: units.where((u) => u.unit.group == group).toList(), label: group),
 
-        SizedBox(height: 20,),
+        const SizedBox(height: 20,),
       ]);
     }
 
@@ -213,78 +213,63 @@ class CWOCTaskState extends State<CWOCTask> {
 
   @override
   Widget build(BuildContext context) {
-    return ListView(
-        shrinkWrap: true,
-        padding: const EdgeInsets.all(20),
-        children: [
-          Padding(
-            padding: const EdgeInsets.only(bottom: 20),
-            child: Text(
-                "CWOC",
-                style: Theme.of(context).textTheme.titleLarge
-            ),
-          ),
+    return FutureBuilder(
+      future: connection,
+      builder: (context, snapshot) {
 
-          FutureBuilder(
-            future: connection,
-            builder: (context, snapshot) {
+        var units = snapshot.data?.units.toList() ?? [];
+        return LayoutBuilder(
+          builder: (context, constraints) {
+            Widget status;
 
-              var units = snapshot.data?.units.toList() ?? [];
-              return LayoutBuilder(
-                builder: (context, constraints) {
-                  Widget status;
+            //Displays a group data as grid if screen is wide enough
+            if (constraints.maxWidth > 700) {
+              status = buildStatusGrid(units);
+            }
 
-                  //Displays a group data as grid if screen is wide enough
-                  if (constraints.maxWidth > 700) {
-                    status = buildStatusGrid(units);
+            //Otherwise, displays in a simple column
+            else {
+              status = buildStatusColumn(units);
+            }
+
+            Widget unitList;
+
+            //Displays a loading shimmer until results load
+            if (snapshot.data == null) {
+              unitList = const LoadingShimmer(height: 200,);
+            }
+
+            //Then displays an expansion panel list for each unit
+            else {
+              unitList = ExpansionPanelList(
+                children: units.toList().map((unit) =>
+                    buildPanel(context, snapshot.data ?? WingData((b) => b.units = BuiltList<UnitSummary>([]).toBuilder()), unit)
+                ).toList(),
+
+                expansionCallback: (index, status) {
+                  var unit = units.toList()[index];
+                  if (!loaded.any((u) => unit.unit.name == u.unit.name) && !status) {
+                    loadUnit(unit.unit.name, ScaffoldMessenger.of(context));
                   }
 
-                  //Otherwise, displays in a simple column
-                  else {
-                    status = buildStatusColumn(units);
-                  }
-
-                  Widget unitList;
-
-                  //Displays a loading shimmer until results load
-                  if (snapshot.data == null) {
-                    unitList = const LoadingShimmer(height: 200,);
-                  }
-
-                  //Then displays an expansion panel list for each unit
-                  else {
-                    unitList = ExpansionPanelList(
-                      children: units.toList().map((unit) =>
-                          buildPanel(context, snapshot.data ?? WingData((b) => b.units = BuiltList<UnitSummary>([]).toBuilder()), unit)
-                      ).toList(),
-
-                      expansionCallback: (index, status) {
-                        var unit = units.toList()[index];
-                        if (!loaded.any((u) => unit.unit.name == u.unit.name) && !status) {
-                          loadUnit(unit.unit.name, ScaffoldMessenger.of(context));
-                        }
-
-                        setState(() {
-                          expansions[unit.unit.name] = !status;
-                        });
-                      },
-                    );
-                  }
-
-                  return Column(
-                    children: [
-                      status,
-
-                      const SizedBox(height: 20,),
-
-                      unitList,
-                    ],
-                  );
+                  setState(() {
+                    expansions[unit.unit.name] = !status;
+                  });
                 },
               );
-            },
-          ),
-        ]
+            }
+
+            return FNPage(
+                title: "CWOC",
+                children: [
+                  status,
+
+                  unitList
+                ]
+            );
+          },
+        );
+      },
     );
   }
 }

@@ -1,6 +1,7 @@
 import 'package:async_redux/async_redux.dart';
 import 'package:falcon_net/Model/Database/User.dart';
 import 'package:falcon_net/Model/Store/GlobalStateModel.dart';
+import 'package:falcon_net/Structure/Components/FNPage.dart';
 import 'package:falcon_net/Structure/Components/PaddedColumn.dart';
 import 'package:falcon_net/Structure/Components/ViewModel.dart';
 import 'package:flutter/material.dart';
@@ -57,66 +58,51 @@ class ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
-    return ListView(
-      children: [
-        Padding(
-          padding: EdgeInsets.all(20),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Padding(
-                padding: EdgeInsets.only(bottom: 20),
-                child: Text(
-                    "Profile",
-                    style: Theme.of(context).textTheme.titleLarge
+    return FNPage(
+        title: "Profile",
+        children: [
+          Card(
+            child: PaddedColumn(
+              padding: const EdgeInsets.all(10),
+              children: [
+                const Icon(
+                    Icons.person_outline
                 ),
-              ),
 
-              Card(
-                child: PaddedColumn(
-                  padding: EdgeInsets.all(10),
-                  children: [
-                    Icon(
-                        Icons.person_outline
-                    ),
-
-                    //Greets the user by name according to global state
-                    StoreConnector<GlobalState, ViewModel<User>>(
-                        converter: (store) => ViewModel<User>(store: store, content: store.state.user),
-                        builder: (context, model) {
-                          return Text(
-                            "Hi, ${model.content.personal_info.full_name}!",
-                            style: Theme.of(context).textTheme.titleMedium,
-                          );
-                        }
-                    ),
-
-                    TabBar(
-                        controller: tabController,
-                        labelPadding: EdgeInsets.zero,
-                        tabs: tabs,
-                        onTap: (newIndex) {
-                          setState(() {
-                            previousIndex = index;
-                            index = newIndex;
-                          });
-                        },
-                    ),
-
-                    AnimatedCrossFade(
-                        firstChild: pages[index],
-                        secondChild: pages[previousIndex],
-                        crossFadeState: CrossFadeState.showFirst,
-                        duration: Duration(milliseconds: 250),
-                        sizeCurve: Curves.ease,
-                    ),
-                  ],
+                //Greets the user by name according to global state
+                StoreConnector<GlobalState, ViewModel<User>>(
+                    converter: (store) => ViewModel<User>(store: store, content: store.state.user),
+                    builder: (context, model) {
+                      return Text(
+                        "Hi, ${model.content.personal_info.full_name}!",
+                        style: Theme.of(context).textTheme.titleMedium,
+                      );
+                    }
                 ),
-              )
-            ],
-          ),
-        ),
-      ],
+
+                TabBar(
+                  controller: tabController,
+                  labelPadding: EdgeInsets.zero,
+                  tabs: tabs,
+                  onTap: (newIndex) {
+                    setState(() {
+                      previousIndex = index;
+                      index = newIndex;
+                    });
+                  },
+                ),
+
+                AnimatedCrossFade(
+                  firstChild: pages[index],
+                  secondChild: pages[previousIndex],
+                  crossFadeState: CrossFadeState.showFirst,
+                  duration: const Duration(milliseconds: 250),
+                  sizeCurve: Curves.ease,
+                ),
+              ],
+            ),
+          )
+        ]
     );
   }
 }

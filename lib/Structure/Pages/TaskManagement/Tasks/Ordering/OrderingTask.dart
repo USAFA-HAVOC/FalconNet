@@ -3,6 +3,7 @@ import 'package:falcon_net/Structure/Components/PageWidget.dart';
 import 'package:falcon_net/Structure/Pages/TaskManagement/Tasks/Ordering/OrderingForm.dart';
 import 'package:flutter/material.dart';
 
+import '../../../../Components/FNPage.dart';
 import 'Order.dart';
 
 ///Applet for submitting Q&I / Bedrest meal orders
@@ -35,106 +36,86 @@ class OrderingTaskState extends State<OrderingTask> {
 
   @override
   Widget build(BuildContext context) {
-    return ListView(
-      children: [
-        Padding(
-          padding: EdgeInsets.all(20),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Padding(
-                padding: EdgeInsets.only(bottom: 20),
-                child: Text(
-                    "Ordering",
-                    style: Theme.of(context).textTheme.titleLarge
-                ),
-              ),
+    return FutureBuilder<Order>(
+        future: future,
+        initialData: null,
+        builder: (context, snapshot) {
+          //Retrieve the scaffold messenger to display snack bar later
+          var messenger = ScaffoldMessenger.of(context);
+          var order = snapshot.data;
 
-              //Builds and updates content as future loads
-              FutureBuilder<Order>(
-                  future: future,
-                  initialData: null,
-                  builder: (context, snapshot) {
+          Widget child;
 
-                    //Retrieve the scaffold messenger to display snack bar later
-                    var messenger = ScaffoldMessenger.of(context);
+          if (order == null) {
+            child = const LoadingShimmer();
+          }
 
-                    var order = snapshot.data;
+          else {
+            child = PageWidget(
+              title: "Current Order",
+              children: [
+                Text("Regular Meals: ${order.regular}"),
 
-                    if (order == null) {
-                      return PageWidget(
-                          title: "Current Order",
+                Text("Vegetarian Meals: ${order.vegetarian}"),
 
-                          children: [
-                            LoadingShimmer(),
-                          ]
-                      );
-                    }
+                ElevatedButton(
+                  onPressed: () => showDialog(context: context, builder: (context) => Dialog(
+                    child: Padding(
+                      padding: const EdgeInsets.all(10),
+                      child: OrderingForm(
+                        order: order,
 
-                    else {
-                      return PageWidget(
-                        title: "Current Order",
-                        children: [
-                          Text("Regular Meals: ${order.regular}"),
+                        /*
+                          When an update is submitted, initially update
+                          state. Next, make an api call with update and
+                          wait for results. If failed, reset order and
+                          alert user.
+                         */
+                        onSubmit: (change) {
+                          var previous = order;
 
-                          Text("Vegetarian Meals: ${order.vegetarian}"),
+                          setState(() {
+                            future = Future<Order>.value(change);
+                          });
 
-                          ElevatedButton(
-                            onPressed: () => showDialog(context: context, builder: (context) => Dialog(
-                              child: Padding(
-                                padding: EdgeInsets.all(10),
-                                child: OrderingForm(
-                                  order: order,
+                          submitOrder(change).then((result) {
 
-                                  /*
-                                  When an update is submitted, initially update
-                                  state. Next, make an api call with update and
-                                  wait for results. If failed, reset order and
-                                  alert user.
-                                   */
-                                  onSubmit: (change) {
-                                    var previous = order;
+                            //If order wasn't sucessfully submitted
+                            if (!result) {
+                              messenger.showSnackBar(const SnackBar(
+                                content: Text("Order failed to submit"),
+                              ));
 
-                                    setState(() {
-                                      future = Future<Order>.value(change);
-                                    });
+                              setState(() {
+                                future = Future<Order>.value(previous);
+                              });
+                            }
+                          });
 
-                                    submitOrder(change).then((result) {
+                          Navigator.of(context).pop();
+                        },
 
-                                      //If order wasn't sucessfully submitted
-                                      if (!result) {
-                                        messenger.showSnackBar(SnackBar(
-                                            content: Text("Order failed to submit"),
-                                        ));
+                        onCancel: () => Navigator.of(context).pop(),
+                      ),
+                    ),
+                  )),
 
-                                        setState(() {
-                                          future = Future<Order>.value(previous);
-                                        });
-                                      }
-                                    });
+                  child: const Padding(
+                    padding: EdgeInsets.symmetric(vertical: 10),
+                    child: Text('Update'),
+                  ),
+                )
+              ],
+            );
+          }
 
-                                    Navigator.of(context).pop();
-                                  },
-
-                                  onCancel: () => Navigator.of(context).pop(),
-                                ),
-                              ),
-                            )),
-
-                            child: Padding(
-                              padding: EdgeInsets.symmetric(vertical: 10),
-                              child: Text('Update'),
-                            ),
-                          )
-                        ],
-                      );
-                    }
-                  }
-              ),
-            ],
-          ),
-        )
-      ],
+          return FNPage(
+              title: "Ordering",
+              children: [
+                child
+              ]
+          );
+        }
     );
   }
 }

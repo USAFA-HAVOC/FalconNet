@@ -31,6 +31,7 @@ class FormAction extends ReduxAction<GlobalState> {
       onSucceed?.call();
       return sb.build();
     }
+
     catch (e) {
       displayError(prefix: "Form", exception: e);
       onFail?.call();

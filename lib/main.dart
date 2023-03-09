@@ -1,7 +1,5 @@
 import 'dart:async';
 
-import 'package:aad_oauth/model/config.dart';
-import 'package:aad_oauth/model/token.dart';
 import 'package:async_redux/async_redux.dart';
 import 'package:built_collection/built_collection.dart';
 import 'package:falcon_net/Model/Database/CadetAccountability.dart';
@@ -11,14 +9,15 @@ import 'package:falcon_net/Model/Database/UserNotification.dart';
 import 'package:falcon_net/Model/Database/UserPersonalInfo.dart';
 import 'package:falcon_net/Model/Store/Actions/GlobalAction.dart';
 import 'package:falcon_net/Model/Store/Actions/InfoAction.dart';
+import 'package:falcon_net/Model/Store/Actions/SettingsAction.dart';
 import 'package:falcon_net/Model/Store/Endpoints.dart';
 import 'package:falcon_net/Model/Store/GlobalStateModel.dart';
 import 'package:falcon_net/Theme/Dark/DarkTheme.dart';
 import 'package:falcon_net/Theme/Light/LightTheme.dart';
 import 'package:falcon_net/Theme/Random/RandomTheme.dart';
-import 'package:falcon_net/Utility/FNOAuth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:go_router/go_router.dart';
 
 
@@ -27,7 +26,7 @@ import 'Router/FNRouter.dart';
 import 'Structure/Components/ViewModel.dart';
 import "package:universal_html/html.dart" as html;
 
-void main() {
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   //Initialize a default store
@@ -69,6 +68,13 @@ void main() {
       )
   );
 
+  WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
+  FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
+
+  await store.dispatch(SettingsAction.retrieve());
+
+  FlutterNativeSplash.remove();
+
   runApp(FNApp(store: store));
 }
 
@@ -91,7 +97,7 @@ class FNAppState extends State<FNApp> {
   void initState() {
     /// todo: session management
     signed = false;
-    Timer.periodic(const Duration(seconds: 10), (timer) {
+    Timer.periodic(const Duration(minutes: 5), (timer) {
       if (signed) {
         widget.store.dispatch(InfoAction.retrieve());
       }
@@ -129,19 +135,18 @@ class FNAppState extends State<FNApp> {
 
   @override
   Widget build(BuildContext context) {
-    String? auth_token;
+    String? authToken;
 
     if (!signed) {
       if (kIsWeb) {
         Uri s = Uri.parse(html.window.location.toString());
-        print(s.queryParameters);
         if (s.queryParameters.containsKey("code")) {
           html.window.history.pushState(null, 'FalconNet', '');
-          auth_token = s.queryParameters["code"];
+          authToken = s.queryParameters["code"];
         }
       }
 
-      oauth.setCode(auth_token);
+      oauth.setCode(authToken);
       appLogin();
     }
 
@@ -151,7 +156,9 @@ class FNAppState extends State<FNApp> {
       child: StoreConnector<GlobalState, ViewModel<String>>(
         converter: (store) => ViewModel(store: store, content: store.state.settings.theme),
         builder: (context, model) => MaterialApp.router(
-          theme: model.content == "light" ? lightTheme : (model.content == "dark" ? darkTheme : randomTheme),
+          theme: model.content == "light" ? lightTheme : randomTheme,
+          darkTheme: darkTheme,
+          themeMode: model.content == "dark" ? ThemeMode.dark : ThemeMode.light,
           routerConfig: router,
         ),
       ),

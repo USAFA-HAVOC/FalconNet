@@ -22,13 +22,19 @@ class CadetInfo extends StatelessWidget {
             children: [
               SizedBox(height: 20,),
 
+              // InputBlock(
+              //   label: "Name",
+              //   onSubmit: (value) => model.dispatch(InfoAction(modify: (b) => b..personal_info.full_name = value)),
+              //   validator: (String? value) => (value ?? "").characters.length >= 6,
+              //   error: "Name must have at least six characters",
+              //   hint: "Jane Doe",
+              //   initial: model.content.personal_info.full_name,
+              // ),
               InputBlock(
                 label: "Name",
-                onSubmit: (value) => model.dispatch(InfoAction(modify: (b) => b..personal_info.full_name = value)),
-                validator: (String? value) => (value ?? "").characters.length >= 6,
-                error: "Name must have at least six characters",
-                hint: "Jane Doe",
+                disabled: true,
                 initial: model.content.personal_info.full_name,
+                onSubmit: (input) {  },
               ),
 
               SizedBox(height: 20,),
