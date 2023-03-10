@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:async_redux/async_redux.dart';
 import 'package:built_collection/built_collection.dart';
 import 'package:falcon_net/Model/Database/CadetAccountability.dart';
@@ -11,20 +9,18 @@ import 'package:falcon_net/Model/Store/Actions/GlobalAction.dart';
 import 'package:falcon_net/Model/Store/Actions/SettingsAction.dart';
 import 'package:falcon_net/Model/Store/Endpoints.dart';
 import 'package:falcon_net/Model/Store/GlobalStateModel.dart';
-import 'package:falcon_net/Structure/Pages/Dashboard/Dashboard.dart';
 import 'package:falcon_net/Theme/Dark/DarkTheme.dart';
 import 'package:falcon_net/Theme/Light/LightTheme.dart';
 import 'package:falcon_net/Theme/Random/RandomTheme.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:go_router/go_router.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 
 import 'Model/Database/UserSettings.dart';
 import 'Router/FNRouter.dart';
 import 'Structure/Components/ViewModel.dart';
-import "package:universal_html/html.dart" as html;
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -72,16 +68,20 @@ void main() async {
   FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
 
   await store.dispatch(SettingsAction.retrieve());
+  var account = (await SharedPreferences.getInstance()).getBool("account") ?? false;
+
+  /// todo: check for valid session and initialize app fully here
 
   FlutterNativeSplash.remove();
 
-  runApp(FNApp(store: store));
+  runApp(FNApp(store: store, sign: account ? SignState.account : SignState.none));
 }
 
 class FNApp extends StatefulWidget {
   final Store<GlobalState> store;
+  final SignState sign;
 
-  const FNApp({super.key, required this.store});
+  const FNApp({super.key, required this.store, required this.sign});
 
   @override
   State<StatefulWidget> createState() => FNAppState();
@@ -90,17 +90,24 @@ class FNApp extends StatefulWidget {
 final navigatorKey = GlobalKey<NavigatorState>();
 
 class FNAppState extends State<FNApp> {
-  late bool signed;
+  late GoRouter router;
 
   @override
   void initState() {
     /// todo: session management
-    signed = false;
+    router = fnRouter(
+        navigatorKey,
+        widget.sign
+    );
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
+    if (widget.sign == SignState.account) {
+      attemptLogin();
+      widget.store.dispatch(GlobalAction.initialize());
+    }
 
     //Surrounds the app with a store provider so all child widgets can access global state
     return StoreProvider(
@@ -111,65 +118,38 @@ class FNAppState extends State<FNApp> {
           theme: model.content == "light" ? lightTheme : randomTheme,
           darkTheme: darkTheme,
           themeMode: model.content == "dark" ? ThemeMode.dark : ThemeMode.light,
-          routerConfig: fnRouter(
-            navigatorKey,
-            signed,
-            () {
-              setState(() => signed = true);
-            },
-            () {
-              //navigatorKey.currentState!.push(MaterialPageRoute(builder: (context) => const Dashboard()));
-              setState(() => signed = true);
-            }
-          ),
+          routerConfig: router
         ),
       ),
     );
   }
 }
 
-class FNLogin extends StatelessWidget {
+class SelectionView extends StatelessWidget {
   final Function() onSigned;
   final Function() onDemo;
 
-  const FNLogin({super.key, required this.onSigned, required this.onDemo});
-
-  Future<void> appLogin(Function(ReduxAction<GlobalState>) dispatch) async {
-    await authLogin();
-
-    dispatch(GlobalAction.initialize());
-  }
+  const SelectionView({super.key, required this.onSigned, required this.onDemo});
 
   @override
   Widget build(BuildContext context) {
-    return StoreConnector<GlobalState, ViewModel<void>>(
-        converter: (store) => ViewModel(store: store, content: null),
-        builder: (context, model) => ListView(
-          shrinkWrap: true,
-          children: [
-            ElevatedButton(
-                onPressed: () async {
-                  String? authToken;
-                  if (kIsWeb) {
-                    Uri s = Uri.parse(html.window.location.toString());
-                    if (s.queryParameters.containsKey("code")) {
-                      html.window.history.pushState(null, 'FalconNet', '');
-                      authToken = s.queryParameters["code"];
-                    }
-                  }
-                  await appLogin(model.dispatch);
-                  oauth.setCode(authToken);
-                  onSigned();
-                },
-                child: const Text("Microsoft Login")
-            ),
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      children: [
+        ElevatedButton(
+            onPressed: () async {
+              attemptLogin();
+              onSigned();
+            },
+            child: const Text("Microsoft Login")
+        ),
 
-            ElevatedButton(
-                onPressed: () => onDemo(),
-                child: const Text("Demo Mode")
-            ),
-          ],
-        )
+        ElevatedButton(
+            onPressed: () => onDemo(),
+            child: const Text("Demo Mode")
+        ),
+      ],
     );
   }
 }

@@ -12,6 +12,8 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import '../Model/Database/TimedRole.dart';
 import '../Model/Database/User.dart';
+import '../Model/Store/Actions/GlobalAction.dart';
+import '../Model/Store/Endpoints.dart';
 import '../Model/Store/GlobalStateModel.dart';
 import '../Structure/FNScaffold.dart';
 import '../Structure/Pages/Dashboard/Dashboard.dart';
@@ -23,12 +25,18 @@ import '../Structure/Pages/TaskManagement/Tasks/CWOC/CWOCTask.dart';
 import '../Structure/Pages/TaskManagement/Tasks/Ordering/OrderingTask.dart';
 import '../Structure/Pages/TaskManagement/Tasks/SDO/SDOTask.dart';
 
+enum SignState {
+  signed,
+  account,
+  none
+}
+
 ///Defines page routes within the app and places each within the app scaffold
 ///Contains each within the default background to prevent
 ///transparency effects during transitions
-GoRouter fnRouter(GlobalKey<NavigatorState> key, bool signed, Function() onSigned, Function() onDemo) => GoRouter(
+GoRouter fnRouter(GlobalKey<NavigatorState> key, SignState sign) => GoRouter(
   navigatorKey: key,
-  initialLocation: signed ? "/" : "/selection",
+  initialLocation: sign != SignState.none ? "/" : "/selection",
   routes: [
     GoRoute(
       path: "/login",
@@ -37,7 +45,20 @@ GoRouter fnRouter(GlobalKey<NavigatorState> key, bool signed, Function() onSigne
 
     GoRoute(
       path: "/selection",
-      builder: (context, state) => FNLogin(onSigned: onSigned, onDemo: onDemo),
+      builder: (context, state) => StoreConnector<GlobalState, ViewModel<void>>(
+        converter: (store) => ViewModel(store: store, content: null),
+        builder: (context, model) => SelectionView(
+            onSigned: () {
+              model.dispatch(GlobalAction.initialize());
+              context.go("/");
+            },
+            onDemo: () {
+              demo();
+              model.dispatch(GlobalAction.initialize());
+              context.go("/");
+            }
+        ),
+      )
     ),
 
     //Shell route places contents of all sub-routes as child of the scaffold

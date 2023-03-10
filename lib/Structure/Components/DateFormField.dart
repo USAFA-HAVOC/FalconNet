@@ -53,7 +53,7 @@ class DateFormFieldState extends State<DateFormField> {
         DateTime? pickedDate = await showDatePicker(
           context: context,
           initialDate: parseDate(value),
-          firstDate: widget.firstDate ?? DateTime.now().toUtc(),
+          firstDate: widget.firstDate ?? DateTime.now().subtract(Duration(seconds: 10)),
           lastDate: widget.lastDate ?? DateTime(2300),
         );
 

@@ -268,7 +268,7 @@ class PassFormState extends State<PassForm>
                       items: buildTypeOptions(),
                     ),
 
-                    SizedBox(
+                    const SizedBox(
                       height: 10,
                     ),
 
@@ -294,9 +294,11 @@ class PassFormState extends State<PassForm>
                                     emptyMessage:
                                         "Please enter an SCA number")(content);
                               }
+                              return null;
                             },
                           ),
-                          SizedBox(
+
+                          const SizedBox(
                             height: 10,
                           ),
                         ],
@@ -313,7 +315,7 @@ class PassFormState extends State<PassForm>
                           emptyMessage: "Please enter a description"),
                     ),
 
-                    SizedBox(
+                    const SizedBox(
                       height: 10,
                     ),
 
@@ -321,7 +323,8 @@ class PassFormState extends State<PassForm>
                       value: state,
                       decoration: InputDecoration(
                           labelStyle: Theme.of(context).textTheme.bodyLarge,
-                          labelText: "State"),
+                          labelText: "State"
+                      ),
                       onChanged: (value) {
                         setState(() {
                           state = value!;
@@ -331,7 +334,7 @@ class PassFormState extends State<PassForm>
                       items: buildStateOptions(),
                     ),
 
-                    SizedBox(
+                    const SizedBox(
                       height: 10,
                     ),
 
@@ -350,7 +353,9 @@ class PassFormState extends State<PassForm>
                                 emptyMessage: "Please enter a city"),
                           ),
                         ),
-                        Spacer(flex: 1),
+
+                        const Spacer(flex: 1),
+
                         Expanded(
                           flex: 3,
                           child: TextFormField(
@@ -367,7 +372,7 @@ class PassFormState extends State<PassForm>
                       ],
                     ),
 
-                    SizedBox(
+                    const SizedBox(
                       height: 10,
                     ),
 
@@ -386,14 +391,15 @@ class PassFormState extends State<PassForm>
                             },
                           ),
                         ),
-                        Spacer(flex: 1),
+
+                        const Spacer(flex: 1),
+
                         Expanded(
                           flex: 4,
                           child: TimeFormField(
                             value: timeValue,
                             label: "Return Time",
-                            validator: InputValidation.time(
-                                date: parseDate(dateValue)),
+                            validator: InputValidation.time(date: parseDate(dateValue)),
                             onChanged: (change) {
                               setState(
                                 () {
@@ -406,7 +412,7 @@ class PassFormState extends State<PassForm>
                       ],
                     ),
 
-                    SizedBox(
+                    const SizedBox(
                       height: 10,
                     ),
 
@@ -415,7 +421,7 @@ class PassFormState extends State<PassForm>
                         maximizePass();
                       },
                       child: Padding(
-                        padding: EdgeInsets.symmetric(vertical: 5),
+                        padding: const EdgeInsets.symmetric(vertical: 5),
                         child: Text(
                           'Max Duration',
                           style: Theme.of(context).textTheme.labelLarge,
@@ -423,7 +429,7 @@ class PassFormState extends State<PassForm>
                       ),
                     ),
 
-                    SizedBox(
+                    const SizedBox(
                       height: 20,
                     ),
 
@@ -433,7 +439,7 @@ class PassFormState extends State<PassForm>
                         Expanded(
                           flex: 5,
                           child: Padding(
-                            padding: EdgeInsets.symmetric(vertical: 20),
+                            padding: const EdgeInsets.symmetric(vertical: 20),
                             child: ElevatedButton(
                               onPressed: () {
                                 //If form entries are valid, call submission closure with formatted pass
@@ -442,7 +448,7 @@ class PassFormState extends State<PassForm>
                                 }
                               },
                               child: Padding(
-                                padding: EdgeInsets.symmetric(vertical: 10),
+                                padding: const EdgeInsets.symmetric(vertical: 10),
                                 child: Text('Submit',
                                     style:
                                         Theme.of(context).textTheme.labelLarge),
@@ -450,7 +456,9 @@ class PassFormState extends State<PassForm>
                             ),
                           ),
                         ),
-                        Spacer(flex: 1),
+
+                        const Spacer(flex: 1),
+
                         Expanded(
                           flex: 5,
                           child: ElevatedButton(
@@ -463,7 +471,7 @@ class PassFormState extends State<PassForm>
                               widget.onCancel();
                             },
                             child: Padding(
-                              padding: EdgeInsets.symmetric(vertical: 10),
+                              padding: const EdgeInsets.symmetric(vertical: 10),
                               child: Text(
                                 'Cancel',
                                 style: Theme.of(context).textTheme.labelLarge,

@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:async_redux/async_redux.dart';
+import 'package:falcon_net/Model/Store/Actions/FormAction.dart';
 import 'package:falcon_net/Model/Store/Actions/GradeAction.dart';
 import 'package:falcon_net/Model/Store/Actions/HistoryAction.dart';
 import 'package:falcon_net/Model/Store/Actions/InfoAction.dart';
@@ -51,6 +52,9 @@ class GlobalAction extends ReduxAction<GlobalState> {
         await dispatch(SettingsAction.retrieve(onFail: fail));
         await dispatch(HistoryAction.retrieve(onFail: fail));
         await dispatch(NotificationAction.retrieve(onFail: fail));
+        await dispatch(FormAction.retrieve(onFail: () => {
+          print("Forms endpoint not implemented")
+        }));
 
         if (failed) {
           onFail?.call();
