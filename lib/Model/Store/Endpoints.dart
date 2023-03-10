@@ -14,7 +14,10 @@ import 'package:falcon_net/Model/Database/UserSummaryList.dart';
 import 'package:falcon_net/Model/Serializers.dart';
 import 'package:built_collection/built_collection.dart';
 import 'package:falcon_net/Utility/FNOAuth.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import "package:universal_html/html.dart" as html;
 
 import '../../main.dart';
 import '../Database/CadetLeave.dart';
@@ -28,6 +31,7 @@ import '../Database/UnitDataRequest.dart';
 import '../Database/UnitList.dart';
 import '../Database/UserList.dart';
 import '../Database/WingData.dart';
+import 'DemoData.dart';
 
 final options = BaseOptions(
   baseUrl: 'https://api.ethanchapman.dev/',
@@ -68,6 +72,11 @@ class Endpoint<Req, Res> {
   Endpoint(this.path, {this.protected = false, this.get = false});
 
   Future<Res> call(Req request, {String? token}) async {
+
+    if (APIData.demo) {
+      return demoEndpoints[path]!(request) as Res;
+    }
+
     dynamic data;
 
     await authLogin();
@@ -127,10 +136,29 @@ class Endpoints {
 
 class APIData {
   static bool authenticated = false;
+  static bool demo = false;
   static User? userData;
 }
 
 Future<void> login(String token) async {
   dio.options.headers = {"Authorization": "Bearer $token"};
   APIData.authenticated = true;
+  await (await SharedPreferences.getInstance()).setBool("account", true);
+}
+
+void demo() {
+  APIData.demo = true;
+}
+
+Future<void> attemptLogin() async {
+  String? authToken;
+  if (kIsWeb) {
+    Uri s = Uri.parse(html.window.location.toString());
+    if (s.queryParameters.containsKey("code")) {
+      html.window.history.pushState(null, 'FalconNet', '');
+      authToken = s.queryParameters["code"];
+    }
+  }
+  await authLogin();
+  oauth.setCode(authToken);
 }

@@ -7,10 +7,13 @@ import 'package:falcon_net/Structure/Pages/TaskManagement/Tasks/Assignment/Assig
 import 'package:falcon_net/Structure/Pages/TaskManagement/Tasks/Delegation/DelegationTask.dart';
 import 'package:falcon_net/Structure/Pages/TaskManagement/Tasks/UnitEditor/UnitEditorTask.dart';
 import 'package:falcon_net/Structure/Pages/TaskManagement/Tasks/UnitManagement/UnitManagementTask.dart';
+import 'package:falcon_net/main.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import '../Model/Database/TimedRole.dart';
 import '../Model/Database/User.dart';
+import '../Model/Store/Actions/GlobalAction.dart';
+import '../Model/Store/Endpoints.dart';
 import '../Model/Store/GlobalStateModel.dart';
 import '../Structure/FNScaffold.dart';
 import '../Structure/Pages/Dashboard/Dashboard.dart';
@@ -22,15 +25,40 @@ import '../Structure/Pages/TaskManagement/Tasks/CWOC/CWOCTask.dart';
 import '../Structure/Pages/TaskManagement/Tasks/Ordering/OrderingTask.dart';
 import '../Structure/Pages/TaskManagement/Tasks/SDO/SDOTask.dart';
 
+enum SignState {
+  signed,
+  account,
+  none
+}
+
 ///Defines page routes within the app and places each within the app scaffold
 ///Contains each within the default background to prevent
 ///transparency effects during transitions
-GoRouter fnRouter(GlobalKey<NavigatorState> key) => GoRouter(
+GoRouter fnRouter(GlobalKey<NavigatorState> key, SignState sign) => GoRouter(
   navigatorKey: key,
+  initialLocation: sign != SignState.none ? "/" : "/selection",
   routes: [
     GoRoute(
       path: "/login",
       pageBuilder: (context, state) => fullSlideUp(state.extra as Widget)(context, state),
+    ),
+
+    GoRoute(
+      path: "/selection",
+      builder: (context, state) => StoreConnector<GlobalState, ViewModel<void>>(
+        converter: (store) => ViewModel(store: store, content: null),
+        builder: (context, model) => SelectionView(
+            onSigned: () {
+              model.dispatch(GlobalAction.initialize());
+              context.go("/");
+            },
+            onDemo: () {
+              demo();
+              model.dispatch(GlobalAction.initialize());
+              context.go("/");
+            }
+        ),
+      )
     ),
 
     //Shell route places contents of all sub-routes as child of the scaffold
@@ -43,7 +71,7 @@ GoRouter fnRouter(GlobalKey<NavigatorState> key) => GoRouter(
         routes: [
           GoRoute(
               path: "/",
-              pageBuilder: fullSlide(const Dashboard()),
+              builder: (context, state) => const Dashboard(),
 
               routes: [
                 GoRoute(

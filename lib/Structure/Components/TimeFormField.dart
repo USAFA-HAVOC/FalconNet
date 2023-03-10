@@ -46,7 +46,7 @@ class TimeFormFieldState extends State<TimeFormField> {
       validator: widget.validator,
       style: Theme.of(context).textTheme.bodyLarge,
       decoration: InputDecoration(
-          suffixIcon: Icon(Icons.timer),
+          suffixIcon: const Icon(Icons.timer),
           labelText: widget.label
       ),
       readOnly: true,

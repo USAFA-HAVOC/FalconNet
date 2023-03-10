@@ -16,8 +16,9 @@ class SignAction extends ReduxAction<GlobalState> {
       await Endpoints.signSelf(null);
       onSucceed?.call();
       return (state.toBuilder()
-        ..user.accountability.di_signed_by=state.user.id
-        ..user.accountability.di_last_signed=DateTime.now().toUtc()
+        ..user.accountability.di_signed_by = state.user.id
+        ..user.accountability.di_signed_name = state.user.personal_info.full_name
+        ..user.accountability.di_last_signed = DateTime.now().toUtc()
       ).build();
     }
     catch (e) {
