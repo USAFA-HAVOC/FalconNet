@@ -20,7 +20,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:go_router/go_router.dart';
 
-
 import 'Model/Database/UserSettings.dart';
 import 'Router/FNRouter.dart';
 import 'Structure/Components/ViewModel.dart';
@@ -33,47 +32,41 @@ void main() async {
   //Replace the default global state with an api call
   final store = Store<GlobalState>(
       initialState: GlobalState((b1) => b1
-          ..user = User((b2) => b2
-              ..id = ""
-              ..personal_info = UserPersonalInfo((b3) => b3
-                  ..full_name = "Ethan Chapman"
-                  ..email = "C26Ethan.Chapman@afacademy.af.edu"
-                  ..phone_number = "3037461308"
-                  ..room_number = "Vandy 6D6"
-                  ..squadron = 18
-                  ..group = "CG02"
-                  ..unit = "CS18"
-              ).toBuilder()
-              ..pass_allocation = CadetPassAllocation((b3) => b3
-                  ..individual_pass_status = "OPEN"
-                  ..effective_pass_status = "OPEN"
-                  ..weekday_day_passes = 0
-                  ..weekday_overnight_passes = 0
-                  ..weekend_overnight_passes = 0
-              ).toBuilder()
-              ..accountability = CadetAccountability((b3) => b3
-                  ..di_last_signed = DateTime.now().toUtc()
-                  ..di_signed_by = ""
-                  ..di_signed_name = ""
-              ).toBuilder()
-          ).toBuilder()
-          ..notifications = ListBuilder<UserNotification>([])
-          ..settings = UserSettings((b2) => b2
-              ..theme = "light"
-              ..taskPush = true
-              ..diPush = true
-              ..passPush = true
-              ..pushNotifications = true
-          ).toBuilder()
-      )
-  );
+        ..user = User((b2) => b2
+          ..id = ""
+          ..personal_info = UserPersonalInfo((b3) => b3
+            ..full_name = "Ethan Chapman"
+            ..email = "C26Ethan.Chapman@afacademy.af.edu"
+            ..phone_number = "3037461308"
+            ..room_number = "Vandy 6D6"
+            ..squadron = 18
+            ..group = "CG02"
+            ..unit = "CS18").toBuilder()
+          ..pass_allocation = CadetPassAllocation((b3) => b3
+            ..individual_pass_status = "OPEN"
+            ..effective_pass_status = "OPEN"
+            ..weekday_day_passes = 0
+            ..weekday_overnight_passes = 0
+            ..weekend_overnight_passes = 0).toBuilder()
+          ..accountability = CadetAccountability((b3) => b3
+            ..di_last_signed = DateTime.now().toUtc()
+            ..di_signed_by = ""
+            ..di_signed_name = "").toBuilder()).toBuilder()
+        ..notifications = ListBuilder<UserNotification>([])
+        ..settings = UserSettings((b2) => b2
+          ..theme = "light"
+          ..taskPush = true
+          ..diPush = true
+          ..passPush = true
+          ..pushNotifications = true).toBuilder()));
 
   WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
-  FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
+  FlutterNativeSplash.preserve(
+      widgetsBinding: widgetsBinding); // Preserve splash until app is loaded
 
-  await store.dispatch(SettingsAction.retrieve());
+  await store.dispatch(SettingsAction.retrieve()); // Retrieve settings
 
-  FlutterNativeSplash.remove();
+  FlutterNativeSplash.remove(); // Remove splash once app is loaded
 
   runApp(FNApp(store: store));
 }
@@ -116,8 +109,7 @@ class FNAppState extends State<FNApp> {
         setState(() {
           signed = true;
         });
-      }
-      else {
+      } else {
         html.window.open('https://api.ethanchapman.dev/', "_self");
       }
     }
@@ -154,7 +146,8 @@ class FNAppState extends State<FNApp> {
     return StoreProvider(
       store: widget.store,
       child: StoreConnector<GlobalState, ViewModel<String>>(
-        converter: (store) => ViewModel(store: store, content: store.state.settings.theme),
+        converter: (store) =>
+            ViewModel(store: store, content: store.state.settings.theme),
         builder: (context, model) => MaterialApp.router(
           theme: model.content == "light" ? lightTheme : randomTheme,
           darkTheme: darkTheme,
