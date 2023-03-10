@@ -8,10 +8,10 @@ import 'package:falcon_net/Model/Database/User.dart';
 import 'package:falcon_net/Model/Database/UserNotification.dart';
 import 'package:falcon_net/Model/Database/UserPersonalInfo.dart';
 import 'package:falcon_net/Model/Store/Actions/GlobalAction.dart';
-import 'package:falcon_net/Model/Store/Actions/InfoAction.dart';
 import 'package:falcon_net/Model/Store/Actions/SettingsAction.dart';
 import 'package:falcon_net/Model/Store/Endpoints.dart';
 import 'package:falcon_net/Model/Store/GlobalStateModel.dart';
+import 'package:falcon_net/Structure/Pages/Dashboard/Dashboard.dart';
 import 'package:falcon_net/Theme/Dark/DarkTheme.dart';
 import 'package:falcon_net/Theme/Light/LightTheme.dart';
 import 'package:falcon_net/Theme/Random/RandomTheme.dart';
@@ -91,64 +91,16 @@ final navigatorKey = GlobalKey<NavigatorState>();
 
 class FNAppState extends State<FNApp> {
   late bool signed;
-  late GoRouter router = fnRouter(navigatorKey);
 
   @override
   void initState() {
     /// todo: session management
     signed = false;
-    Timer.periodic(const Duration(minutes: 5), (timer) {
-      if (signed) {
-        widget.store.dispatch(InfoAction.retrieve());
-      }
-    });
     super.initState();
-  }
-
-  void webLogin() {
-    if (!APIData.authenticated) {
-      Uri s = Uri.parse(html.window.location.toString());
-      if (s.queryParameters.containsKey("code")) {
-        html.window.history.pushState(null, 'FalconNet', '');
-        String token = s.queryParameters["code"]!;
-        login(token);
-        widget.store.dispatch(GlobalAction.initialize());
-        setState(() {
-          signed = true;
-        });
-      }
-      else {
-        html.window.open('https://api.ethanchapman.dev/', "_self");
-      }
-    }
-  }
-
-  void appLogin() async {
-    await authLogin();
-
-    widget.store.dispatch(GlobalAction.initialize());
-
-    setState(() {
-      signed = true;
-    });
   }
 
   @override
   Widget build(BuildContext context) {
-    String? authToken;
-
-    if (!signed) {
-      if (kIsWeb) {
-        Uri s = Uri.parse(html.window.location.toString());
-        if (s.queryParameters.containsKey("code")) {
-          html.window.history.pushState(null, 'FalconNet', '');
-          authToken = s.queryParameters["code"];
-        }
-      }
-
-      oauth.setCode(authToken);
-      appLogin();
-    }
 
     //Surrounds the app with a store provider so all child widgets can access global state
     return StoreProvider(
@@ -159,9 +111,65 @@ class FNAppState extends State<FNApp> {
           theme: model.content == "light" ? lightTheme : randomTheme,
           darkTheme: darkTheme,
           themeMode: model.content == "dark" ? ThemeMode.dark : ThemeMode.light,
-          routerConfig: router,
+          routerConfig: fnRouter(
+            navigatorKey,
+            signed,
+            () {
+              setState(() => signed = true);
+            },
+            () {
+              //navigatorKey.currentState!.push(MaterialPageRoute(builder: (context) => const Dashboard()));
+              setState(() => signed = true);
+            }
+          ),
         ),
       ),
+    );
+  }
+}
+
+class FNLogin extends StatelessWidget {
+  final Function() onSigned;
+  final Function() onDemo;
+
+  const FNLogin({super.key, required this.onSigned, required this.onDemo});
+
+  Future<void> appLogin(Function(ReduxAction<GlobalState>) dispatch) async {
+    await authLogin();
+
+    dispatch(GlobalAction.initialize());
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return StoreConnector<GlobalState, ViewModel<void>>(
+        converter: (store) => ViewModel(store: store, content: null),
+        builder: (context, model) => ListView(
+          shrinkWrap: true,
+          children: [
+            ElevatedButton(
+                onPressed: () async {
+                  String? authToken;
+                  if (kIsWeb) {
+                    Uri s = Uri.parse(html.window.location.toString());
+                    if (s.queryParameters.containsKey("code")) {
+                      html.window.history.pushState(null, 'FalconNet', '');
+                      authToken = s.queryParameters["code"];
+                    }
+                  }
+                  await appLogin(model.dispatch);
+                  oauth.setCode(authToken);
+                  onSigned();
+                },
+                child: const Text("Microsoft Login")
+            ),
+
+            ElevatedButton(
+                onPressed: () => onDemo(),
+                child: const Text("Demo Mode")
+            ),
+          ],
+        )
     );
   }
 }

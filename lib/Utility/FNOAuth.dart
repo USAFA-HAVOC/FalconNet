@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:io';
 
 import 'package:aad_oauth/helper/auth_storage.dart';
 import 'package:aad_oauth/helper/core_oauth.dart';
@@ -132,8 +131,7 @@ class FNOAuth extends CoreOAuth {
           'Access denied or authentication canceled.',
         ));
       }
-      Response<String> res = await dio.get(
-          "/login", queryParameters: {"code": code});
+      Response<String> res = await dio.get("/login", queryParameters: {"code": code});
       return Right(Token.fromJson(json.decode(res.data!)));
     }
   }

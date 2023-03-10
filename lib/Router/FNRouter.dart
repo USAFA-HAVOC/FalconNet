@@ -7,6 +7,7 @@ import 'package:falcon_net/Structure/Pages/TaskManagement/Tasks/Assignment/Assig
 import 'package:falcon_net/Structure/Pages/TaskManagement/Tasks/Delegation/DelegationTask.dart';
 import 'package:falcon_net/Structure/Pages/TaskManagement/Tasks/UnitEditor/UnitEditorTask.dart';
 import 'package:falcon_net/Structure/Pages/TaskManagement/Tasks/UnitManagement/UnitManagementTask.dart';
+import 'package:falcon_net/main.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import '../Model/Database/TimedRole.dart';
@@ -25,12 +26,18 @@ import '../Structure/Pages/TaskManagement/Tasks/SDO/SDOTask.dart';
 ///Defines page routes within the app and places each within the app scaffold
 ///Contains each within the default background to prevent
 ///transparency effects during transitions
-GoRouter fnRouter(GlobalKey<NavigatorState> key) => GoRouter(
+GoRouter fnRouter(GlobalKey<NavigatorState> key, bool signed, Function() onSigned, Function() onDemo) => GoRouter(
   navigatorKey: key,
+  initialLocation: signed ? "/" : "/selection",
   routes: [
     GoRoute(
       path: "/login",
       pageBuilder: (context, state) => fullSlideUp(state.extra as Widget)(context, state),
+    ),
+
+    GoRoute(
+      path: "/selection",
+      builder: (context, state) => FNLogin(onSigned: onSigned, onDemo: onDemo),
     ),
 
     //Shell route places contents of all sub-routes as child of the scaffold
@@ -43,7 +50,7 @@ GoRouter fnRouter(GlobalKey<NavigatorState> key) => GoRouter(
         routes: [
           GoRoute(
               path: "/",
-              pageBuilder: fullSlide(const Dashboard()),
+              builder: (context, state) => const Dashboard(),
 
               routes: [
                 GoRoute(
