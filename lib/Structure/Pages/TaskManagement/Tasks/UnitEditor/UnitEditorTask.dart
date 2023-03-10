@@ -26,7 +26,7 @@ class UnitEditorTaskState extends State<UnitEditorTask> {
 
   @override
   void initState() {
-    connection = Endpoints.unitsGet(null)
+    connection = Endpoints.listUnits(null)
         .onError((error, stackTrace) {
           displayError(prefix: "Unit Editor", exception: error!);
           return UnitList();
@@ -37,7 +37,7 @@ class UnitEditorTaskState extends State<UnitEditorTask> {
   void add(ScaffoldMessengerState messenger, UnitSummary unit) async {
     var units = (await connection).units.toList();
     try {
-      Unit complete = await Endpoints.unitCreate(unit.unit);
+      Unit complete = await Endpoints.createUnit(unit.unit);
 
       setState(() {
         connection = Future<UnitList>.value(UnitList((w) => w
@@ -67,7 +67,7 @@ class UnitEditorTaskState extends State<UnitEditorTask> {
     var units = (await connection).units.toList();
 
     try {
-      await Endpoints.unitDelete(unit.unit);
+      await Endpoints.deleteUnit(unit.unit);
 
       setState(() {
         connection = Future<UnitList>.value(UnitList((w) => w
@@ -92,7 +92,7 @@ class UnitEditorTaskState extends State<UnitEditorTask> {
     var units = (await connection).units.toList();
 
     try {
-      await Endpoints.unitEdit(unit.unit);
+      await Endpoints.editUnit(unit.unit);
 
       setState(() {
         connection = Future<UnitList>.value(UnitList((w) => w

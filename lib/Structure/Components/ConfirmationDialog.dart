@@ -20,7 +20,6 @@ class ConfirmationDialog extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             padding: const EdgeInsets.only(top: 10, left: 10, right: 10, bottom: 5),
             children: [
-
               Text(
                 title,
                 style: Theme.of(context).textTheme.titleMedium,

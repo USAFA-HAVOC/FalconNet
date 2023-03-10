@@ -19,13 +19,13 @@ class InfoAction extends ReduxAction<GlobalState> {
   Future<GlobalState?> reduce() async {
     try {
       if (retrieval) {
-        User c = await Endpoints.profileGet(null);
+        User c = await Endpoints.getProfile(null);
         onSucceed?.call();
         return (state.toBuilder()..user=c.toBuilder()).build();
       }
       else {
         UserBuilder newUser = modify!(state.user.toBuilder());
-        await Endpoints.profileEdit(newUser.build());
+        await Endpoints.editProfile(newUser.build());
         onSucceed?.call();
         return (state.toBuilder()..user=newUser).build();
       }

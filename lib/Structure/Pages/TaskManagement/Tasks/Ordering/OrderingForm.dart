@@ -1,13 +1,13 @@
 import 'package:falcon_net/Utility/InputValidation.dart';
 import 'package:flutter/material.dart';
 
-import 'Order.dart';
+import '../../../../../Model/Database/UnitOrder.dart';
 
 ///Simple form for updating a mitches meals order
 ///Two fields and a submission button
 class OrderingForm extends StatefulWidget {
-  final Order? order;
-  final void Function(Order)? onSubmit;
+  final UnitOrder? order;
+  final void Function(UnitOrder)? onSubmit;
   final void Function()? onCancel;
 
   const OrderingForm({super.key, this.order, this.onSubmit, this.onCancel});
@@ -31,10 +31,10 @@ class OrderingFormState extends State<OrderingForm> {
 
   ///Formats and returns an order object based on field information
   ///Requires form validation
-  Order formatOrder() {
-    return Order(
-      regular: regular.text.isEmpty ? 0 : int.parse(regular.text),
-      vegetarian: vegetarian.text.isEmpty ? 0 : int.parse(vegetarian.text),
+  UnitOrder formatOrder() {
+    return UnitOrder((o) => o
+      ..regular = regular.text.isEmpty ? 0 : int.parse(regular.text)
+      ..vegetarian = vegetarian.text.isEmpty ? 0 : int.parse(vegetarian.text)
     );
   }
 
@@ -76,7 +76,7 @@ class OrderingFormState extends State<OrderingForm> {
                   Expanded(
                     flex: 5,
                     child: Padding(
-                      padding: EdgeInsets.symmetric(vertical: 20),
+                      padding: const EdgeInsets.symmetric(vertical: 20),
                       child: ElevatedButton(
                         onPressed: () {
 
@@ -87,15 +87,15 @@ class OrderingFormState extends State<OrderingForm> {
                             }
                           }
                         },
-                        child: Padding(
+                        child: const Padding(
                           padding: EdgeInsets.symmetric(vertical: 10),
-                          child: const Text('Submit'),
+                          child: Text('Submit'),
                         ),
                       ),
                     ),
                   ),
 
-                  Spacer(flex: 1),
+                  const Spacer(flex: 1),
 
                   Expanded(
                     flex: 5,
@@ -108,9 +108,9 @@ class OrderingFormState extends State<OrderingForm> {
                         if (widget.onCancel != null) widget.onCancel!();
                       },
 
-                      child: Padding(
+                      child: const Padding(
                         padding: EdgeInsets.symmetric(vertical: 10),
-                        child: const Text('Cancel'),
+                        child: Text('Cancel'),
                       ),
                     ),
                   ),

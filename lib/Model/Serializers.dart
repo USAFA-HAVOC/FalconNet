@@ -6,7 +6,7 @@ import 'package:built_collection/built_collection.dart';
 import 'package:falcon_net/Model/Database/CadetLeave.dart';
 import 'package:falcon_net/Model/Database/CadetPass.dart';
 import 'package:falcon_net/Model/Database/CadetPassAllocation.dart';
-import 'package:falcon_net/Model/Database/Forms.dart';
+import 'package:falcon_net/Model/Database/FormSummary.dart';
 import 'package:falcon_net/Model/Database/GradeSubmission.dart';
 import 'package:falcon_net/Model/Database/SquadronAssignRequest.dart';
 import 'package:falcon_net/Model/Database/UnitDataRequest.dart';
@@ -29,6 +29,7 @@ import 'Database/UnitAssignRequest.dart';
 import 'Database/UnitData.dart';
 import 'Database/UnitList.dart';
 import 'Database/UnitSummary.dart';
+import 'Database/UserList.dart';
 import 'Database/UserSummaryList.dart';
 import 'Database/FormData.dart';
 import 'Store/FNDateTimeSerializer.dart';
@@ -44,7 +45,7 @@ part 'Serializers.g.dart';
   CadetLeaveTransportMethod,
   CadetPass,
   CadetPassAllocation,
-  FormOne,
+  FormSummary,
   DIRequest,
   WingData,
   UnitData,
@@ -64,7 +65,8 @@ part 'Serializers.g.dart';
   UnitList,
   Unit,
   UnitDataRequest,
-  FormData
+  FormData,
+  UserList
 ])
 
 
