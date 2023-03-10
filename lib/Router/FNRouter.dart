@@ -71,7 +71,7 @@ GoRouter fnRouter(GlobalKey<NavigatorState> key, SignState sign) => GoRouter(
         routes: [
           GoRoute(
               path: "/",
-              builder: (context, state) => const Dashboard(),
+              builder: (context, state) => const FNBackground(child: Dashboard()),
 
               routes: [
                 GoRoute(
