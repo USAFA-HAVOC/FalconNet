@@ -8,6 +8,12 @@
       "languageVersion": "2.17"
     },
     {
+      "name": "_flutterfire_internals",
+      "rootUri": "file:///Users/enriqueoti/.pub-cache/hosted/pub.dev/_flutterfire_internals-1.0.17",
+      "packageUri": "lib/",
+      "languageVersion": "2.16"
+    },
+    {
       "name": "aad_oauth",
       "rootUri": "file:///Users/enriqueoti/.pub-cache/hosted/pub.dev/aad_oauth-0.4.2",
       "packageUri": "lib/",
@@ -222,6 +228,42 @@
       "rootUri": "file:///Users/enriqueoti/.pub-cache/hosted/pub.dev/file-6.1.4",
       "packageUri": "lib/",
       "languageVersion": "2.12"
+    },
+    {
+      "name": "firebase_analytics",
+      "rootUri": "file:///Users/enriqueoti/.pub-cache/hosted/pub.dev/firebase_analytics-10.1.5",
+      "packageUri": "lib/",
+      "languageVersion": "2.16"
+    },
+    {
+      "name": "firebase_analytics_platform_interface",
+      "rootUri": "file:///Users/enriqueoti/.pub-cache/hosted/pub.dev/firebase_analytics_platform_interface-3.3.22",
+      "packageUri": "lib/",
+      "languageVersion": "2.16"
+    },
+    {
+      "name": "firebase_analytics_web",
+      "rootUri": "file:///Users/enriqueoti/.pub-cache/hosted/pub.dev/firebase_analytics_web-0.5.1+13",
+      "packageUri": "lib/",
+      "languageVersion": "2.16"
+    },
+    {
+      "name": "firebase_core",
+      "rootUri": "file:///Users/enriqueoti/.pub-cache/hosted/pub.dev/firebase_core-2.7.1",
+      "packageUri": "lib/",
+      "languageVersion": "2.16"
+    },
+    {
+      "name": "firebase_core_platform_interface",
+      "rootUri": "file:///Users/enriqueoti/.pub-cache/hosted/pub.dev/firebase_core_platform_interface-4.5.3",
+      "packageUri": "lib/",
+      "languageVersion": "2.16"
+    },
+    {
+      "name": "firebase_core_web",
+      "rootUri": "file:///Users/enriqueoti/.pub-cache/hosted/pub.dev/firebase_core_web-2.2.2",
+      "packageUri": "lib/",
+      "languageVersion": "2.16"
     },
     {
       "name": "fixnum",
@@ -752,7 +794,7 @@
       "languageVersion": "2.18"
     }
   ],
-  "generated": "2023-03-10T01:45:51.315200Z",
+  "generated": "2023-03-10T22:32:16.757903Z",
   "generator": "pub",
   "generatorVersion": "2.19.4"
 }

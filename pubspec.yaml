@@ -55,6 +55,7 @@ dependencies:
   dartz: ^0.10.1
   flutter_time_picker_spinner: ^2.0.0
   flutter_native_splash: ^2.2.19
+  firebase_analytics: ^10.1.5
 
 dev_dependencies:
   flutter_test:
