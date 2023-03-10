@@ -42,7 +42,7 @@ class CWOCTaskState extends State<CWOCTask> {
 
     /// todo: replace with api call for unit summaries
 
-    connection = Endpoints.cwoc(null).onError((error, stackTrace) {
+    connection = Endpoints.getWing(null).onError((error, stackTrace) {
       displayError(prefix: "CWOC", exception: error!);
       return WingData();
     });
@@ -58,7 +58,7 @@ class CWOCTaskState extends State<CWOCTask> {
   void signFor(WingData wing, UnitData unit, User signee, ScaffoldMessengerState messenger) async {
 
     try {
-      await Endpoints.sdoSign(DIRequest((b) => b..cadet_id = signee.id));
+      await Endpoints.signOther(DIRequest((b) => b..cadet_id = signee.id));
 
       setState(() {
         UnitData signed = unit.sign(signee);
@@ -82,7 +82,7 @@ class CWOCTaskState extends State<CWOCTask> {
     }
 
     try {
-      UnitData actual = await Endpoints.unitData(UnitDataRequest((b) => b..unit = unit));
+      UnitData actual = await Endpoints.getUnit(UnitDataRequest((b) => b..unit = unit));
       setState(() {
         connection = Future.value(wing.set(actual));
         loaded.add(actual);

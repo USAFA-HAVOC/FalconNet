@@ -1,5 +1,5 @@
 import 'package:async_redux/async_redux.dart';
-import 'package:falcon_net/Model/Database/Forms.dart';
+import 'package:falcon_net/Model/Database/FormSummary.dart';
 import 'package:falcon_net/Model/Store/Actions/FormAction.dart';
 import 'package:falcon_net/Model/Store/GlobalStateModel.dart';
 import 'package:falcon_net/Structure/Components/ConfirmationDialog.dart';
@@ -12,7 +12,7 @@ import 'package:flutter/material.dart';
 ///Displays form one title, description, and a signing button
 ///Will display a confirmation dialog on attempted signing
 class FormOneWidget extends StatelessWidget {
-  final FormOne form;
+  final FormSummary form;
 
   const FormOneWidget({super.key, required this.form});
 

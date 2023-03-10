@@ -1,6 +1,6 @@
 import 'package:built_collection/built_collection.dart';
 import 'package:falcon_net/Model/Database/RoleRequest.dart';
-import 'package:falcon_net/Model/Database/UnitData.dart';
+import 'package:falcon_net/Model/Database/Roles.dart';
 import 'package:falcon_net/Structure/Components/FNPage.dart';
 import 'package:falcon_net/Structure/Components/LoadingShimmer.dart';
 import 'package:falcon_net/Structure/Components/PageWidget.dart';
@@ -26,45 +26,60 @@ class DelegationTask extends StatefulWidget {
 }
 
 class DelegationTaskState extends State<DelegationTask> {
-  late Future<UnitData> connection;
+  late Future<List<User>> connection;
   String query = "";
 
   @override
   void initState() {
     super.initState();
-    connection = Endpoints.sdo(null);
+    connection = retrieveData();
+  }
+
+  Future<List<User>> retrieveData() async {
+    try {
+      if (widget.owner.any((role) => role.role == Roles.fn_admin.name || role.role == Roles.wing_admin.name)) {
+        return (await Endpoints.getUsers(null)).users.toList();
+      }
+      else {
+        return (await Endpoints.getOwnUnit(null)).members.toList();
+      }
+    }
+    catch (e) {
+      displayError(prefix: "Delegation", exception: e);
+      return <User>[];
+    }
   }
 
   ///Assigns a delegate to a list of roles
   ///Makes api call and displays error message on failure
   void assign(User delegate, List<TimedRole> roles, ScaffoldMessengerState messenger) async {
-    bool success = false;
     try {
-      success = await Endpoints.rolesSet(RoleRequest((r) => r
+      await Endpoints.setRoles(RoleRequest((r) => r
         ..user_id = delegate.id
         ..roles_to_add = roles.toBuiltList().toBuilder()
       ));
+
+      var current = await connection;
+
+      setState(() {
+        var others = current.where((d) => d.id != delegate.id).toList();
+        var modified = delegate.rebuild((d) => d..roles = roles.toBuiltList().toBuilder());
+        var full = others + [modified];
+        connection = Future.value(full);
+      });
+
+      messenger.showSnackBar(
+        const SnackBar(
+          content: Text("Successfully Modified Roles")
+        )
+      );
     }
 
     catch (e) {
       displayError(prefix: "Delegation", exception: e);
-    }
-
-    if (success) {
-      var current = await connection;
-
-      setState(() {
-        var others = current.members.toList().where((d) => d.id != delegate.id).toList();
-        var modified = delegate.rebuild((d) => d..roles = roles.toBuiltList().toBuilder());
-        var full = others + [modified];
-        connection = Future.value(current.rebuild((u) => u..members = BuiltList<User>(full).toBuilder()));
-      });
-    }
-
-    else {
       messenger.showSnackBar(
         const SnackBar(
-          content: Text("Failed to modify roles")
+          content: Text("Failed to Modify Roles")
         )
       );
     }
@@ -92,23 +107,9 @@ class DelegationTaskState extends State<DelegationTask> {
   }
 
   List<User> search(List<User> applicable, String q) {
-    var mutable = applicable;
-    mutable.sort((a, b) {
-      var first = a.personal_info.full_name.toLowerCase();
-      var second = b.personal_info.full_name.toLowerCase();
-      var query = q.toLowerCase();
-      var firstScore = first.similarityTo(query);
-      var secondScore = second.similarityTo(query);
-      if (firstScore > secondScore) {
-        return -1;
-      }
-      else if (secondScore > firstScore) {
-        return 1;
-      }
-      return first.compareTo(second);
-    });
-
-    return mutable;
+    var mutable = applicable.map((u) => MapEntry(u, u.personal_info.full_name.similarityTo(q))).toList();
+    mutable.sort((a, b) => -a.value.compareTo(b.value));
+    return mutable.map((u) => u.key).toList();
   }
 
   @override
@@ -118,7 +119,7 @@ class DelegationTaskState extends State<DelegationTask> {
         builder: (context, snapshot) {
           Widget child;
           if (snapshot.data != null) {
-            var ordered = search(snapshot.data!.members.toList(), query);
+            var ordered = search(snapshot.data!, query);
             child = PageWidget(
                 title: "Members",
                 children: [
@@ -153,10 +154,10 @@ class DelegationTaskState extends State<DelegationTask> {
           }
 
           return FNPage(
-              title: "Delegation",
-              children: [
-                child
-              ]
+            title: "Delegation",
+            children: [
+              child
+            ]
           );
         }
 

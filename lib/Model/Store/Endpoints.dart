@@ -4,7 +4,7 @@ import 'package:aad_oauth/model/config.dart';
 import 'package:aad_oauth/model/token.dart';
 import 'package:built_value/serializer.dart';
 import 'package:dio/dio.dart';
-import 'package:falcon_net/Model/Database/Forms.dart';
+import 'package:falcon_net/Model/Database/FormSummary.dart';
 import 'package:falcon_net/Model/Database/PassHistoryModel.dart';
 import 'package:falcon_net/Model/Database/RoleRequest.dart';
 import 'package:falcon_net/Model/Database/UnitData.dart';
@@ -26,6 +26,7 @@ import '../Database/Unit.dart';
 import '../Database/UnitAssignRequest.dart';
 import '../Database/UnitDataRequest.dart';
 import '../Database/UnitList.dart';
+import '../Database/UserList.dart';
 import '../Database/WingData.dart';
 
 final options = BaseOptions(
@@ -96,31 +97,32 @@ class Endpoint<Req, Res> {
 }
 
 class Endpoints {
-  static Endpoint<void, User> profileGet = Endpoint("/profile/info", get: true);
-  static Endpoint<User, bool> profileEdit = Endpoint("/profile/edit");
-  static Endpoint<CadetLeave, CadetLeave> leaveCreate = Endpoint("/leave/create");
-  static Endpoint<CadetLeave, bool> leaveUpdate = Endpoint("/leave/create");
-  static Endpoint<void, bool> leaveClear = Endpoint("/leave/clear");
-  static Endpoint<CadetPass, CadetPass> passCreate = Endpoint("/passes/create");
-  static Endpoint<void, bool> passClose = Endpoint("/passes/close");
-  static Endpoint<CadetPass, bool> passUpdate = Endpoint("/passes/update");
-  static Endpoint<void, PassHistoryModel> passHistory = Endpoint("/passes/history");
-  static Endpoint<void, bool> selfSign = Endpoint("/accountability/self-sign");
-  static Endpoint<DIRequest, bool> sdoSign = Endpoint("/accountability/sdo-sign");
-  static Endpoint<void, WingData> cwoc = Endpoint("/pages/cwoc", get: true);
-  static Endpoint<void, UnitData> sdo = Endpoint("/pages/sdo", get: true);
-  static Endpoint<UnitDataRequest, UnitData> unitData = Endpoint("/pages/sdo", get: true);
-  static Endpoint<void, UserGrades> grades = Endpoint("/grades/info", get: true);
-  static Endpoint<GradeSubmission, bool> gradesSet = Endpoint("/grades/set");
-  static Endpoint<void, BuiltList<FormOne>> formsGet = Endpoint("/forms/info", get: true);
-  static Endpoint<RoleRequest, bool> rolesSet = Endpoint("/roles/set");
-  static Endpoint<SquadronAssignRequest, bool> squadAssign = Endpoint("squadron/assign");
-  static Endpoint<UnitAssignRequest, bool> unitAssign = Endpoint("unit/assign");
-  static Endpoint<void, UserSummaryList> assignmentGet = Endpoint("unit/assignment-get");
-  static Endpoint<void, UnitList> unitsGet = Endpoint("unit/list");
-  static Endpoint<Unit, Unit> unitCreate = Endpoint("unit/create");
-  static Endpoint<Unit, bool> unitEdit = Endpoint("unit/modify");
-  static Endpoint<Unit, bool> unitDelete = Endpoint("unit/delete");
+  static Endpoint<void, User> getProfile = Endpoint("/profile/info", get: true);
+  static Endpoint<User, bool> editProfile = Endpoint("/profile/edit");
+  static Endpoint<CadetLeave, CadetLeave> createLeave = Endpoint("/leave/create");
+  static Endpoint<CadetLeave, bool> updateLeave = Endpoint("/leave/create");
+  static Endpoint<void, bool> clearLeave = Endpoint("/leave/clear");
+  static Endpoint<CadetPass, CadetPass> createPass = Endpoint("/passes/create");
+  static Endpoint<void, bool> closePass = Endpoint("/passes/close");
+  static Endpoint<CadetPass, bool> updatePass = Endpoint("/passes/update");
+  static Endpoint<void, PassHistoryModel> getPassHistory = Endpoint("/passes/history");
+  static Endpoint<void, bool> signSelf = Endpoint("/accountability/self-sign");
+  static Endpoint<DIRequest, bool> signOther = Endpoint("/accountability/sdo-sign");
+  static Endpoint<void, WingData> getWing = Endpoint("/pages/cwoc", get: true);
+  static Endpoint<void, UnitData> getOwnUnit = Endpoint("/pages/sdo", get: true);
+  static Endpoint<UnitDataRequest, UnitData> getUnit = Endpoint("/pages/sdo", get: true);
+  static Endpoint<void, UserGrades> getGrades = Endpoint("/grades/info", get: true);
+  static Endpoint<GradeSubmission, bool> setGrades = Endpoint("/grades/set");
+  static Endpoint<void, BuiltList<FormSummary>> getForms = Endpoint("/forms/info", get: true);
+  static Endpoint<RoleRequest, bool> setRoles = Endpoint("/roles/set");
+  static Endpoint<SquadronAssignRequest, bool> assignSquad = Endpoint("squadron/assign");
+  static Endpoint<UnitAssignRequest, bool> assignUnit = Endpoint("unit/assign");
+  static Endpoint<void, UserSummaryList> getUserSummaries = Endpoint("unit/assignment-get");
+  static Endpoint<void, UserList> getUsers = Endpoint("users/get", get: true);
+  static Endpoint<void, UnitList> listUnits = Endpoint("unit/list");
+  static Endpoint<Unit, Unit> createUnit = Endpoint("unit/create");
+  static Endpoint<Unit, bool> editUnit = Endpoint("unit/modify");
+  static Endpoint<Unit, bool> deleteUnit = Endpoint("unit/delete");
 }
 
 class APIData {
