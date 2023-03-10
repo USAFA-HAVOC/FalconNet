@@ -21,7 +21,7 @@ class PassAction extends ReduxAction<GlobalState> {
   Future<GlobalState?> reduce() async {
     try {
       if (pass == null) {
-        await Endpoints.passClose(null);
+        await Endpoints.closePass(null);
         onSucceed?.call();
         return (state.toBuilder()..user.accountability.current_pass=null).build();
       }
@@ -31,12 +31,12 @@ class PassAction extends ReduxAction<GlobalState> {
       var sb = state.toBuilder();
 
       if (updated) {
-        await Endpoints.passUpdate(pass!);
+        await Endpoints.updatePass(pass!);
         sb.user.accountability.current_pass = pass!.toBuilder();
       }
 
       else {
-        var assigned = await Endpoints.passCreate(pass!);
+        var assigned = await Endpoints.createPass(pass!);
         sb.user.accountability.current_pass = assigned.toBuilder();
       }
 

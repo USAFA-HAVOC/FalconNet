@@ -36,7 +36,7 @@ class _$GlobalStateSerializer implements StructuredSerializer<GlobalState> {
       'forms',
       serializers.serialize(object.forms,
           specifiedType:
-              const FullType(BuiltList, const [const FullType(FormOne)])),
+              const FullType(BuiltList, const [const FullType(FormSummary)])),
     ];
     Object? value;
     value = object.leave;
@@ -93,7 +93,7 @@ class _$GlobalStateSerializer implements StructuredSerializer<GlobalState> {
         case 'forms':
           result.forms.replace(serializers.deserialize(value,
                   specifiedType: const FullType(
-                      BuiltList, const [const FullType(FormOne)]))!
+                      BuiltList, const [const FullType(FormSummary)]))!
               as BuiltList<Object?>);
           break;
         case 'leave':
@@ -123,7 +123,7 @@ class _$GlobalState extends GlobalState {
   @override
   final UserGrades grades;
   @override
-  final BuiltList<FormOne> forms;
+  final BuiltList<FormSummary> forms;
   @override
   final CadetLeave? leave;
   @override
@@ -229,10 +229,10 @@ class GlobalStateBuilder implements Builder<GlobalState, GlobalStateBuilder> {
   UserGradesBuilder get grades => _$this._grades ??= new UserGradesBuilder();
   set grades(UserGradesBuilder? grades) => _$this._grades = grades;
 
-  ListBuilder<FormOne>? _forms;
-  ListBuilder<FormOne> get forms =>
-      _$this._forms ??= new ListBuilder<FormOne>();
-  set forms(ListBuilder<FormOne>? forms) => _$this._forms = forms;
+  ListBuilder<FormSummary>? _forms;
+  ListBuilder<FormSummary> get forms =>
+      _$this._forms ??= new ListBuilder<FormSummary>();
+  set forms(ListBuilder<FormSummary>? forms) => _$this._forms = forms;
 
   CadetLeaveBuilder? _leave;
   CadetLeaveBuilder get leave => _$this._leave ??= new CadetLeaveBuilder();

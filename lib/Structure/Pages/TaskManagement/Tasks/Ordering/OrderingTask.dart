@@ -3,8 +3,8 @@ import 'package:falcon_net/Structure/Components/PageWidget.dart';
 import 'package:falcon_net/Structure/Pages/TaskManagement/Tasks/Ordering/OrderingForm.dart';
 import 'package:flutter/material.dart';
 
+import '../../../../../Model/Database/UnitOrder.dart';
 import '../../../../Components/FNPage.dart';
-import 'Order.dart';
 
 ///Applet for submitting Q&I / Bedrest meal orders
 class OrderingTask extends StatefulWidget {
@@ -15,7 +15,7 @@ class OrderingTask extends StatefulWidget {
 }
 
 class OrderingTaskState extends State<OrderingTask> {
-  late Future<Order> future;
+  late Future<UnitOrder> future;
 
   @override
   void initState() {
@@ -23,20 +23,23 @@ class OrderingTaskState extends State<OrderingTask> {
     future = fetchOrder();
   }
 
-  Future<Order> fetchOrder() {
+  Future<UnitOrder> fetchOrder() {
     /// todo: replace with api call
-    return Future<Order>.delayed(Duration(seconds: 1), () => Order(regular: 5, vegetarian: 3));
+    return Future<UnitOrder>.delayed(const Duration(seconds: 1), () => UnitOrder((o) => o
+        ..regular = 5
+        ..vegetarian = 3
+    ));
   }
 
-  Future<bool> submitOrder(Order order) {
+  Future<bool> submitOrder(UnitOrder order) {
     /// todo: replace with api call
     var result = true;
-    return Future<bool>.delayed(Duration(seconds: 1), () => result);
+    return Future<bool>.delayed(const Duration(seconds: 1), () => result);
   }
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<Order>(
+    return FutureBuilder<UnitOrder>(
         future: future,
         initialData: null,
         builder: (context, snapshot) {
@@ -75,7 +78,7 @@ class OrderingTaskState extends State<OrderingTask> {
                           var previous = order;
 
                           setState(() {
-                            future = Future<Order>.value(change);
+                            future = Future<UnitOrder>.value(change);
                           });
 
                           submitOrder(change).then((result) {
@@ -87,7 +90,7 @@ class OrderingTaskState extends State<OrderingTask> {
                               ));
 
                               setState(() {
-                                future = Future<Order>.value(previous);
+                                future = Future<UnitOrder>.value(previous);
                               });
                             }
                           });

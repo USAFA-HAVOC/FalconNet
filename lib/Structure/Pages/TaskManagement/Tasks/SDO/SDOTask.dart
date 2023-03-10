@@ -26,7 +26,7 @@ class SDOTaskState extends State<SDOTask> {
   void initState() {
     super.initState();
 
-    future = Endpoints.sdo(null)
+    future = Endpoints.getOwnUnit(null)
         .catchError((error, stackTrace) {
           displayError(prefix: "SDO", exception: error);
           return UnitData();
@@ -37,7 +37,7 @@ class SDOTaskState extends State<SDOTask> {
     var unit = await future;
     if (unit != null) {
       try {
-        await Endpoints.sdoSign(DIRequest((b) => b..cadet_id = member.id));
+        await Endpoints.signOther(DIRequest((b) => b..cadet_id = member.id));
 
         setState(() {
           future = Future<UnitData?>.value(unit.sign(member));

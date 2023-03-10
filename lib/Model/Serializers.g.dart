@@ -14,7 +14,7 @@ Serializers _$serializers = (new Serializers().toBuilder()
       ..add(CadetPassAllocation.serializer)
       ..add(DIRequest.serializer)
       ..add(FormData.serializer)
-      ..add(FormOne.serializer)
+      ..add(FormSummary.serializer)
       ..add(GlobalState.serializer)
       ..add(Grade.serializer)
       ..add(GradeSubmission.serializer)
@@ -31,6 +31,7 @@ Serializers _$serializers = (new Serializers().toBuilder()
       ..add(UnitSummary.serializer)
       ..add(User.serializer)
       ..add(UserGrades.serializer)
+      ..add(UserList.serializer)
       ..add(UserNotification.serializer)
       ..add(UserPersonalInfo.serializer)
       ..add(UserSettings.serializer)
@@ -74,11 +75,14 @@ Serializers _$serializers = (new Serializers().toBuilder()
           const FullType(BuiltList, const [const FullType(User)]),
           () => new ListBuilder<User>())
       ..addBuilderFactory(
+          const FullType(BuiltList, const [const FullType(User)]),
+          () => new ListBuilder<User>())
+      ..addBuilderFactory(
           const FullType(BuiltList, const [const FullType(UserNotification)]),
           () => new ListBuilder<UserNotification>())
       ..addBuilderFactory(
-          const FullType(BuiltList, const [const FullType(FormOne)]),
-          () => new ListBuilder<FormOne>())
+          const FullType(BuiltList, const [const FullType(FormSummary)]),
+          () => new ListBuilder<FormSummary>())
       ..addBuilderFactory(
           const FullType(BuiltList, const [const FullType(UserSummary)]),
           () => new ListBuilder<UserSummary>()))

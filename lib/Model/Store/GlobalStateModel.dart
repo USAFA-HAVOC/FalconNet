@@ -3,7 +3,7 @@ import 'package:built_value/built_value.dart';
 import 'package:built_value/serializer.dart';
 import 'package:falcon_net/Model/Database/CadetLeave.dart';
 import 'package:falcon_net/Model/Database/CadetPass.dart';
-import 'package:falcon_net/Model/Database/Forms.dart';
+import 'package:falcon_net/Model/Database/FormSummary.dart';
 import 'package:falcon_net/Model/Database/User.dart';
 import 'package:falcon_net/Model/Database/UserNotification.dart';
 import 'package:falcon_net/Model/Database/UserSettings.dart';
@@ -23,7 +23,7 @@ abstract class GlobalState implements Built<GlobalState, GlobalStateBuilder> {
   BuiltList<UserNotification> get notifications;
   UserSettings get settings;
   UserGrades get grades;
-  BuiltList<FormOne> get forms;
+  BuiltList<FormSummary> get forms;
   CadetLeave? get leave;
   CadetPass? get pass;
 

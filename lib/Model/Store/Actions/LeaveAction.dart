@@ -18,12 +18,12 @@ class LeaveAction extends ReduxAction<GlobalState> {
   Future<GlobalState?> reduce() async {
     try {
       if (leave != null) {
-        await Endpoints.leaveCreate(leave!);
+        await Endpoints.createLeave(leave!);
         onSucceed?.call();
         return (state.toBuilder()..user.accountability.current_leave=leave!.toBuilder()).build();
       }
       else {
-        await Endpoints.leaveClear(null);
+        await Endpoints.clearLeave(null);
         onSucceed?.call();
         return (state.toBuilder()..user.accountability.current_leave=null).build();
       }

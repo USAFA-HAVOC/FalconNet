@@ -1,13 +1,13 @@
 import 'package:async_redux/async_redux.dart';
 import 'package:dio/dio.dart';
-import 'package:falcon_net/Model/Database/Forms.dart';
+import 'package:falcon_net/Model/Database/FormSummary.dart';
 import 'package:falcon_net/Model/Store/GlobalStateModel.dart';
 import 'package:falcon_net/Utility/ErrorFormatting.dart';
 
 import '../Endpoints.dart';
 
 class FormAction extends ReduxAction<GlobalState> {
-  final FormOne? form;
+  final FormSummary? form;
   final bool retrieve;
   final void Function()? onFail;
   final void Function()? onSucceed;
@@ -21,7 +21,7 @@ class FormAction extends ReduxAction<GlobalState> {
     try {
       var sb = state.toBuilder();
       if (retrieve) {
-        var forms = await Endpoints.formsGet(null);
+        var forms = await Endpoints.getForms(null);
         sb.forms = forms.toBuilder();
       }
       else {

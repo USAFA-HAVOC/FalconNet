@@ -67,10 +67,10 @@ class AssignmentTaskState extends State<AssignmentTask> {
 
   Future<AssignmentTaskData> retrieveData() async {
     try {
-      var summaries = await Endpoints.assignmentGet(null);
+      var summaries = await Endpoints.getUserSummaries(null);
       UnitList? units;
       if (widget.scope == AssignmentScope.all && widget.type == AssignmentType.unit) {
-        units = await Endpoints.unitsGet(null);
+        units = await Endpoints.listUnits(null);
         //units.rebuild((u) => u..units.add("CS00"));
       }
 
@@ -106,7 +106,7 @@ class AssignmentTaskState extends State<AssignmentTask> {
             ..squadron = present
             ..users = additions.map((e) => e.user_id).toBuiltList().toBuilder()
           );
-          await Endpoints.squadAssign(squad);
+          await Endpoints.assignSquad(squad);
         }
 
         else {
@@ -122,7 +122,7 @@ class AssignmentTaskState extends State<AssignmentTask> {
           ..users = additions.map((e) => e.user_id).toBuiltList().toBuilder()
         );
 
-        await Endpoints.unitAssign(unit);
+        await Endpoints.assignUnit(unit);
       }
 
       setState(() {

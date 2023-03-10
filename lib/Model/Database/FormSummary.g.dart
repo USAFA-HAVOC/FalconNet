@@ -1,21 +1,21 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'Forms.dart';
+part of 'FormSummary.dart';
 
 // **************************************************************************
 // BuiltValueGenerator
 // **************************************************************************
 
-Serializer<FormOne> _$formOneSerializer = new _$FormOneSerializer();
+Serializer<FormSummary> _$formSummarySerializer = new _$FormSummarySerializer();
 
-class _$FormOneSerializer implements StructuredSerializer<FormOne> {
+class _$FormSummarySerializer implements StructuredSerializer<FormSummary> {
   @override
-  final Iterable<Type> types = const [FormOne, _$FormOne];
+  final Iterable<Type> types = const [FormSummary, _$FormSummary];
   @override
-  final String wireName = 'FormOne';
+  final String wireName = 'FormSummary';
 
   @override
-  Iterable<Object?> serialize(Serializers serializers, FormOne object,
+  Iterable<Object?> serialize(Serializers serializers, FormSummary object,
       {FullType specifiedType = FullType.unspecified}) {
     final result = <Object?>[
       'title',
@@ -32,9 +32,9 @@ class _$FormOneSerializer implements StructuredSerializer<FormOne> {
   }
 
   @override
-  FormOne deserialize(Serializers serializers, Iterable<Object?> serialized,
+  FormSummary deserialize(Serializers serializers, Iterable<Object?> serialized,
       {FullType specifiedType = FullType.unspecified}) {
-    final result = new FormOneBuilder();
+    final result = new FormSummaryBuilder();
 
     final iterator = serialized.iterator;
     while (iterator.moveNext()) {
@@ -61,7 +61,7 @@ class _$FormOneSerializer implements StructuredSerializer<FormOne> {
   }
 }
 
-class _$FormOne extends FormOne {
+class _$FormSummary extends FormSummary {
   @override
   final String title;
   @override
@@ -69,29 +69,29 @@ class _$FormOne extends FormOne {
   @override
   final bool signed;
 
-  factory _$FormOne([void Function(FormOneBuilder)? updates]) =>
-      (new FormOneBuilder()..update(updates))._build();
+  factory _$FormSummary([void Function(FormSummaryBuilder)? updates]) =>
+      (new FormSummaryBuilder()..update(updates))._build();
 
-  _$FormOne._(
+  _$FormSummary._(
       {required this.title, required this.description, required this.signed})
       : super._() {
-    BuiltValueNullFieldError.checkNotNull(title, r'FormOne', 'title');
+    BuiltValueNullFieldError.checkNotNull(title, r'FormSummary', 'title');
     BuiltValueNullFieldError.checkNotNull(
-        description, r'FormOne', 'description');
-    BuiltValueNullFieldError.checkNotNull(signed, r'FormOne', 'signed');
+        description, r'FormSummary', 'description');
+    BuiltValueNullFieldError.checkNotNull(signed, r'FormSummary', 'signed');
   }
 
   @override
-  FormOne rebuild(void Function(FormOneBuilder) updates) =>
+  FormSummary rebuild(void Function(FormSummaryBuilder) updates) =>
       (toBuilder()..update(updates)).build();
 
   @override
-  FormOneBuilder toBuilder() => new FormOneBuilder()..replace(this);
+  FormSummaryBuilder toBuilder() => new FormSummaryBuilder()..replace(this);
 
   @override
   bool operator ==(Object other) {
     if (identical(other, this)) return true;
-    return other is FormOne &&
+    return other is FormSummary &&
         title == other.title &&
         description == other.description &&
         signed == other.signed;
@@ -109,7 +109,7 @@ class _$FormOne extends FormOne {
 
   @override
   String toString() {
-    return (newBuiltValueToStringHelper(r'FormOne')
+    return (newBuiltValueToStringHelper(r'FormSummary')
           ..add('title', title)
           ..add('description', description)
           ..add('signed', signed))
@@ -117,8 +117,8 @@ class _$FormOne extends FormOne {
   }
 }
 
-class FormOneBuilder implements Builder<FormOne, FormOneBuilder> {
-  _$FormOne? _$v;
+class FormSummaryBuilder implements Builder<FormSummary, FormSummaryBuilder> {
+  _$FormSummary? _$v;
 
   String? _title;
   String? get title => _$this._title;
@@ -132,9 +132,9 @@ class FormOneBuilder implements Builder<FormOne, FormOneBuilder> {
   bool? get signed => _$this._signed;
   set signed(bool? signed) => _$this._signed = signed;
 
-  FormOneBuilder();
+  FormSummaryBuilder();
 
-  FormOneBuilder get _$this {
+  FormSummaryBuilder get _$this {
     final $v = _$v;
     if ($v != null) {
       _title = $v.title;
@@ -146,28 +146,28 @@ class FormOneBuilder implements Builder<FormOne, FormOneBuilder> {
   }
 
   @override
-  void replace(FormOne other) {
+  void replace(FormSummary other) {
     ArgumentError.checkNotNull(other, 'other');
-    _$v = other as _$FormOne;
+    _$v = other as _$FormSummary;
   }
 
   @override
-  void update(void Function(FormOneBuilder)? updates) {
+  void update(void Function(FormSummaryBuilder)? updates) {
     if (updates != null) updates(this);
   }
 
   @override
-  FormOne build() => _build();
+  FormSummary build() => _build();
 
-  _$FormOne _build() {
+  _$FormSummary _build() {
     final _$result = _$v ??
-        new _$FormOne._(
+        new _$FormSummary._(
             title: BuiltValueNullFieldError.checkNotNull(
-                title, r'FormOne', 'title'),
+                title, r'FormSummary', 'title'),
             description: BuiltValueNullFieldError.checkNotNull(
-                description, r'FormOne', 'description'),
+                description, r'FormSummary', 'description'),
             signed: BuiltValueNullFieldError.checkNotNull(
-                signed, r'FormOne', 'signed'));
+                signed, r'FormSummary', 'signed'));
     replace(_$result);
     return _$result;
   }

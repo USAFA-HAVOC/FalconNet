@@ -1,9 +1,6 @@
-import 'dart:math';
-
 import 'package:built_value/built_value.dart';
 import 'package:built_value/serializer.dart';
 
-import '../../Utility/Pair.dart';
 import 'Roles.dart';
 
 part 'TimedRole.g.dart';
