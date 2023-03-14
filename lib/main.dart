@@ -16,7 +16,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:go_router/go_router.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
+import 'package:flutter_signin_button/flutter_signin_button.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_signin_button/flutter_signin_button.dart';
 
 import 'Model/Database/UserSettings.dart';
 import 'Router/FNRouter.dart';
@@ -29,52 +31,47 @@ void main() async {
   //Replace the default global state with an api call
   final store = Store<GlobalState>(
       initialState: GlobalState((b1) => b1
-          ..user = User((b2) => b2
-              ..id = ""
-              ..personal_info = UserPersonalInfo((b3) => b3
-                  ..full_name = "Ethan Chapman"
-                  ..email = "C26Ethan.Chapman@afacademy.af.edu"
-                  ..phone_number = "3037461308"
-                  ..room_number = "Vandy 6D6"
-                  ..squadron = 18
-                  ..group = "CG02"
-                  ..unit = "CS18"
-              ).toBuilder()
-              ..pass_allocation = CadetPassAllocation((b3) => b3
-                  ..individual_pass_status = "OPEN"
-                  ..effective_pass_status = "OPEN"
-                  ..weekday_day_passes = 0
-                  ..weekday_overnight_passes = 0
-                  ..weekend_overnight_passes = 0
-              ).toBuilder()
-              ..accountability = CadetAccountability((b3) => b3
-                  ..di_last_signed = DateTime.now().toUtc()
-                  ..di_signed_by = ""
-                  ..di_signed_name = ""
-              ).toBuilder()
-          ).toBuilder()
-          ..notifications = ListBuilder<UserNotification>([])
-          ..settings = UserSettings((b2) => b2
-              ..theme = "light"
-              ..taskPush = true
-              ..diPush = true
-              ..passPush = true
-              ..pushNotifications = true
-          ).toBuilder()
-      )
-  );
+        ..user = User((b2) => b2
+          ..id = ""
+          ..personal_info = UserPersonalInfo((b3) => b3
+            ..full_name = "Ethan Chapman"
+            ..email = "C26Ethan.Chapman@afacademy.af.edu"
+            ..phone_number = "3037461308"
+            ..room_number = "Vandy 6D6"
+            ..squadron = 18
+            ..group = "CG02"
+            ..unit = "CS18").toBuilder()
+          ..pass_allocation = CadetPassAllocation((b3) => b3
+            ..individual_pass_status = "OPEN"
+            ..effective_pass_status = "OPEN"
+            ..weekday_day_passes = 0
+            ..weekday_overnight_passes = 0
+            ..weekend_overnight_passes = 0).toBuilder()
+          ..accountability = CadetAccountability((b3) => b3
+            ..di_last_signed = DateTime.now().toUtc()
+            ..di_signed_by = ""
+            ..di_signed_name = "").toBuilder()).toBuilder()
+        ..notifications = ListBuilder<UserNotification>([])
+        ..settings = UserSettings((b2) => b2
+          ..theme = "light"
+          ..taskPush = true
+          ..diPush = true
+          ..passPush = true
+          ..pushNotifications = true).toBuilder()));
 
   WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
   FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
 
   await store.dispatch(SettingsAction.retrieve());
-  var account = (await SharedPreferences.getInstance()).getBool("account") ?? false;
+  var account =
+      (await SharedPreferences.getInstance()).getBool("account") ?? false;
 
   /// todo: check for valid session and initialize app fully here
 
   FlutterNativeSplash.remove();
 
-  runApp(FNApp(store: store, sign: account ? SignState.account : SignState.none));
+  runApp(
+      FNApp(store: store, sign: account ? SignState.account : SignState.none));
 }
 
 class FNApp extends StatefulWidget {
@@ -95,10 +92,7 @@ class FNAppState extends State<FNApp> {
   @override
   void initState() {
     /// todo: session management
-    router = fnRouter(
-        navigatorKey,
-        widget.sign
-    );
+    router = fnRouter(navigatorKey, widget.sign);
     super.initState();
   }
 
@@ -113,43 +107,66 @@ class FNAppState extends State<FNApp> {
     return StoreProvider(
       store: widget.store,
       child: StoreConnector<GlobalState, ViewModel<String>>(
-        converter: (store) => ViewModel(store: store, content: store.state.settings.theme),
+        converter: (store) =>
+            ViewModel(store: store, content: store.state.settings.theme),
         builder: (context, model) => MaterialApp.router(
-          theme: model.content == "light" ? lightTheme : randomTheme,
-          darkTheme: darkTheme,
-          themeMode: model.content == "dark" ? ThemeMode.dark : ThemeMode.light,
-          routerConfig: router
-        ),
+            theme: model.content == "light" ? lightTheme : randomTheme,
+            darkTheme: darkTheme,
+            themeMode:
+                model.content == "dark" ? ThemeMode.dark : ThemeMode.light,
+            routerConfig: router),
       ),
     );
   }
 }
 
+
+
 class SelectionView extends StatelessWidget {
   final Function() onSigned;
   final Function() onDemo;
 
-  const SelectionView({super.key, required this.onSigned, required this.onDemo});
+  const SelectionView({Key? key, required this.onSigned, required this.onDemo})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-      children: [
-        ElevatedButton(
-            onPressed: () async {
-              attemptLogin();
-              onSigned();
-            },
-            child: const Text("Microsoft Login")
-        ),
-
-        ElevatedButton(
-            onPressed: () => onDemo(),
-            child: const Text("Demo Mode")
-        ),
-      ],
+    return Container(
+      color: Colors.grey[100],
+      padding: EdgeInsets.symmetric(horizontal: 20.0),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          SizedBox(
+            width: 200.0,
+            height: 50.0,
+            child: SignInButton(
+              Buttons.Microsoft,
+              text: "Sign in with USAFA",
+              onPressed: () async {
+                attemptLogin();
+                onSigned();
+              },
+            ),
+          ),
+          SizedBox(height: 20.0),
+          SizedBox(
+            width: 200.0,
+            height: 50.0,
+            child: SignInButton(
+              Buttons.Apple,
+              text: "Demo Mode (Apple)",
+              onPressed: () async {
+                attemptLogin();
+                onDemo();
+              },
+            ),
+          ),
+        ],
+      ),
     );
   }
 }
+
+
+

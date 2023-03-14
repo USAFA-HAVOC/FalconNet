@@ -22,11 +22,11 @@
 		</data>
 		<key>Modules/path_provider_foundation.swiftmodule/Project/arm64-apple-ios-simulator.swiftsourceinfo</key>
 		<data>
-		RrROgH+K1pExVhaS/mBv3oKDdO0=
+		UEQVu7SfVorRvIz8kqYBXNqe/vc=
 		</data>
 		<key>Modules/path_provider_foundation.swiftmodule/Project/x86_64-apple-ios-simulator.swiftsourceinfo</key>
 		<data>
-		dXuokgPzUR2lEOXXAA0VNw4F3oc=
+		APcB4oHB/06F2mvYuQ5UTawBxkI=
 		</data>
 		<key>Modules/path_provider_foundation.swiftmodule/arm64-apple-ios-simulator.abi.json</key>
 		<data>
@@ -38,7 +38,7 @@
 		</data>
 		<key>Modules/path_provider_foundation.swiftmodule/arm64-apple-ios-simulator.swiftmodule</key>
 		<data>
-		JjDe0TYa/8zuvaVRQF8BBP8PyHA=
+		w8AoXlcvJAeEcTZdpfefEuMOL+M=
 		</data>
 		<key>Modules/path_provider_foundation.swiftmodule/x86_64-apple-ios-simulator.abi.json</key>
 		<data>
@@ -50,7 +50,7 @@
 		</data>
 		<key>Modules/path_provider_foundation.swiftmodule/x86_64-apple-ios-simulator.swiftmodule</key>
 		<data>
-		DgIkO72SSxixAhdhpaxJAOiUkPo=
+		/EpiZug5cAy1hDs4tqT8tSVm1Ig=
 		</data>
 	</dict>
 	<key>files2</key>
@@ -80,14 +80,14 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			xTgdIKyjOBhxKrZIdPRqAGi119HW/dvB+LPCMVR2zGQ=
+			bmjgAdLlw/o6lXtT3eujl1bZvEUZUYv3MmVeraZmQ6k=
 			</data>
 		</dict>
 		<key>Modules/path_provider_foundation.swiftmodule/Project/x86_64-apple-ios-simulator.swiftsourceinfo</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			Vm3P7ogQAvZz4NB7j/TH1Z2274dnppuABE7Iba7+ZvQ=
+			LeSQkd1nqqExJmjjGLZinPFyErJp2zn3DH3udQf6PB8=
 			</data>
 		</dict>
 		<key>Modules/path_provider_foundation.swiftmodule/arm64-apple-ios-simulator.abi.json</key>
@@ -108,7 +108,7 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			qZI8f9WEvu3lxyc9CTDYbYQI4ZbagQFgdf17rCKZU0k=
+			wHK57kx+QjLZIQb/Et4zm0AtXGN1qo2wPrtVpaAhPOs=
 			</data>
 		</dict>
 		<key>Modules/path_provider_foundation.swiftmodule/x86_64-apple-ios-simulator.abi.json</key>
@@ -129,7 +129,7 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			FMkgSzcVFAuD2z7q70hUopxiOrLt9Hwf5qhlDX+s1cA=
+			OKTvMGkV9DT6kxR1r/4NhTo7rUTnD8IVP8NOmh7HpGU=
 			</data>
 		</dict>
 	</dict>
