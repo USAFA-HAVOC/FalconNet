@@ -10,15 +10,15 @@
 		</data>
 		<key>AppIcon60x60@2x.png</key>
 		<data>
-		MNA6Om2kzE2UK2cASqifjyQOcDk=
+		xp+h6j9gu0yMDsI5r1xf1bVfXQ0=
 		</data>
 		<key>AppIcon76x76@2x~ipad.png</key>
 		<data>
-		TEis89bYJ5ERdh64hNbenveZwtg=
+		o6jEn/d4hvjYFvIaCLPEOUbuZT0=
 		</data>
 		<key>Assets.car</key>
 		<data>
-		LPDVstTdiSh6om+XCZZO4DlZbTE=
+		4yzik2Oj1z5DLHwQkOe5egMZMqE=
 		</data>
 		<key>Base.lproj/LaunchScreen.storyboardc/01J-lp-oVM-view-Ze5-6b-2t3.nib</key>
 		<data>
@@ -46,7 +46,7 @@
 		</data>
 		<key>Frameworks/App.framework/App</key>
 		<data>
-		szWc3nsxgzMBPJzZZNkjniUU0j0=
+		DG/rAJWFNY2YgskXGRvqoGL4R/0=
 		</data>
 		<key>Frameworks/App.framework/Info.plist</key>
 		<data>
@@ -54,11 +54,11 @@
 		</data>
 		<key>Frameworks/App.framework/_CodeSignature/CodeResources</key>
 		<data>
-		jVuhN7dn3pcfhgBbJKEOVuQljDk=
+		M5SBxUeS+q0PGjBVGeVUKkQf5Dg=
 		</data>
 		<key>Frameworks/App.framework/flutter_assets/AssetManifest.json</key>
 		<data>
-		oISr7EoZ1ci6KHFD0XbJaxJTOdQ=
+		LGQhAoUNwNbMfANWMUDpbH+m0cA=
 		</data>
 		<key>Frameworks/App.framework/flutter_assets/FontManifest.json</key>
 		<data>
@@ -66,7 +66,7 @@
 		</data>
 		<key>Frameworks/App.framework/flutter_assets/NOTICES.Z</key>
 		<data>
-		G1+9yiLWsVwQltTolWVjzXkQPMs=
+		wylpbt+7VN9uDb5lYubj2467um4=
 		</data>
 		<key>Frameworks/App.framework/flutter_assets/assets/fonts/roboto_bold.ttf</key>
 		<data>
@@ -80,9 +80,169 @@
 		<data>
 		VsXA04veTB8VSd2kPbN7CcYIqtM=
 		</data>
+		<key>Frameworks/App.framework/flutter_assets/assets/icon/FalconNet-Android.png</key>
+		<data>
+		rgb5FsuzyGGhi5FbqgPVWeQTBbE=
+		</data>
+		<key>Frameworks/App.framework/flutter_assets/assets/icon/FalconNet-Google-play.png</key>
+		<data>
+		/00Xa5LKPe0f0zOuc3KOBAsAh20=
+		</data>
+		<key>Frameworks/App.framework/flutter_assets/assets/icon/FalconNet-IOS-2.png</key>
+		<data>
+		3fB4gwzxyHwoRFBWWYG2dditOrc=
+		</data>
+		<key>Frameworks/App.framework/flutter_assets/assets/icon/FalconNet-IOS.png</key>
+		<data>
+		kI2O+ZqvoH5A5GJU40wVQk2UCbo=
+		</data>
 		<key>Frameworks/App.framework/flutter_assets/assets/images/aflogo.png</key>
 		<data>
 		FT6Y2o691idj2T9gju8Y77lPSCY=
+		</data>
+		<key>Frameworks/App.framework/flutter_assets/assets/splash_screens/10.2__iPad_landscape.png</key>
+		<data>
+		g1mxgeVmYDbpJYhTMIZoSpwaaug=
+		</data>
+		<key>Frameworks/App.framework/flutter_assets/assets/splash_screens/10.2__iPad_portrait.png</key>
+		<data>
+		Q2aziAqphaH9rMY/6PqNIYTF7qw=
+		</data>
+		<key>Frameworks/App.framework/flutter_assets/assets/splash_screens/10.5__iPad_Air_landscape.png</key>
+		<data>
+		etDOkseEuQsEAB0ARAaifxoeLmY=
+		</data>
+		<key>Frameworks/App.framework/flutter_assets/assets/splash_screens/10.5__iPad_Air_portrait.png</key>
+		<data>
+		wuX+sS60H2x3Va4tntM/i44bZ24=
+		</data>
+		<key>Frameworks/App.framework/flutter_assets/assets/splash_screens/10.9__iPad_Air_landscape.png</key>
+		<data>
+		xkeDYAvATmHPuSRGms6EiQPzFKU=
+		</data>
+		<key>Frameworks/App.framework/flutter_assets/assets/splash_screens/10.9__iPad_Air_portrait.png</key>
+		<data>
+		qNW2aStZhRCWuYLlIvpFmK4JgJU=
+		</data>
+		<key>Frameworks/App.framework/flutter_assets/assets/splash_screens/11__iPad_Pro__10.5__iPad_Pro_landscape.png</key>
+		<data>
+		8JwDdrvD3QwCaaxY0Yf5NBKPBg4=
+		</data>
+		<key>Frameworks/App.framework/flutter_assets/assets/splash_screens/11__iPad_Pro__10.5__iPad_Pro_portrait.png</key>
+		<data>
+		XbDYO5d489QAN6Cb9MoMh5wjvzg=
+		</data>
+		<key>Frameworks/App.framework/flutter_assets/assets/splash_screens/12.9__iPad_Pro_landscape.png</key>
+		<data>
+		H/e27HBUSkLUDaz1ZD3xOV/09M8=
+		</data>
+		<key>Frameworks/App.framework/flutter_assets/assets/splash_screens/12.9__iPad_Pro_portrait.png</key>
+		<data>
+		6QRlbBkae2J8tjKo/vhwMNjiSc4=
+		</data>
+		<key>Frameworks/App.framework/flutter_assets/assets/splash_screens/4__iPhone_SE__iPod_touch_5th_generation_and_later_landscape.png</key>
+		<data>
+		HPUr+wcHqRTrqNDoC5TxO5PYqvc=
+		</data>
+		<key>Frameworks/App.framework/flutter_assets/assets/splash_screens/4__iPhone_SE__iPod_touch_5th_generation_and_later_portrait.png</key>
+		<data>
+		hTgNkI/TqbuMVZaXPaw4SovHPCI=
+		</data>
+		<key>Frameworks/App.framework/flutter_assets/assets/splash_screens/8.3__iPad_Mini_landscape.png</key>
+		<data>
+		ND8Itx65XQdYd+FXl7UZqnOXafU=
+		</data>
+		<key>Frameworks/App.framework/flutter_assets/assets/splash_screens/8.3__iPad_Mini_portrait.png</key>
+		<data>
+		kH7tmuILxeisMIa4MTO0EGCZYZo=
+		</data>
+		<key>Frameworks/App.framework/flutter_assets/assets/splash_screens/9.7__iPad_Pro__7.9__iPad_mini__9.7__iPad_Air__9.7__iPad_landscape.png</key>
+		<data>
+		SEUrp1BU92UR918+8LN3pTCEs3A=
+		</data>
+		<key>Frameworks/App.framework/flutter_assets/assets/splash_screens/9.7__iPad_Pro__7.9__iPad_mini__9.7__iPad_Air__9.7__iPad_portrait.png</key>
+		<data>
+		M+fD8/bG7Sgx2aoYT3woZrC1cyQ=
+		</data>
+		<key>Frameworks/App.framework/flutter_assets/assets/splash_screens/iPhone_11_Pro_Max__iPhone_XS_Max_landscape.png</key>
+		<data>
+		1icAu5jnZZtctz6DY0fYw87yAMg=
+		</data>
+		<key>Frameworks/App.framework/flutter_assets/assets/splash_screens/iPhone_11_Pro_Max__iPhone_XS_Max_portrait.png</key>
+		<data>
+		igtzOtzIyF9cKxM/z2DrsBBHvh4=
+		</data>
+		<key>Frameworks/App.framework/flutter_assets/assets/splash_screens/iPhone_11__iPhone_XR_landscape.png</key>
+		<data>
+		Fk0x/h+1DHUPbdctRKjVtTf+yM4=
+		</data>
+		<key>Frameworks/App.framework/flutter_assets/assets/splash_screens/iPhone_11__iPhone_XR_portrait.png</key>
+		<data>
+		ZR3pSIhCzK2AXMT+vv6VTH++Xos=
+		</data>
+		<key>Frameworks/App.framework/flutter_assets/assets/splash_screens/iPhone_13_mini__iPhone_12_mini__iPhone_11_Pro__iPhone_XS__iPhone_X_landscape.png</key>
+		<data>
+		OnB7cGyVfrS99jTGI6MG45uax3o=
+		</data>
+		<key>Frameworks/App.framework/flutter_assets/assets/splash_screens/iPhone_13_mini__iPhone_12_mini__iPhone_11_Pro__iPhone_XS__iPhone_X_portrait.png</key>
+		<data>
+		nyoYftZE+2WU4UX9oRNH4WexnBc=
+		</data>
+		<key>Frameworks/App.framework/flutter_assets/assets/splash_screens/iPhone_14_Plus__iPhone_13_Pro_Max__iPhone_12_Pro_Max_landscape.png</key>
+		<data>
+		bJOPEJ+WZcV0mz5S+mY7TfmXFbs=
+		</data>
+		<key>Frameworks/App.framework/flutter_assets/assets/splash_screens/iPhone_14_Plus__iPhone_13_Pro_Max__iPhone_12_Pro_Max_portrait.png</key>
+		<data>
+		r0k6Y55HTrZVZ40vXZoqejRCDiw=
+		</data>
+		<key>Frameworks/App.framework/flutter_assets/assets/splash_screens/iPhone_14_Pro_Max_landscape.png</key>
+		<data>
+		fPCi2GHAQeTULlaZ4jWF1gJ8kWk=
+		</data>
+		<key>Frameworks/App.framework/flutter_assets/assets/splash_screens/iPhone_14_Pro_Max_portrait.png</key>
+		<data>
+		VBu7Gn7dgky4g0quVMzxhzWXTj0=
+		</data>
+		<key>Frameworks/App.framework/flutter_assets/assets/splash_screens/iPhone_14_Pro_landscape.png</key>
+		<data>
+		IEpSzHTlZkYqFP+Rw3yxqkjnRRQ=
+		</data>
+		<key>Frameworks/App.framework/flutter_assets/assets/splash_screens/iPhone_14_Pro_portrait.png</key>
+		<data>
+		OrYtWx4e9pSirBaXr0A3tKBlbB8=
+		</data>
+		<key>Frameworks/App.framework/flutter_assets/assets/splash_screens/iPhone_14__iPhone_13_Pro__iPhone_13__iPhone_12_Pro__iPhone_12_landscape.png</key>
+		<data>
+		tiCgR/ketffBY1uolEs+DU27FRw=
+		</data>
+		<key>Frameworks/App.framework/flutter_assets/assets/splash_screens/iPhone_14__iPhone_13_Pro__iPhone_13__iPhone_12_Pro__iPhone_12_portrait.png</key>
+		<data>
+		n10pGxCRO9vXc/jqntkQ2CcwQ/M=
+		</data>
+		<key>Frameworks/App.framework/flutter_assets/assets/splash_screens/iPhone_8_Plus__iPhone_7_Plus__iPhone_6s_Plus__iPhone_6_Plus_landscape.png</key>
+		<data>
+		1r2kHzNjI4yedxaLgPO8a2jHFLs=
+		</data>
+		<key>Frameworks/App.framework/flutter_assets/assets/splash_screens/iPhone_8_Plus__iPhone_7_Plus__iPhone_6s_Plus__iPhone_6_Plus_portrait.png</key>
+		<data>
+		S7aYkjmDN35aJIg66fnvfJhR3HU=
+		</data>
+		<key>Frameworks/App.framework/flutter_assets/assets/splash_screens/iPhone_8__iPhone_7__iPhone_6s__iPhone_6__4.7__iPhone_SE_landscape.png</key>
+		<data>
+		K1jTKhOGkcdm0Q5gTrzuFNXJEz8=
+		</data>
+		<key>Frameworks/App.framework/flutter_assets/assets/splash_screens/iPhone_8__iPhone_7__iPhone_6s__iPhone_6__4.7__iPhone_SE_portrait.png</key>
+		<data>
+		fv6y31ENWsE71bwdnLNxvA2GEw4=
+		</data>
+		<key>Frameworks/App.framework/flutter_assets/assets/splash_screens/icon.png</key>
+		<data>
+		R+g7zjulwWNoQO0fE3+yh+zL4hY=
+		</data>
+		<key>Frameworks/App.framework/flutter_assets/assets/splash_screens/readme.txt</key>
+		<data>
+		aXsJz6Uf4wGCp9oYzp+5670addY=
 		</data>
 		<key>Frameworks/App.framework/flutter_assets/fonts/MaterialIcons-Regular.otf</key>
 		<data>
@@ -94,7 +254,7 @@
 		</data>
 		<key>Frameworks/App.framework/flutter_assets/kernel_blob.bin</key>
 		<data>
-		4mTn5RTuvkQMa12PcPpQhyQlMDQ=
+		z5sidd09pr0idaLVx7QHMQLneg4=
 		</data>
 		<key>Frameworks/App.framework/flutter_assets/packages/aad_oauth/assets/msalv2.js</key>
 		<data>
@@ -242,7 +402,7 @@
 		</data>
 		<key>Frameworks/flutter_inappwebview.framework/flutter_inappwebview</key>
 		<data>
-		8U0vlRl/eKqm/l34ZN+WE1fcusQ=
+		wITmoJOn4fCEzQHnNBWlWol3Jks=
 		</data>
 		<key>Frameworks/flutter_native_splash.framework/Info.plist</key>
 		<data>
@@ -254,7 +414,7 @@
 		</data>
 		<key>Frameworks/flutter_native_splash.framework/flutter_native_splash</key>
 		<data>
-		f9alJjh6q1nL4lclhPTqlgVI11Q=
+		bbVEVyW8lsFao5DP89sHHoqWUBw=
 		</data>
 		<key>Frameworks/flutter_secure_storage.framework/Info.plist</key>
 		<data>
@@ -266,7 +426,7 @@
 		</data>
 		<key>Frameworks/flutter_secure_storage.framework/flutter_secure_storage</key>
 		<data>
-		QtpbkTmgeeKvU/ZuYad7rZacOPs=
+		/MGY8lbwbf9iEHspSpnBS1sNsbU=
 		</data>
 		<key>Frameworks/path_provider_foundation.framework/Info.plist</key>
 		<data>
@@ -278,7 +438,7 @@
 		</data>
 		<key>Frameworks/path_provider_foundation.framework/path_provider_foundation</key>
 		<data>
-		OgoADPRJE+pOgG+KWJ/w3/Ep4EQ=
+		cg5XvJr/EWodo79iCM3o7gLsmIU=
 		</data>
 		<key>Frameworks/path_provider_ios.framework/Info.plist</key>
 		<data>
@@ -302,7 +462,7 @@
 		</data>
 		<key>Frameworks/shared_preferences_foundation.framework/shared_preferences_foundation</key>
 		<data>
-		OOiva3fr9rnyo79mzZkR4Ti+0pA=
+		r9Tw4Lu9c7CvwyoLBVbJAvWANp0=
 		</data>
 		<key>Frameworks/webview_flutter.framework/Info.plist</key>
 		<data>
@@ -326,11 +486,11 @@
 		</data>
 		<key>Frameworks/webview_flutter_wkwebview.framework/webview_flutter_wkwebview</key>
 		<data>
-		NfRxuiBKLDAO1D/u+2hwu+2BAqA=
+		Gdd+5654a68+kVQcCtYtYEvarbo=
 		</data>
 		<key>Info.plist</key>
 		<data>
-		x3blmjjy566fsX+yxzArrZh79Ug=
+		K1jzhrKE6scSqVbc3VMI4fJgjD8=
 		</data>
 		<key>PkgInfo</key>
 		<data>
@@ -350,21 +510,21 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			gJq/51xEB3DBPE4uRtCWA8IgU+nU4OInXcucHc+7LHU=
+			gSZKaaKglYtOwIfARcOzbyQpwTXtzlNXEntzKDuiEeY=
 			</data>
 		</dict>
 		<key>AppIcon76x76@2x~ipad.png</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			bbdyZTDXHT9Sy1l5PraRMTuqBHluEp4eBDwKWKG//S8=
+			/EIG3xfWdYELlIMngrrt6b+QjQCMo38+7oMHu38gQFE=
 			</data>
 		</dict>
 		<key>Assets.car</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			RYXqWwZ11rei4euwJdQG6RRmHnmMkltaFup+oCpdqOI=
+			kFfs3Qps0XbL9nlvG/AQT1QK21Sj3IXm24eZGEfzavU=
 			</data>
 		</dict>
 		<key>Base.lproj/LaunchScreen.storyboardc/01J-lp-oVM-view-Ze5-6b-2t3.nib</key>
@@ -413,7 +573,7 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			VDKj1ujKUJIPkCvZhhNgPnQqF456hyqfH4k0n+jJzRs=
+			dtXjsiBvDhhPYdyU5yiTQFsBh+j+yp1T8y3fnPeH3aw=
 			</data>
 		</dict>
 		<key>Frameworks/App.framework/Info.plist</key>
@@ -427,14 +587,14 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			AgH6i81ZXj7IUv1tC5pkJpSSvqr32wtB+YO0P+yeVRk=
+			PaRDsve1u97bwWSwnvbYVqNmYGh+42+mg0vuiLJ3iMY=
 			</data>
 		</dict>
 		<key>Frameworks/App.framework/flutter_assets/AssetManifest.json</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			4tOyifvjtJmHN1E/l4dTBj7H8O66sGy7l8/TSMlj7ts=
+			ibk/GhikqlgJJA5Gjxw19u5OO/rxTj+bO4dVdlklXjM=
 			</data>
 		</dict>
 		<key>Frameworks/App.framework/flutter_assets/FontManifest.json</key>
@@ -448,7 +608,7 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			qRRpDyXP29m6zl3fMb+xorEfg5jOQS72iM+pMTm55k8=
+			cfeUwI4WZGggActJ7X3mzzpKlhrlD4OVljZ2pPb+A1s=
 			</data>
 		</dict>
 		<key>Frameworks/App.framework/flutter_assets/assets/fonts/roboto_bold.ttf</key>
@@ -472,11 +632,291 @@
 			ThR6tkuf322J0B9rjDygs83cWdYIqOIhj5olBLXJjhQ=
 			</data>
 		</dict>
+		<key>Frameworks/App.framework/flutter_assets/assets/icon/FalconNet-Android.png</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			kbQoHbSx2ZL5O32E7tD7QEUlsHShkpmttkiDUpgVvDc=
+			</data>
+		</dict>
+		<key>Frameworks/App.framework/flutter_assets/assets/icon/FalconNet-Google-play.png</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			iSBY8pSL6tyseoyoqG1P3RAD8EOhLJcAbjsbLyvEdWQ=
+			</data>
+		</dict>
+		<key>Frameworks/App.framework/flutter_assets/assets/icon/FalconNet-IOS-2.png</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			vFTe9Y8/Qbbn93xPg2GcC6mqKnRWhO7ss+eM77PHP1M=
+			</data>
+		</dict>
+		<key>Frameworks/App.framework/flutter_assets/assets/icon/FalconNet-IOS.png</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			mmB0CIZtjqB7W3Nsy1OozLO2SbwxvA6SN14q2lURU64=
+			</data>
+		</dict>
 		<key>Frameworks/App.framework/flutter_assets/assets/images/aflogo.png</key>
 		<dict>
 			<key>hash2</key>
 			<data>
 			uGUM0eu+S4j3BclysraFG33gFb8A0mfYvpDxQnbB2YE=
+			</data>
+		</dict>
+		<key>Frameworks/App.framework/flutter_assets/assets/splash_screens/10.2__iPad_landscape.png</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			TxvMG/PUv972ovaXmv/dpNzcW/uQa/eDxUwsZRKlj80=
+			</data>
+		</dict>
+		<key>Frameworks/App.framework/flutter_assets/assets/splash_screens/10.2__iPad_portrait.png</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			3RLZfGRvNICffeaMWBSU6CcIfhcVeGpm5/FnXELJnYA=
+			</data>
+		</dict>
+		<key>Frameworks/App.framework/flutter_assets/assets/splash_screens/10.5__iPad_Air_landscape.png</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			cog3awE89tA8jkaiJN+UBubA9Gix2kfdcHP9Ckx+0D8=
+			</data>
+		</dict>
+		<key>Frameworks/App.framework/flutter_assets/assets/splash_screens/10.5__iPad_Air_portrait.png</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			hKhOLT6tN1I7ZBvYyvganTaXQQF1nM+qm2zwVaUqgds=
+			</data>
+		</dict>
+		<key>Frameworks/App.framework/flutter_assets/assets/splash_screens/10.9__iPad_Air_landscape.png</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			tPF+WjxCOX7NSkoAoKqifhp/RISeClNjJP6KxAe1jSY=
+			</data>
+		</dict>
+		<key>Frameworks/App.framework/flutter_assets/assets/splash_screens/10.9__iPad_Air_portrait.png</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			UmnyVcEu6Oj/LdXhU+24avtBjhIHSYoxrLkbDJnYiSM=
+			</data>
+		</dict>
+		<key>Frameworks/App.framework/flutter_assets/assets/splash_screens/11__iPad_Pro__10.5__iPad_Pro_landscape.png</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			URNW90YXh+nFE/6GO6FPR7fXLTHYlLU8LWBUa/6uTUc=
+			</data>
+		</dict>
+		<key>Frameworks/App.framework/flutter_assets/assets/splash_screens/11__iPad_Pro__10.5__iPad_Pro_portrait.png</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			AFPIKpYQsAn/zBMitGps82g+skGOjFFDboB780WIJe8=
+			</data>
+		</dict>
+		<key>Frameworks/App.framework/flutter_assets/assets/splash_screens/12.9__iPad_Pro_landscape.png</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			SwmJWtt/sN08v3FChUJ7KJFYREFUiMDLbyKsnO/ohoE=
+			</data>
+		</dict>
+		<key>Frameworks/App.framework/flutter_assets/assets/splash_screens/12.9__iPad_Pro_portrait.png</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			VoPOHJO/Wq/mCBTann6tI5Sjhnurxq/3CeFZabZtWzk=
+			</data>
+		</dict>
+		<key>Frameworks/App.framework/flutter_assets/assets/splash_screens/4__iPhone_SE__iPod_touch_5th_generation_and_later_landscape.png</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			pnnZq5l+PSOIca4Cf14a6rcTM0rd8D2DWaremXWbVhk=
+			</data>
+		</dict>
+		<key>Frameworks/App.framework/flutter_assets/assets/splash_screens/4__iPhone_SE__iPod_touch_5th_generation_and_later_portrait.png</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			bpuep5jOxBKNmAkXjmzLUy7RoqQxTEX0AOKFWYCtLWs=
+			</data>
+		</dict>
+		<key>Frameworks/App.framework/flutter_assets/assets/splash_screens/8.3__iPad_Mini_landscape.png</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			TkHJJyK12HD+ybhjUIQLFcIDAfOiV4DJfPIXWEyzQfU=
+			</data>
+		</dict>
+		<key>Frameworks/App.framework/flutter_assets/assets/splash_screens/8.3__iPad_Mini_portrait.png</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			LjqcRDDM/TaFPu5smyMU815uE44ElQ7d1aojRFKDARw=
+			</data>
+		</dict>
+		<key>Frameworks/App.framework/flutter_assets/assets/splash_screens/9.7__iPad_Pro__7.9__iPad_mini__9.7__iPad_Air__9.7__iPad_landscape.png</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			Zo+kV2dSximJvvmLdh8Yn8sBCAtzXK3FBADeYofSnHI=
+			</data>
+		</dict>
+		<key>Frameworks/App.framework/flutter_assets/assets/splash_screens/9.7__iPad_Pro__7.9__iPad_mini__9.7__iPad_Air__9.7__iPad_portrait.png</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			kRK+nJPTTyNJ8Y4uLcOphAtVahHWgSUSB+rzXU0smdg=
+			</data>
+		</dict>
+		<key>Frameworks/App.framework/flutter_assets/assets/splash_screens/iPhone_11_Pro_Max__iPhone_XS_Max_landscape.png</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			ksMk3Z7cF7CzU/loYL1qDT9D3W4PYxwn+HT6wZB0CY4=
+			</data>
+		</dict>
+		<key>Frameworks/App.framework/flutter_assets/assets/splash_screens/iPhone_11_Pro_Max__iPhone_XS_Max_portrait.png</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			HU+rxsXyvfqS9uHSKqKkyxvXe5YDM+w8bSpLfeMOicQ=
+			</data>
+		</dict>
+		<key>Frameworks/App.framework/flutter_assets/assets/splash_screens/iPhone_11__iPhone_XR_landscape.png</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			i+61156wbeJ7a3KE8mi/IxM5cAKzQg/y7G5/aafMGzQ=
+			</data>
+		</dict>
+		<key>Frameworks/App.framework/flutter_assets/assets/splash_screens/iPhone_11__iPhone_XR_portrait.png</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			HHA553hDIzi5cVWRzRLe5w7+gDyZudh/xfWn890Cekw=
+			</data>
+		</dict>
+		<key>Frameworks/App.framework/flutter_assets/assets/splash_screens/iPhone_13_mini__iPhone_12_mini__iPhone_11_Pro__iPhone_XS__iPhone_X_landscape.png</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			rB1dtaQFsqACiJdRBIZTt3t2waalwnfnB8Ze5TToXxk=
+			</data>
+		</dict>
+		<key>Frameworks/App.framework/flutter_assets/assets/splash_screens/iPhone_13_mini__iPhone_12_mini__iPhone_11_Pro__iPhone_XS__iPhone_X_portrait.png</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			DSGknQd6WZEXitiQ9ndCBUrI3uW9ZE49rENAXGy5Zcs=
+			</data>
+		</dict>
+		<key>Frameworks/App.framework/flutter_assets/assets/splash_screens/iPhone_14_Plus__iPhone_13_Pro_Max__iPhone_12_Pro_Max_landscape.png</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			mfzk8CIBHcD+jRThdus++6aALEfeF6xMaQ2pfVBefPE=
+			</data>
+		</dict>
+		<key>Frameworks/App.framework/flutter_assets/assets/splash_screens/iPhone_14_Plus__iPhone_13_Pro_Max__iPhone_12_Pro_Max_portrait.png</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			ec5AmuCTWEMioU+E8tvN29iMI3goBImrJF44+ypg1qc=
+			</data>
+		</dict>
+		<key>Frameworks/App.framework/flutter_assets/assets/splash_screens/iPhone_14_Pro_Max_landscape.png</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			NHBodNd7nZvUStDk2PBFDgPRwjayqqTTsU6utV7Wi6w=
+			</data>
+		</dict>
+		<key>Frameworks/App.framework/flutter_assets/assets/splash_screens/iPhone_14_Pro_Max_portrait.png</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			k3xAjA0QTNL0pdHwiu4joaULMmgdGqEtK6eWMe1UGic=
+			</data>
+		</dict>
+		<key>Frameworks/App.framework/flutter_assets/assets/splash_screens/iPhone_14_Pro_landscape.png</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			WLjgBYvKo4mEIZMlIS1nvzjxu8XNxaManTZFnxKDsik=
+			</data>
+		</dict>
+		<key>Frameworks/App.framework/flutter_assets/assets/splash_screens/iPhone_14_Pro_portrait.png</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			v9ZtFkGH7ImsWN0lzCY9N9YdwytTXtoS4WvafEx2ANk=
+			</data>
+		</dict>
+		<key>Frameworks/App.framework/flutter_assets/assets/splash_screens/iPhone_14__iPhone_13_Pro__iPhone_13__iPhone_12_Pro__iPhone_12_landscape.png</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			RYtOZ1YOdpdViKBUZhgXS/2kD0pQVfGIxjpCjn5nYVg=
+			</data>
+		</dict>
+		<key>Frameworks/App.framework/flutter_assets/assets/splash_screens/iPhone_14__iPhone_13_Pro__iPhone_13__iPhone_12_Pro__iPhone_12_portrait.png</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			BWoksM79vrhUAnXPCsnk4FTjg6J0AKfjnUAuAZxg3no=
+			</data>
+		</dict>
+		<key>Frameworks/App.framework/flutter_assets/assets/splash_screens/iPhone_8_Plus__iPhone_7_Plus__iPhone_6s_Plus__iPhone_6_Plus_landscape.png</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			Zq9mWvLYRvlFMRs+lIfvGYcroGsAOrS17REsHPEGmLk=
+			</data>
+		</dict>
+		<key>Frameworks/App.framework/flutter_assets/assets/splash_screens/iPhone_8_Plus__iPhone_7_Plus__iPhone_6s_Plus__iPhone_6_Plus_portrait.png</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			gI8gpPZOxWtpwKb5ENTXkm+jKY8e5d7Gv4bMKD05UAg=
+			</data>
+		</dict>
+		<key>Frameworks/App.framework/flutter_assets/assets/splash_screens/iPhone_8__iPhone_7__iPhone_6s__iPhone_6__4.7__iPhone_SE_landscape.png</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			VTtbQOnodThGKSxb4wueenYHWpkC7G1izMnezVaizag=
+			</data>
+		</dict>
+		<key>Frameworks/App.framework/flutter_assets/assets/splash_screens/iPhone_8__iPhone_7__iPhone_6s__iPhone_6__4.7__iPhone_SE_portrait.png</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			d78PdeIkKMOF7OS59VPr/AJ8Fjx/f6LvxsjH7bNeTrg=
+			</data>
+		</dict>
+		<key>Frameworks/App.framework/flutter_assets/assets/splash_screens/icon.png</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			OVkPRHJWUC+zopx5rjGY33prJlwRbsD5uQTineqc3U4=
+			</data>
+		</dict>
+		<key>Frameworks/App.framework/flutter_assets/assets/splash_screens/readme.txt</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			InzmbW+c4R+dtMtbvV/pbxllTBDOaWQzzo07xPviHgc=
 			</data>
 		</dict>
 		<key>Frameworks/App.framework/flutter_assets/fonts/MaterialIcons-Regular.otf</key>
@@ -497,7 +937,7 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			4irsLEJBrx1fHStWHgIVWx7kn/wnyK3K/ie+bzVorpg=
+			Z++6uREJ2QLjcXLyaU/2/wghRHofknGrkiYLYnPZt4g=
 			</data>
 		</dict>
 		<key>Frameworks/App.framework/flutter_assets/packages/aad_oauth/assets/msalv2.js</key>
@@ -756,7 +1196,7 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			0K9MQBkZaLqWivDfn158UsRLyFLcRDffdf+1BQcf1Tg=
+			dNDdYEqiSWcS9KDTtMkMErwCi0pwbWr3JxwpgoAT2dE=
 			</data>
 		</dict>
 		<key>Frameworks/flutter_native_splash.framework/Info.plist</key>
@@ -777,7 +1217,7 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			xuF3Wf6cVkrpmeoG46G2XZvDV6h9JNP637yx/HCl3EM=
+			LPjvuN1GRGAV83FEv2VTDIJA3RU3dRuZTyDnbkq+w88=
 			</data>
 		</dict>
 		<key>Frameworks/flutter_secure_storage.framework/Info.plist</key>
@@ -798,7 +1238,7 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			IsM+HDWjodoW/uoVt8zHQJLxDOv2ILhFCKBdq1O4jdI=
+			aUSwYOEz7AEBbQXxNEkWl365MKuLuYtPn5vm2uH3has=
 			</data>
 		</dict>
 		<key>Frameworks/path_provider_foundation.framework/Info.plist</key>
@@ -819,7 +1259,7 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			4g7CO3S5uwVGd4kJcOgDr1xGeAQghDWhYNcc8LUMTX4=
+			pTBNJvKPkvTxv1myHArgjNlSKEDxUN488uA9jtvX+LI=
 			</data>
 		</dict>
 		<key>Frameworks/path_provider_ios.framework/Info.plist</key>
@@ -861,7 +1301,7 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			K1PbxG2yXTdbSVwX12Y94D9ls9lfWsIINKtagnrozxo=
+			8xW3XNfCa9eWMKguIiATwSNqD5jKmERa71bzxNynvN8=
 			</data>
 		</dict>
 		<key>Frameworks/webview_flutter.framework/Info.plist</key>
@@ -903,7 +1343,7 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			giylmBeXZ0DaleUjhAEIA4wQTi7pJK+gxl2ry/d0pfg=
+			SDMN6GJCI9vRT1Wb2/vp/yjQXNt2R7/kAVeoge1+E/s=
 			</data>
 		</dict>
 	</dict>
