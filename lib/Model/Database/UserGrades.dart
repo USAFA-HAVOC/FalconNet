@@ -19,7 +19,7 @@ abstract class UserGrades implements Built<UserGrades, UserGradesBuilder> {
 
   BuiltList<Grade> get amis;
   BuiltList<Grade> get samis;
-  BuiltList<Grade>? get pais;
+  BuiltList<Grade> get pais;
 
   UserGrades._();
   factory UserGrades([void Function(UserGradesBuilder) updates]) = _$UserGrades;

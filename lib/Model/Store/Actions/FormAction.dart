@@ -33,7 +33,7 @@ class FormAction extends ReduxAction<GlobalState> {
     }
 
     catch (e) {
-      displayError(prefix: "Form", exception: e);
+      //displayError(prefix: "Form", exception: e);
       onFail?.call();
       return null;
     }

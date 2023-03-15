@@ -8,6 +8,7 @@ abstract class UserSummary implements Built<UserSummary, UserSummaryBuilder> {
 
   String get user_id;
   String get name;
+  String? get room;
 
   UserSummary._();
   factory UserSummary([void Function(UserSummaryBuilder) updates]) = _$UserSummary;

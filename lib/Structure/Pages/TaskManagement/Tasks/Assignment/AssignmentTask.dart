@@ -1,7 +1,7 @@
 import 'package:built_collection/built_collection.dart';
 import 'package:falcon_net/Model/Database/UserPersonalInfo.dart';
 import 'package:falcon_net/Model/Database/UserSummaryList.dart';
-import 'package:falcon_net/Structure/Components/FNPage.dart';
+import 'package:falcon_net/Structure/Components/LoadingShimmer.dart';
 import 'package:falcon_net/Structure/Pages/TaskManagement/Tasks/Assignment/AssignmentBar.dart';
 import 'package:flutter/material.dart';
 import 'package:string_similarity/string_similarity.dart';
@@ -12,7 +12,7 @@ import '../../../../../Model/Database/UnitList.dart';
 import '../../../../../Model/Database/UserSummary.dart';
 import '../../../../../Model/Store/Endpoints.dart';
 import '../../../../../Utility/ErrorFormatting.dart';
-import '../../../../Components/LoadingShimmer.dart';
+import '../../../../Components/AsyncPage.dart';
 import '../../../../Components/PageWidget.dart';
 
 enum AssignmentType {
@@ -153,17 +153,22 @@ class AssignmentTaskState extends State<AssignmentTask> {
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder(
-        future: connection,
-        builder: (context, snapshot) {
-          if (snapshot.data != null) {
-            var potential = snapshot.data!.summaries.users.toList();
+    return AsyncPage(
+        title: "${widget.type == AssignmentType.unit ? "Unit" : "Squadron"} Assignment",
+        connection: connection,
+        placeholder: const [
+          LoadingShimmer(height: 150,),
+
+          LoadingShimmer(height: 300,)
+        ],
+        builder: (context, data) {
+            var potential = data.summaries.users.toList();
 
             List<Widget> selection = [];
 
             if (widget.scope == AssignmentScope.all) {
               if (widget.type == AssignmentType.unit) {
-                var units = snapshot.data!.units!.units.toList();
+                var units = data.units!.units.toList();
                 selection = [DropdownButton<String>(
                   items: units.map((u) => DropdownMenuItem<String>(
                     value: u.unit.name,
@@ -171,7 +176,6 @@ class AssignmentTaskState extends State<AssignmentTask> {
                   )).toList(),
                   value: selected,
                   onChanged: (change) => setState(() => selected = change!),
-
                 )];
               }
 
@@ -250,26 +254,11 @@ class AssignmentTaskState extends State<AssignmentTask> {
                 children: removeContent
             );
 
-            return FNPage(
-                title: "${widget.type == AssignmentType.unit ? "Unit" : "Squadron"} Assignment",
-                children: [
-                  adds,
+            return [
+              adds,
 
-                  rems
-                ],
-            );
-          }
-
-          else {
-            return FNPage(
-              title: "${widget.type == AssignmentType.unit ? "Unit" : "Squadron"} Assignment",
-              children: const [
-                LoadingShimmer(height: 200,),
-
-                LoadingShimmer(height: 200,)
-              ],
-            );
-          }
+              rems
+            ];
         }
     );
   }

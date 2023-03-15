@@ -1,6 +1,5 @@
 import 'package:falcon_net/Model/Database/DIRequest.dart';
 import 'package:falcon_net/Model/Store/Endpoints.dart';
-import 'package:falcon_net/Structure/Components/FNPage.dart';
 import 'package:falcon_net/Structure/Pages/TaskManagement/Tasks/Shared/SigningWidget.dart';
 import 'package:falcon_net/Structure/Pages/TaskManagement/Tasks/SDO/SDOStatusWidget.dart';
 import 'package:falcon_net/Utility/ErrorFormatting.dart';
@@ -8,6 +7,8 @@ import 'package:flutter/material.dart';
 
 import '../../../../../Model/Database/UnitData.dart';
 import '../../../../../Model/Database/User.dart';
+import '../../../../Components/AsyncPage.dart';
+import '../../../../Components/LoadingShimmer.dart';
 import '../../../../Components/PageWidget.dart';
 
 ///Task for completing DI as Squadron SDO
@@ -20,7 +21,7 @@ class SDOTask extends StatefulWidget {
 }
 
 class SDOTaskState extends State<SDOTask> {
-  late Future<UnitData?> future;
+  late Future<UnitData> future;
 
   @override
   void initState() {
@@ -35,43 +36,40 @@ class SDOTaskState extends State<SDOTask> {
 
   void sign(User member, ScaffoldMessengerState messenger) async {
     var unit = await future;
-    if (unit != null) {
-      try {
-        await Endpoints.signOther(DIRequest((b) => b..cadet_id = member.id));
+    try {
+      await Endpoints.signOther(DIRequest((b) => b..cadet_id = member.id));
 
-        setState(() {
-          future = Future<UnitData?>.value(unit.sign(member));
-        });
-      }
-      catch(e) {
-        messenger.showSnackBar(
-          const SnackBar(content: Text("Failed to sign"))
-        );
-      }
+      setState(() {
+        future = Future<UnitData>.value(unit.sign(member));
+      });
+    }
+    catch(e) {
+      messenger.showSnackBar(
+        const SnackBar(content: Text("Failed to sign"))
+      );
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<UnitData?>(
-      future: future,
-      builder: (context, snapshot) {
-        var di = snapshot.data;
-        var messenger = ScaffoldMessenger.of(context);
-        return FNPage(
-          title: "SDO",
-          children: [
-            SDOStatusWidget(di: di),
+    return AsyncPage(
+      title: "SDO",
+      connection: future,
+      placeholder: const [
+        LoadingShimmer(height: 200,),
 
-            PageWidget(
-              title: "Inspections",
-              children: [
-                SigningWidget(di: di, onSign: (member) => sign(member, messenger),),
-              ],
-            )
-          ]
-        );
-      }
+        LoadingShimmer(height: 300,)
+      ],
+      builder: (context, data) => [
+        SDOStatusWidget(di: data),
+
+        PageWidget(
+          title: "Inspections",
+          children: [
+            SigningWidget(di: data, onSign: (member) => sign(member, ScaffoldMessenger.of(context)),),
+          ],
+        )
+      ]
     );
   }
 }

@@ -1,5 +1,4 @@
 import 'dart:core';
-import 'package:falcon_net/Structure/Components/FNPage.dart';
 import 'package:falcon_net/Structure/Components/LoadingShimmer.dart';
 import 'package:falcon_net/Structure/Components/PageWidget.dart';
 import 'package:falcon_net/Structure/Pages/TaskManagement/Tasks/UnitManagement/FormBar.dart';
@@ -9,6 +8,7 @@ import 'package:flutter/material.dart';
 
 import '../../../../../Model/Database/FormData.dart';
 import '../../../../../Model/Database/UserSummary.dart';
+import '../../../../Components/AsyncPage.dart';
 
 class UnitManagementData {
   final List<bool> status;
@@ -136,28 +136,23 @@ class UnitManagementTaskState extends State<UnitManagementTask> {
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder(
-        future: connection,
-        builder: (context, snapshot) {
-          List<Widget> children;
+    return AsyncPage(
+        title: "Unit Management",
+        connection: connection,
+        placeholder: const [
+          LoadingShimmer(height: 250,),
 
-          if (snapshot.data == null) {
-            children = const [
-              LoadingShimmer(height: 200,),
+          LoadingShimmer(height: 200,),
 
-              LoadingShimmer(height: 200,),
-
-              LoadingShimmer(height: 500,)
-            ];
-          }
-
-          else {
+          LoadingShimmer(height: 300,),
+        ],
+        builder: (context, data) {
             Widget existing;
-            if (snapshot.data!.forms.isNotEmpty) {
+            if (data.forms.isNotEmpty) {
               existing = ListView.builder(
                 shrinkWrap: true,
                 primary: false,
-                itemCount: snapshot.data!.forms.length + 1,
+                itemCount: data.forms.length + 1,
                 itemBuilder: (context, index) {
                   if (index == 0) {
                     return TextField(
@@ -172,7 +167,7 @@ class UnitManagementTaskState extends State<UnitManagementTask> {
                   }
                   else {
                     return FormBar(
-                      form: snapshot.data!.forms[index - 1],
+                      form: data.forms[index - 1],
                       onDelete: (form) => deleteForm(ScaffoldMessenger.of(context), form),
                       onOpen: (form) => showDialog(context: context, builder: (context) => FormStatusDialog(form: form)),
                     );
@@ -192,87 +187,81 @@ class UnitManagementTaskState extends State<UnitManagementTask> {
               );
             }
 
-            children = [
-              PageWidget(
-                  title: "Pass Status",
-                  children: ["Firsties", "2-Degs", "3-Degs", "4-Degs"].asMap().map((index, key) => MapEntry(index, Row(
-                    children: [
-                      Expanded(
-                        flex: 5,
-                        child: Text(
+          return [
+            PageWidget(
+                title: "Pass Status",
+                children: ["Firsties", "2-Degs", "3-Degs", "4-Degs"].asMap().map((index, key) => MapEntry(index, Row(
+                  children: [
+                    Expanded(
+                      flex: 5,
+                      child: Text(
                           key,
                           style: Theme.of(context).textTheme.titleSmall
-                        ),
                       ),
-
-                      Expanded(
-                          flex: 3,
-                          child: Switch(
-                            value: snapshot.data!.status[index],
-                            onChanged: (status) => setStatus(ScaffoldMessenger.of(context), index, status),
-                          )
-                      )
-                    ],
-                  ))).values.toList()
-              ),
-
-              PageWidget(
-                  title: "New Form",
-                  children: [
-                    TextField(
-                      controller: title,
-                      decoration: InputDecoration(
-                          border: OutlineInputBorder(borderSide: BorderSide(color: Theme.of(context).dividerColor), borderRadius: BorderRadius.circular(10)),
-                          labelStyle: Theme.of(context).textTheme.bodyLarge,
-                          labelText: "Title",
-                          suffixIcon: const Icon(Icons.title),
-                          errorText: titleValid,
-                      ),
-                      onChanged: (_) => setState(() => titleValid = null),
                     ),
 
-                    TextField(
-                      controller: content,
-                      minLines: 3,
-                      maxLines: 8,
-                      style: Theme.of(context).textTheme.bodyMedium,
-                      decoration: InputDecoration(
-                          border: OutlineInputBorder(borderSide: BorderSide(color: Theme.of(context).dividerColor), borderRadius: BorderRadius.circular(10)),
-                          labelStyle: Theme.of(context).textTheme.bodyLarge,
-                          labelText: "Content",
-                          suffixIcon: const Icon(Icons.description),
-                          errorText: contentValid,
-                      ),
-                      onChanged: (_) => setState(() => contentValid = null),
+                    Expanded(
+                        flex: 3,
+                        child: Switch(
+                          value: data.status[index],
+                          onChanged: (status) => setStatus(ScaffoldMessenger.of(context), index, status),
+                        )
+                    )
+                  ],
+                ))).values.toList()
+            ),
+
+            PageWidget(
+                title: "New Form",
+                children: [
+                  TextField(
+                    controller: title,
+                    decoration: InputDecoration(
+                      border: OutlineInputBorder(borderSide: BorderSide(color: Theme.of(context).dividerColor), borderRadius: BorderRadius.circular(10)),
+                      labelStyle: Theme.of(context).textTheme.bodyLarge,
+                      labelText: "Title",
+                      suffixIcon: const Icon(Icons.title),
+                      errorText: titleValid,
                     ),
-                    
-                    ElevatedButton(
+                    onChanged: (_) => setState(() => titleValid = null),
+                  ),
+
+                  TextField(
+                    controller: content,
+                    minLines: 3,
+                    maxLines: 8,
+                    style: Theme.of(context).textTheme.bodyMedium,
+                    decoration: InputDecoration(
+                      border: OutlineInputBorder(borderSide: BorderSide(color: Theme.of(context).dividerColor), borderRadius: BorderRadius.circular(10)),
+                      labelStyle: Theme.of(context).textTheme.bodyLarge,
+                      labelText: "Content",
+                      suffixIcon: const Icon(Icons.description),
+                      errorText: contentValid,
+                    ),
+                    onChanged: (_) => setState(() => contentValid = null),
+                  ),
+
+                  ElevatedButton(
                       onPressed: () => addForm(ScaffoldMessenger.of(context), FormData((f) => f
                         ..title = title.text
                         ..description = content.text
                         ..signatures = <UserSummary, bool>{}
-                      )), 
+                      )),
                       child: const Padding(
                         padding: EdgeInsets.symmetric(vertical: 10),
                         child: Text("Submit"),
                       )
-                    )
-                  ]
-              ),
+                  )
+                ]
+            ),
 
-              PageWidget(
-                  title: "Existing Forms",
-                  children: [
-                    existing
-                  ]
-              )
-            ];
-          }
-
-          return FNPage(
-              title: "Unit Management",
-              children: children
-          );
+            PageWidget(
+                title: "Existing Forms",
+                children: [
+                  existing
+                ]
+            )
+          ];
         }
     );
   }

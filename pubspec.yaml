@@ -55,6 +55,7 @@ dependencies:
   dartz: ^0.10.1
   flutter_time_picker_spinner: ^2.0.0
   flutter_native_splash: ^2.2.19
+  fl_chart: ^0.61.0
 
 dev_dependencies:
   flutter_test:

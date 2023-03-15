@@ -11,6 +11,7 @@ import  'package:string_similarity/string_similarity.dart';
 import '../../../../../Model/Database/TimedRole.dart';
 import '../../../../../Model/Database/User.dart';
 import '../../../../../Model/Store/Endpoints.dart';
+import '../../../../Components/AsyncPage.dart';
 import 'DelegateBar.dart';
 import 'DelegationForm.dart';
 
@@ -114,51 +115,44 @@ class DelegationTaskState extends State<DelegationTask> {
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder(
-        future: connection,
-        builder: (context, snapshot) {
-          Widget child;
-          if (snapshot.data != null) {
-            var ordered = search(snapshot.data!, query);
-            child = PageWidget(
-                title: "Members",
-                children: [
-                  ListView.builder(
-                      shrinkWrap: true,
-                      primary: false,
-                      itemCount: ordered.length + 1,
-                      itemBuilder: (context, index) {
-                        if (index == 0) {
-                          return TextField(
-                            decoration: InputDecoration(
-                                border: OutlineInputBorder(borderSide: BorderSide(color: Theme.of(context).dividerColor), borderRadius: BorderRadius.circular(10)),
-                                labelStyle: Theme.of(context).textTheme.bodyLarge,
-                                labelText: "Search",
-                                suffixIcon: const Icon(Icons.search)
-                            ),
-                            onChanged: (q) => setState(() => query = q),
-                          );
-                        }
-
-                        return DelegateBar(
-                            delegate: ordered[index - 1],
-                            onAssign: (delegate) => openDelegationForm(context, delegate, widget.owner)
+    return AsyncPage(
+        title: "Delegation",
+        connection: connection,
+        placeholder: const [
+          LoadingShimmer(height: 400,)
+        ],
+        builder: (context, members) {
+          var ordered = search(members, query);
+          return [
+            PageWidget(
+              title: "Members",
+              children: [
+                ListView.builder(
+                    shrinkWrap: true,
+                    primary: false,
+                    itemCount: ordered.length + 1,
+                    itemBuilder: (context, index) {
+                      if (index == 0) {
+                        return TextField(
+                          decoration: InputDecoration(
+                              border: OutlineInputBorder(borderSide: BorderSide(color: Theme.of(context).dividerColor), borderRadius: BorderRadius.circular(10)),
+                              labelStyle: Theme.of(context).textTheme.bodyLarge,
+                              labelText: "Search",
+                              suffixIcon: const Icon(Icons.search)
+                          ),
+                          onChanged: (q) => setState(() => query = q),
                         );
                       }
-                  ),
-                ]
-            );
-          }
-          else {
-            child = const LoadingShimmer(height: 200,);
-          }
 
-          return FNPage(
-            title: "Delegation",
-            children: [
-              child
-            ]
-          );
+                      return DelegateBar(
+                          delegate: ordered[index - 1],
+                          onAssign: (delegate) => openDelegationForm(context, delegate, widget.owner)
+                      );
+                    }
+                ),
+              ]
+            )
+          ];
         }
 
     );
