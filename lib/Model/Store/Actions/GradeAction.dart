@@ -1,5 +1,7 @@
 import 'package:async_redux/async_redux.dart';
+import 'package:falcon_net/Model/Database/UserGrades.dart';
 import 'package:falcon_net/Model/Store/Endpoints.dart';
+import 'package:falcon_net/Utility/Testing.dart';
 
 import '../../../Utility/ErrorFormatting.dart';
 import '../GlobalStateModel.dart';
@@ -14,8 +16,8 @@ class GradeAction extends ReduxAction<GlobalState> {
   Future<GlobalState?> reduce() async {
     try {
       var grades = await Endpoints.getGrades(null);
-      print(grades);
       var sb = state.toBuilder();
+      //sb.grades = randomUserGrades().toBuilder();
       sb.grades = grades.toBuilder();
       onSucceed?.call();
       return sb.build();

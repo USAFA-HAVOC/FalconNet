@@ -62,6 +62,14 @@ class TaskManagement extends StatelessWidget {
       ));
     }
 
+    if (state.user.roles.any((role) => role.role == Roles.stan_eval.name)) {
+      tasks.add(const ExternalTaskWidget(
+          path: "/task_management/stan_eval",
+          title: "Stan/Eval",
+          description: "I hope that you understand that you are a NARP"
+      ));
+    }
+
     if (state.user.roles.any((role) => role.role == Roles.sdo.name)) {
       tasks.add(const ExternalTaskWidget(
           path: "/task_management/sdo",
@@ -73,7 +81,7 @@ class TaskManagement extends StatelessWidget {
     if (state.user.roles.any((role) => role.role == Roles.jdo.name)) {
       tasks.add(const ExternalTaskWidget(
           path: "/task_management/ordering",
-          title: "JDO",
+          title: "Ordering",
           description: "Please order appropriate number of meals for your squadron"
       ));
     }

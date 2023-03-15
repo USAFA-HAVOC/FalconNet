@@ -13,7 +13,6 @@ class FNScaffold extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     //Constrains content to the size of the screen
     return ConstrainedBox(
       constraints: BoxConstraints.loose(MediaQuery.of(context).size),

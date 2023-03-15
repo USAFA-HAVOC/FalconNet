@@ -5,6 +5,8 @@ import 'package:falcon_net/Structure/Components/ViewModel.dart';
 import 'package:falcon_net/Structure/Pages/TaskManagement/TaskManagement.dart';
 import 'package:falcon_net/Structure/Pages/TaskManagement/Tasks/Assignment/AssignmentTask.dart';
 import 'package:falcon_net/Structure/Pages/TaskManagement/Tasks/Delegation/DelegationTask.dart';
+import 'package:falcon_net/Structure/Pages/TaskManagement/Tasks/StanEval/SEAnalytics.dart';
+import 'package:falcon_net/Structure/Pages/TaskManagement/Tasks/StanEval/SEEvent.dart';
 import 'package:falcon_net/Structure/Pages/TaskManagement/Tasks/UnitEditor/UnitEditorTask.dart';
 import 'package:falcon_net/Structure/Pages/TaskManagement/Tasks/UnitManagement/UnitManagementTask.dart';
 import 'package:falcon_net/main.dart';
@@ -24,6 +26,9 @@ import '../Structure/Pages/Profile/Profile.dart';
 import '../Structure/Pages/TaskManagement/Tasks/CWOC/CWOCTask.dart';
 import '../Structure/Pages/TaskManagement/Tasks/Ordering/OrderingTask.dart';
 import '../Structure/Pages/TaskManagement/Tasks/SDO/SDOTask.dart';
+import '../Structure/Pages/TaskManagement/Tasks/StanEval/SEParameters.dart';
+import '../Structure/Pages/TaskManagement/Tasks/StanEval/SEUnit.dart';
+import '../Structure/Pages/TaskManagement/Tasks/StanEval/StanEvalTask.dart';
 
 enum SignState {
   signed,
@@ -64,7 +69,9 @@ GoRouter fnRouter(GlobalKey<NavigatorState> key, SignState sign) => GoRouter(
     //Shell route places contents of all sub-routes as child of the scaffold
     ShellRoute(
         builder: (context, state, child) {
-          return FNScaffold(child: child);
+          return FNScaffold(
+              child: child
+          );
         },
 
         //Each route builds a page under the application scaffold
@@ -167,8 +174,39 @@ GoRouter fnRouter(GlobalKey<NavigatorState> key, SignState sign) => GoRouter(
                           )
                         ),
                       ),
-                    ]),
-              ])
-        ])
+
+                      GoRoute(
+                        path: "stan_eval",
+                        pageBuilder: fullSlide(const StanEvalTask()),
+                        routes: [
+                          GoRoute(
+                            path: "unit",
+                            pageBuilder: (context, state) => fullSlide(SEUnit(unit: state.extra as String))(context, state),
+                            routes: [
+                              GoRoute(
+                                path: "analytics",
+                                pageBuilder: (context, state) => fullSlide(SEAnalytics(parameters: state.extra as SEParameters))(context, state)
+                              ),
+
+                              GoRoute(
+                                  path: "event",
+                                  pageBuilder: (context, state) => fullSlide(StoreConnector<GlobalState, ViewModel<String>>(
+                                    converter: (store) => ViewModel(store: store, content: store.state.user.id!),
+                                    builder: (context, model) => SEEvent(
+                                        parameters: state.extra as SEEventParameters,
+                                        graderID: model.content
+                                    )
+                                  ))(context, state)
+                              ),
+                            ]
+                          )
+                        ]
+                      ),
+                    ]
+                ),
+              ]
+          )
+        ]
+    )
   ]
 );

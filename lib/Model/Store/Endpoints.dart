@@ -28,6 +28,7 @@ import '../Database/SquadronAssignRequest.dart';
 import '../Database/Unit.dart';
 import '../Database/UnitAssignRequest.dart';
 import '../Database/UnitDataRequest.dart';
+import '../Database/UnitGrades.dart';
 import '../Database/UnitList.dart';
 import '../Database/UserList.dart';
 import '../Database/WingData.dart';
@@ -122,6 +123,7 @@ class Endpoints {
   static Endpoint<UnitDataRequest, UnitData> getUnit = Endpoint("/pages/sdo", get: true);
   static Endpoint<void, UserGrades> getGrades = Endpoint("/grades/info", get: true);
   static Endpoint<GradeSubmission, bool> setGrades = Endpoint("/grades/set");
+  static Endpoint<String, UnitGrades> unitGrades = Endpoint("grades/unit");
   static Endpoint<void, BuiltList<FormSummary>> getForms = Endpoint("/forms/info", get: true);
   static Endpoint<RoleRequest, bool> setRoles = Endpoint("/roles/set");
   static Endpoint<SquadronAssignRequest, bool> assignSquad = Endpoint("squadron/assign");
@@ -146,9 +148,7 @@ Future<void> login(String token) async {
   await (await SharedPreferences.getInstance()).setBool("account", true);
 }
 
-void demo() {
-  APIData.demo = true;
-}
+void demo() => APIData.demo = true;
 
 Future<void> attemptLogin() async {
   String? authToken;
@@ -159,6 +159,10 @@ Future<void> attemptLogin() async {
       authToken = s.queryParameters["code"];
     }
   }
-  await authLogin();
-  oauth.setCode(authToken);
+  if (authToken == null) {
+    await authLogin();
+  }
+  else {
+    oauth.setCode(authToken);
+  }
 }

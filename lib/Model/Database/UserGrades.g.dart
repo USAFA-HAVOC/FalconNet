@@ -77,16 +77,12 @@ class _$UserGradesSerializer implements StructuredSerializer<UserGrades> {
       serializers.serialize(object.samis,
           specifiedType:
               const FullType(BuiltList, const [const FullType(Grade)])),
+      'pais',
+      serializers.serialize(object.pais,
+          specifiedType:
+              const FullType(BuiltList, const [const FullType(Grade)])),
     ];
-    Object? value;
-    value = object.pais;
-    if (value != null) {
-      result
-        ..add('pais')
-        ..add(serializers.serialize(value,
-            specifiedType:
-                const FullType(BuiltList, const [const FullType(Grade)])));
-    }
+
     return result;
   }
 
@@ -226,15 +222,16 @@ class _$UserGrades extends UserGrades {
   @override
   final BuiltList<Grade> samis;
   @override
-  final BuiltList<Grade>? pais;
+  final BuiltList<Grade> pais;
 
   factory _$UserGrades([void Function(UserGradesBuilder)? updates]) =>
       (new UserGradesBuilder()..update(updates))._build();
 
-  _$UserGrades._({required this.amis, required this.samis, this.pais})
+  _$UserGrades._({required this.amis, required this.samis, required this.pais})
       : super._() {
     BuiltValueNullFieldError.checkNotNull(amis, r'UserGrades', 'amis');
     BuiltValueNullFieldError.checkNotNull(samis, r'UserGrades', 'samis');
+    BuiltValueNullFieldError.checkNotNull(pais, r'UserGrades', 'pais');
   }
 
   @override
@@ -295,7 +292,7 @@ class UserGradesBuilder implements Builder<UserGrades, UserGradesBuilder> {
     if ($v != null) {
       _amis = $v.amis.toBuilder();
       _samis = $v.samis.toBuilder();
-      _pais = $v.pais?.toBuilder();
+      _pais = $v.pais.toBuilder();
       _$v = null;
     }
     return this;
@@ -320,7 +317,7 @@ class UserGradesBuilder implements Builder<UserGrades, UserGradesBuilder> {
     try {
       _$result = _$v ??
           new _$UserGrades._(
-              amis: amis.build(), samis: samis.build(), pais: _pais?.build());
+              amis: amis.build(), samis: samis.build(), pais: pais.build());
     } catch (_) {
       late String _$failedField;
       try {
@@ -329,7 +326,7 @@ class UserGradesBuilder implements Builder<UserGrades, UserGradesBuilder> {
         _$failedField = 'samis';
         samis.build();
         _$failedField = 'pais';
-        _pais?.build();
+        pais.build();
       } catch (e) {
         throw new BuiltValueNestedFieldError(
             r'UserGrades', _$failedField, e.toString());

@@ -11,11 +11,40 @@ import '../Model/Store/Actions/NotificationAction.dart';
 import 'FNNotifications.dart';
 
 ///Overhead navigation bar
-class FNNavigationBar extends StatelessWidget {
+class FNNavigationBar extends StatefulWidget {
   const FNNavigationBar({super.key});
 
   @override
-  Widget build(BuildContext ctx) {
+  State<StatefulWidget> createState() => FNNavigationBarState();
+}
+
+class FNNavigationBarState extends State<FNNavigationBar> {
+  bool global = true;
+  bool profile = false;
+  bool first = true;
+  void Function() listener = () => {};
+  GoRouter? router;
+
+  @override
+  void dispose() {
+    super.dispose();
+
+    router?.removeListener(listener);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+
+    router = GoRouter.of(context);
+    if (first) {
+      listener = () => setState(() {
+        global = !GoRouter.of(context).location.contains("/task_management/");
+        profile = GoRouter.of(context).location.contains("/profile");
+      });
+      first = false;
+      router?.addListener(listener);
+    }
+
     return LayoutBuilder(
         builder: (context, constraints) => Row(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -23,25 +52,30 @@ class FNNavigationBar extends StatelessWidget {
           children: [
 
             Expanded(
-                child: Container(
-                  alignment: AlignmentDirectional.bottomStart,
+              child: Container(
+                alignment: AlignmentDirectional.bottomStart,
 
-                  //Set to opaque in order to capture taps on invisible padding
-                  //Otherwise, will only capture taps directly on icon
-                  child: GestureDetector(
-                    behavior: HitTestBehavior.opaque,
-                    onTap: () {
+                //Set to opaque in order to capture taps on invisible padding
+                //Otherwise, will only capture taps directly on icon
+                child: GestureDetector(
+                  behavior: HitTestBehavior.opaque,
+                  onTap: () {
+                    if (global) {
                       Scaffold.of(context).openDrawer();
-                    },
-                    child: Padding(
-                      padding: EdgeInsets.all(25),
+                    }
+                    else {
+                      context.pop();
+                    }
+                  },
+                  child: Padding(
+                    padding: const EdgeInsets.all(25),
 
-                      child: Icon(
-                        Icons.menu,
-                      ),
+                    child: Icon(
+                      global ? Icons.menu : Icons.arrow_back,
                     ),
                   ),
                 ),
+              ),
             ),
 
 
@@ -57,7 +91,7 @@ class FNNavigationBar extends StatelessWidget {
                   },
 
                   child: Padding(
-                    padding: EdgeInsets.symmetric(vertical: 10),
+                    padding: const EdgeInsets.symmetric(vertical: 10),
                     child: Image.asset(
                       "assets/images/aflogo.png",
                       height: 60,
@@ -68,90 +102,97 @@ class FNNavigationBar extends StatelessWidget {
             ),
 
             Expanded(
-                child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Expanded(
-                          child: StoreConnector<GlobalState, ViewModel<List<UserNotification>>>(
-                              converter: (store) => ViewModel<List<UserNotification>>(store: store, content: store.state.notifications.toList(growable: false)),
-                              builder: (context, model) {
-                                //If there are notifications display a badge icon
-                                if (model.content.isNotEmpty) {
-                                  return GestureDetector(
-
-                                    behavior: HitTestBehavior.opaque,
-
-                                    onTap: () {
-
-                                      //On tap, display a popover under the notification icon
-                                      showPopover(
-                                        context: context,
-                                        width: constraints.maxWidth / 2,
-                                        height: model.content.length * 50,
-
-                                        //On closing, dispatch dismiss all action
-                                        onPop: () {
-                                          model.dispatch(NotificationAction.dismissAll());
-                                        },
-
-                                        //Display FNNotifications in popover
-                                        bodyBuilder: (context) => FNNotifications(
-                                          notifications: model.content,
-
-                                          //On click, dispatch dismiss action
-                                          onClick: (notification) {
-                                            model.dispatch(NotificationAction.dismiss(notification));
-                                          },
-                                        ),
-                                      );
-                                    },
-
-                                    //Badge icon containing number of notifications
-                                    child: Padding(
-                                      padding: EdgeInsets.symmetric(vertical: 25),
-                                      child: badges.Badge(
-                                        badgeContent: Text(model.content.length.toString()),
-                                        badgeColor: Theme.of(context).indicatorColor,
-
-                                        //Very empirical formula
-                                        position: badges.BadgePosition.topEnd(end: -15 + MediaQuery.of(context).size.width / 17),
-                                        child: Icon(Icons.notifications),
-                                      ),
-                                    ),
-                                  );
-                                }
-
-                                //If no notifications, don't include badge
+              child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Expanded(
+                        child: StoreConnector<GlobalState, ViewModel<List<UserNotification>>>(
+                            converter: (store) => ViewModel<List<UserNotification>>(store: store, content: store.state.notifications.toList(growable: false)),
+                            builder: (context, model) {
+                              //If there are notifications display a badge icon
+                              if (model.content.isNotEmpty) {
                                 return GestureDetector(
+
                                   behavior: HitTestBehavior.opaque,
 
-                                  //Can't open notifications, so execute haptic feedback
                                   onTap: () {
-                                    HapticFeedback.mediumImpact();
+
+                                    //On tap, display a popover under the notification icon
+                                    showPopover(
+                                      context: context,
+                                      width: constraints.maxWidth / 2,
+                                      height: model.content.length * 50,
+
+                                      //On closing, dispatch dismiss all action
+                                      onPop: () {
+                                        model.dispatch(NotificationAction.dismissAll());
+                                      },
+
+                                      //Display FNNotifications in popover
+                                      bodyBuilder: (context) => FNNotifications(
+                                        notifications: model.content,
+
+                                        //On click, dispatch dismiss action
+                                        onClick: (notification) {
+                                          model.dispatch(NotificationAction.dismiss(notification));
+                                        },
+                                      ),
+                                    );
                                   },
 
+                                  //Badge icon containing number of notifications
                                   child: Padding(
-                                    padding: EdgeInsets.symmetric(vertical: 25),
-                                    child: Icon(Icons.notifications),
+                                    padding: const EdgeInsets.symmetric(vertical: 25),
+                                    child: badges.Badge(
+                                      badgeContent: Text(model.content.length.toString()),
+                                      badgeColor: Theme.of(context).indicatorColor,
+
+                                      //Very empirical formula
+                                      position: badges.BadgePosition.topEnd(end: -15 + MediaQuery.of(context).size.width / 17),
+                                      child: const Icon(Icons.notifications),
+                                    ),
                                   ),
                                 );
                               }
-                          )
-                      ),
 
-                      Expanded(
-                          child: GestureDetector(
-                            behavior: HitTestBehavior.opaque,
-                            onTap: () => context.go("/profile"),
-                            child: Padding(
-                              padding: EdgeInsets.symmetric(vertical: 25),
-                              child: Icon(Icons.person_rounded),
-                            ),
-                          )
-                      ),
-                    ]
-                ),
+                              //If no notifications, don't include badge
+                              return GestureDetector(
+                                behavior: HitTestBehavior.opaque,
+
+                                //Can't open notifications, so execute haptic feedback
+                                onTap: () {
+                                  HapticFeedback.mediumImpact();
+                                },
+
+                                child: const Padding(
+                                  padding: EdgeInsets.symmetric(vertical: 25),
+                                  child: Icon(Icons.notifications),
+                                ),
+                              );
+                            }
+                        )
+                    ),
+
+                    Expanded(
+                        child: GestureDetector(
+                          behavior: HitTestBehavior.opaque,
+                          onTap: () {
+                            if (profile) {
+                              context.go("/");
+                            }
+                            else {
+                              context.go("/profile");
+                            }
+                          },
+                          child: const Padding(
+                            padding: EdgeInsets.symmetric(vertical: 25),
+                            child: Icon(Icons.person_rounded),
+                          ),
+                        )
+                    ),
+                  ]
+              ),
             ),
           ],
         )

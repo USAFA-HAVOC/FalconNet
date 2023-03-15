@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../../Model/Database/UserGrades.dart';
+import '../../Components/PageWidget.dart';
 
 class GradePanel extends StatefulWidget {
   final List<Grade> grades;
@@ -17,7 +18,7 @@ class GradePanelState extends State<GradePanel> {
 
   @override
   void initState() {
-    extensions = List<bool>.filled(widget.grades.length, false);
+    extensions = List<bool>.filled(20, false);
     super.initState();
   }
 
@@ -28,7 +29,7 @@ class GradePanelState extends State<GradePanel> {
         backgroundColor: Theme.of(context).cardTheme.color,
         isExpanded: expanded,
         headerBuilder: (context, open) => Padding(
-          padding: EdgeInsets.all(10),
+          padding: const EdgeInsets.all(10),
           child: Row(
             children: [
               Expanded(
@@ -49,50 +50,49 @@ class GradePanelState extends State<GradePanel> {
         ),
 
         body: Padding(
-            padding: EdgeInsets.only(left: 10, bottom: 10, right: 10),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                Text(
-                  grade.description ?? "No description given",
-                  style: Theme.of(context).textTheme.bodyMedium,
-                ),
-              ],
-            )
+            padding: const EdgeInsets.only(left: 10, bottom: 10, right: 10),
+            child: Text(
+              grade.description ?? "No description given",
+              style: Theme.of(context).textTheme.bodyMedium,
+            ),
         )
     );
   }
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      crossAxisAlignment: CrossAxisAlignment.stretch,
+    print(extensions.length);
+    print(widget.grades.length);
+    return PageWidget(
+      title: widget.label,
       children: [
-        Text(
-          "${widget.label}s",
-          style: Theme.of(context).textTheme.titleMedium,
+        if (widget.grades.isEmpty) Padding(
+          padding: const EdgeInsets.only(bottom: 20),
+          child: Text(
+            "No ${widget.label} scores to display",
+            textAlign: TextAlign.center,
+          ),
         ),
 
-        ExpansionPanelList(
+        if (widget.grades.isNotEmpty) ExpansionPanelList(
 
           //Closes all panels other than current one
           expansionCallback: (index, status) {
             setState(() {
-              extensions = List<bool>.filled(extensions.length, false);
+              extensions = List<bool>.filled(widget.grades.length, false);
               extensions[index] = !status;
             });
           },
 
           children: widget.grades.asMap().map(
             (key, value) => MapEntry(
-                key,
-                buildGradePanel(
-                    context,
-                    "${widget.label} #${(key + 1).toString()}",
-                    value,
-                    extensions[key]
-                )
+              key,
+              buildGradePanel(
+                context,
+                "${widget.label} #${(key + 1).toString()}",
+                value,
+                extensions[key]
+              )
             )
           ).values.toList(),
         ),

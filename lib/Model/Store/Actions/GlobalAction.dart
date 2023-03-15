@@ -53,7 +53,7 @@ class GlobalAction extends ReduxAction<GlobalState> {
         await dispatch(HistoryAction.retrieve(onFail: fail));
         await dispatch(NotificationAction.retrieve(onFail: fail));
         await dispatch(FormAction.retrieve(onFail: () => {
-          print("Forms endpoint not implemented")
+          //print("Forms endpoint not implemented")
         }));
 
         if (failed) {

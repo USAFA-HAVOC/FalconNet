@@ -24,7 +24,14 @@ class _$UserSummarySerializer implements StructuredSerializer<UserSummary> {
       'name',
       serializers.serialize(object.name, specifiedType: const FullType(String)),
     ];
-
+    Object? value;
+    value = object.room;
+    if (value != null) {
+      result
+        ..add('room')
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(String)));
+    }
     return result;
   }
 
@@ -47,6 +54,10 @@ class _$UserSummarySerializer implements StructuredSerializer<UserSummary> {
           result.name = serializers.deserialize(value,
               specifiedType: const FullType(String))! as String;
           break;
+        case 'room':
+          result.room = serializers.deserialize(value,
+              specifiedType: const FullType(String)) as String?;
+          break;
       }
     }
 
@@ -59,11 +70,14 @@ class _$UserSummary extends UserSummary {
   final String user_id;
   @override
   final String name;
+  @override
+  final String? room;
 
   factory _$UserSummary([void Function(UserSummaryBuilder)? updates]) =>
       (new UserSummaryBuilder()..update(updates))._build();
 
-  _$UserSummary._({required this.user_id, required this.name}) : super._() {
+  _$UserSummary._({required this.user_id, required this.name, this.room})
+      : super._() {
     BuiltValueNullFieldError.checkNotNull(user_id, r'UserSummary', 'user_id');
     BuiltValueNullFieldError.checkNotNull(name, r'UserSummary', 'name');
   }
@@ -80,7 +94,8 @@ class _$UserSummary extends UserSummary {
     if (identical(other, this)) return true;
     return other is UserSummary &&
         user_id == other.user_id &&
-        name == other.name;
+        name == other.name &&
+        room == other.room;
   }
 
   @override
@@ -88,6 +103,7 @@ class _$UserSummary extends UserSummary {
     var _$hash = 0;
     _$hash = $jc(_$hash, user_id.hashCode);
     _$hash = $jc(_$hash, name.hashCode);
+    _$hash = $jc(_$hash, room.hashCode);
     _$hash = $jf(_$hash);
     return _$hash;
   }
@@ -96,7 +112,8 @@ class _$UserSummary extends UserSummary {
   String toString() {
     return (newBuiltValueToStringHelper(r'UserSummary')
           ..add('user_id', user_id)
-          ..add('name', name))
+          ..add('name', name)
+          ..add('room', room))
         .toString();
   }
 }
@@ -112,6 +129,10 @@ class UserSummaryBuilder implements Builder<UserSummary, UserSummaryBuilder> {
   String? get name => _$this._name;
   set name(String? name) => _$this._name = name;
 
+  String? _room;
+  String? get room => _$this._room;
+  set room(String? room) => _$this._room = room;
+
   UserSummaryBuilder();
 
   UserSummaryBuilder get _$this {
@@ -119,6 +140,7 @@ class UserSummaryBuilder implements Builder<UserSummary, UserSummaryBuilder> {
     if ($v != null) {
       _user_id = $v.user_id;
       _name = $v.name;
+      _room = $v.room;
       _$v = null;
     }
     return this;
@@ -144,7 +166,8 @@ class UserSummaryBuilder implements Builder<UserSummary, UserSummaryBuilder> {
             user_id: BuiltValueNullFieldError.checkNotNull(
                 user_id, r'UserSummary', 'user_id'),
             name: BuiltValueNullFieldError.checkNotNull(
-                name, r'UserSummary', 'name'));
+                name, r'UserSummary', 'name'),
+            room: room);
     replace(_$result);
     return _$result;
   }
