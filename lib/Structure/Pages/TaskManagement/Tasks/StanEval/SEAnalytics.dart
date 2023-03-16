@@ -12,20 +12,29 @@ import 'SEParameters.dart';
 
 class SEAnalytics extends StatelessWidget {
   final SEParameters parameters;
-  final List<Color> gradientColors = [
-    Colors.blue,
-    Colors.black,
-  ];
 
-  SEAnalytics({super.key, required this.parameters});
+  const SEAnalytics({super.key, required this.parameters});
 
   double calculateAverage(List<Grade> grades) =>
-      (10 * grades.map((g) => g.score).reduce((v, e) => v + e) / grades.length).roundToDouble() / 10;
+      grades.isNotEmpty ? (10 * grades.map((g) => g.score).reduce((v, e) => v + e) / grades.length).roundToDouble() / 10 : 0;
 
   double calculateReporting(List<Grade> grades) =>
-      grades.length / parameters.grades.members.length;
+      grades.isNotEmpty ? grades.length / parameters.grades.members.length : 0;
 
   List<Widget> buildStatisticBars(BuildContext context, {required void Function(String, Map<UserSummary, Grade>) onTap}) {
+    if (!parameters.grades.grades.values.any(
+            (gradeSet) => gradeSet.amis.isNotEmpty || gradeSet.samis.isNotEmpty || gradeSet.pais.isNotEmpty)
+    ) {
+      return [
+        const Padding(
+          padding: EdgeInsets.only(top: 10, bottom: 20),
+          child: Text(
+            "No Records for this Unit",
+            textAlign: TextAlign.center,
+          ),
+        )
+      ];
+    }
     GradeBoard board = GradeBoard.fromUnitGrades(unit: parameters.grades);
 
     List<Widget> bars = <Widget>[];
@@ -74,22 +83,17 @@ class SEAnalytics extends StatelessWidget {
             )
           ),
         );
-    var a = 1;
-    for (var ami in board.amis) {
-      bars.add(buildGradeBar(ami, "AMI #$a"));
-      a++;
+
+    for (var ami in board.amis.entries) {
+      if (ami.value.isNotEmpty) bars.add(buildGradeBar(ami.value, "AMI #${ami.key + 1}"));
     }
 
-    var s = 1;
-    for (var sami in board.samis) {
-      bars.add(buildGradeBar(sami, "SAMI #$s"));
-      s++;
+    for (var sami in board.samis.entries) {
+      if (sami.value.isNotEmpty) bars.add(buildGradeBar(sami.value, "SAMI #${sami.key + 1}"));
     }
 
-    var p = 1;
-    for (var pai in board.pais) {
-      bars.add(buildGradeBar(pai, "PAI #$p"));
-      p++;
+    for (var pai in board.pais.entries) {
+      if (pai.value.isNotEmpty) bars.add(buildGradeBar(pai.value, "PAI #${pai.key + 1}"));
     }
 
     return bars;
@@ -107,8 +111,8 @@ class SEAnalytics extends StatelessWidget {
           name: "AMI Trends",
           data: List<FlSpot>.generate(board.amis.length, (index) =>
               FlSpot(
-                  (index + 1).toDouble(),
-                  calculateAverage(board.amis[index].values.toList())
+                  (board.amis.keys.toList()[index] + 1).toDouble(),
+                  calculateAverage(board.amis[board.amis.keys.toList()[index]]?.values.toList() ?? [])
               )
           ),
         ),

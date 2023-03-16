@@ -3,19 +3,19 @@ import '../../../../../Model/Database/UserGrades.dart';
 import '../../../../../Model/Database/UserSummary.dart';
 
 class GradeBoard {
-  List<Map<UserSummary, Grade>> amis;
-  List<Map<UserSummary, Grade>> samis;
-  List<Map<UserSummary, Grade>> pais;
+  Map<int, Map<UserSummary, Grade>> amis;
+  Map<int, Map<UserSummary, Grade>> samis;
+  Map<int, Map<UserSummary, Grade>> pais;
 
   Map<UserSummary, Grade> getRow(String type, int index) {
     if (type == "ami") {
-      return amis[index];
+      return amis[index]!;
     }
     else if (type == "sami") {
-      return samis[index];
+      return samis[index]!;
     }
     else if (type == "pai") {
-      return pais[index];
+      return pais[index]!;
     }
     throw Exception("Cannot retrieve event of type $type!");
   }
@@ -23,9 +23,9 @@ class GradeBoard {
   GradeBoard({required this.amis, required this.samis, required this.pais});
 
   GradeBoard.fromUnitGrades({required UnitGrades unit}) :
-        amis = [],
-        samis = [],
-        pais = []
+        amis = <int, Map<UserSummary, Grade>>{},
+        samis = <int, Map<UserSummary, Grade>>{},
+        pais = <int, Map<UserSummary, Grade>>{}
   {
     var grades = unit.grades;
 
@@ -34,37 +34,19 @@ class GradeBoard {
     }
 
     for (var user in grades.entries) {
-      int a = 0;
       for (var ami in user.value.amis) {
-        if (a < amis.length) {
-          amis[a][findID(user.key)] = ami;
-        }
-        else {
-          amis.add({findID(user.key) : ami});
-        }
-        a++;
+        amis.putIfAbsent(ami.index, () => {});
+        amis[ami.index]!.putIfAbsent(findID(user.key), () => ami);
       }
 
-      int s = 0;
       for (var sami in user.value.samis) {
-        if (s < samis.length) {
-          samis[s][findID(user.key)] = sami;
-        }
-        else {
-          samis.add({findID(user.key) : sami});
-        }
-        s++;
+        samis.putIfAbsent(sami.index, () => {});
+        samis[sami.index]!.putIfAbsent(findID(user.key), () => sami);
       }
 
-      int p = 0;
       for (var pai in user.value.pais) {
-        if (p < pais.length) {
-          pais[p][findID(user.key)] = pai;
-        }
-        else {
-          pais.add({findID(user.key) : pai});
-        }
-        p++;
+        pais.putIfAbsent(pai.index, () => {});
+        pais[pai.index]!.putIfAbsent(findID(user.key), () => pai);
       }
     }
   }

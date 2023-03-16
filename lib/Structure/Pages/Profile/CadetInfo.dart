@@ -20,7 +20,7 @@ class CadetInfo extends StatelessWidget {
             primary: false,
             shrinkWrap: true,
             children: [
-              SizedBox(height: 20,),
+              const SizedBox(height: 20,),
 
               // InputBlock(
               //   label: "Name",
@@ -37,7 +37,7 @@ class CadetInfo extends StatelessWidget {
                 onSubmit: (input) {  },
               ),
 
-              SizedBox(height: 20,),
+              const SizedBox(height: 20,),
 
               InputBlock(
                 label: "Phone Number",
@@ -48,18 +48,18 @@ class CadetInfo extends StatelessWidget {
                 initial: model.content.personal_info.phone_number,
               ),
 
-              SizedBox(height: 20,),
+              const SizedBox(height: 20,),
 
               InputBlock(
                 label: "Room Number",
                 onSubmit: (value) => model.dispatch(InfoAction(modify: (b) => b..personal_info.room_number = value)),
                 validator: (String? value) => (value ?? "").characters.length >= 3,
                 error: "Room must have at least three characters",
-                hint: "room #",
+                hint: "eg. 1A11",
                 initial: model.content.personal_info.room_number,
               ),
 
-              SizedBox(height: 20,),
+              const SizedBox(height: 20,),
 
               InputBlock(
                 label: "Squadron",
@@ -141,7 +141,6 @@ class InputBlockState extends State<InputBlock> {
             onChanged: (change) => setState(() {
               value = change;
             }),
-            //onSubmitted: (value) => attemptSubmit(value),
             style: Theme.of(context).textTheme.bodyMedium,
 
             /*

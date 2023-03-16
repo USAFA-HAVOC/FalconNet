@@ -79,10 +79,12 @@ class StanEvalTaskState extends State<StanEvalTask> {
                             border: Border.all(color: Theme.of(context).dividerColor),
                           ),
                           child: InkWell(
-                            onTap: () => context.go(
-                              "/task_management/stan_eval/unit",
-                              extra: ordered.units[index - 1].unit.name
-                            ),
+                            onTap: () {
+                              context.go(
+                                  "/task_management/stan_eval/unit",
+                                  extra: ordered.units[index - 1].unit.name
+                              );
+                            },
 
                             child: Padding(
                               padding: const EdgeInsets.all(20),

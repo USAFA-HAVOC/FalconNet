@@ -14,12 +14,19 @@ class GradePanel extends StatefulWidget {
 }
 
 class GradePanelState extends State<GradePanel> {
-  late List<bool> extensions;
+  late Map<int, bool> extensions;
 
   @override
   void initState() {
-    extensions = List<bool>.filled(20, false);
+    closeExtensions();
     super.initState();
+  }
+
+  void closeExtensions() {
+    extensions = Map<int, bool>.fromEntries(List<MapEntry<int, bool>>.generate(
+        widget.grades.length,
+            (index) => MapEntry(widget.grades[index].index, false)
+    ));
   }
 
   ///Builds an extension panel for a particular grade with expansion state
@@ -49,20 +56,22 @@ class GradePanelState extends State<GradePanel> {
           ),
         ),
 
-        body: Padding(
+        body: Align(
+          alignment: AlignmentDirectional.centerStart,
+          child: Padding(
             padding: const EdgeInsets.only(left: 10, bottom: 10, right: 10),
             child: Text(
-              grade.description ?? "No description given",
+              grade.description == null || grade.description?.isEmpty == true ? "No description given" : grade.description!,
+              textAlign: TextAlign.start,
               style: Theme.of(context).textTheme.bodyMedium,
             ),
+          ),
         )
     );
   }
 
   @override
   Widget build(BuildContext context) {
-    print(extensions.length);
-    print(widget.grades.length);
     return PageWidget(
       title: widget.label,
       children: [
@@ -79,22 +88,19 @@ class GradePanelState extends State<GradePanel> {
           //Closes all panels other than current one
           expansionCallback: (index, status) {
             setState(() {
-              extensions = List<bool>.filled(widget.grades.length, false);
-              extensions[index] = !status;
+              closeExtensions();
+              extensions[widget.grades[index].index] = !status;
             });
           },
 
-          children: widget.grades.asMap().map(
-            (key, value) => MapEntry(
-              key,
-              buildGradePanel(
+          children: widget.grades.map(
+            (grade) => buildGradePanel(
                 context,
-                "${widget.label} #${(key + 1).toString()}",
-                value,
-                extensions[key]
-              )
+                "${widget.label} #${(grade.index + 1).toString()}",
+                grade,
+                extensions.entries.toList().firstWhere((element) => element.key == grade.index).value
             )
-          ).values.toList(),
+          ).toList(),
         ),
       ],
     );

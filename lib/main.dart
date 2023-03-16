@@ -17,8 +17,6 @@ import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:go_router/go_router.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_signin_button/flutter_signin_button.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_signin_button/flutter_signin_button.dart';
 
 import 'Model/Database/UserSettings.dart';
 import 'Router/FNRouter.dart';
@@ -42,8 +40,9 @@ void main() async {
             ..group = "CG02"
             ..unit = "CS18").toBuilder()
           ..pass_allocation = CadetPassAllocation((b3) => b3
-            ..individual_pass_status = "OPEN"
-            ..effective_pass_status = "OPEN"
+            ..individual_pass_status = true
+            ..effective_pass_status = true
+            ..class_year_idx = 3
             ..weekday_day_passes = 0
             ..weekday_overnight_passes = 0
             ..weekend_overnight_passes = 0).toBuilder()
@@ -57,7 +56,9 @@ void main() async {
           ..taskPush = true
           ..diPush = true
           ..passPush = true
-          ..pushNotifications = true).toBuilder()));
+          ..pushNotifications = true).toBuilder()
+      )
+  );
 
   WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
   FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
@@ -133,7 +134,7 @@ class SelectionView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       color: Colors.grey[100],
-      padding: EdgeInsets.symmetric(horizontal: 20.0),
+      padding: const EdgeInsets.symmetric(horizontal: 20.0),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
@@ -149,7 +150,7 @@ class SelectionView extends StatelessWidget {
               },
             ),
           ),
-          SizedBox(height: 20.0),
+          const SizedBox(height: 20.0),
           SizedBox(
             width: 200.0,
             height: 50.0,

@@ -35,13 +35,10 @@ class AssignmentBar extends StatelessWidget {
                   ),
                 ),
 
-                ElevatedButton(
+                IconButton(
                   onPressed: () => onToggle(summary),
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 10),
-                    child: Text(status == AssignmentStatus.excluded ? "Add" : "Remove"),
-                  ),
-                ),
+                  icon: Icon(status == AssignmentStatus.excluded ? Icons.add : Icons.delete),
+                )
               ],
             )
         ),

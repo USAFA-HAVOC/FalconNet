@@ -108,7 +108,7 @@ class UnitFormState extends State<UnitForm> {
                   ..name = name.text
                   ..group = group.text.isEmpty ? null : group.text
                   ..is_squadron = widget.existing?.unit.is_squadron ?? false
-                  ..pass_status = widget.existing?.unit.pass_status ?? "OPEN"
+                  ..pass_status = widget.existing?.unit.pass_status.toBuilder()
                   ..id = widget.existing?.unit.id).toBuilder()));
 
               setState(() {

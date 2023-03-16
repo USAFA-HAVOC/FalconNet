@@ -14,9 +14,12 @@ class GraphWidget extends StatelessWidget {
   GraphWidget({super.key, required this.name, required this.data});
 
   List<double> bounds() {
+    if (data.isEmpty) {
+      return [0, 100];
+    }
     var min = data.map((s) => s.y).reduce((carry, element) => carry < element ? carry : element);
     var max = data.map((s) => s.y).reduce((carry, element) => carry > element ? carry : element);
-    return <double>[(min + max - 100).toDouble(), (100).toDouble()];
+    return <double>[(min + max - 100).toDouble().clamp(0, 100), (100).toDouble()];
   }
 
   @override

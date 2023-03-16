@@ -99,7 +99,7 @@ class SEEventState extends State<SEEvent> {
       });
       try {
         await Endpoints.setGrades(GradeSubmission((s) => s
-          ..value = parsedScore!
+          ..value = parsedScore
           ..description = description.text
           ..type = widget.type
           ..number = widget.index

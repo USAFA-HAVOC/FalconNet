@@ -17,7 +17,10 @@ class TaskManagement extends StatelessWidget {
   List<Widget> buildTasks(GlobalState state, BuildContext context) {
     var tasks = <Widget>[];
 
-    //Add tasks in order of precedent based on roles and available forms
+    //Add form one task widgets from state
+    tasks.addAll(state.forms.where((f) => !f.signed).map((f) => FormOneWidget(form: f)));
+
+    //Add role-based tasks in order of precedent based on roles and available forms
     if (state.user.roles.any((r) => r.role == Roles.fn_admin.name || r.role == Roles.wing_admin.name)) {
       tasks.add(const ExternalTaskWidget(
           path: "/task_management/unit_editor",
@@ -85,9 +88,6 @@ class TaskManagement extends StatelessWidget {
           description: "Please order appropriate number of meals for your squadron"
       ));
     }
-
-    //Add form one task widgets from state
-    tasks.addAll(state.forms.where((f) => !f.signed).map((f) => FormOneWidget(form: f)));
 
     //If no relevant tasks, display no tasks message
     if (tasks.isEmpty) {

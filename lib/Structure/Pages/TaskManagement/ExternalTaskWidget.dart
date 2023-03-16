@@ -33,9 +33,9 @@ class ExternalTaskWidget extends StatelessWidget {
           },
 
           child: Padding(
-            padding: EdgeInsets.symmetric(vertical: 10),
+            padding: const EdgeInsets.symmetric(vertical: 10),
             child: Text(
-              "Begin",
+              "Open",
               style: Theme.of(context).textTheme.labelLarge,
             ),
           ),

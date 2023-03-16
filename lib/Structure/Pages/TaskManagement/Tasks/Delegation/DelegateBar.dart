@@ -61,12 +61,9 @@ class DelegateBar extends StatelessWidget {
                 ),
               ),
 
-              ElevatedButton(
+              IconButton(
                 onPressed: () => onAssign(delegate),
-                child: Padding(
-                  padding: EdgeInsets.symmetric(vertical: 10),
-                  child: Text("Assign",),
-                ),
+                icon: const Icon(Icons.edit),
               ),
             ],
           )

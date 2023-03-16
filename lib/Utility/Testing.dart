@@ -82,7 +82,7 @@ UnitData generateUnit(UnitSummary info) {
           ..name = info.unit.name
           ..group = info.unit.group
           ..is_squadron = info.unit.is_squadron
-          ..pass_status = info.unit.pass_status
+          ..pass_status = info.unit.pass_status.toBuilder()
       )
   );
 }
@@ -100,7 +100,7 @@ UnitSummary generateInfo(String name, int group, [int? count]) {
       ..out = out
       ..unsigned = unsigned
       ..unit = (UnitBuilder()
-          ..pass_status = "OPEN"
+          ..pass_status = [true, true, true, true].build().toBuilder()
           ..is_squadron = false
           ..name = name
           ..group = "CG${group.toString()}"
@@ -144,7 +144,7 @@ Map<UserSummary, UserGrades> generateGradeMap(int count) =>
 UnitGrades generateGrades([int count = 20]) {
   var map = generateGradeMap(count);
   return UnitGrades((u) => u
-      ..grades = map.map((summary, grade) => MapEntry(summary.user_id, grade))
-      ..members = map.keys.toList()
+      ..grades = map.map((summary, grade) => MapEntry(summary.user_id, grade)).build().toBuilder()
+      ..members = map.keys.toList().build().toBuilder()
   );
 }

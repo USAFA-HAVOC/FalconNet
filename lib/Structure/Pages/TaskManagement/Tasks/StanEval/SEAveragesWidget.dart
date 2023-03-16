@@ -25,6 +25,10 @@ class SEAveragesWidget extends StatelessWidget {
       }
     }
 
+    if (array.isEmpty) {
+      return 0;
+    }
+
     return array.reduce((value, element) => value + element) / array.length;
   }
 

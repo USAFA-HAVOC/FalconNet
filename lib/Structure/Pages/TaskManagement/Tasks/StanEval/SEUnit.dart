@@ -1,12 +1,14 @@
- import 'package:falcon_net/Structure/Components/AsyncPage.dart';
+ import 'package:falcon_net/Model/Database/StringRequest.dart';
+import 'package:falcon_net/Structure/Components/AsyncPage.dart';
 import 'package:falcon_net/Structure/Components/LoadingShimmer.dart';
 import 'package:falcon_net/Structure/Components/PageWidget.dart';
 import 'package:falcon_net/Structure/Pages/TaskManagement/Tasks/StanEval/SEAveragesWidget.dart';
+import 'package:falcon_net/Utility/ErrorFormatting.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../../../Model/Database/UnitGrades.dart';
-import '../../../../../Utility/Testing.dart';
+import '../../../../../Model/Store/Endpoints.dart';
 import 'SEParameters.dart';
 
 class SEUnit extends StatefulWidget {
@@ -23,13 +25,8 @@ class SEUnitState extends State<SEUnit> {
 
   @override
   void initState() {
-    //connection = Endpoints.unitGrades(widget.unit);
-    connection = Future<UnitGrades>.delayed(const Duration(seconds: 2), () => generateGrades()).then((value) {
-      print(value);
-      return value;
-    }).onError((error, stackTrace) {
-      print(error);
-      print(stackTrace);
+    connection = Endpoints.unitGrades(StringRequest((s) => s..string = widget.unit)).onError((error, stackTrace) {
+      displayError(prefix: "S/E Unit", exception: error!);
       return UnitGrades();
     });
     super.initState();
@@ -66,7 +63,7 @@ class SEUnitState extends State<SEUnit> {
     List<Widget> bars = [];
 
     bars.addAll(List<Widget>.generate(7, (index) => buildEventBar("AMI #${index + 1}", "ami", index)));
-    bars.addAll(List<Widget>.generate(2, (index) => buildEventBar("AMI #${index + 1}", "sami", index)));
+    bars.addAll(List<Widget>.generate(2, (index) => buildEventBar("SAMI #${index + 1}", "sami", index)));
     bars.addAll(List<Widget>.generate(2, (index) => buildEventBar("PAI #${index + 1}", "pai",  index)));
 
     return bars;
@@ -103,7 +100,7 @@ class SEUnitState extends State<SEUnit> {
                 extra: SEEventParameters(
                   type: type,
                   index: index,
-                  members: grades.members
+                  members: grades.members.toList()
                 )
               )
             )

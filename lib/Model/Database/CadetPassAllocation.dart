@@ -1,8 +1,5 @@
-import 'package:built_collection/built_collection.dart';
 import 'package:built_value/built_value.dart';
-import 'package:built_value/iso_8601_date_time_serializer.dart';
 import 'package:built_value/serializer.dart';
-import 'package:built_value/standard_json_plugin.dart';
 
 
 part 'CadetPassAllocation.g.dart';
@@ -13,8 +10,9 @@ abstract class CadetPassAllocation implements Built<CadetPassAllocation, CadetPa
   int? get weekend_overnight_passes;
   int? get weekday_overnight_passes;
   int? get weekday_day_passes;
-  String? get individual_pass_status;
-  String? get effective_pass_status;
+  bool get individual_pass_status;
+  bool get effective_pass_status;
+  int get class_year_idx;
 
   CadetPassAllocation._();
   factory CadetPassAllocation([void Function(CadetPassAllocationBuilder) updates]) = _$CadetPassAllocation;

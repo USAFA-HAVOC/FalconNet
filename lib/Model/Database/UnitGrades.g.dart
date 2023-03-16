@@ -21,11 +21,11 @@ class _$UnitGradesSerializer implements StructuredSerializer<UnitGrades> {
       'members',
       serializers.serialize(object.members,
           specifiedType:
-              const FullType(List, const [const FullType(UserSummary)])),
+              const FullType(BuiltList, const [const FullType(UserSummary)])),
       'grades',
       serializers.serialize(object.grades,
-          specifiedType: const FullType(
-              Map, const [const FullType(String), const FullType(UserGrades)])),
+          specifiedType: const FullType(BuiltMap,
+              const [const FullType(String), const FullType(UserGrades)])),
     ];
 
     return result;
@@ -43,17 +43,17 @@ class _$UnitGradesSerializer implements StructuredSerializer<UnitGrades> {
       final Object? value = iterator.current;
       switch (key) {
         case 'members':
-          result.members = serializers.deserialize(value,
+          result.members.replace(serializers.deserialize(value,
                   specifiedType: const FullType(
-                      List, const [const FullType(UserSummary)]))!
-              as List<UserSummary>;
+                      BuiltList, const [const FullType(UserSummary)]))!
+              as BuiltList<Object?>);
           break;
         case 'grades':
-          result.grades = serializers.deserialize(value,
-              specifiedType: const FullType(Map, const [
+          result.grades.replace(serializers.deserialize(value,
+              specifiedType: const FullType(BuiltMap, const [
                 const FullType(String),
                 const FullType(UserGrades)
-              ]))! as Map<String, UserGrades>;
+              ]))!);
           break;
       }
     }
@@ -64,9 +64,9 @@ class _$UnitGradesSerializer implements StructuredSerializer<UnitGrades> {
 
 class _$UnitGrades extends UnitGrades {
   @override
-  final List<UserSummary> members;
+  final BuiltList<UserSummary> members;
   @override
-  final Map<String, UserGrades> grades;
+  final BuiltMap<String, UserGrades> grades;
 
   factory _$UnitGrades([void Function(UnitGradesBuilder)? updates]) =>
       (new UnitGradesBuilder()..update(updates))._build();
@@ -112,21 +112,23 @@ class _$UnitGrades extends UnitGrades {
 class UnitGradesBuilder implements Builder<UnitGrades, UnitGradesBuilder> {
   _$UnitGrades? _$v;
 
-  List<UserSummary>? _members;
-  List<UserSummary>? get members => _$this._members;
-  set members(List<UserSummary>? members) => _$this._members = members;
+  ListBuilder<UserSummary>? _members;
+  ListBuilder<UserSummary> get members =>
+      _$this._members ??= new ListBuilder<UserSummary>();
+  set members(ListBuilder<UserSummary>? members) => _$this._members = members;
 
-  Map<String, UserGrades>? _grades;
-  Map<String, UserGrades>? get grades => _$this._grades;
-  set grades(Map<String, UserGrades>? grades) => _$this._grades = grades;
+  MapBuilder<String, UserGrades>? _grades;
+  MapBuilder<String, UserGrades> get grades =>
+      _$this._grades ??= new MapBuilder<String, UserGrades>();
+  set grades(MapBuilder<String, UserGrades>? grades) => _$this._grades = grades;
 
   UnitGradesBuilder();
 
   UnitGradesBuilder get _$this {
     final $v = _$v;
     if ($v != null) {
-      _members = $v.members;
-      _grades = $v.grades;
+      _members = $v.members.toBuilder();
+      _grades = $v.grades.toBuilder();
       _$v = null;
     }
     return this;
@@ -147,12 +149,23 @@ class UnitGradesBuilder implements Builder<UnitGrades, UnitGradesBuilder> {
   UnitGrades build() => _build();
 
   _$UnitGrades _build() {
-    final _$result = _$v ??
-        new _$UnitGrades._(
-            members: BuiltValueNullFieldError.checkNotNull(
-                members, r'UnitGrades', 'members'),
-            grades: BuiltValueNullFieldError.checkNotNull(
-                grades, r'UnitGrades', 'grades'));
+    _$UnitGrades _$result;
+    try {
+      _$result = _$v ??
+          new _$UnitGrades._(members: members.build(), grades: grades.build());
+    } catch (_) {
+      late String _$failedField;
+      try {
+        _$failedField = 'members';
+        members.build();
+        _$failedField = 'grades';
+        grades.build();
+      } catch (e) {
+        throw new BuiltValueNestedFieldError(
+            r'UnitGrades', _$failedField, e.toString());
+      }
+      rethrow;
+    }
     replace(_$result);
     return _$result;
   }

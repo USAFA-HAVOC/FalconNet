@@ -27,7 +27,7 @@ abstract class WingData implements Built<WingData, WingDataBuilder> {
                         ..name = unit.unit.name
                         ..group = unit.unit.group
                         ..is_squadron = unit.unit.is_squadron
-                        ..pass_status = unit.unit.pass_status
+                        ..pass_status = unit.unit.pass_status.toBuilder()
                     ).toBuilder()
                 )
               ]

@@ -23,7 +23,17 @@ class _$CadetPassAllocationSerializer
   Iterable<Object?> serialize(
       Serializers serializers, CadetPassAllocation object,
       {FullType specifiedType = FullType.unspecified}) {
-    final result = <Object?>[];
+    final result = <Object?>[
+      'individual_pass_status',
+      serializers.serialize(object.individual_pass_status,
+          specifiedType: const FullType(bool)),
+      'effective_pass_status',
+      serializers.serialize(object.effective_pass_status,
+          specifiedType: const FullType(bool)),
+      'class_year_idx',
+      serializers.serialize(object.class_year_idx,
+          specifiedType: const FullType(int)),
+    ];
     Object? value;
     value = object.weekend_overnight_passes;
     if (value != null) {
@@ -42,20 +52,6 @@ class _$CadetPassAllocationSerializer
       result
         ..add('weekday_day_passes')
         ..add(serializers.serialize(value, specifiedType: const FullType(int)));
-    }
-    value = object.individual_pass_status;
-    if (value != null) {
-      result
-        ..add('individual_pass_status')
-        ..add(serializers.serialize(value,
-            specifiedType: const FullType(String)));
-    }
-    value = object.effective_pass_status;
-    if (value != null) {
-      result
-        ..add('effective_pass_status')
-        ..add(serializers.serialize(value,
-            specifiedType: const FullType(String)));
     }
     return result;
   }
@@ -86,11 +82,15 @@ class _$CadetPassAllocationSerializer
           break;
         case 'individual_pass_status':
           result.individual_pass_status = serializers.deserialize(value,
-              specifiedType: const FullType(String)) as String?;
+              specifiedType: const FullType(bool))! as bool;
           break;
         case 'effective_pass_status':
           result.effective_pass_status = serializers.deserialize(value,
-              specifiedType: const FullType(String)) as String?;
+              specifiedType: const FullType(bool))! as bool;
+          break;
+        case 'class_year_idx':
+          result.class_year_idx = serializers.deserialize(value,
+              specifiedType: const FullType(int))! as int;
           break;
       }
     }
@@ -107,9 +107,11 @@ class _$CadetPassAllocation extends CadetPassAllocation {
   @override
   final int? weekday_day_passes;
   @override
-  final String? individual_pass_status;
+  final bool individual_pass_status;
   @override
-  final String? effective_pass_status;
+  final bool effective_pass_status;
+  @override
+  final int class_year_idx;
 
   factory _$CadetPassAllocation(
           [void Function(CadetPassAllocationBuilder)? updates]) =>
@@ -119,9 +121,17 @@ class _$CadetPassAllocation extends CadetPassAllocation {
       {this.weekend_overnight_passes,
       this.weekday_overnight_passes,
       this.weekday_day_passes,
-      this.individual_pass_status,
-      this.effective_pass_status})
-      : super._();
+      required this.individual_pass_status,
+      required this.effective_pass_status,
+      required this.class_year_idx})
+      : super._() {
+    BuiltValueNullFieldError.checkNotNull(individual_pass_status,
+        r'CadetPassAllocation', 'individual_pass_status');
+    BuiltValueNullFieldError.checkNotNull(
+        effective_pass_status, r'CadetPassAllocation', 'effective_pass_status');
+    BuiltValueNullFieldError.checkNotNull(
+        class_year_idx, r'CadetPassAllocation', 'class_year_idx');
+  }
 
   @override
   CadetPassAllocation rebuild(
@@ -140,7 +150,8 @@ class _$CadetPassAllocation extends CadetPassAllocation {
         weekday_overnight_passes == other.weekday_overnight_passes &&
         weekday_day_passes == other.weekday_day_passes &&
         individual_pass_status == other.individual_pass_status &&
-        effective_pass_status == other.effective_pass_status;
+        effective_pass_status == other.effective_pass_status &&
+        class_year_idx == other.class_year_idx;
   }
 
   @override
@@ -151,6 +162,7 @@ class _$CadetPassAllocation extends CadetPassAllocation {
     _$hash = $jc(_$hash, weekday_day_passes.hashCode);
     _$hash = $jc(_$hash, individual_pass_status.hashCode);
     _$hash = $jc(_$hash, effective_pass_status.hashCode);
+    _$hash = $jc(_$hash, class_year_idx.hashCode);
     _$hash = $jf(_$hash);
     return _$hash;
   }
@@ -162,7 +174,8 @@ class _$CadetPassAllocation extends CadetPassAllocation {
           ..add('weekday_overnight_passes', weekday_overnight_passes)
           ..add('weekday_day_passes', weekday_day_passes)
           ..add('individual_pass_status', individual_pass_status)
-          ..add('effective_pass_status', effective_pass_status))
+          ..add('effective_pass_status', effective_pass_status)
+          ..add('class_year_idx', class_year_idx))
         .toString();
   }
 }
@@ -186,15 +199,20 @@ class CadetPassAllocationBuilder
   set weekday_day_passes(int? weekday_day_passes) =>
       _$this._weekday_day_passes = weekday_day_passes;
 
-  String? _individual_pass_status;
-  String? get individual_pass_status => _$this._individual_pass_status;
-  set individual_pass_status(String? individual_pass_status) =>
+  bool? _individual_pass_status;
+  bool? get individual_pass_status => _$this._individual_pass_status;
+  set individual_pass_status(bool? individual_pass_status) =>
       _$this._individual_pass_status = individual_pass_status;
 
-  String? _effective_pass_status;
-  String? get effective_pass_status => _$this._effective_pass_status;
-  set effective_pass_status(String? effective_pass_status) =>
+  bool? _effective_pass_status;
+  bool? get effective_pass_status => _$this._effective_pass_status;
+  set effective_pass_status(bool? effective_pass_status) =>
       _$this._effective_pass_status = effective_pass_status;
+
+  int? _class_year_idx;
+  int? get class_year_idx => _$this._class_year_idx;
+  set class_year_idx(int? class_year_idx) =>
+      _$this._class_year_idx = class_year_idx;
 
   CadetPassAllocationBuilder();
 
@@ -206,6 +224,7 @@ class CadetPassAllocationBuilder
       _weekday_day_passes = $v.weekday_day_passes;
       _individual_pass_status = $v.individual_pass_status;
       _effective_pass_status = $v.effective_pass_status;
+      _class_year_idx = $v.class_year_idx;
       _$v = null;
     }
     return this;
@@ -231,8 +250,16 @@ class CadetPassAllocationBuilder
             weekend_overnight_passes: weekend_overnight_passes,
             weekday_overnight_passes: weekday_overnight_passes,
             weekday_day_passes: weekday_day_passes,
-            individual_pass_status: individual_pass_status,
-            effective_pass_status: effective_pass_status);
+            individual_pass_status: BuiltValueNullFieldError.checkNotNull(
+                individual_pass_status,
+                r'CadetPassAllocation',
+                'individual_pass_status'),
+            effective_pass_status: BuiltValueNullFieldError.checkNotNull(
+                effective_pass_status,
+                r'CadetPassAllocation',
+                'effective_pass_status'),
+            class_year_idx: BuiltValueNullFieldError.checkNotNull(
+                class_year_idx, r'CadetPassAllocation', 'class_year_idx'));
     replace(_$result);
     return _$result;
   }
