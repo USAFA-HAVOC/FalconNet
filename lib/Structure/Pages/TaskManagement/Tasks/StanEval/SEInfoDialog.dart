@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:string_similarity/string_similarity.dart';
 
-import '../../../../../Model/Database/UserGrades.dart';
-import '../../../../../Model/Database/UserSummary.dart';
-
 class SEInfoDialog extends StatefulWidget {
   final Map<String, String> pairs;
   final String title;

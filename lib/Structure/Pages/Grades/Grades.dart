@@ -8,7 +8,6 @@ import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 
 import '../../Components/GraphWidget.dart';
-import '../../Components/PaddedColumn.dart';
 import '../../Components/ViewModel.dart';
 
 ///Grades page displays sami and ami information in extension panel lists
@@ -34,7 +33,7 @@ class Grades extends StatelessWidget {
                 title: "Averages",
                 children: [
                   Padding(
-                    padding: EdgeInsets.only(top: 10, bottom: 20),
+                    padding: const EdgeInsets.only(top: 10, bottom: 20),
                     child: Row(
                       children: [
                         Expanded(
@@ -84,7 +83,7 @@ class Grades extends StatelessWidget {
               name: "AMI Scores",
               data: List<FlSpot>.generate(
                   model.content.amis.length,
-                  (index) => FlSpot(index + 1, model.content.amis[index].score.toDouble())
+                  (index) => FlSpot(model.content.amis[index].index + 1, model.content.amis[index].score.toDouble())
               ),
             ),
 

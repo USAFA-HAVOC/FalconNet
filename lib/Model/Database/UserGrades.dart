@@ -8,6 +8,7 @@ abstract class Grade implements Built<Grade, GradeBuilder> {
   static Serializer<Grade> get serializer => _$gradeSerializer;
 
   int get score;
+  int get index;
   String? get description;
 
   Grade._();

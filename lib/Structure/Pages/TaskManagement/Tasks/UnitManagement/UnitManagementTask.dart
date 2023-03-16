@@ -1,4 +1,5 @@
 import 'dart:core';
+import 'package:falcon_net/Model/Database/PassStatusRequest.dart';
 import 'package:falcon_net/Structure/Components/LoadingShimmer.dart';
 import 'package:falcon_net/Structure/Components/PageWidget.dart';
 import 'package:falcon_net/Structure/Pages/TaskManagement/Tasks/UnitManagement/FormBar.dart';
@@ -8,6 +9,7 @@ import 'package:flutter/material.dart';
 
 import '../../../../../Model/Database/FormData.dart';
 import '../../../../../Model/Database/UserSummary.dart';
+import '../../../../../Model/Store/Endpoints.dart';
 import '../../../../Components/AsyncPage.dart';
 
 class UnitManagementData {
@@ -40,7 +42,9 @@ class UnitManagementTaskState extends State<UnitManagementTask> {
 
   Future<UnitManagementData> requestData() async {
     try {
-      return const UnitManagementData(status: [true, true, true, true], forms: []);
+      var data = await Endpoints.getOwnUnit(null);
+      return UnitManagementData(status: data.unit.pass_status.toList(), forms: []);
+      //return const UnitManagementData(status: [true, true, true, true], forms: []);
     }
 
     catch (e) {
@@ -52,6 +56,10 @@ class UnitManagementTaskState extends State<UnitManagementTask> {
   void setStatus(ScaffoldMessengerState messenger, int degree, bool status) async {
     try {
       var data = await connection;
+      await Endpoints.setPassStatus(PassStatusRequest((p) => p
+          ..index = degree
+          ..status = status
+      ));
       var mutable = data.status.toList();
       mutable[degree] = status;
       setState(() {

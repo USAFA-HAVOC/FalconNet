@@ -18,9 +18,8 @@ class PageWidget extends StatelessWidget {
         child: PaddedColumn(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           mainAxisSize: MainAxisSize.min,
-          padding: EdgeInsets.only(top: 10, left: 10, right: 10, bottom: 5),
+          padding: const EdgeInsets.only(top: 10, left: 10, right: 10, bottom: 5),
           children: [
-
             Text(
               title,
               style: Theme.of(context).textTheme.titleMedium,
@@ -28,10 +27,9 @@ class PageWidget extends StatelessWidget {
 
             PaddedColumn(
               crossAxisAlignment: CrossAxisAlignment.stretch,
-              padding: EdgeInsets.symmetric(vertical: 5),
+              padding: const EdgeInsets.symmetric(vertical: 5),
               children: children,
             ),
-
           ]
         )
     );

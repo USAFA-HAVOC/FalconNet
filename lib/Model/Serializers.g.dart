@@ -19,13 +19,16 @@ Serializers _$serializers = (new Serializers().toBuilder()
       ..add(Grade.serializer)
       ..add(GradeSubmission.serializer)
       ..add(PassHistoryModel.serializer)
+      ..add(PassStatusRequest.serializer)
       ..add(RoleRequest.serializer)
       ..add(SquadronAssignRequest.serializer)
+      ..add(StringRequest.serializer)
       ..add(TimedRole.serializer)
       ..add(Unit.serializer)
       ..add(UnitAssignRequest.serializer)
       ..add(UnitData.serializer)
       ..add(UnitDataRequest.serializer)
+      ..add(UnitGrades.serializer)
       ..add(UnitList.serializer)
       ..add(UnitOrder.serializer)
       ..add(UnitSummary.serializer)
@@ -85,7 +88,17 @@ Serializers _$serializers = (new Serializers().toBuilder()
           () => new ListBuilder<FormSummary>())
       ..addBuilderFactory(
           const FullType(BuiltList, const [const FullType(UserSummary)]),
-          () => new ListBuilder<UserSummary>()))
+          () => new ListBuilder<UserSummary>())
+      ..addBuilderFactory(
+          const FullType(BuiltList, const [const FullType(UserSummary)]),
+          () => new ListBuilder<UserSummary>())
+      ..addBuilderFactory(
+          const FullType(BuiltMap,
+              const [const FullType(String), const FullType(UserGrades)]),
+          () => new MapBuilder<String, UserGrades>())
+      ..addBuilderFactory(
+          const FullType(BuiltList, const [const FullType(bool)]),
+          () => new ListBuilder<bool>()))
     .build();
 
 // ignore_for_file: deprecated_member_use_from_same_package,type=lint

@@ -21,8 +21,8 @@ final defaultUser = User((u) => u
     ..unit = "CS25"
   ).toBuilder()
   ..pass_allocation = CadetPassAllocation((a) => a
-    ..individual_pass_status = "OPEN"
-    ..effective_pass_status = "OPEN"
+    ..individual_pass_status = true
+    ..effective_pass_status = true
     ..weekday_day_passes = 2
     ..weekday_overnight_passes = 1
     ..weekend_overnight_passes = 1

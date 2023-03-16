@@ -6,7 +6,9 @@ import 'package:built_value/serializer.dart';
 import 'package:dio/dio.dart';
 import 'package:falcon_net/Model/Database/FormSummary.dart';
 import 'package:falcon_net/Model/Database/PassHistoryModel.dart';
+import 'package:falcon_net/Model/Database/PassStatusRequest.dart';
 import 'package:falcon_net/Model/Database/RoleRequest.dart';
+import 'package:falcon_net/Model/Database/StringRequest.dart';
 import 'package:falcon_net/Model/Database/UnitData.dart';
 import 'package:falcon_net/Model/Database/User.dart';
 import 'package:falcon_net/Model/Database/UserGrades.dart';
@@ -123,7 +125,7 @@ class Endpoints {
   static Endpoint<UnitDataRequest, UnitData> getUnit = Endpoint("/pages/sdo", get: true);
   static Endpoint<void, UserGrades> getGrades = Endpoint("/grades/info", get: true);
   static Endpoint<GradeSubmission, bool> setGrades = Endpoint("/grades/set");
-  static Endpoint<String, UnitGrades> unitGrades = Endpoint("grades/unit");
+  static Endpoint<StringRequest, UnitGrades> unitGrades = Endpoint("grades/unit");
   static Endpoint<void, BuiltList<FormSummary>> getForms = Endpoint("/forms/info", get: true);
   static Endpoint<RoleRequest, bool> setRoles = Endpoint("/roles/set");
   static Endpoint<SquadronAssignRequest, bool> assignSquad = Endpoint("squadron/assign");
@@ -134,6 +136,7 @@ class Endpoints {
   static Endpoint<Unit, Unit> createUnit = Endpoint("unit/create");
   static Endpoint<Unit, bool> editUnit = Endpoint("unit/modify");
   static Endpoint<Unit, bool> deleteUnit = Endpoint("unit/delete");
+  static Endpoint<PassStatusRequest, bool> setPassStatus = Endpoint("/unit/set-pass-status");
 }
 
 class APIData {

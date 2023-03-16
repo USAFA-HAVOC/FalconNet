@@ -1,11 +1,11 @@
 import 'package:async_redux/async_redux.dart';
-import 'package:falcon_net/Model/Database/CadetPass.dart';
 import 'package:falcon_net/Model/Store/Actions/PassAction.dart';
 import 'package:falcon_net/Model/Store/GlobalStateModel.dart';
 import 'package:falcon_net/Structure/Components/PageWidget.dart';
 import 'package:falcon_net/Structure/Components/ViewModel.dart';
 import 'package:flutter/material.dart';
 
+import '../../Model/Database/User.dart';
 import 'PassStatus.dart';
 import 'PassForm.dart';
 
@@ -19,18 +19,25 @@ class PassWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var messenger = ScaffoldMessenger.of(context);
-    return StoreConnector<GlobalState, ViewModel<CadetPass?>>(
-        converter: (store) => ViewModel<CadetPass?>(
+    return StoreConnector<GlobalState, ViewModel<User>>(
+        converter: (store) => ViewModel<User>(
             store: store,
-            content: store.state.user.accountability?.current_pass),
+            content: store.state.user),
         builder: (context, model) {
           //List of children to filled
           List<Widget> children;
 
+          if (!(model.content.pass_allocation?.effective_pass_status ?? true)) {
+            children = const [
+              PassStatus()
+            ];
+          }
+
           //If no current pass, display status and new pass button
-          if (model.content == null) {
+          else if (model.content.accountability?.current_pass == null) {
             children = [
-              PassStatus(),
+              const PassStatus(),
+
               ElevatedButton(
                 //Opens a pass form dialog
                 onPressed: () {
@@ -39,7 +46,7 @@ class PassWidget extends StatelessWidget {
                     builder: (context) => Dialog(
                       backgroundColor: Theme.of(context).cardTheme.color,
                       child: Padding(
-                        padding: EdgeInsets.all(10),
+                        padding: const EdgeInsets.all(10),
                         child: PassForm(
                           //Closes dialog and dispatches open pass action
                           onSubmit: (pass) {
@@ -70,7 +77,7 @@ class PassWidget extends StatelessWidget {
                 style: Theme.of(context).elevatedButtonTheme.style,
 
                 child: Padding(
-                  padding: EdgeInsets.symmetric(vertical: 10),
+                  padding: const EdgeInsets.symmetric(vertical: 10),
                   child: Text(
                     "New Pass",
                     style: Theme.of(context).textTheme.labelLarge,
@@ -83,7 +90,8 @@ class PassWidget extends StatelessWidget {
           //Otherwise, display status and close and update buttons
           else {
             children = [
-              PassStatus(),
+              const PassStatus(),
+
               Row(
                 children: [
                   Expanded(
@@ -95,10 +103,10 @@ class PassWidget extends StatelessWidget {
                             context: context,
                             builder: (context) => Dialog(
                                   child: Padding(
-                                    padding: EdgeInsets.all(10),
+                                    padding: const EdgeInsets.all(10),
                                     child: PassForm(
                                       //Passes existing data
-                                      editing: model.content,
+                                      editing: model.content.accountability!.current_pass,
 
                                       //Closes dialog and dispatches update pass action
                                       onSubmit: (pass) {
@@ -133,7 +141,7 @@ class PassWidget extends StatelessWidget {
                                 ));
                       },
                       child: Padding(
-                        padding: EdgeInsets.symmetric(vertical: 10),
+                        padding: const EdgeInsets.symmetric(vertical: 10),
                         child: Text(
                           "Update",
                           style: Theme.of(context).textTheme.labelLarge,
@@ -149,8 +157,9 @@ class PassWidget extends StatelessWidget {
                     child: ElevatedButton(
                       style: ButtonStyle(
                         backgroundColor: MaterialStateProperty.all(
-                          Color.fromARGB(
-                              255, 169, 169, 169), // "Close" button color
+                          const Color.fromARGB(
+                              255, 169, 169, 169
+                          ), // "Close" button color
                         ),
                       ),
 
@@ -175,7 +184,7 @@ class PassWidget extends StatelessWidget {
                       },
 
                       child: Padding(
-                        padding: EdgeInsets.symmetric(vertical: 10),
+                        padding: const EdgeInsets.symmetric(vertical: 10),
                         child: Text(
                           "Close",
                           style: Theme.of(context).textTheme.labelLarge,

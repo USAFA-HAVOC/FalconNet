@@ -25,7 +25,8 @@ class _$UnitSerializer implements StructuredSerializer<Unit> {
           specifiedType: const FullType(bool)),
       'pass_status',
       serializers.serialize(object.pass_status,
-          specifiedType: const FullType(String)),
+          specifiedType:
+              const FullType(BuiltList, const [const FullType(bool)])),
     ];
     Object? value;
     value = object.group;
@@ -69,8 +70,10 @@ class _$UnitSerializer implements StructuredSerializer<Unit> {
               specifiedType: const FullType(bool))! as bool;
           break;
         case 'pass_status':
-          result.pass_status = serializers.deserialize(value,
-              specifiedType: const FullType(String))! as String;
+          result.pass_status.replace(serializers.deserialize(value,
+                  specifiedType:
+                      const FullType(BuiltList, const [const FullType(bool)]))!
+              as BuiltList<Object?>);
           break;
         case 'id':
           result.id = serializers.deserialize(value,
@@ -91,7 +94,7 @@ class _$Unit extends Unit {
   @override
   final bool is_squadron;
   @override
-  final String pass_status;
+  final BuiltList<bool> pass_status;
   @override
   final String? id;
 
@@ -167,9 +170,11 @@ class UnitBuilder implements Builder<Unit, UnitBuilder> {
   bool? get is_squadron => _$this._is_squadron;
   set is_squadron(bool? is_squadron) => _$this._is_squadron = is_squadron;
 
-  String? _pass_status;
-  String? get pass_status => _$this._pass_status;
-  set pass_status(String? pass_status) => _$this._pass_status = pass_status;
+  ListBuilder<bool>? _pass_status;
+  ListBuilder<bool> get pass_status =>
+      _$this._pass_status ??= new ListBuilder<bool>();
+  set pass_status(ListBuilder<bool>? pass_status) =>
+      _$this._pass_status = pass_status;
 
   String? _id;
   String? get id => _$this._id;
@@ -183,7 +188,7 @@ class UnitBuilder implements Builder<Unit, UnitBuilder> {
       _name = $v.name;
       _group = $v.group;
       _is_squadron = $v.is_squadron;
-      _pass_status = $v.pass_status;
+      _pass_status = $v.pass_status.toBuilder();
       _id = $v.id;
       _$v = null;
     }
@@ -205,15 +210,28 @@ class UnitBuilder implements Builder<Unit, UnitBuilder> {
   Unit build() => _build();
 
   _$Unit _build() {
-    final _$result = _$v ??
-        new _$Unit._(
-            name: BuiltValueNullFieldError.checkNotNull(name, r'Unit', 'name'),
-            group: group,
-            is_squadron: BuiltValueNullFieldError.checkNotNull(
-                is_squadron, r'Unit', 'is_squadron'),
-            pass_status: BuiltValueNullFieldError.checkNotNull(
-                pass_status, r'Unit', 'pass_status'),
-            id: id);
+    _$Unit _$result;
+    try {
+      _$result = _$v ??
+          new _$Unit._(
+              name:
+                  BuiltValueNullFieldError.checkNotNull(name, r'Unit', 'name'),
+              group: group,
+              is_squadron: BuiltValueNullFieldError.checkNotNull(
+                  is_squadron, r'Unit', 'is_squadron'),
+              pass_status: pass_status.build(),
+              id: id);
+    } catch (_) {
+      late String _$failedField;
+      try {
+        _$failedField = 'pass_status';
+        pass_status.build();
+      } catch (e) {
+        throw new BuiltValueNestedFieldError(
+            r'Unit', _$failedField, e.toString());
+      }
+      rethrow;
+    }
     replace(_$result);
     return _$result;
   }

@@ -21,6 +21,8 @@ class _$GradeSerializer implements StructuredSerializer<Grade> {
     final result = <Object?>[
       'score',
       serializers.serialize(object.score, specifiedType: const FullType(int)),
+      'index',
+      serializers.serialize(object.index, specifiedType: const FullType(int)),
     ];
     Object? value;
     value = object.description;
@@ -46,6 +48,10 @@ class _$GradeSerializer implements StructuredSerializer<Grade> {
       switch (key) {
         case 'score':
           result.score = serializers.deserialize(value,
+              specifiedType: const FullType(int))! as int;
+          break;
+        case 'index':
+          result.index = serializers.deserialize(value,
               specifiedType: const FullType(int))! as int;
           break;
         case 'description':
@@ -126,13 +132,17 @@ class _$Grade extends Grade {
   @override
   final int score;
   @override
+  final int index;
+  @override
   final String? description;
 
   factory _$Grade([void Function(GradeBuilder)? updates]) =>
       (new GradeBuilder()..update(updates))._build();
 
-  _$Grade._({required this.score, this.description}) : super._() {
+  _$Grade._({required this.score, required this.index, this.description})
+      : super._() {
     BuiltValueNullFieldError.checkNotNull(score, r'Grade', 'score');
+    BuiltValueNullFieldError.checkNotNull(index, r'Grade', 'index');
   }
 
   @override
@@ -147,6 +157,7 @@ class _$Grade extends Grade {
     if (identical(other, this)) return true;
     return other is Grade &&
         score == other.score &&
+        index == other.index &&
         description == other.description;
   }
 
@@ -154,6 +165,7 @@ class _$Grade extends Grade {
   int get hashCode {
     var _$hash = 0;
     _$hash = $jc(_$hash, score.hashCode);
+    _$hash = $jc(_$hash, index.hashCode);
     _$hash = $jc(_$hash, description.hashCode);
     _$hash = $jf(_$hash);
     return _$hash;
@@ -163,6 +175,7 @@ class _$Grade extends Grade {
   String toString() {
     return (newBuiltValueToStringHelper(r'Grade')
           ..add('score', score)
+          ..add('index', index)
           ..add('description', description))
         .toString();
   }
@@ -175,6 +188,10 @@ class GradeBuilder implements Builder<Grade, GradeBuilder> {
   int? get score => _$this._score;
   set score(int? score) => _$this._score = score;
 
+  int? _index;
+  int? get index => _$this._index;
+  set index(int? index) => _$this._index = index;
+
   String? _description;
   String? get description => _$this._description;
   set description(String? description) => _$this._description = description;
@@ -185,6 +202,7 @@ class GradeBuilder implements Builder<Grade, GradeBuilder> {
     final $v = _$v;
     if ($v != null) {
       _score = $v.score;
+      _index = $v.index;
       _description = $v.description;
       _$v = null;
     }
@@ -210,6 +228,8 @@ class GradeBuilder implements Builder<Grade, GradeBuilder> {
         new _$Grade._(
             score:
                 BuiltValueNullFieldError.checkNotNull(score, r'Grade', 'score'),
+            index:
+                BuiltValueNullFieldError.checkNotNull(index, r'Grade', 'index'),
             description: description);
     replace(_$result);
     return _$result;
