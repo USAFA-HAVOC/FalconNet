@@ -15,6 +15,7 @@ import 'package:falcon_net/Model/Database/UserSummaryList.dart';
 import 'package:falcon_net/Model/Serializers.dart';
 import 'package:built_collection/built_collection.dart';
 import 'package:falcon_net/Services/AuthService.dart';
+import 'package:falcon_net/Utility/FNConstants.dart';
 import 'package:flutter/foundation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import "package:universal_html/html.dart" as html;
@@ -34,7 +35,7 @@ import '../Database/WingData.dart';
 import 'DemoData.dart';
 
 final options = BaseOptions(
-  baseUrl: 'https://api.ethanchapman.dev/',
+  baseUrl: apiLocation,
   connectTimeout: 5000,
   receiveTimeout: 3000,
 );
@@ -48,8 +49,9 @@ const String tenant = '7ab80a06-f029-45c0-84d1-7dad19ce3c61';
 
 Future<void> authLogin() async {
   var res = await AuthService().login();
-  Token? t = res.fold((l) => null, (r) => r);
-  login(t!.accessToken!);
+  res.fold((l) {}, (r) {
+    login(r.accessToken!);
+  });
 }
 
 class Endpoint<Req, Res> {
@@ -145,12 +147,8 @@ Future<void> attemptLogin() async {
     if (s.queryParameters.containsKey("code")) {
       html.window.history.pushState(null, 'FalconNet', '');
       authToken = s.queryParameters["code"];
+      AuthService().setCode(authToken);
     }
   }
-  if (authToken == null) {
-    await authLogin();
-  }
-  else {
-    AuthService().setCode(authToken);
-  }
+  await authLogin();
 }
