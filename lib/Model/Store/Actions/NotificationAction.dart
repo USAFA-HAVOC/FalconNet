@@ -1,6 +1,7 @@
 import 'package:async_redux/async_redux.dart';
-import 'package:built_collection/src/list.dart';
+import 'package:built_collection/built_collection.dart';
 import 'package:falcon_net/Model/Database/UserNotification.dart';
+import 'package:falcon_net/Model/Serializers.dart';
 import 'package:falcon_net/Model/Store/GlobalStateModel.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -41,31 +42,39 @@ class NotificationAction extends ReduxAction<GlobalState> {
     try {
       var preferences = await SharedPreferences.getInstance();
 
+      List<UserNotification> existing = (preferences.getStringList("notifications") ?? [])
+          .map((notification) => serializers.fromJson(UserNotification.serializer, notification))
+          .where((notification) => notification != null)
+          .map((notification) => notification!).toList();
+
       if (all) {
         await preferences.setStringList("notifications", <String>[]);
         return (state.toBuilder()..notifications.clear()).build();
       }
 
       else if (add) {
-        List<UserNotification> existing = (preferences.getStringList("notifications") ?? []).map((s) => UserNotification.fromString(s)).toList();
         List<UserNotification> mutated = existing + [notification!];
-        await preferences.setStringList("notifications", mutated.map((n) => n.stringify()).toList());
+        var serialized = mutated
+            .map((notification) => serializers.toJson(UserNotification.serializer, notification))
+            .toList();
+        await preferences.setStringList("notifications", serialized);
         onSucceed?.call();
         return (state.toBuilder()..notifications=ListBuilder<UserNotification>(mutated)).build();
       }
 
       else if (retrieve) {
         var sb = state.toBuilder();
-        sb.notifications=ListBuilder<UserNotification>(
-          (preferences.getStringList("notifications") ?? []).map((n) => UserNotification.fromString(n)).toList()
-        );
+        sb.notifications=ListBuilder<UserNotification>(existing);
         onSucceed?.call();
         return sb.build();
       }
 
       else {
         List<UserNotification> mutated = state.notifications.toList(growable: false).where((n) => n != notification!).toList();
-        await preferences.setStringList("notifications", mutated.map((n) => n.stringify()).toList());
+        var serialized = mutated
+            .map((notification) => serializers.toJson(UserNotification.serializer, notification))
+            .toList();
+        await preferences.setStringList("notifications", serialized);
         onSucceed?.call();
         return (state.toBuilder()..notifications=ListBuilder<UserNotification>(mutated)).build();
       }

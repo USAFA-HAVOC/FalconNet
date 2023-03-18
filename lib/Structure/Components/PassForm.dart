@@ -109,6 +109,7 @@ class PassFormState extends State<PassForm>
   CadetPass formatPass(String id) {
     var endDate = parseDate(dateValue);
     var endTime = parseTime(timeValue);
+    print(endTime);
     return CadetPass((b) => b
       ..id = widget.existing?.id
       ..cadet_id = id
@@ -284,15 +285,16 @@ class PassFormState extends State<PassForm>
                             decoration: InputDecoration(
                                 labelStyle:
                                     Theme.of(context).textTheme.bodyLarge,
-                                labelText: "SCA Number"),
+                                labelText: "SCA Number"
+                            ),
                             style: Theme.of(context).textTheme.bodyLarge,
 
                             //Requires input only if selected pass type is sca
                             validator: (content) {
                               if (type == "sca") {
                                 return InputValidation.stringLength(
-                                    emptyMessage:
-                                        "Please enter an SCA number")(content);
+                                    emptyMessage: "Please enter an SCA number"
+                                )(content);
                               }
                               return null;
                             },
@@ -309,10 +311,12 @@ class PassFormState extends State<PassForm>
                       controller: descriptionController,
                       decoration: InputDecoration(
                           labelStyle: Theme.of(context).textTheme.bodyLarge,
-                          labelText: "Description"),
+                          labelText: "Description"
+                      ),
                       style: Theme.of(context).textTheme.bodyLarge,
                       validator: InputValidation.stringLength(
-                          emptyMessage: "Please enter a description"),
+                          emptyMessage: "Please enter a description"
+                      ),
                     ),
 
                     const SizedBox(
@@ -401,11 +405,9 @@ class PassFormState extends State<PassForm>
                             label: "Return Time",
                             validator: InputValidation.time(date: parseDate(dateValue)),
                             onChanged: (change) {
-                              setState(
-                                () {
-                                  timeValue = change;
-                                },
-                              );
+                              setState(() {
+                                timeValue = change;
+                              });
                             },
                           ),
                         )
@@ -450,8 +452,7 @@ class PassFormState extends State<PassForm>
                               child: Padding(
                                 padding: const EdgeInsets.symmetric(vertical: 10),
                                 child: Text('Submit',
-                                    style:
-                                        Theme.of(context).textTheme.labelLarge),
+                                    style: Theme.of(context).textTheme.labelLarge),
                               ),
                             ),
                           ),
@@ -463,9 +464,7 @@ class PassFormState extends State<PassForm>
                           flex: 5,
                           child: ElevatedButton(
                             style: ButtonStyle(
-                              backgroundColor: MaterialStateColor.resolveWith(
-                                  (states) => Colors.grey),
-                            ),
+                              backgroundColor: MaterialStateColor.resolveWith((states) => Colors.grey)),
                             onPressed: () {
                               //Perform cancellation closure
                               widget.onCancel();
@@ -484,6 +483,8 @@ class PassFormState extends State<PassForm>
                   ],
                 ),
               ],
-            )));
+            )
+        )
+    );
   }
 }

@@ -2,6 +2,7 @@ import 'package:async_redux/async_redux.dart';
 import 'package:falcon_net/Model/Database/UserSettings.dart';
 import 'package:falcon_net/Model/Serializers.dart';
 import 'package:falcon_net/Model/Store/GlobalStateModel.dart';
+import 'package:falcon_net/Services/NotificationService.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../Utility/ErrorFormatting.dart';
@@ -20,7 +21,16 @@ class SettingsAction extends ReduxAction<GlobalState> {
     try {
       var preferences = await SharedPreferences.getInstance();
       if (modify != null) {
+        var previous = state.settings.diPush;
         var modified = modify!(state.settings.toBuilder());
+        if (modified.diPush != previous) {
+          if (modified.diPush!) {
+            NotificationService().scheduleDINotification();
+          }
+          else {
+            NotificationService().cancelDINotification();
+          }
+        }
         var serialized = serializers.toJson(UserSettings.serializer, modified.build()).replaceAll("\"", "*");
         await preferences.setString("settings", serialized);
         onSucceed?.call();
@@ -30,6 +40,9 @@ class SettingsAction extends ReduxAction<GlobalState> {
         var serialized = preferences.getString("settings")?.replaceAll("*", "\"");
         if (serialized != null) {
           UserSettings newSettings = serializers.fromJson(UserSettings.serializer, serialized)!;
+          if (!(await NotificationService().requestExists(id: "di")) && newSettings.diPush) {
+            NotificationService().scheduleDINotification();
+          }
           onSucceed?.call();
           return (state.toBuilder()..settings=newSettings.toBuilder()).build();
         }

@@ -58,6 +58,8 @@ dependencies:
   flutter_native_splash: ^2.2.19
   fl_chart: ^0.61.0
   firebase_analytics: ^10.1.5
+  flutter_local_notifications: ^8.2.0
+  timezone: ^0.8.0
 
 dev_dependencies:
   flutter_test:

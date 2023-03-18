@@ -1,3 +1,6 @@
+import 'dart:math';
+
+import 'package:falcon_net/Utility/ListExtensions.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 
@@ -11,15 +14,15 @@ class GraphWidget extends StatelessWidget {
     Colors.black,
   ];
 
-  GraphWidget({super.key, required this.name, required this.data});
+  GraphWidget({super.key, required this.name, required List<FlSpot> this.data});
 
   List<double> bounds() {
     if (data.isEmpty) {
       return [0, 100];
     }
-    var min = data.map((s) => s.y).reduce((carry, element) => carry < element ? carry : element);
-    var max = data.map((s) => s.y).reduce((carry, element) => carry > element ? carry : element);
-    return <double>[(min + max - 100).toDouble().clamp(0, 100), (100).toDouble()];
+    var minim = data.map((s) => s.y).reduce((carry, element) => carry < element ? carry : element);
+    var maxim = data.map((s) => s.y).reduce((carry, element) => carry > element ? carry : element);
+    return <double>[(minim + maxim - 100).toDouble().clamp(0, max(0, minim - 5)).toDouble(), (100).toDouble()];
   }
 
   @override
@@ -41,7 +44,7 @@ class GraphWidget extends StatelessWidget {
                       gradient: LinearGradient(
                         colors: gradientColors,
                       ),
-                      spots: data,
+                      spots: data.sortedKey((p) => p.x),
                       belowBarData: BarAreaData(
                         show: true,
                         gradient: LinearGradient(

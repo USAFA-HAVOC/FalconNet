@@ -1,5 +1,7 @@
+import 'package:async_redux/async_redux.dart';
 import 'package:built_collection/built_collection.dart';
 import 'package:falcon_net/Model/Database/GradeSubmission.dart';
+import 'package:falcon_net/Model/Store/GlobalStateModel.dart';
 import 'package:falcon_net/Structure/Components/FNPage.dart';
 import 'package:falcon_net/Structure/Components/PageWidget.dart';
 import 'package:falcon_net/Structure/Pages/TaskManagement/Tasks/StanEval/SEInfoDialog.dart';
@@ -16,9 +18,8 @@ class SEEvent extends StatefulWidget {
   final String type;
   final int index;
   final List<UserSummary> members;
-  final String graderID;
 
-  SEEvent({super.key, required SEEventParameters parameters, required this.graderID}) :
+  SEEvent({super.key, required SEEventParameters parameters}) :
       type = parameters.type,
       index = parameters.index,
       members = parameters.members;
@@ -66,7 +67,7 @@ class SEEventState extends State<SEEvent> {
     )
   ).toList();
 
-  void submit(ScaffoldMessengerState messenger) async {
+  void submit(ScaffoldMessengerState messenger, String graderID) async {
     int? parsedScore = int.tryParse(score.text);
 
     if (parsedScore == null) {
@@ -104,7 +105,7 @@ class SEEventState extends State<SEEvent> {
           ..type = widget.type
           ..number = widget.index
           ..cadets = gradees.map((g) => g.user_id).toList().build().toBuilder()
-          ..grader_id = widget.graderID
+          ..grader_id = graderID
         ));
         messenger.showSnackBar(const SnackBar(content: Text("Successfully Submitted Grade")));
         setState(() {
@@ -132,86 +133,89 @@ class SEEventState extends State<SEEvent> {
       }
     }
     
-    return FNPage(
-      title: "Submit ${widget.type.toUpperCase()} #${(widget.index + 1).toString()}",
-      children: [
-        PageWidget(
-          title: "Gradees",
-          children: [
-            if (gradees.isEmpty) const Padding(
-              padding: EdgeInsets.only(top: 10, bottom: 20),
-              child: Text(
-                "No gradees currently selected",
-                textAlign: TextAlign.center,
-              ),
-            ),
-
-            if (gradees.isNotEmpty) ...buildGradeeBars(),
-
-            ElevatedButton(
-              onPressed: () => showDialog(context: context, builder: (context) => SESelectionDialog<List<UserSummary>>(
-                  contents: rooms,
-                  onAdd: (roommates) => setState(() => gradees.addAll(roommates.where((member) => !gradees.any((g) => g.user_id == member.user_id))))
-              )),
-              child: const Text("Add Room")
-            ),
-
-            ElevatedButton(
-                onPressed: () => showDialog(context: context, builder: (context) => SESelectionDialog<UserSummary>(
-                    contents: Map<String, UserSummary>.fromEntries(
-                        widget.members.where((m) => !gradees.any((g) => g.user_id == m.user_id))
-                            .map((m) => MapEntry(m.name, m))
+    return StoreConnector<GlobalState, String>(
+        converter: (model) => model.state.user.id!,
+        builder: (context, id) => FNPage(
+            title: "Submit ${widget.type.toUpperCase()} #${(widget.index + 1).toString()}",
+            children: [
+              PageWidget(
+                  title: "Gradees",
+                  children: [
+                    if (gradees.isEmpty) const Padding(
+                      padding: EdgeInsets.only(top: 10, bottom: 20),
+                      child: Text(
+                        "No gradees currently selected",
+                        textAlign: TextAlign.center,
+                      ),
                     ),
-                    onAdd: (member) => setState(() => gradees.add(member))
-                )),
-                child: const Text("Add Cadet")
-            ),
-          ]
-        ),
 
-        PageWidget(
-          title: "Submission",
-          children: [
-            TextField(
-              controller: score,
-              decoration: InputDecoration(
-                  border: OutlineInputBorder(borderSide: BorderSide(color: Theme.of(context).dividerColor), borderRadius: BorderRadius.circular(10)),
-                  labelStyle: Theme.of(context).textTheme.bodyLarge,
-                  labelText: "Score",
-                  suffixIcon: const Icon(Icons.numbers),
-                  errorText: scoreError
+                    if (gradees.isNotEmpty) ...buildGradeeBars(),
+
+                    ElevatedButton(
+                        onPressed: () => showDialog(context: context, builder: (context) => SESelectionDialog<List<UserSummary>>(
+                            contents: rooms,
+                            onAdd: (roommates) => setState(() => gradees.addAll(roommates.where((member) => !gradees.any((g) => g.user_id == member.user_id))))
+                        )),
+                        child: const Text("Add Room")
+                    ),
+
+                    ElevatedButton(
+                        onPressed: () => showDialog(context: context, builder: (context) => SESelectionDialog<UserSummary>(
+                            contents: Map<String, UserSummary>.fromEntries(
+                                widget.members.where((m) => !gradees.any((g) => g.user_id == m.user_id))
+                                    .map((m) => MapEntry(m.name, m))
+                            ),
+                            onAdd: (member) => setState(() => gradees.add(member))
+                        )),
+                        child: const Text("Add Cadet")
+                    ),
+                  ]
               ),
-            ),
 
-            TextField(
-              controller: description,
-              minLines: 3,
-              maxLines: 8,
-              style: Theme.of(context).textTheme.bodyLarge,
-              decoration: InputDecoration(
-                  border: OutlineInputBorder(borderSide: BorderSide(color: Theme.of(context).dividerColor), borderRadius: BorderRadius.circular(10)),
-                  labelStyle: Theme.of(context).textTheme.bodyLarge,
-                  labelText: "Description",
-                  suffixIcon: const Icon(Icons.description),
-                  errorText: descriptionError
-              ),
-            ),
+              PageWidget(
+                  title: "Submission",
+                  children: [
+                    TextField(
+                      controller: score,
+                      decoration: InputDecoration(
+                          border: OutlineInputBorder(borderSide: BorderSide(color: Theme.of(context).dividerColor), borderRadius: BorderRadius.circular(10)),
+                          labelStyle: Theme.of(context).textTheme.bodyLarge,
+                          labelText: "Score",
+                          suffixIcon: const Icon(Icons.numbers),
+                          errorText: scoreError
+                      ),
+                    ),
 
-            ElevatedButton(
-              onPressed: () => showDialog(context: context, builder: (context) => SEInfoDialog(
-                  title: "Scoring Guide",
-                  pairs: deductions
-              )),
-              child: const Text("Open Scoring Guide")
-            ),
+                    TextField(
+                      controller: description,
+                      minLines: 3,
+                      maxLines: 8,
+                      style: Theme.of(context).textTheme.bodyLarge,
+                      decoration: InputDecoration(
+                          border: OutlineInputBorder(borderSide: BorderSide(color: Theme.of(context).dividerColor), borderRadius: BorderRadius.circular(10)),
+                          labelStyle: Theme.of(context).textTheme.bodyLarge,
+                          labelText: "Description",
+                          suffixIcon: const Icon(Icons.description),
+                          errorText: descriptionError
+                      ),
+                    ),
 
-            ElevatedButton(
-                onPressed: () => submit(ScaffoldMessenger.of(context)),
-                child: const Text("Submit")
-            ),
-          ]
+                    ElevatedButton(
+                        onPressed: () => showDialog(context: context, builder: (context) => SEInfoDialog(
+                            title: "Scoring Guide",
+                            pairs: deductions
+                        )),
+                        child: const Text("Open Scoring Guide")
+                    ),
+
+                    ElevatedButton(
+                        onPressed: () => submit(ScaffoldMessenger.of(context), id),
+                        child: const Text("Submit")
+                    ),
+                  ]
+              )
+            ]
         )
-      ]
     );
   }
 }

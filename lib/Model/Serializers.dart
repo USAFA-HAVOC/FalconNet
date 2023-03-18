@@ -9,6 +9,7 @@ import 'package:falcon_net/Model/Database/CadetPassAllocation.dart';
 import 'package:falcon_net/Model/Database/FormSummary.dart';
 import 'package:falcon_net/Model/Database/GradeSubmission.dart';
 import 'package:falcon_net/Model/Database/PassStatusRequest.dart';
+import 'package:falcon_net/Model/Database/SchedulingEvent.dart';
 import 'package:falcon_net/Model/Database/SquadronAssignRequest.dart';
 import 'package:falcon_net/Model/Database/UnitDataRequest.dart';
 import 'package:falcon_net/Model/Database/UnitOrder.dart';
@@ -73,7 +74,8 @@ part 'Serializers.g.dart';
   UnitGrades,
   Grade,
   PassStatusRequest,
-  StringRequest
+  StringRequest,
+  SchedulingEvent
 ])
 
 

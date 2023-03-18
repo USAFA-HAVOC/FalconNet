@@ -14,21 +14,28 @@ import 'package:flutter/foundation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import "package:universal_html/html.dart" as html;
 
-class FNOAuth extends CoreOAuth {
-  final AuthStorage _authStorage;
+class AuthService extends CoreOAuth {
+  static final AuthService _authService = AuthService._internal();
+  late final AuthStorage _authStorage;
   String? _code;
-  final RequestCode? _requestCode;
-  final RequestToken _requestToken;
+  late final RequestCode? _requestCode;
+  late final RequestToken _requestToken;
+
+  AuthService._internal();
+
+  factory AuthService() => _authService;
 
   /// Instantiating MobileAadOAuth authentication.
   /// [config] Parameters according to official Microsoft Documentation.
-  FNOAuth(Config config, this._code)
-      : _authStorage = AuthStorage(
-          tokenIdentifier: config.tokenIdentifier,
-          aOptions: config.aOptions,
-        ),
-        _requestCode = kIsWeb ? null : RequestCode(config),
-        _requestToken = RequestToken(config);
+  void init(Config config, String? code) {
+    _authStorage = AuthStorage(
+      tokenIdentifier: config.tokenIdentifier,
+      aOptions: config.aOptions,
+    );
+    _requestCode = kIsWeb ? null : RequestCode(config);
+    _requestToken = RequestToken(config);
+    _code = code;
+  }
 
   /// Perform Azure AD login.
   ///
@@ -95,7 +102,7 @@ class FNOAuth extends CoreOAuth {
 
     if (!token.hasValidAccessToken()) {
       final result = await _performFullAuthFlow();
-      var failure;
+      dynamic failure;
       result.fold(
         (l) => failure = l,
         (r) => token = r,
@@ -138,10 +145,10 @@ class FNOAuth extends CoreOAuth {
 
   Future<void> _removeOldTokenOnFirstLogin() async {
     var prefs = await SharedPreferences.getInstance();
-    final _keyFreshInstall = 'freshInstall';
-    if (!prefs.getKeys().contains(_keyFreshInstall)) {
+    const keyFreshInstall = 'freshInstall';
+    if (!prefs.getKeys().contains(keyFreshInstall)) {
       await logout();
-      await prefs.setBool(_keyFreshInstall, false);
+      await prefs.setBool(keyFreshInstall, false);
     }
   }
 }

@@ -1,6 +1,5 @@
 import 'dart:io';
 
-import 'package:aad_oauth/model/config.dart';
 import 'package:aad_oauth/model/token.dart';
 import 'package:built_value/serializer.dart';
 import 'package:dio/dio.dart';
@@ -15,13 +14,11 @@ import 'package:falcon_net/Model/Database/UserGrades.dart';
 import 'package:falcon_net/Model/Database/UserSummaryList.dart';
 import 'package:falcon_net/Model/Serializers.dart';
 import 'package:built_collection/built_collection.dart';
-import 'package:falcon_net/Utility/FNOAuth.dart';
+import 'package:falcon_net/Services/AuthService.dart';
 import 'package:flutter/foundation.dart';
-import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import "package:universal_html/html.dart" as html;
 
-import '../../main.dart';
 import '../Database/CadetLeave.dart';
 import '../Database/CadetPass.dart';
 import '../Database/DIRequest.dart';
@@ -47,25 +44,13 @@ Dio dio = Dio(options);
 const String clientId = '198ea96e-078e-4bdc-9b90-0dea3a9ea43b';
 const String tenant = '7ab80a06-f029-45c0-84d1-7dad19ce3c61';
 
-final Config config = Config(
-  tenant: tenant,
-  clientId: clientId,
-  scope: "$clientId/FalconNet offline_access",
-  // redirectUri is Optional as a default is calculated based on app type/web location
-  redirectUri: "https://api.ethanchapman.dev",
-  navigatorKey: navigatorKey,
-  webUseRedirect: true, // default is false - on web only, forces a redirect flow instead of popup auth
-  //Optional parameter: Centered CircularProgressIndicator while rendering web page in WebView
-  loader: const Center(child: CircularProgressIndicator()),
-);
+
 
 Future<void> authLogin() async {
-  var res = await oauth.login();
+  var res = await AuthService().login();
   Token? t = res.fold((l) => null, (r) => r);
   login(t!.accessToken!);
 }
-
-final FNOAuth oauth = FNOAuth(config, null);
 
 class Endpoint<Req, Res> {
   String path;
@@ -166,6 +151,6 @@ Future<void> attemptLogin() async {
     await authLogin();
   }
   else {
-    oauth.setCode(authToken);
+    AuthService().setCode(authToken);
   }
 }

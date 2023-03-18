@@ -170,7 +170,7 @@ GoRouter fnRouter(GlobalKey<NavigatorState> key, SignState sign) => GoRouter(
                         pageBuilder: fullSlide(
                           StoreConnector<GlobalState, ViewModel<List<TimedRole>>>(
                             converter: (store) => ViewModel(store: store, content: store.state.user.roles.toList()),
-                            builder: (context, model) => DelegationTask(owner: model.content),
+                            builder: (context, model) => DelegationTask(owner: model.content,),
                           )
                         ),
                       ),
@@ -190,12 +190,8 @@ GoRouter fnRouter(GlobalKey<NavigatorState> key, SignState sign) => GoRouter(
 
                               GoRoute(
                                   path: "event",
-                                  pageBuilder: (context, state) => fullSlide(StoreConnector<GlobalState, ViewModel<String>>(
-                                    converter: (store) => ViewModel(store: store, content: store.state.user.id!),
-                                    builder: (context, model) => SEEvent(
-                                        parameters: state.extra as SEEventParameters,
-                                        graderID: model.content
-                                    )
+                                  pageBuilder: (context, state) => fullSlide(SEEvent(
+                                      parameters: state.extra as SEEventParameters
                                   ))(context, state)
                               ),
                             ]

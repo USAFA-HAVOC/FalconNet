@@ -12,7 +12,7 @@ TimeOfDay parseTime(String time) {
   var hour = int.parse(parts[0]);
   var subs = parts[1].split(" ");
   var minute = int.parse(subs[0]);
-  if (subs[1] == "PM") {
+  if (subs[1] == "PM" && hour != 12) {
     hour += 12;
   }
   return TimeOfDay(hour: hour, minute: minute);
