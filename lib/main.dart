@@ -1,3 +1,4 @@
+import 'package:aad_oauth/model/config.dart';
 import 'package:async_redux/async_redux.dart';
 import 'package:built_collection/built_collection.dart';
 import 'package:falcon_net/Model/Database/CadetAccountability.dart';
@@ -9,6 +10,8 @@ import 'package:falcon_net/Model/Store/Actions/GlobalAction.dart';
 import 'package:falcon_net/Model/Store/Actions/SettingsAction.dart';
 import 'package:falcon_net/Model/Store/Endpoints.dart';
 import 'package:falcon_net/Model/Store/GlobalStateModel.dart';
+import 'package:falcon_net/Services/AuthService.dart';
+import 'package:falcon_net/Services/SchedulingService.dart';
 import 'package:falcon_net/Theme/Dark/DarkTheme.dart';
 import 'package:falcon_net/Theme/Light/LightTheme.dart';
 import 'package:falcon_net/Theme/Random/RandomTheme.dart';
@@ -21,6 +24,7 @@ import 'package:flutter_signin_button/flutter_signin_button.dart';
 import 'Model/Database/UserSettings.dart';
 import 'Router/FNRouter.dart';
 import 'Structure/Components/ViewModel.dart';
+import 'Services/NotificationService.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -60,19 +64,34 @@ void main() async {
       )
   );
 
+  final Config authConfig = Config(
+    tenant: tenant,
+    clientId: clientId,
+    scope: "$clientId/FalconNet offline_access",
+    // redirectUri is Optional as a default is calculated based on app type/web location
+    redirectUri: "https://api.ethanchapman.dev",
+    navigatorKey: navigatorKey,
+    webUseRedirect: true, // default is false - on web only, forces a redirect flow instead of popup auth
+    //Optional parameter: Centered CircularProgressIndicator while rendering web page in WebView
+    loader: const Center(child: CircularProgressIndicator()),
+  );
+
   WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
   FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
-
+  //Must be called first
+  await NotificationService().init();
+  AuthService().init(authConfig, null);
+  SchedulingService().init();
   await store.dispatch(SettingsAction.retrieve());
-  var account =
-      (await SharedPreferences.getInstance()).getBool("account") ?? false;
+  var account = (await SharedPreferences.getInstance()).getBool("account") ?? false;
 
   /// todo: check for valid session and initialize app fully here
 
   FlutterNativeSplash.remove();
 
   runApp(
-      FNApp(store: store, sign: account ? SignState.account : SignState.none));
+      FNApp(store: store, sign: account ? SignState.account : SignState.none)
+  );
 }
 
 class FNApp extends StatefulWidget {
@@ -94,6 +113,7 @@ class FNAppState extends State<FNApp> {
   void initState() {
     /// todo: session management
     router = fnRouter(navigatorKey, widget.sign);
+
     super.initState();
   }
 

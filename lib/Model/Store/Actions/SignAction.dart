@@ -3,6 +3,7 @@ import 'package:falcon_net/Model/Store/Endpoints.dart';
 import 'package:falcon_net/Model/Store/GlobalStateModel.dart';
 
 import '../../../Utility/ErrorFormatting.dart';
+import '../../../Services/NotificationService.dart';
 
 class SignAction extends ReduxAction<GlobalState> {
   final void Function()? onFail;
@@ -15,6 +16,9 @@ class SignAction extends ReduxAction<GlobalState> {
     try {
       await Endpoints.signSelf(null);
       onSucceed?.call();
+      if (state.settings.diPush) {
+        NotificationService().scheduleDINotification();
+      }
       return (state.toBuilder()
         ..user.accountability.di_signed_by = state.user.id
         ..user.accountability.di_signed_name = state.user.personal_info.full_name

@@ -3,6 +3,7 @@ import 'package:falcon_net/Structure/Components/FNPage.dart';
 import 'package:falcon_net/Structure/Components/GraphWidget.dart';
 import 'package:falcon_net/Structure/Components/PageWidget.dart';
 import 'package:falcon_net/Structure/Pages/TaskManagement/Tasks/StanEval/SEInfoDialog.dart';
+import 'package:falcon_net/Utility/ListExtensions.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 
@@ -84,15 +85,16 @@ class SEAnalytics extends StatelessWidget {
           ),
         );
 
-    for (var ami in board.amis.entries) {
+
+    for (var ami in board.amis.entries.toList().sortedKey((a) => a.key)) {
       if (ami.value.isNotEmpty) bars.add(buildGradeBar(ami.value, "AMI #${ami.key + 1}"));
     }
 
-    for (var sami in board.samis.entries) {
+    for (var sami in board.samis.entries.toList().sortedKey((s) => s.key)) {
       if (sami.value.isNotEmpty) bars.add(buildGradeBar(sami.value, "SAMI #${sami.key + 1}"));
     }
 
-    for (var pai in board.pais.entries) {
+    for (var pai in board.pais.entries.toList().sortedKey((p) => p.key)) {
       if (pai.value.isNotEmpty) bars.add(buildGradeBar(pai.value, "PAI #${pai.key + 1}"));
     }
 

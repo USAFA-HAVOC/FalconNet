@@ -44,9 +44,10 @@ class PassWidget extends StatelessWidget {
                   showDialog(
                     context: context,
                     builder: (context) => Dialog(
+                      insetPadding: const EdgeInsets.all(20),
                       backgroundColor: Theme.of(context).cardTheme.color,
                       child: Padding(
-                        padding: const EdgeInsets.all(10),
+                        padding: const EdgeInsets.all(20),
                         child: PassForm(
                           //Closes dialog and dispatches open pass action
                           onSubmit: (pass) {
@@ -102,43 +103,46 @@ class PassWidget extends StatelessWidget {
                         showDialog(
                             context: context,
                             builder: (context) => Dialog(
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(10),
-                                    child: PassForm(
-                                      //Passes existing data
-                                      editing: model.content.accountability!.current_pass,
+                              child: Padding(
+                                padding: const EdgeInsets.all(10),
+                                child: PassForm(
+                                  //Passes existing data
+                                  editing: model.content.accountability!.current_pass,
 
-                                      //Closes dialog and dispatches update pass action
-                                      onSubmit: (pass) {
-                                        Navigator.of(context).pop();
-                                        model.dispatch(PassAction.update(
-                                          pass,
-                                          onFail: () {
-                                            messenger.showSnackBar(
-                                              const SnackBar(
-                                                content: Text(
-                                                    "Unable to Update Pass"),
-                                              ),
-                                            );
-                                          },
-                                          onSucceed: () {
-                                            messenger.showSnackBar(
-                                              const SnackBar(
-                                                content: Text(
-                                                    "Pass Updated Successfully"),
-                                              ),
-                                            );
-                                          },
-                                        ));
+                                  //Closes dialog and dispatches update pass action
+                                  onSubmit: (pass) {
+                                    Navigator.of(context).pop();
+                                    model.dispatch(PassAction.update(
+                                      pass,
+                                      onFail: () {
+                                        messenger.showSnackBar(
+                                          const SnackBar(
+                                            content: Text(
+                                                "Unable to Update Pass"
+                                            ),
+                                          ),
+                                        );
                                       },
+                                      onSucceed: () {
+                                        messenger.showSnackBar(
+                                          const SnackBar(
+                                            content: Text(
+                                                "Pass Updated Successfully"
+                                            ),
+                                          ),
+                                        );
+                                      },
+                                    ));
+                                  },
 
-                                      //Closes dialog
-                                      onCancel: () {
-                                        Navigator.of(context).pop();
-                                      },
-                                    ),
-                                  ),
-                                ));
+                                  //Closes dialog
+                                  onCancel: () {
+                                    Navigator.of(context).pop();
+                                  },
+                                ),
+                              ),
+                            )
+                        );
                       },
                       child: Padding(
                         padding: const EdgeInsets.symmetric(vertical: 10),
@@ -202,6 +206,7 @@ class PassWidget extends StatelessWidget {
             title: title,
             children: children,
           );
-        });
+        }
+    );
   }
 }
