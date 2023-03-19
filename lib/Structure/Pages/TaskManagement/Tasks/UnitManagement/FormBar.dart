@@ -1,11 +1,11 @@
-import 'package:falcon_net/Model/Database/FormData.dart';
+import 'package:falcon_net/Model/Database/FormOneData.dart';
 import 'package:falcon_net/Structure/Components/ConfirmationDialog.dart';
 import 'package:flutter/material.dart';
 
 class FormBar extends StatelessWidget {
-  final FormData form;
-  final void Function(FormData) onOpen;
-  final void Function(FormData) onDelete;
+  final FormOneData form;
+  final void Function(FormOneData) onOpen;
+  final void Function(FormOneData) onDelete;
 
   const FormBar({super.key, required this.form, required this.onOpen, required this.onDelete});
 

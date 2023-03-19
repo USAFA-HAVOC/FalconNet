@@ -1,5 +1,6 @@
 import 'dart:core';
 import 'package:falcon_net/Model/Database/PassStatusRequest.dart';
+import 'package:falcon_net/Model/Database/StringRequest.dart';
 import 'package:falcon_net/Structure/Components/LoadingShimmer.dart';
 import 'package:falcon_net/Structure/Components/PageWidget.dart';
 import 'package:falcon_net/Structure/Pages/TaskManagement/Tasks/UnitManagement/FormBar.dart';
@@ -7,14 +8,14 @@ import 'package:falcon_net/Structure/Pages/TaskManagement/Tasks/UnitManagement/F
 import 'package:falcon_net/Utility/ErrorFormatting.dart';
 import 'package:flutter/material.dart';
 
-import '../../../../../Model/Database/FormData.dart';
-import '../../../../../Model/Database/UserSummary.dart';
+import '../../../../../Model/Database/FormOneData.dart';
+import '../../../../../Model/Database/FormSummary.dart';
 import '../../../../../Model/Store/Endpoints.dart';
 import '../../../../Components/AsyncPage.dart';
 
 class UnitManagementData {
   final List<bool> status;
-  final List<FormData> forms;
+  final List<FormOneData> forms;
 
   const UnitManagementData({required this.status, required this.forms});
 }
@@ -42,8 +43,10 @@ class UnitManagementTaskState extends State<UnitManagementTask> {
 
   Future<UnitManagementData> requestData() async {
     try {
-      var data = await Endpoints.getOwnUnit(null);
-      return UnitManagementData(status: data.unit.pass_status.toList(), forms: []);
+      var status = await Endpoints.getOwnUnit(null);
+      var forms = await Endpoints.getFormData(null);
+      print(forms);
+      return UnitManagementData(status: status.unit.pass_status.toList(), forms: forms.forms.toList());
       //return const UnitManagementData(status: [true, true, true, true], forms: []);
     }
 
@@ -79,7 +82,7 @@ class UnitManagementTaskState extends State<UnitManagementTask> {
     }
   }
 
-  void addForm(ScaffoldMessengerState messenger, FormData form) async {
+  void addForm(ScaffoldMessengerState messenger, FormSummary form) async {
     try {
       if (content.text.isEmpty || title.text.isEmpty) {
         if (content.text.isEmpty) {
@@ -93,8 +96,11 @@ class UnitManagementTaskState extends State<UnitManagementTask> {
         return;
       }
       var data = await connection;
+
+      var assigned = await Endpoints.addForm(form);
+
       setState(() {
-        connection = Future.value(UnitManagementData(status: data.status, forms: [form] + data.forms));
+        connection = Future.value(UnitManagementData(status: data.status, forms: [assigned] + data.forms));
       });
 
       messenger.showSnackBar(const SnackBar(
@@ -115,9 +121,14 @@ class UnitManagementTaskState extends State<UnitManagementTask> {
     }
   }
 
-  void deleteForm(ScaffoldMessengerState messenger, FormData form) async {
+  void deleteForm(ScaffoldMessengerState messenger, FormOneData form) async {
     try {
       var data = await connection;
+
+      print(form.form_id);
+
+      await Endpoints.removeForm(StringRequest((s) => s..string = form.form_id));
+
       var mutable = data.forms.toList();
       mutable.remove(form);
       setState(() {
@@ -250,10 +261,10 @@ class UnitManagementTaskState extends State<UnitManagementTask> {
                   ),
 
                   ElevatedButton(
-                      onPressed: () => addForm(ScaffoldMessenger.of(context), FormData((f) => f
+                      onPressed: () => addForm(ScaffoldMessenger.of(context), FormSummary((f) => f
                         ..title = title.text
                         ..description = content.text
-                        ..signatures = <UserSummary, bool>{}
+                        ..signed = false
                       )),
                       child: const Padding(
                         padding: EdgeInsets.symmetric(vertical: 10),

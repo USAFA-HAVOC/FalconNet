@@ -27,7 +27,14 @@ class _$FormSummarySerializer implements StructuredSerializer<FormSummary> {
       'signed',
       serializers.serialize(object.signed, specifiedType: const FullType(bool)),
     ];
-
+    Object? value;
+    value = object.form_id;
+    if (value != null) {
+      result
+        ..add('form_id')
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(String)));
+    }
     return result;
   }
 
@@ -42,6 +49,10 @@ class _$FormSummarySerializer implements StructuredSerializer<FormSummary> {
       iterator.moveNext();
       final Object? value = iterator.current;
       switch (key) {
+        case 'form_id':
+          result.form_id = serializers.deserialize(value,
+              specifiedType: const FullType(String)) as String?;
+          break;
         case 'title':
           result.title = serializers.deserialize(value,
               specifiedType: const FullType(String))! as String;
@@ -63,6 +74,8 @@ class _$FormSummarySerializer implements StructuredSerializer<FormSummary> {
 
 class _$FormSummary extends FormSummary {
   @override
+  final String? form_id;
+  @override
   final String title;
   @override
   final String description;
@@ -73,7 +86,10 @@ class _$FormSummary extends FormSummary {
       (new FormSummaryBuilder()..update(updates))._build();
 
   _$FormSummary._(
-      {required this.title, required this.description, required this.signed})
+      {this.form_id,
+      required this.title,
+      required this.description,
+      required this.signed})
       : super._() {
     BuiltValueNullFieldError.checkNotNull(title, r'FormSummary', 'title');
     BuiltValueNullFieldError.checkNotNull(
@@ -92,6 +108,7 @@ class _$FormSummary extends FormSummary {
   bool operator ==(Object other) {
     if (identical(other, this)) return true;
     return other is FormSummary &&
+        form_id == other.form_id &&
         title == other.title &&
         description == other.description &&
         signed == other.signed;
@@ -100,6 +117,7 @@ class _$FormSummary extends FormSummary {
   @override
   int get hashCode {
     var _$hash = 0;
+    _$hash = $jc(_$hash, form_id.hashCode);
     _$hash = $jc(_$hash, title.hashCode);
     _$hash = $jc(_$hash, description.hashCode);
     _$hash = $jc(_$hash, signed.hashCode);
@@ -110,6 +128,7 @@ class _$FormSummary extends FormSummary {
   @override
   String toString() {
     return (newBuiltValueToStringHelper(r'FormSummary')
+          ..add('form_id', form_id)
           ..add('title', title)
           ..add('description', description)
           ..add('signed', signed))
@@ -119,6 +138,10 @@ class _$FormSummary extends FormSummary {
 
 class FormSummaryBuilder implements Builder<FormSummary, FormSummaryBuilder> {
   _$FormSummary? _$v;
+
+  String? _form_id;
+  String? get form_id => _$this._form_id;
+  set form_id(String? form_id) => _$this._form_id = form_id;
 
   String? _title;
   String? get title => _$this._title;
@@ -137,6 +160,7 @@ class FormSummaryBuilder implements Builder<FormSummary, FormSummaryBuilder> {
   FormSummaryBuilder get _$this {
     final $v = _$v;
     if ($v != null) {
+      _form_id = $v.form_id;
       _title = $v.title;
       _description = $v.description;
       _signed = $v.signed;
@@ -162,6 +186,7 @@ class FormSummaryBuilder implements Builder<FormSummary, FormSummaryBuilder> {
   _$FormSummary _build() {
     final _$result = _$v ??
         new _$FormSummary._(
+            form_id: form_id,
             title: BuiltValueNullFieldError.checkNotNull(
                 title, r'FormSummary', 'title'),
             description: BuiltValueNullFieldError.checkNotNull(

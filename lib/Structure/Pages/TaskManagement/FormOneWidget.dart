@@ -5,6 +5,7 @@ import 'package:falcon_net/Model/Store/GlobalStateModel.dart';
 import 'package:falcon_net/Structure/Components/ConfirmationDialog.dart';
 import 'package:falcon_net/Structure/Components/PageWidget.dart';
 import 'package:falcon_net/Structure/Components/ViewModel.dart';
+import 'package:falcon_net/Theme/Light/LightElevatedButtonTheme.dart';
 import 'package:flutter/material.dart';
 
 ///Page Widget for signing a form one
@@ -39,7 +40,15 @@ class FormOneWidget extends StatelessWidget {
 
                     //Dispatches signing action with own form one
                     onConfirm: () {
-                      model.dispatch(FormAction(form));
+                      model.dispatch(FormAction(
+                        form,
+                        onSucceed: () => ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(content: Text("Successfully Signed Form"))
+                        ),
+                        onFail: () => ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(content: Text("Failed to Sign Form"))
+                        )
+                      ));
                     },
                   ),
                 );
@@ -47,7 +56,10 @@ class FormOneWidget extends StatelessWidget {
 
               child: Padding(
                 padding: EdgeInsets.symmetric(vertical: 10),
-                child: Text("Sign"),
+                child: Text(
+                  "Sign",
+                  style: Theme.of(context).textTheme.labelLarge,
+                )
               ),
             )
         )

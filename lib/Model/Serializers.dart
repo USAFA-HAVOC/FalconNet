@@ -23,6 +23,8 @@ import 'package:falcon_net/Model/Database/WingData.dart';
 import 'package:falcon_net/Model/Store/GlobalStateModel.dart';
 
 import 'Database/DIRequest.dart';
+import 'Database/FormDataList.dart';
+import 'Database/FormList.dart';
 import 'Database/PassHistoryModel.dart';
 import 'Database/RoleRequest.dart';
 import 'Database/StringRequest.dart';
@@ -35,7 +37,7 @@ import 'Database/UnitList.dart';
 import 'Database/UnitSummary.dart';
 import 'Database/UserList.dart';
 import 'Database/UserSummaryList.dart';
-import 'Database/FormData.dart';
+import 'Database/FormOneData.dart';
 import 'Store/FNDateTimeSerializer.dart';
 
 part 'Serializers.g.dart';
@@ -69,13 +71,15 @@ part 'Serializers.g.dart';
   UnitList,
   Unit,
   UnitDataRequest,
-  FormData,
+  FormOneData,
   UserList,
   UnitGrades,
   Grade,
   PassStatusRequest,
   StringRequest,
-  SchedulingEvent
+  SchedulingEvent,
+  FormList,
+  FormDataList
 ])
 
 

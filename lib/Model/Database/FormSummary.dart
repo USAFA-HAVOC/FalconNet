@@ -6,6 +6,7 @@ part 'FormSummary.g.dart';
 abstract class FormSummary implements Built<FormSummary, FormSummaryBuilder> {
   static Serializer<FormSummary> get serializer => _$formSummarySerializer;
 
+  String? get form_id;
   String get title;
   String get description;
   bool get signed;
