@@ -16,12 +16,4 @@ ThemeData darkTheme = ThemeData(
   canvasColor: const Color.fromARGB(255, 24, 24, 24), // Darkest
   dialogBackgroundColor: darkCardTheme.color,
   iconTheme: const IconThemeData(color: Colors.white),
-  buttonTheme: const ButtonThemeData(
-    buttonColor: Color.fromARGB(255, 0, 0, 139),
-    shape: RoundedRectangleBorder(
-      borderRadius: BorderRadius.all(
-        Radius.circular(20),
-      ),
-    ),
-  ),
 );
