@@ -25,17 +25,17 @@ class ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
         text: "Info"
     ),
     Tab(
-        text: "Settings"
+        text: "Pass History"
     ),
     Tab(
-        text: "Pass History"
+        text: "Settings"
     ),
   ];
 
   static const List<Widget> pages = [
     CadetInfo(),
-    Settings(),
     PassHistory(),
+    Settings(),
   ];
 
   int index = 0;

@@ -109,7 +109,6 @@ class PassFormState extends State<PassForm>
   CadetPass formatPass(String id) {
     var endDate = parseDate(dateValue);
     var endTime = parseTime(timeValue);
-    print(endTime);
     return CadetPass((b) => b
       ..id = widget.existing?.id
       ..cadet_id = id
@@ -120,7 +119,8 @@ class PassFormState extends State<PassForm>
       ..sca_number = scaController.text == "" ? null : scaController.text
       ..city = cityController.text
       ..state = state
-      ..zip_code = zipController.text).toUtc();
+      ..zip_code = zipController.text
+    ).toUtc();
   }
 
   ///Builds type options based on current date
@@ -151,9 +151,7 @@ class PassFormState extends State<PassForm>
               ),
             ),
           ),
-        )
-        .values
-        .toList();
+        ).values.toList();
   }
 
   ///Builds state menu options
@@ -212,21 +210,16 @@ class PassFormState extends State<PassForm>
       "Wyoming",
     ];
 
-    //Asserts there are still fifty of them (plus select)
-    assert(options.length == 51);
-
     //Map the strings to menu items
-    return options
-        .map(
-          (key) => DropdownMenuItem<String>(
-            value: key,
-            child: Text(
-              key,
-              style: Theme.of(context).textTheme.bodyLarge,
-            ),
-          ),
-        )
-        .toList();
+    return options.map(
+      (key) => DropdownMenuItem<String>(
+        value: key,
+        child: Text(
+          key,
+          style: Theme.of(context).textTheme.bodyLarge,
+        ),
+      ),
+    ).toList();
   }
 
   @override
@@ -365,9 +358,9 @@ class PassFormState extends State<PassForm>
                           child: TextFormField(
                             controller: zipController,
                             decoration: InputDecoration(
-                                labelStyle:
-                                    Theme.of(context).textTheme.bodyLarge,
-                                labelText: "Zip"),
+                                labelStyle: Theme.of(context).textTheme.bodyLarge,
+                                labelText: "Zip"
+                            ),
                             style: Theme.of(context).textTheme.bodyLarge,
                             validator: InputValidation.stringLength(
                                 emptyMessage: "Please enter a zip code"),
@@ -465,10 +458,7 @@ class PassFormState extends State<PassForm>
                           child: ElevatedButton(
                             style: ButtonStyle(
                               backgroundColor: MaterialStateColor.resolveWith((states) => Colors.grey)),
-                            onPressed: () {
-                              //Perform cancellation closure
-                              widget.onCancel();
-                            },
+                            onPressed: () => widget.onCancel(),
                             child: Padding(
                               padding: const EdgeInsets.symmetric(vertical: 10),
                               child: Text(

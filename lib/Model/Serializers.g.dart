@@ -13,7 +13,9 @@ Serializers _$serializers = (new Serializers().toBuilder()
       ..add(CadetPass.serializer)
       ..add(CadetPassAllocation.serializer)
       ..add(DIRequest.serializer)
-      ..add(FormData.serializer)
+      ..add(FormDataList.serializer)
+      ..add(FormList.serializer)
+      ..add(FormOneData.serializer)
       ..add(FormSummary.serializer)
       ..add(GlobalState.serializer)
       ..add(Grade.serializer)
@@ -45,6 +47,12 @@ Serializers _$serializers = (new Serializers().toBuilder()
       ..addBuilderFactory(
           const FullType(BuiltList, const [const FullType(CadetPass)]),
           () => new ListBuilder<CadetPass>())
+      ..addBuilderFactory(
+          const FullType(BuiltList, const [const FullType(FormOneData)]),
+          () => new ListBuilder<FormOneData>())
+      ..addBuilderFactory(
+          const FullType(BuiltList, const [const FullType(FormSummary)]),
+          () => new ListBuilder<FormSummary>())
       ..addBuilderFactory(
           const FullType(BuiltList, const [const FullType(Grade)]),
           () => new ListBuilder<Grade>())
@@ -99,7 +107,14 @@ Serializers _$serializers = (new Serializers().toBuilder()
           () => new MapBuilder<String, UserGrades>())
       ..addBuilderFactory(
           const FullType(BuiltList, const [const FullType(bool)]),
-          () => new ListBuilder<bool>()))
+          () => new ListBuilder<bool>())
+      ..addBuilderFactory(
+          const FullType(
+              BuiltMap, const [const FullType(String), const FullType(bool)]),
+          () => new MapBuilder<String, bool>())
+      ..addBuilderFactory(
+          const FullType(BuiltList, const [const FullType(UserSummary)]),
+          () => new ListBuilder<UserSummary>()))
     .build();
 
 // ignore_for_file: deprecated_member_use_from_same_package,type=lint

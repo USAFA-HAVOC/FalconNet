@@ -44,7 +44,10 @@ class ConfirmationDialog extends StatelessWidget {
                             Navigator.of(context).pop();
                             onConfirm();
                           },
-                          child: const Text('Confirm'),
+                          child: Text(
+                            'Confirm',
+                            style: Theme.of(context).textTheme.labelLarge,
+                          ),
                         ),
                       ),
 
@@ -62,7 +65,10 @@ class ConfirmationDialog extends StatelessWidget {
                               onCancel!();
                             }
                           },
-                          child: const Text('Cancel'),
+                          child: Text(
+                            'Cancel',
+                            style: Theme.of(context).textTheme.labelLarge,
+                          ),
                         ),
                       ),
                     ],

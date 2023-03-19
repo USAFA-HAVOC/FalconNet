@@ -1,8 +1,8 @@
 import 'dart:io';
 
-import 'package:aad_oauth/model/token.dart';
 import 'package:built_value/serializer.dart';
 import 'package:dio/dio.dart';
+import 'package:falcon_net/Model/Database/FormDataList.dart';
 import 'package:falcon_net/Model/Database/FormSummary.dart';
 import 'package:falcon_net/Model/Database/PassHistoryModel.dart';
 import 'package:falcon_net/Model/Database/PassStatusRequest.dart';
@@ -13,7 +13,6 @@ import 'package:falcon_net/Model/Database/User.dart';
 import 'package:falcon_net/Model/Database/UserGrades.dart';
 import 'package:falcon_net/Model/Database/UserSummaryList.dart';
 import 'package:falcon_net/Model/Serializers.dart';
-import 'package:built_collection/built_collection.dart';
 import 'package:falcon_net/Services/AuthService.dart';
 import 'package:falcon_net/Utility/FNConstants.dart';
 import 'package:flutter/foundation.dart';
@@ -23,6 +22,8 @@ import "package:universal_html/html.dart" as html;
 import '../Database/CadetLeave.dart';
 import '../Database/CadetPass.dart';
 import '../Database/DIRequest.dart';
+import '../Database/FormList.dart';
+import '../Database/FormOneData.dart';
 import '../Database/GradeSubmission.dart';
 import '../Database/SquadronAssignRequest.dart';
 import '../Database/Unit.dart';
@@ -114,17 +115,21 @@ class Endpoints {
   static Endpoint<UnitDataRequest, UnitData> getUnit = Endpoint("/pages/sdo", get: true);
   static Endpoint<void, UserGrades> getGrades = Endpoint("/grades/info", get: true);
   static Endpoint<GradeSubmission, bool> setGrades = Endpoint("/grades/set");
-  static Endpoint<StringRequest, UnitGrades> unitGrades = Endpoint("grades/unit");
-  static Endpoint<void, BuiltList<FormSummary>> getForms = Endpoint("/forms/info", get: true);
+  static Endpoint<StringRequest, UnitGrades> unitGrades = Endpoint("/grades/unit");
+  static Endpoint<void, FormList> getForms = Endpoint("/forms/info");
+  static Endpoint<FormSummary, FormOneData> addForm = Endpoint("/forms/add");
+  static Endpoint<void, FormDataList> getFormData = Endpoint("/forms/data");
+  static Endpoint<StringRequest, bool> removeForm = Endpoint("/forms/remove");
+  static Endpoint<StringRequest, bool> signForm = Endpoint("/forms/sign");
   static Endpoint<RoleRequest, bool> setRoles = Endpoint("/roles/set");
   static Endpoint<SquadronAssignRequest, bool> assignSquad = Endpoint("squadron/assign");
-  static Endpoint<UnitAssignRequest, bool> assignUnit = Endpoint("unit/assign");
-  static Endpoint<void, UserSummaryList> getUserSummaries = Endpoint("unit/assignment-get");
-  static Endpoint<void, UserList> getUsers = Endpoint("users/get", get: true);
-  static Endpoint<void, UnitList> listUnits = Endpoint("unit/list");
-  static Endpoint<Unit, Unit> createUnit = Endpoint("unit/create");
-  static Endpoint<Unit, bool> editUnit = Endpoint("unit/modify");
-  static Endpoint<Unit, bool> deleteUnit = Endpoint("unit/delete");
+  static Endpoint<UnitAssignRequest, bool> assignUnit = Endpoint("/unit/assign");
+  static Endpoint<void, UserSummaryList> getUserSummaries = Endpoint("/unit/assignment-get");
+  static Endpoint<void, UserList> getUsers = Endpoint("/users/get", get: true);
+  static Endpoint<void, UnitList> listUnits = Endpoint("/unit/list");
+  static Endpoint<Unit, Unit> createUnit = Endpoint("/unit/create");
+  static Endpoint<Unit, bool> editUnit = Endpoint("/unit/modify");
+  static Endpoint<Unit, bool> deleteUnit = Endpoint("/unit/delete");
   static Endpoint<PassStatusRequest, bool> setPassStatus = Endpoint("/unit/set-pass-status");
 }
 
@@ -170,4 +175,6 @@ Future<void> attemptLogin() async {
 Future<void> logout() async {
   await AuthService().logout();
   APIData.authenticated = false;
+  var preferences = await SharedPreferences.getInstance();
+  preferences.setBool("account", false);
 }

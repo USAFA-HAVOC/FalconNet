@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:falcon_net/Model/Database/FormData.dart';
+import 'package:falcon_net/Model/Database/FormOneData.dart';
 import 'package:string_similarity/string_similarity.dart';
 
 import '../../../../../Model/Database/UserSummary.dart';
 
 class FormStatusDialog extends StatefulWidget {
-  final FormData form;
+  final FormOneData form;
 
   const FormStatusDialog({super.key, required this.form});
 
@@ -17,15 +17,19 @@ class FormStatusDialogState extends State<FormStatusDialog> {
   String query = "";
 
   List<UserSummary> search() {
-    var scores = widget.form.signatures.map((key, value) => MapEntry(MapEntry(key, value), key.name.similarityTo(query))).entries.toList();
+    var scores = widget.form.members.map((member) => MapEntry(member, member.name.similarityTo(query))).toList();
     scores.sort((a, b) {
       var value = a.value.compareTo(b.value);
       if (value == 0) {
-        return a.key.value == b.key.value ? a.key.key.name.compareTo(b.key.key.name) : (b.key.value ? -1 : 1);
+        var aSign = widget.form.signatures[a.key.user_id]!;
+        var bSign = widget.form.signatures[b.key.user_id]!;
+        return aSign == bSign
+            ? a.key.name.compareTo(b.key.name)
+            : (bSign ? -1 : 1);
       }
       return -value;
     });
-    return scores.map((e) => e.key.key).toList();
+    return scores.map((e) => e.key).toList();
   }
 
   @override
@@ -61,7 +65,7 @@ class FormStatusDialogState extends State<FormStatusDialog> {
                 }
                 else {
                   var summary = ordered[index - 2];
-                  var signed = widget.form.signatures[summary]!;
+                  var signed = widget.form.signatures[summary.user_id]!;
                   return Padding(
                     padding: const EdgeInsets.symmetric(vertical: 10),
                     child: DecoratedBox(

@@ -5,12 +5,14 @@ import '../Database/CadetAccountability.dart';
 import '../Database/CadetPass.dart';
 import '../Database/CadetPassAllocation.dart';
 import '../Database/PassHistoryModel.dart';
+import '../Database/TimedRole.dart';
 import '../Database/User.dart';
 import '../Database/UserGrades.dart';
 import '../Database/UserPersonalInfo.dart';
 
 final defaultUser = User((u) => u
   ..id = ""
+  ..roles = (<TimedRole>[]).build().toBuilder()
   ..personal_info = UserPersonalInfo((p) => p
     ..full_name = "Du Lee"
     ..email = "C26Du.Lee@afacademy.af.edu"

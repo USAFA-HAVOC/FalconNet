@@ -5,8 +5,6 @@ import 'package:falcon_net/Model/Store/Endpoints.dart';
 import 'package:falcon_net/Model/Store/GlobalStateModel.dart';
 import 'package:falcon_net/Structure/Components/ViewModel.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_signin_button/button_list.dart';
-import 'package:flutter_signin_button/button_view.dart';
 import 'package:go_router/go_router.dart';
 
 ///Settings page
@@ -97,17 +95,29 @@ class Settings extends StatelessWidget {
 
               NotificationsExtension(beginOpen: model.content.pushNotifications),
 
-              SizedBox(
-                width: 200.0,
-                height: 50.0,
-                child: SignInButton(
-                  Buttons.Xbox,
-                  text: "Log Out",
-                  onPressed: () {
-                    logout().then((_) { context.go("/selection"); });
-                  },
-                ),
-          ),
+              ElevatedButton(
+                onPressed: () => logout().then((_) => context.go("/selection")),
+                style: ButtonStyle(backgroundColor: MaterialStateColor.resolveWith((states) => Colors.grey)),
+                child: Stack(
+                  children: const [
+                    Align(
+                      alignment: AlignmentDirectional.center,
+                      child: Text(
+                        "Log Out",
+                        style: TextStyle(
+                          color: Colors.black,
+                          fontSize: 20,
+                        ),
+                      ),
+                    ),
+
+                    Align(
+                      alignment: AlignmentDirectional.centerEnd,
+                      child: Icon(Icons.logout),
+                    )
+                  ],
+                )
+              )
             ],
           );
         }
@@ -131,7 +141,6 @@ class NotificationsExtensionState extends State<NotificationsExtension> with Sin
 
   //Animation controllers for push notifications expansion
   late final AnimationController controller;
-
   late final Animation<double> animation;
 
   @override
@@ -178,7 +187,7 @@ class NotificationsExtensionState extends State<NotificationsExtension> with Sin
         return SizeTransition(
           sizeFactor: animation,
           child: Padding(
-            padding: EdgeInsets.only(left: 20),
+            padding: const EdgeInsets.only(left: 20),
             child: Column(
               children: [
                 Row(

@@ -3,6 +3,7 @@ import 'package:falcon_net/Model/Database/CadetAccountability.dart';
 import 'package:falcon_net/Model/Store/Actions/SignAction.dart';
 import 'package:falcon_net/Model/Store/GlobalStateModel.dart';
 import 'package:falcon_net/Services/SchedulingService.dart';
+import 'package:falcon_net/Structure/Components/ConfirmationDialog.dart';
 import 'package:falcon_net/Structure/Components/PageWidget.dart';
 import 'package:falcon_net/Structure/Components/ViewModel.dart';
 import 'package:falcon_net/Utility/TemporalFormatting.dart';
@@ -113,19 +114,29 @@ class DIWidget extends StatelessWidget {
               content.add(
                 ElevatedButton(
                   //Dispatch sign di action
-                  onPressed: () {
-                    model.dispatch(SignAction(onSucceed: () {
-                      messenger.showSnackBar(const SnackBar(
-                          content: Text("DI Signed Successfully")));
-                    }, onFail: () {
-                      messenger.showSnackBar(
-                          const SnackBar(content: Text("Failed to Sign DI")));
-                    }));
-                  },
+                  onPressed: () => showDialog(
+                      context: context,
+                      builder: (context) => ConfirmationDialog(
+                          title: "Sign DI",
+                          description: "Confirm that you are at the location of your domicile. "
+                              "This action cannot be undone.",
+                          onConfirm: () => model.dispatch(SignAction(
+                              onSucceed: () => messenger.showSnackBar(
+                                  const SnackBar(content: Text("DI Signed Successfully"))
+                              ),
+                              onFail: () => messenger.showSnackBar(
+                                  const SnackBar(content: Text("Failed to Sign DI"))
+                              )
+                          ))
+                      )
+                  ),
 
-                  child: const Padding(
+                  child: Padding(
                     padding: EdgeInsets.symmetric(vertical: 10),
-                    child: Text('Sign'),
+                    child: Text(
+                      'Sign',
+                      style: Theme.of(context).textTheme.labelLarge,
+                    ),
                   ),
                 ),
               );
