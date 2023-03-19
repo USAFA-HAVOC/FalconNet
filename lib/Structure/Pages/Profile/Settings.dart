@@ -1,9 +1,13 @@
 import 'package:async_redux/async_redux.dart';
 import 'package:falcon_net/Model/Database/UserSettings.dart';
 import 'package:falcon_net/Model/Store/Actions/SettingsAction.dart';
+import 'package:falcon_net/Model/Store/Endpoints.dart';
 import 'package:falcon_net/Model/Store/GlobalStateModel.dart';
 import 'package:falcon_net/Structure/Components/ViewModel.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_signin_button/button_list.dart';
+import 'package:flutter_signin_button/button_view.dart';
+import 'package:go_router/go_router.dart';
 
 ///Settings page
 ///Modifies global state settings as values are changed
@@ -92,6 +96,18 @@ class Settings extends StatelessWidget {
               ),
 
               NotificationsExtension(beginOpen: model.content.pushNotifications),
+
+              SizedBox(
+                width: 200.0,
+                height: 50.0,
+                child: SignInButton(
+                  Buttons.Xbox,
+                  text: "Log Out",
+                  onPressed: () {
+                    logout().then((_) { context.go("/selection"); });
+                  },
+                ),
+          ),
             ],
           );
         }

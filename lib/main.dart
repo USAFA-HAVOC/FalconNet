@@ -70,7 +70,7 @@ void main() async {
     clientId: clientId,
     scope: "$clientId/FalconNet offline_access",
     // redirectUri is Optional as a default is calculated based on app type/web location
-    redirectUri: apiLocation,
+    redirectUri: "$apiLocation/mobile_redirect",
     navigatorKey: navigatorKey,
     webUseRedirect: true, // default is false - on web only, forces a redirect flow instead of popup auth
     //Optional parameter: Centered CircularProgressIndicator while rendering web page in WebView
@@ -113,13 +113,21 @@ class FNAppState extends State<FNApp> {
   @override
   void initState() {
     /// todo: session management
+    attemptGetWebToken();
     router = fnRouter(navigatorKey, widget.sign);
+    if (APIData.authenticated && router.location == "/selection") {
+      router.go("/");
+    }
 
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
+    if (APIData.authenticated && router.location == "/selection") {
+      router.go("/");
+    }
+
     if (widget.sign == SignState.account) {
       attemptLogin();
       widget.store.dispatch(GlobalAction.initialize());
@@ -179,7 +187,7 @@ class SelectionView extends StatelessWidget {
               Buttons.Apple,
               text: "Demo Mode (Apple)",
               onPressed: () async {
-                attemptLogin();
+                // attemptLogin();
                 onDemo();
               },
             ),

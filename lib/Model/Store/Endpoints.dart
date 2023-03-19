@@ -49,7 +49,9 @@ const String tenant = '7ab80a06-f029-45c0-84d1-7dad19ce3c61';
 
 Future<void> authLogin() async {
   var res = await AuthService().login();
-  res.fold((l) {}, (r) {
+  res.fold((l) {
+    print("AUTH FAILURE $l");
+  }, (r) {
     login(r.accessToken!);
   });
 }
@@ -140,6 +142,18 @@ Future<void> login(String token) async {
 
 void demo() => APIData.demo = true;
 
+Future<void> attemptGetWebToken() async {
+  if (kIsWeb) {
+    Uri s = Uri.parse(html.window.location.toString());
+    if (s.queryParameters.containsKey("code")) {
+      html.window.history.pushState(null, 'FalconNet', '');
+      String? authToken = s.queryParameters["code"];
+      AuthService().setCode(authToken);
+      await authLogin();
+    }
+  }
+}
+
 Future<void> attemptLogin() async {
   String? authToken;
   if (kIsWeb) {
@@ -151,4 +165,9 @@ Future<void> attemptLogin() async {
     }
   }
   await authLogin();
+}
+
+Future<void> logout() async {
+  await AuthService().logout();
+  APIData.authenticated = false;
 }
