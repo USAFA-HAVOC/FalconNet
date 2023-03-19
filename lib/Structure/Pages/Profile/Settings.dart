@@ -10,7 +10,7 @@ import 'package:go_router/go_router.dart';
 ///Settings page
 ///Modifies global state settings as values are changed
 class Settings extends StatelessWidget {
-  const Settings({super.key});
+  Settings({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -97,7 +97,9 @@ class Settings extends StatelessWidget {
 
               ElevatedButton(
                 onPressed: () => logout().then((_) => context.go("/selection")),
-                style: ButtonStyle(backgroundColor: MaterialStateColor.resolveWith((states) => Colors.grey)),
+                style: ButtonStyle(
+                  backgroundColor: MaterialStateColor.resolveWith((states) => Colors.grey)
+                ),
                 child: Stack(
                   children: const [
                     Align(

@@ -15,12 +15,4 @@ ThemeData lightTheme = ThemeData(
   fontFamily: "Inter",
   iconTheme: const IconThemeData(color: Colors.black),
   canvasColor: const Color.fromARGB(255, 232, 232, 232),
-  buttonTheme: const ButtonThemeData(
-    buttonColor: Colors.blue,
-    shape: RoundedRectangleBorder(
-      borderRadius: BorderRadius.all(
-        Radius.circular(15),
-      ),
-    ),
-  ),
 );
