@@ -76,9 +76,6 @@ class CWOCTaskState extends State<CWOCTask> {
   ///Loads a given unit based on the unit name
   void loadUnit(String unit, ScaffoldMessengerState messenger) async {
     var wing = await connection;
-    if (wing == null) {
-      return;
-    }
 
     try {
       UnitData actual = await Endpoints.getUnit(UnitDataRequest((b) => b..unit = unit));

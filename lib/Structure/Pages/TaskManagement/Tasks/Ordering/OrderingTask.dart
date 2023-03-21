@@ -71,7 +71,7 @@ class OrderingTaskState extends State<OrderingTask> {
 
                         submitOrder(change).then((result) {
 
-                          //If order wasn't sucessfully submitted
+                          //If order wasn't successfully submitted
                           if (!result) {
                             ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
                               content: Text("Order failed to submit"),

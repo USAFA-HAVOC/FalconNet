@@ -1,3 +1,4 @@
+import 'package:falcon_net/Structure/Components/InfoBar.dart';
 import 'package:flutter/material.dart';
 import 'package:falcon_net/Model/Database/FormOneData.dart';
 import 'package:string_similarity/string_similarity.dart';
@@ -66,50 +67,37 @@ class FormStatusDialogState extends State<FormStatusDialog> {
                 else {
                   var summary = ordered[index - 2];
                   var signed = widget.form.signatures[summary.user_id]!;
-                  return Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 10),
-                    child: DecoratedBox(
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10),
-                        border: Border.all(color: Theme.of(context).dividerColor),
+                  return InfoBar(
+                    children: [
+                      Expanded(
+                        flex: 5,
+                        child: Text(
+                          summary.name,
+                          style: Theme.of(context).textTheme.titleSmall,
+                          textAlign: TextAlign.start,
+                        ),
                       ),
 
-                      child: Padding(
-                          padding: const EdgeInsets.all(20),
-                          child: Row(
-                            children: [
-                              Expanded(
-                                flex: 5,
-                                child: Text(
-                                  summary.name,
-                                  style: Theme.of(context).textTheme.titleSmall,
-                                  textAlign: TextAlign.start,
-                                ),
-                              ),
+                      Expanded(
+                        flex: 4,
+                        child: DecoratedBox(
+                          decoration: BoxDecoration(
+                            color: signed ? Theme.of(context).highlightColor : Theme.of(context).disabledColor,
+                            borderRadius: BorderRadius.circular(10),
+                            border: Border.all(color: Theme.of(context).dividerColor),
+                          ),
 
-                              Expanded(
-                                flex: 4,
-                                child: DecoratedBox(
-                                  decoration: BoxDecoration(
-                                    color: signed ? Theme.of(context).highlightColor : Theme.of(context).disabledColor,
-                                    borderRadius: BorderRadius.circular(10),
-                                    border: Border.all(color: Theme.of(context).dividerColor),
-                                  ),
-
-                                  child: Padding(
-                                    padding: const EdgeInsets.symmetric(vertical: 10),
-                                    child: Text(
-                                      signed ? "Signed" : "Unsigned",
-                                      style: Theme.of(context).textTheme.titleSmall,
-                                      textAlign: TextAlign.center,
-                                    ),
-                                  ),
-                                ),
-                              )
-                            ],
-                          )
-                      ),
-                    ),
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(vertical: 10),
+                            child: Text(
+                              signed ? "Signed" : "Unsigned",
+                              style: Theme.of(context).textTheme.titleSmall,
+                              textAlign: TextAlign.center,
+                            ),
+                          ),
+                        ),
+                      )
+                    ],
                   );
                 }
               }

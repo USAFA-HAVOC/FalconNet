@@ -154,7 +154,7 @@ class InputBlockState extends State<InputBlock> {
                 errorText: validate(value) ? null : widget.error,
                 errorBorder: OutlineInputBorder(
                     borderSide: BorderSide(
-                        color: Theme.of(context).errorColor,
+                        color: Theme.of(context).colorScheme.error,
                     ),
                 ),
                 border: OutlineInputBorder(

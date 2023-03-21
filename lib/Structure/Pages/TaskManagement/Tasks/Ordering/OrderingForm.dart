@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 
 import '../../../../../Model/Database/UnitOrder.dart';
 
-///Simple form for updating a mitches meals order
+///Simple form for updating a Mitch's meals order
 ///Two fields and a submission button
 class OrderingForm extends StatefulWidget {
   final UnitOrder? order;

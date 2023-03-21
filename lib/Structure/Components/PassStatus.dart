@@ -42,10 +42,12 @@ class PassStatus extends StatelessWidget {
                                       Theme.of(context).textTheme.headlineLarge,
                                     ),
                                   ),
+
                                   Text(
                                     "Here",
                                     style: Theme.of(context).textTheme.headlineLarge,
                                   ),
+
                                   Padding(
                                     padding: const EdgeInsets.only(top: 10),
                                     child: Text(
@@ -77,10 +79,12 @@ class PassStatus extends StatelessWidget {
                                       Theme.of(context).textTheme.headlineLarge,
                                     ),
                                   ),
+
                                   Text(
                                     "Here",
                                     style: Theme.of(context).textTheme.headlineLarge,
                                   ),
+
                                   Padding(
                                     padding: const EdgeInsets.only(top: 10),
                                     child: Text(
@@ -102,19 +106,23 @@ class PassStatus extends StatelessWidget {
                       String expiration;
                       bool expired = false;
                       var difference = pass.end_time.difference(DateTime.now());
+
                       if (difference.inSeconds <= 0) {
                         expiration =
                         "Expired: ${describeDate(pass.end_time)} ${describeTime(TimeOfDay.fromDateTime(pass.end_time))}";
                         expired = true;
                       }
+
                       else if (difference.inHours < 24 && pass.end_time.weekday == DateTime.now().weekday) {
                         expiration =
                         "Expires: ${describeTime(TimeOfDay.fromDateTime(pass.end_time))}";
                       }
+
                       else if (difference.inDays < 7) {
                         expiration =
                         "Expires: ${formatWeekday(pass.end_time.weekday)}, ${describeTime(TimeOfDay.fromDateTime(pass.end_time))}";
                       }
+
                       else {
                         expiration =
                         "Expires: ${describeDate(pass.end_time)}, ${describeTime(TimeOfDay.fromDateTime(pass.end_time))}";
@@ -138,10 +146,12 @@ class PassStatus extends StatelessWidget {
                                   style: Theme.of(context).textTheme.bodyLarge,
                                 ),
                               ),
+
                               Text(
                                 "Signed-Out",
                                 style: Theme.of(context).textTheme.headlineLarge,
                               ),
+
                               Padding(
                                 padding: const EdgeInsets.only(top: 10),
                                 child: Text(

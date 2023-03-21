@@ -106,7 +106,7 @@ class AirlineMethodSubformState extends State<AirlineMethodSubform> {
               ),
             ),
 
-            Spacer(flex: 1,),
+            const Spacer(flex: 1,),
 
             Expanded(
               flex: 5,
@@ -148,7 +148,7 @@ class AirlineMethodSubformState extends State<AirlineMethodSubform> {
               ),
             ),
 
-            Spacer(flex: 1),
+            const Spacer(flex: 1),
 
             Expanded(
               flex: 4,
@@ -185,7 +185,7 @@ class AirlineMethodSubformState extends State<AirlineMethodSubform> {
               ),
             ),
 
-            Spacer(flex: 1),
+            const Spacer(flex: 1),
 
             Expanded(
               flex: 4,

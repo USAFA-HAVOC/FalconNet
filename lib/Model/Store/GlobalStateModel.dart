@@ -8,7 +8,6 @@ import 'package:falcon_net/Model/Database/User.dart';
 import 'package:falcon_net/Model/Database/UserNotification.dart';
 import 'package:falcon_net/Model/Database/UserSettings.dart';
 
-import '../../Structure/Pages/Profile/PassHistory.dart';
 import '../Database/PassHistoryModel.dart';
 import '../Database/UserGrades.dart';
 

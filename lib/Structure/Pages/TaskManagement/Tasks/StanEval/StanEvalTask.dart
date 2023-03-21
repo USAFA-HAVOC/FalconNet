@@ -1,5 +1,6 @@
 import 'package:built_collection/built_collection.dart';
 import 'package:falcon_net/Structure/Components/AsyncPage.dart';
+import 'package:falcon_net/Structure/Components/InfoBar.dart';
 import 'package:falcon_net/Structure/Components/PageWidget.dart';
 import 'package:falcon_net/Utility/ErrorFormatting.dart';
 import 'package:flutter/material.dart';
@@ -71,36 +72,20 @@ class StanEvalTaskState extends State<StanEvalTask> {
                     }
 
                     else {
-                      return Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 10),
-                        child: DecoratedBox(
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10),
-                            border: Border.all(color: Theme.of(context).dividerColor),
-                          ),
-                          child: InkWell(
-                            onTap: () {
-                              context.go(
-                                  "/task_management/stan_eval/unit",
-                                  extra: ordered.units[index - 1].unit.name
-                              );
-                            },
-
-                            child: Padding(
-                              padding: const EdgeInsets.all(20),
-                              child: Row(
-                                children: [
-                                  Expanded(
-                                    child: Text(
-                                      ordered.units[index - 1].unit.name,
-                                      style: Theme.of(context).textTheme.titleSmall,
-                                    )
-                                  ),
-                                ],
-                              ),
-                            )
-                          ),
+                      return InfoBar(
+                        interiorPadding: const EdgeInsets.all(20),
+                        onTap: () => context.go(
+                            "/task_management/stan_eval/unit",
+                            extra: ordered.units[index - 1].unit.name
                         ),
+                        children: [
+                          Expanded(
+                            child: Text(
+                              ordered.units[index - 1].unit.name,
+                              style: Theme.of(context).textTheme.titleSmall,
+                            ),
+                          )
+                        ],
                       );
                     }
                   },

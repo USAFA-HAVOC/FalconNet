@@ -38,7 +38,7 @@ class RoleSubform extends StatelessWidget {
           ),
 
           child: Padding(
-            padding: EdgeInsets.all(10),
+            padding: const EdgeInsets.all(10),
             child: Text(
               "${value.role} Role Uneditable",
               style: Theme.of(context).textTheme.titleSmall,
@@ -53,16 +53,6 @@ class RoleSubform extends StatelessWidget {
     var earliest = scope.key;
     var latest = scope.value;
 
-    // if (earliest != null || latest != null) {
-    //   if (value.start == null || value.end == null) {
-    //     onChanged(TimedRole((b) => b
-    //       ..role = value.role
-    //       ..start = earliest
-    //       ..end = latest
-    //     ).toUtc());
-    //   }
-    // }
-
     return DecoratedBox(
       decoration: BoxDecoration(
         border: Border.all(color: Theme.of(context).dividerColor, width: 5),
@@ -70,7 +60,7 @@ class RoleSubform extends StatelessWidget {
       ),
 
       child: Padding(
-        padding: EdgeInsets.all(10),
+        padding: const EdgeInsets.all(10),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
@@ -102,80 +92,82 @@ class RoleSubform extends StatelessWidget {
               } : null,
             ),
 
-            SizedBox(height: 20,),
+            const SizedBox(height: 20,),
 
-            !(!(earliest == null && latest == null) && (value.start == null || value.end == null)) ?
-            Row(
-              children: [
-                Text(
-                  "Timed",
-                  style: Theme.of(context).textTheme.bodyLarge,
-                  textAlign: TextAlign.left,
-                ),
-                Checkbox(value: value.start != null || !(earliest == null && latest == null), onChanged: (earliest == null && latest == null) ? (change) {
-                  change ??= false;
-                  if (change) {
-                    onChanged(TimedRole((b) => b
-                      ..role = value.role
-                      ..start = DateTime.now().subtract(const Duration(days: 1))
-                      ..end = DateTime.now().add(const Duration(days: 7))
-                    ).toUtc());
-                  } else {
-                    onChanged(TimedRole((b) => b
-                      ..role = value.role
-                      ..start = null
-                      ..end = null
-                    ).toUtc());
-                  }
-                } : null)
-              ],
-            // ),
-            ) : const SizedBox(),
+            !(!(earliest == null && latest == null) && (value.start == null || value.end == null))
+                ? Row(
+                  children: [
+                    Text(
+                      "Timed",
+                      style: Theme.of(context).textTheme.bodyLarge,
+                      textAlign: TextAlign.left,
+                    ),
+                    Checkbox(value: value.start != null || !(earliest == null && latest == null), onChanged: (earliest == null && latest == null) ? (change) {
+                      change ??= false;
+                      if (change) {
+                        onChanged(TimedRole((b) => b
+                          ..role = value.role
+                          ..start = DateTime.now().subtract(const Duration(days: 1))
+                          ..end = DateTime.now().add(const Duration(days: 7))
+                        ).toUtc());
+                      } else {
+                        onChanged(TimedRole((b) => b
+                          ..role = value.role
+                          ..start = null
+                          ..end = null
+                        ).toUtc());
+                      }
+                    } : null)
+                  ],
+                )
+                : const SizedBox(),
 
-            ((value.start != null && value.end != null) || !(earliest == null && latest == null)) && !(!(earliest == null && latest == null) && (value.start == null || value.end == null)) ?
-            Row(
-              children: [
-                Expanded(
-                  flex: 5,
-                  child: DateFormField(
-                    label: "Start",
-                    validator: InputValidation.date(),
-                    value: (value.start ?? earliest) == null ? null : describeDate(value.start ?? earliest!),
-                    firstDate: earliest,
-                    lastDate: value.end,
-                    onChanged: (change) => onChanged(TimedRole((b) => b
-                      ..role = value.role
-                      ..start = parseDate(change)
-                      ..end = value.end
-                    ).toUtc()),
-                  )
-                ),
+            ((value.start != null && value.end != null) || !(earliest == null && latest == null)) && !(!(earliest == null && latest == null) && (value.start == null || value.end == null))
+                ?   Row(
+                      children: [
+                        Expanded(
+                          flex: 5,
+                          child: DateFormField(
+                            label: "Start",
+                            validator: InputValidation.date(),
+                            value: (value.start ?? earliest) == null ? null : describeDate(value.start ?? earliest!),
+                            firstDate: earliest,
+                            lastDate: value.end,
+                            onChanged: (change) => onChanged(TimedRole((b) => b
+                              ..role = value.role
+                              ..start = parseDate(change)
+                              ..end = value.end
+                            ).toUtc()),
+                          )
+                        ),
 
-                Spacer(flex: 1,),
+                        const Spacer(flex: 1,),
 
-                Expanded(
-                  flex: 5,
-                  child: DateFormField(
-                    label: "End",
-                    validator: InputValidation.date(),
-                    value: (value.end ?? latest) == null ? null : describeDate(value.end ?? latest!),
-                    firstDate: value.start,
-                    lastDate: latest,
-                    onChanged: (change) => onChanged(TimedRole((b) => b
-                      ..role = value.role
-                      ..start = value.start
-                      ..end = parseDate(change)
-                    ).toUtc()),
-                  )
-                ),
-              ],
-            ) : SizedBox(),
+                        Expanded(
+                          flex: 5,
+                          child: DateFormField(
+                            label: "End",
+                            validator: InputValidation.date(),
+                            value: (value.end ?? latest) == null ? null : describeDate(value.end ?? latest!),
+                            firstDate: value.start,
+                            lastDate: latest,
+                            onChanged: (change) => onChanged(TimedRole((b) => b
+                              ..role = value.role
+                              ..start = value.start
+                              ..end = parseDate(change)
+                            ).toUtc()),
+                          )
+                        ),
+                      ],
+                    )
 
-            SizedBox(height: 20,),
+                :  const SizedBox(),
+
+            const SizedBox(height: 20,),
 
             ElevatedButton(
                 onPressed: !(!(earliest == null && latest == null) && (value.start == null || value.end == null)) ? onRemove : null,
-                child: Padding(
+                child: const Padding(
                   padding: EdgeInsets.symmetric(vertical: 10),
                   child: Text("Remove"),
                 )

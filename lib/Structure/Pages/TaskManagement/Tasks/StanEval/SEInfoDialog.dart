@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:string_similarity/string_similarity.dart';
 
+import '../../../../Components/InfoBar.dart';
+
 class SEInfoDialog extends StatefulWidget {
   final Map<String, String> pairs;
   final String title;
@@ -62,39 +64,26 @@ class SEInfoDialogState extends State<SEInfoDialog> {
                 }
                 else {
                   var grade = ordered[index - 3];
-                  return Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 10),
-                    child: DecoratedBox(
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10),
-                        border: Border.all(color: Theme.of(context).dividerColor),
-                      ),
+                  return InfoBar(
+                     children: [
+                       Expanded(
+                         flex: 5,
+                         child: Text(
+                           grade.key,
+                           style: Theme.of(context).textTheme.titleSmall,
+                           textAlign: TextAlign.start,
+                         ),
+                       ),
 
-                      child: Padding(
-                          padding: const EdgeInsets.all(20),
-                          child: Row(
-                            children: [
-                              Expanded(
-                                flex: 5,
-                                child: Text(
-                                  grade.key,
-                                  style: Theme.of(context).textTheme.titleSmall,
-                                  textAlign: TextAlign.start,
-                                ),
-                              ),
-
-                              Expanded(
-                                flex: 2,
-                                child: Text(
-                                  grade.value.toString(),
-                                  style: Theme.of(context).textTheme.titleSmall,
-                                  textAlign: TextAlign.center,
-                                )
-                              )
-                            ],
-                          )
-                      ),
-                    ),
+                       Expanded(
+                           flex: 2,
+                           child: Text(
+                             grade.value.toString(),
+                             style: Theme.of(context).textTheme.titleSmall,
+                             textAlign: TextAlign.center,
+                           )
+                       )
+                     ],
                   );
                 }
               }

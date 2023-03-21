@@ -1,7 +1,6 @@
 import 'package:built_collection/built_collection.dart';
 import 'package:falcon_net/Model/Database/RoleRequest.dart';
 import 'package:falcon_net/Model/Database/Roles.dart';
-import 'package:falcon_net/Structure/Components/FNPage.dart';
 import 'package:falcon_net/Structure/Components/LoadingShimmer.dart';
 import 'package:falcon_net/Structure/Components/PageWidget.dart';
 import 'package:falcon_net/Utility/ErrorFormatting.dart';
@@ -154,7 +153,6 @@ class DelegationTaskState extends State<DelegationTask> {
             )
           ];
         }
-
     );
   }
 }

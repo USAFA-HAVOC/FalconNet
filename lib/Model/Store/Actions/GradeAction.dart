@@ -1,7 +1,5 @@
 import 'package:async_redux/async_redux.dart';
-import 'package:falcon_net/Model/Database/UserGrades.dart';
 import 'package:falcon_net/Model/Store/Endpoints.dart';
-import 'package:falcon_net/Utility/Testing.dart';
 
 import '../../../Utility/ErrorFormatting.dart';
 import '../GlobalStateModel.dart';

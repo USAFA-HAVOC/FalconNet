@@ -1,5 +1,6 @@
  import 'package:falcon_net/Model/Database/StringRequest.dart';
 import 'package:falcon_net/Structure/Components/AsyncPage.dart';
+import 'package:falcon_net/Structure/Components/InfoBar.dart';
 import 'package:falcon_net/Structure/Components/LoadingShimmer.dart';
 import 'package:falcon_net/Structure/Components/PageWidget.dart';
 import 'package:falcon_net/Structure/Pages/TaskManagement/Tasks/StanEval/SEAveragesWidget.dart';
@@ -33,31 +34,17 @@ class SEUnitState extends State<SEUnit> {
   }
 
   List<Widget> buildEvents({required UnitGrades unit, required void Function(String type, int index) onTap}) {
-    Widget buildEventBar(String name, String type, int index) => Padding(
-      padding: const EdgeInsets.symmetric(vertical: 10),
-      child: DecoratedBox(
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(10),
-            border: Border.all(color: Theme.of(context).dividerColor),
+    Widget buildEventBar(String name, String type, int index) => InfoBar(
+      onTap: () => onTap(type, index),
+      interiorPadding: const EdgeInsets.symmetric(vertical: 20, horizontal: 10),
+      children: [
+        Expanded(
+          child: Text(
+            name,
+            style: Theme.of(context).textTheme.titleSmall,
           ),
-
-          child: InkWell(
-            onTap: () => onTap(type, index),
-            child: Padding(
-                padding: const EdgeInsets.all(20),
-                child: Row(
-                  children: [
-                    Expanded(
-                        child: Text(
-                          name,
-                          style: Theme.of(context).textTheme.titleSmall,
-                        )
-                    ),
-                  ],
-                )
-            ),
-          )
-      ),
+        ),
+      ],
     );
 
     List<Widget> bars = [];

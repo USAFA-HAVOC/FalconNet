@@ -15,7 +15,7 @@ class CWOCStatusWidget extends StatelessWidget {
     if (units.isEmpty) {
       return PageWidget(
           title: label,
-          children: [
+          children: const [
             LoadingShimmer(height: 170,),
           ]
       );
@@ -45,12 +45,12 @@ class CWOCStatusWidget extends StatelessWidget {
       title: label,
       children: [
         ConstrainedBox(
-          constraints: BoxConstraints.expand(height: 150),
+          constraints: const BoxConstraints.expand(height: 150),
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               Padding(
-                padding: EdgeInsets.all(10),
+                padding: const EdgeInsets.all(10),
                 child: AspectRatio(
                   aspectRatio: 1,
                   child: Stack(
@@ -72,7 +72,7 @@ class CWOCStatusWidget extends StatelessWidget {
                 ),
               ),
 
-              Spacer(flex: 1,),
+              const Spacer(flex: 1,),
 
               Expanded(
                 flex: 3,

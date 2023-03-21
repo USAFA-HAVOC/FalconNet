@@ -46,23 +46,23 @@ class NotificationBar extends StatelessWidget {
 
       //Important: Constrained box is required to prevent size overflow and match to notification widget height
       child: ConstrainedBox(
-        constraints: BoxConstraints.tightFor(height: 50),
+        constraints: const BoxConstraints.tightFor(height: 50),
         child: DecoratedBox(
             decoration: BoxDecoration(
-                border: Border.all(
-                  color: Theme.of(context).dividerColor,
-                  width: 1,
-                )
+              border: Border.all(
+                color: Theme.of(context).dividerColor,
+                width: 1,
+              )
             ),
             child: Padding(
-                padding: EdgeInsets.all(10),
+                padding: const EdgeInsets.all(10),
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     Text(
                       notification.message,
-                      style: TextStyle(
-                          fontWeight: FontWeight.bold
+                      style: const TextStyle(
+                        fontWeight: FontWeight.bold
                       ),
                     )
                   ],

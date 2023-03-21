@@ -32,7 +32,7 @@ class ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
     ),
   ];
 
-  static List<Widget> pages = [
+  static List<Widget> pages = const [
     CadetInfo(),
     PassHistory(),
     Settings(),

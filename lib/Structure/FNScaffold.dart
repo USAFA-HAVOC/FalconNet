@@ -18,7 +18,7 @@ class FNScaffold extends StatelessWidget {
       constraints: BoxConstraints.loose(MediaQuery.of(context).size),
       child: Scaffold(
 
-        //Automatically imply leading supresses automatic menu button functionality
+        //Automatically imply leading prevents automatic menu button functionality
         //Places custom navigation bar in space of app bar
         appBar: AppBar(
           automaticallyImplyLeading: false,

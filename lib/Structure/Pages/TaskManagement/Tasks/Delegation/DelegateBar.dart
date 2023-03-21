@@ -1,3 +1,4 @@
+import 'package:falcon_net/Structure/Components/InfoBar.dart';
 import 'package:falcon_net/Utility/TemporalFormatting.dart';
 import 'package:flutter/material.dart';
 
@@ -33,42 +34,29 @@ class DelegateBar extends StatelessWidget {
       }
     }
 
-    return Padding(
-      padding: EdgeInsets.symmetric(vertical: 10),
-      child: DecoratedBox(
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(10),
-          border: Border.all(color: Theme.of(context).dividerColor),
-        ),
-
-        child: Padding(
-          padding: EdgeInsets.all(10),
-          child: Row(
+    return InfoBar(
+      children: [
+        Expanded(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Expanded(
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      delegate.personal_info.full_name,
-                      style: Theme.of(context).textTheme.titleSmall,
-                      textAlign: TextAlign.start,
-                    ),
-
-                    Text(roleDescription),
-                  ],
-                ),
+              Text(
+                delegate.personal_info.full_name,
+                style: Theme.of(context).textTheme.titleSmall,
+                textAlign: TextAlign.start,
               ),
 
-              IconButton(
-                onPressed: () => onAssign(delegate),
-                icon: const Icon(Icons.edit),
-              ),
+              Text(roleDescription),
             ],
-          )
+          ),
         ),
-      ),
+
+        IconButton(
+          onPressed: () => onAssign(delegate),
+          icon: const Icon(Icons.edit),
+        ),
+      ]
     );
   }
 }

@@ -71,7 +71,7 @@ class SigningWidgetState extends State<SigningWidget> {
                 border: OutlineInputBorder(borderSide: BorderSide(color: Theme.of(context).dividerColor), borderRadius: BorderRadius.circular(10)),
                 labelStyle: Theme.of(context).textTheme.bodyLarge,
                 labelText: "Search",
-                suffixIcon: Icon(Icons.search)
+                suffixIcon: const Icon(Icons.search)
             ),
             onChanged: (q) => setState(() => query = q),
           );

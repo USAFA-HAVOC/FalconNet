@@ -1,6 +1,7 @@
 import 'package:async_redux/async_redux.dart';
 import 'package:falcon_net/Model/Database/CadetPass.dart';
 import 'package:falcon_net/Model/Store/GlobalStateModel.dart';
+import 'package:falcon_net/Structure/Components/InfoBar.dart';
 import 'package:falcon_net/Structure/Components/ViewModel.dart';
 import 'package:flutter/material.dart';
 
@@ -51,73 +52,61 @@ class PassRecord extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.only(bottom: 10),
-      child: DecoratedBox(
-        decoration: BoxDecoration(
-            border: Border.all(
-                color: Theme.of(context).dividerColor
-            )
-        ),
-        child: Padding(
-          padding: EdgeInsets.all(10),
-          child: Row(
+    return InfoBar(
+      exteriorPadding: const EdgeInsets.symmetric(vertical: 5),
+      children: [
+
+        //Displays date range as stacked column
+        Expanded(
+          flex: 6,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-
-              //Displays date range as stacked column
-              Expanded(
-                flex: 6,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Text(
-                        describeDate(pass.start_time),
-                        style: Theme.of(context).textTheme.bodyMedium
-                    ),
-
-                    Text(
-                        "-",
-                        style: Theme.of(context).textTheme.bodyMedium
-                    ),
-
-                    Text(
-                        describeDate(pass.end_time),
-                        style: Theme.of(context).textTheme.bodyMedium
-                    ),
-                  ],
-                ),
+              Text(
+                  describeDate(pass.start_time),
+                  style: Theme.of(context).textTheme.bodyMedium
               ),
 
-              Spacer(flex: 1,),
+              Text(
+                  "-",
+                  style: Theme.of(context).textTheme.bodyMedium
+              ),
 
-              //Displays pass type, description, and location in stacked column
-              Expanded(
-                flex: 10,
-                child: PaddedColumn(
-                  padding: EdgeInsets.symmetric(vertical: 2),
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                        formatType(pass.pass_type),
-                        style: Theme.of(context).textTheme.bodySmall
-                    ),
-
-                    Text(
-                        (pass.sca_number == null ? "" : "SCA: ${pass.sca_number!}. ") + pass.description,
-                        style: Theme.of(context).textTheme.bodyMedium
-                    ),
-
-                    Text(
-                        "${pass.city}, ${pass.state} ${pass.zip_code}",
-                        style: Theme.of(context).textTheme.bodySmall
-                    ),
-                  ],
-                ),
+              Text(
+                  describeDate(pass.end_time),
+                  style: Theme.of(context).textTheme.bodyMedium
               ),
             ],
           ),
-        )
-      ),
+        ),
+
+        const Spacer(flex: 1,),
+
+        //Displays pass type, description, and location in stacked column
+        Expanded(
+          flex: 10,
+          child: PaddedColumn(
+            padding: const EdgeInsets.symmetric(vertical: 2),
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                  formatType(pass.pass_type),
+                  style: Theme.of(context).textTheme.bodySmall
+              ),
+
+              Text(
+                  (pass.sca_number == null ? "" : "SCA: ${pass.sca_number!}. ") + pass.description,
+                  style: Theme.of(context).textTheme.bodyMedium
+              ),
+
+              Text(
+                  "${pass.city}, ${pass.state} ${pass.zip_code}",
+                  style: Theme.of(context).textTheme.bodySmall
+              ),
+            ],
+          ),
+        ),
+      ],
     );
   }
 }
