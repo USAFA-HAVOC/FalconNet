@@ -111,7 +111,8 @@ class NotificationService {
       time: DateTime.now().isBefore(combineDate(DateTime.now(), diOpens))
           ? combineDate(DateTime.now(), diOpens)
           : combineDate(DateTime.now(), diOpens).add(const Duration(days: 1)),
-      id: "di"
+      id: "di",
+      payload: "/"
   );
 
   void cancelDINotification() => _notificationService.cancel(id: "di");

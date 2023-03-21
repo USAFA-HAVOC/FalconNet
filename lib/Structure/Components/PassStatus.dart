@@ -27,7 +27,7 @@ class PassStatus extends StatelessWidget {
                     if (model.content.accountability?.current_pass == null) {
                       if (!(model.content.pass_allocation?.effective_pass_status ?? true)) {
                         return Card(
-                            color: Theme.of(context).errorColor,
+                            color: Theme.of(context).colorScheme.error,
                             child: Padding(
                               padding: const EdgeInsets.all(20),
                               child: Column(
@@ -102,11 +102,7 @@ class PassStatus extends StatelessWidget {
                       String expiration;
                       bool expired = false;
                       var difference = pass.end_time.difference(DateTime.now());
-                      print(difference.inSeconds);
-                      print(pass.end_time);
-                      print(DateTime.now());
                       if (difference.inSeconds <= 0) {
-                        print("expired");
                         expiration =
                         "Expired: ${describeDate(pass.end_time)} ${describeTime(TimeOfDay.fromDateTime(pass.end_time))}";
                         expired = true;
@@ -128,7 +124,7 @@ class PassStatus extends StatelessWidget {
                       return Card(
                         color: !expired
                             ? Theme.of(context).canvasColor
-                            : Theme.of(context).errorColor,
+                            : Theme.of(context).colorScheme.error,
                         child: Padding(
                           padding: const EdgeInsets.all(20),
                           child: Column(

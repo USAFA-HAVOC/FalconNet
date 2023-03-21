@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../../../../Theme/NegativeButtonTheme.dart';
 import '../../../../Components/ConfirmationDialog.dart';
 
 ///Box for displaying name, signing status, and signing button
@@ -33,24 +34,16 @@ class SignBox extends StatelessWidget {
                       "This action cannot be undone.",
                   onConfirm: onSign
               )),
-              child: Padding(
-                padding: EdgeInsets.symmetric(vertical: 5),
-                child: Text("Sign"),
-              ),
+              child: Text("Sign"),
             ),
           )
 
           else Expanded(
             flex: 4,
             child: ElevatedButton(
-              style: ButtonStyle(
-                backgroundColor: MaterialStateColor.resolveWith((states) => Colors.grey),
-              ),
+              style: Theme.of(context).extension<NegativeButtonTheme>()!.style,
               onPressed: null,
-              child: Padding(
-                padding: EdgeInsets.symmetric(vertical: 5),
-                child: Text(status == "signed" ? "Signed" : "Signed-Out"),
-              ),
+              child: Text(status == "signed" ? "Signed" : "Out"),
             ),
           )
         ],

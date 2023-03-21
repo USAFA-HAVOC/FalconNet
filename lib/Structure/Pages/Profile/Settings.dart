@@ -7,6 +7,8 @@ import 'package:falcon_net/Structure/Components/ViewModel.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../../Theme/NegativeButtonTheme.dart';
+
 ///Settings page
 ///Modifies global state settings as values are changed
 class Settings extends StatelessWidget {
@@ -97,23 +99,18 @@ class Settings extends StatelessWidget {
 
               ElevatedButton(
                 onPressed: () => logout().then((_) => context.go("/selection")),
-                style: ButtonStyle(
-                  backgroundColor: MaterialStateColor.resolveWith((states) => Colors.grey)
-                ),
+                style: Theme.of(context).extension<NegativeButtonTheme>()!.style,
                 child: Stack(
-                  children: const [
+                  children: [
                     Align(
                       alignment: AlignmentDirectional.center,
                       child: Text(
                         "Log Out",
-                        style: TextStyle(
-                          color: Colors.black,
-                          fontSize: 20,
-                        ),
+                        style: Theme.of(context).textTheme.labelLarge
                       ),
                     ),
 
-                    Align(
+                    const Align(
                       alignment: AlignmentDirectional.centerEnd,
                       child: Icon(Icons.logout),
                     )

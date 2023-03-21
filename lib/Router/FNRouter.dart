@@ -9,7 +9,6 @@ import 'package:falcon_net/Structure/Pages/TaskManagement/Tasks/StanEval/SEAnaly
 import 'package:falcon_net/Structure/Pages/TaskManagement/Tasks/StanEval/SEEvent.dart';
 import 'package:falcon_net/Structure/Pages/TaskManagement/Tasks/UnitEditor/UnitEditorTask.dart';
 import 'package:falcon_net/Structure/Pages/TaskManagement/Tasks/UnitManagement/UnitManagementTask.dart';
-import 'package:falcon_net/main.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import '../Model/Database/TimedRole.dart';
@@ -29,6 +28,7 @@ import '../Structure/Pages/TaskManagement/Tasks/SDO/SDOTask.dart';
 import '../Structure/Pages/TaskManagement/Tasks/StanEval/SEParameters.dart';
 import '../Structure/Pages/TaskManagement/Tasks/StanEval/SEUnit.dart';
 import '../Structure/Pages/TaskManagement/Tasks/StanEval/StanEvalTask.dart';
+import '../Structure/SelectionView.dart';
 
 enum SignState {
   signed,

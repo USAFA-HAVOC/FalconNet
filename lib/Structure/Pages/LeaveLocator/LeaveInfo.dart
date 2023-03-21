@@ -5,6 +5,7 @@ import 'package:falcon_net/Utility/TemporalFormatting.dart';
 import 'package:flutter/material.dart';
 
 import '../../../Model/Store/Actions/LeaveAction.dart';
+import '../../../Theme/NegativeButtonTheme.dart';
 import '../../Components/PaddedColumn.dart';
 import '../../Components/ViewModel.dart';
 import 'LeaveLocatorForm.dart';
@@ -141,10 +142,10 @@ class LeaveInfo extends StatelessWidget {
                             );
                           },
 
-                          child: Padding(
-                            padding: EdgeInsets.symmetric(vertical: 10),
-                            child: const Text('Edit Leave'),
-                          ),
+                          child: Text(
+                            'Edit Leave',
+                            style: Theme.of(context).textTheme.labelLarge,
+                          )
                         ),
                       )
                   ),
@@ -154,9 +155,7 @@ class LeaveInfo extends StatelessWidget {
                   Expanded(
                     flex: 5,
                     child: ElevatedButton(
-                      style: ButtonStyle(
-                        backgroundColor: MaterialStateColor.resolveWith((states) => Colors.grey),
-                      ),
+                      style: Theme.of(context).extension<NegativeButtonTheme>()!.style,
 
                       //Dispatch a clear leave action
                       onPressed: () {
@@ -170,9 +169,9 @@ class LeaveInfo extends StatelessWidget {
                         ));
                       },
 
-                      child: Padding(
-                        padding: EdgeInsets.symmetric(vertical: 10),
-                        child: const Text('Clear Data'),
+                      child: Text(
+                        'Clear Data',
+                        style: Theme.of(context).textTheme.labelLarge,
                       ),
                     ),
                   ),

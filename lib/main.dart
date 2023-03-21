@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:aad_oauth/model/config.dart';
 import 'package:async_redux/async_redux.dart';
 import 'package:built_collection/built_collection.dart';
@@ -20,7 +22,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:go_router/go_router.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:flutter_signin_button/flutter_signin_button.dart';
 
 import 'Model/Database/UserSettings.dart';
 import 'Router/FNRouter.dart';
@@ -112,7 +113,9 @@ class FNAppState extends State<FNApp> {
 
   @override
   void initState() {
-    /// todo: session management
+    Timer.periodic(const Duration(minutes: 20), (timer) {
+      widget.store.dispatch(GlobalAction.initialize());
+    });
     attemptGetWebToken();
     router = fnRouter(navigatorKey, widget.sign);
     if (APIData.authenticated && router.location == "/selection") {
@@ -149,54 +152,3 @@ class FNAppState extends State<FNApp> {
     );
   }
 }
-
-
-
-class SelectionView extends StatelessWidget {
-  final Function() onSigned;
-  final Function() onDemo;
-
-  const SelectionView({Key? key, required this.onSigned, required this.onDemo})
-      : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      color: Colors.grey[100],
-      padding: const EdgeInsets.symmetric(horizontal: 20.0),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          SizedBox(
-            width: 200.0,
-            height: 50.0,
-            child: SignInButton(
-              Buttons.Microsoft,
-              text: "Sign in with USAFA",
-              onPressed: () async {
-                attemptLogin();
-                onSigned();
-              },
-            ),
-          ),
-          const SizedBox(height: 20.0),
-          SizedBox(
-            width: 200.0,
-            height: 50.0,
-            child: SignInButton(
-              Buttons.Apple,
-              text: "Demo Mode (Apple)",
-              onPressed: () async {
-                // attemptLogin();
-                onDemo();
-              },
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-
-

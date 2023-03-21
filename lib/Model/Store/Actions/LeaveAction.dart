@@ -30,7 +30,8 @@ class LeaveAction extends ReduxAction<GlobalState> {
               title: "Leave Locator Expired",
               body: "Please either update or clear your leave locator",
               time: assigned.return_time,
-              id: assigned.id
+              id: assigned.id,
+              payload: "/leave_locator"
           );
         }
         return (state.toBuilder()..user.accountability.current_leave=assigned.toBuilder()).build();
