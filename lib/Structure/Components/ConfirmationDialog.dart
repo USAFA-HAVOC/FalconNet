@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../Theme/NegativeButtonTheme.dart';
 import 'PaddedColumn.dart';
 
 class ConfirmationDialog extends StatelessWidget {
@@ -56,9 +57,7 @@ class ConfirmationDialog extends StatelessWidget {
                       Expanded(
                         flex: 5,
                         child: ElevatedButton(
-                          style: ButtonStyle(
-                            backgroundColor: MaterialStateColor.resolveWith((states) => Colors.grey),
-                          ),
+                          style: Theme.of(context).extension<NegativeButtonTheme>()!.style,
                           onPressed: () {
                             Navigator.of(context).pop();
                             if (onCancel != null) {

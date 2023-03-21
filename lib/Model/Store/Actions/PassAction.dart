@@ -44,7 +44,8 @@ class PassAction extends ReduxAction<GlobalState> {
               title: "Pass Expired",
               body: "Your pass has expired, please either close or update it",
               time: pass!.end_time,
-              id: pass!.id
+              id: pass!.id,
+              payload: "/pass_management"
           );
         }
         sb.user.accountability.current_pass = pass!.toBuilder();
@@ -59,7 +60,8 @@ class PassAction extends ReduxAction<GlobalState> {
               title: "Pass Expired",
               body: "Your pass has expired, please either close or update it",
               time: assigned.end_time,
-              id: assigned.id
+              id: assigned.id,
+              payload: "/pass_management"
           );
         }
         sb.user.accountability.current_pass = assigned.toBuilder();

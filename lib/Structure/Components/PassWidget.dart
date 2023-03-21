@@ -3,6 +3,7 @@ import 'package:falcon_net/Model/Store/Actions/PassAction.dart';
 import 'package:falcon_net/Model/Store/GlobalStateModel.dart';
 import 'package:falcon_net/Structure/Components/PageWidget.dart';
 import 'package:falcon_net/Structure/Components/ViewModel.dart';
+import 'package:falcon_net/Theme/NegativeButtonTheme.dart';
 import 'package:flutter/material.dart';
 
 import '../../Model/Database/User.dart';
@@ -159,13 +160,7 @@ class PassWidget extends StatelessWidget {
                   Expanded(
                     flex: 10,
                     child: ElevatedButton(
-                      style: ButtonStyle(
-                        backgroundColor: MaterialStateProperty.all(
-                          const Color.fromARGB(
-                              255, 169, 169, 169
-                          ), // "Close" button color
-                        ),
-                      ),
+                      style: Theme.of(context).extension<NegativeButtonTheme>()!.style,
 
                       //Dispatches close pass action
                       onPressed: () {

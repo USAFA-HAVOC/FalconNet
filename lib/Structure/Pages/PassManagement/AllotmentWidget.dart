@@ -19,19 +19,65 @@ class AllotmentWidget extends StatelessWidget {
           return PageWidget(
               title: title,
               children: [
-                Text(
-                  "Weekday Day Passes: ${model.content?.weekday_day_passes ?? "Unlimited"}",
-                  style: Theme.of(context).textTheme.bodyLarge,
+                Stack(
+                  children: [
+                    Align(
+                      alignment: AlignmentDirectional.centerEnd,
+                      child: Text(
+                        model.content?.weekday_day_passes.toString() ?? "Unlimited",
+                        style: Theme.of(context).textTheme.bodyLarge,
+                      ),
+                    ),
+
+                    Align(
+                      alignment: AlignmentDirectional.centerStart,
+                      child: Text(
+                        "Weekday Day Passes:",
+                        style: Theme.of(context).textTheme.bodyLarge,
+                      ),
+                    )
+                  ],
                 ),
 
-                Text(
-                  "Weekend Overnight Passes: ${model.content?.weekend_overnight_passes ?? "Unlimited"}",
-                  style: Theme.of(context).textTheme.bodyLarge,
+
+                Stack(
+                  children: [
+                    Align(
+                      alignment: AlignmentDirectional.centerEnd,
+                      child: Text(
+                        model.content?.weekend_overnight_passes.toString() ?? "Unlimited",
+                        style: Theme.of(context).textTheme.bodyLarge,
+                      ),
+                    ),
+
+                    Align(
+                      alignment: AlignmentDirectional.centerStart,
+                      child: Text(
+                        "Weekend Overnight Passes:",
+                        style: Theme.of(context).textTheme.bodyLarge,
+                      ),
+                    )
+                  ],
                 ),
 
-                Text(
-                  "Weekday Overnight Passes: ${model.content?.weekday_overnight_passes ?? "Unlimited"}",
-                  style: Theme.of(context).textTheme.bodyLarge,
+                Stack(
+                  children: [
+                    Align(
+                      alignment: AlignmentDirectional.centerEnd,
+                      child: Text(
+                        model.content?.weekday_overnight_passes.toString() ?? "Unlimited",
+                        style: Theme.of(context).textTheme.bodyLarge,
+                      ),
+                    ),
+
+                    Align(
+                      alignment: AlignmentDirectional.centerStart,
+                      child: Text(
+                        "Weekday Overnight Passes:",
+                        style: Theme.of(context).textTheme.bodyLarge,
+                      ),
+                    )
+                  ],
                 ),
               ],
           );

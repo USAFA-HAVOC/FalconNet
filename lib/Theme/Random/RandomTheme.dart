@@ -1,6 +1,8 @@
 import 'dart:math';
+import 'package:falcon_net/Theme/Random/RandomButtonTheme.dart';
 import 'package:flutter/material.dart';
 
+import '../NegativeButtonTheme.dart';
 import 'RandomCardTheme.dart';
 import 'RandomTextTheme.dart';
 
@@ -18,9 +20,20 @@ ThemeData get randomTheme => ThemeData(
     fontFamily: "Roboto",
     iconTheme: IconThemeData(color: randomColor()),
     canvasColor: randomColor(),
-    errorColor: randomColor(),
-    buttonTheme: ButtonThemeData(
-        buttonColor: randomColor(),
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(Random().nextDouble() * 30)))
+    elevatedButtonTheme: randomButtonTheme,
+    extensions: [
+      NegativeButtonTheme(style: ElevatedButton.styleFrom(
+        backgroundColor: randomColor(),
+        textStyle: randomTextTheme.labelLarge,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.all(
+            Radius.circular(Random().nextDouble() * 20),
+          ),
+        ),
+      ))
+    ],
+    colorScheme: ColorScheme.dark(
+      secondary: randomColor(),
+      error: randomColor()
     )
 );

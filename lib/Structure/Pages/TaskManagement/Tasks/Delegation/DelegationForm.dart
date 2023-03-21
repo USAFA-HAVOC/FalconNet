@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import '../../../../../Model/Database/Roles.dart';
 import '../../../../../Model/Database/TimedRole.dart';
 import '../../../../../Model/Database/User.dart';
+import '../../../../../Theme/NegativeButtonTheme.dart';
 
 class DelegationForm extends StatefulWidget {
   final User delegate;
@@ -104,6 +105,7 @@ class DelegationFormState extends State<DelegationForm> {
                   Expanded(
                     flex: 5,
                     child: ElevatedButton(
+                      style: Theme.of(context).extension<NegativeButtonTheme>()!.style,
                       onPressed: widget.onCancel,
                       child: Padding(
                         padding: EdgeInsets.symmetric(vertical: 10),
