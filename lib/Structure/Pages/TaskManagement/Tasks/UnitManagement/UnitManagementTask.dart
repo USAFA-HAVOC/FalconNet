@@ -45,7 +45,6 @@ class UnitManagementTaskState extends State<UnitManagementTask> {
     try {
       var status = await Endpoints.getOwnUnit(null);
       var forms = await Endpoints.getFormData(null);
-      print(forms);
       return UnitManagementData(status: status.unit.pass_status.toList(), forms: forms.forms.toList());
       //return const UnitManagementData(status: [true, true, true, true], forms: []);
     }
@@ -124,8 +123,6 @@ class UnitManagementTaskState extends State<UnitManagementTask> {
   void deleteForm(ScaffoldMessengerState messenger, FormOneData form) async {
     try {
       var data = await connection;
-
-      print(form.form_id);
 
       await Endpoints.removeForm(StringRequest((s) => s..string = form.form_id));
 

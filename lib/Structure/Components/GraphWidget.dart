@@ -14,7 +14,7 @@ class GraphWidget extends StatelessWidget {
     Colors.black,
   ];
 
-  GraphWidget({super.key, required this.name, required List<FlSpot> this.data});
+  GraphWidget({super.key, required this.name, required this.data});
 
   List<double> bounds() {
     if (data.isEmpty) {

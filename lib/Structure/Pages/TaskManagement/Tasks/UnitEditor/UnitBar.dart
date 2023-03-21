@@ -1,5 +1,6 @@
 import 'package:falcon_net/Model/Database/UnitList.dart';
 import 'package:falcon_net/Model/Database/UnitSummary.dart';
+import 'package:falcon_net/Structure/Components/InfoBar.dart';
 import 'package:flutter/material.dart';
 
 import '../../../../Components/ConfirmationDialog.dart';
@@ -68,72 +69,58 @@ class UnitBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 10),
-      child: DecoratedBox(
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(10),
-          border: Border.all(color: Theme.of(context).dividerColor),
-        ),
-
-        child: Padding(
-          padding: const EdgeInsets.all(10),
-          child: Row(
-
+    return InfoBar(
+      children: [
+        Expanded(
+          flex: 12,
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              Expanded(
-                flex: 12,
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    Text(
-                      unit.unit.name,
-                      style: Theme.of(context).textTheme.titleSmall,
-                      textAlign: TextAlign.start,
-                    ),
-
-                    Text(
-                      unit.unit.group ?? "None",
-                      style: Theme.of(context).textTheme.bodyMedium,
-                      textAlign: TextAlign.start,
-                    ),
-                  ],
-                ),
+              Text(
+                unit.unit.name,
+                style: Theme.of(context).textTheme.titleSmall,
+                textAlign: TextAlign.start,
               ),
 
-              Expanded(
-                flex: 3,
-                child: IconButton(
-                  icon: const Icon(Icons.edit),
-                  onPressed: () => showDialog(
-                      context: context,
-                      builder: (context) => Dialog(
-                        backgroundColor: Theme.of(context).cardTheme.color,
-                        child: Padding(
-                          padding: const EdgeInsets.all(10),
-                          child: UnitForm(
-                            existing: unit,
-                            onSubmit: onEdit,
-                            list: list,
-                          ),
-                        ),
-                      )
-                  ),
-                ),
-              ),
-
-              Expanded(
-                flex: 3,
-                child: IconButton(
-                  icon: const Icon(Icons.delete),
-                  onPressed: () => attemptDelete(context),
-                ),
+              Text(
+                unit.unit.group ?? "None",
+                style: Theme.of(context).textTheme.bodyMedium,
+                textAlign: TextAlign.start,
               ),
             ],
           ),
-        )
-      )
+        ),
+
+        Expanded(
+          flex: 3,
+          child: IconButton(
+            icon: const Icon(Icons.edit),
+            onPressed: () => showDialog(
+                context: context,
+                builder: (context) => Dialog(
+                  backgroundColor: Theme.of(context).cardTheme.color,
+                  child: Padding(
+                    padding: const EdgeInsets.all(10),
+                    child: UnitForm(
+                      existing: unit,
+                      onSubmit: onEdit,
+                      list: list,
+                    ),
+                  ),
+                )
+            ),
+          ),
+        ),
+
+        Expanded(
+          flex: 3,
+          child: IconButton(
+            icon: const Icon(Icons.delete),
+            onPressed: () => attemptDelete(context),
+          ),
+        ),
+      ],
     );
   }
 }

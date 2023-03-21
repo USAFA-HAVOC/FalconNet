@@ -1,4 +1,5 @@
 import 'package:falcon_net/Model/Database/UserSummary.dart';
+import 'package:falcon_net/Structure/Components/InfoBar.dart';
 import 'package:falcon_net/Structure/Components/FNPage.dart';
 import 'package:falcon_net/Structure/Components/GraphWidget.dart';
 import 'package:falcon_net/Structure/Components/PageWidget.dart';
@@ -41,48 +42,34 @@ class SEAnalytics extends StatelessWidget {
     List<Widget> bars = <Widget>[];
 
     Widget buildGradeBar(Map<UserSummary, Grade> grades, String name) =>
-        Padding(
-          padding: const EdgeInsets.symmetric(vertical: 10),
-          child: DecoratedBox(
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(10),
-              border: Border.all(color: Theme.of(context).dividerColor),
+        InfoBar(
+          interiorPadding: const EdgeInsets.symmetric(vertical: 15, horizontal: 10),
+          onTap: () => onTap(name, grades),
+          children: [
+            Expanded(
+                flex: 3,
+                child: Text(
+                  name,
+                  style: Theme.of(context).textTheme.titleSmall,
+                )
             ),
 
-            child: InkWell(
-              onTap: () => onTap(name, grades),
-              child: Padding(
-                  padding: const EdgeInsets.all(20),
-                  child: Row(
-                    children: [
-                      Expanded(
-                          flex: 3,
-                          child: Text(
-                            name,
-                            style: Theme.of(context).textTheme.titleSmall,
-                          )
-                      ),
+            Expanded(
+                flex: 2,
+                child: Text(
+                  "${(100 * calculateReporting(grades.values.toList())).toStringAsFixed(0)}%\nReporting",
+                  textAlign: TextAlign.center,
+                )
+            ),
 
-                      Expanded(
-                          flex: 2,
-                          child: Text(
-                            "${(100 * calculateReporting(grades.values.toList())).toStringAsFixed(0)}%\nReporting",
-                            textAlign: TextAlign.center,
-                          )
-                      ),
-
-                      Expanded(
-                          flex: 2,
-                          child: Text(
-                            "${calculateAverage(grades.values.toList()).toStringAsFixed(1)}\nAverage",
-                            textAlign: TextAlign.center,
-                          )
-                      ),
-                    ],
-                  )
-              ),
-            )
-          ),
+            Expanded(
+                flex: 2,
+                child: Text(
+                  "${calculateAverage(grades.values.toList()).toStringAsFixed(1)}\nAverage",
+                  textAlign: TextAlign.center,
+                )
+            ),
+          ],
         );
 
 

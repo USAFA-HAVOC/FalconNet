@@ -153,7 +153,7 @@ class LeaveLocatorFormState extends State<LeaveLocatorForm> {
     Widget submit = Expanded(
         flex: 5,
         child: Padding(
-            padding: EdgeInsets.symmetric(vertical: 20),
+            padding: const EdgeInsets.symmetric(vertical: 20),
             child: StoreConnector<GlobalState, ViewModel<LeaveModelTuple>>(
               converter: (store) => ViewModel<LeaveModelTuple>(
                   store: store,
@@ -165,9 +165,7 @@ class LeaveLocatorFormState extends State<LeaveLocatorForm> {
                   //Attempts to validate form, then closes dialog if applicable
                   //Then, dispatches set leave action with leave data
                   onPressed: () {
-                    print("attempting");
                     if (key.currentState!.validate()) {
-                      print("valid");
                       if (widget.dialog) {
                         Navigator.of(context).pop();
                       }
@@ -183,7 +181,7 @@ class LeaveLocatorFormState extends State<LeaveLocatorForm> {
                   },
 
                   child: Padding(
-                    padding: EdgeInsets.symmetric(vertical: 10),
+                    padding: const EdgeInsets.symmetric(vertical: 10),
                     child: Text(
                       'Submit',
                       style: Theme.of(context).textTheme.labelLarge,
@@ -193,7 +191,8 @@ class LeaveLocatorFormState extends State<LeaveLocatorForm> {
               },
             )));
     List<Widget> cancel = [
-      Spacer(flex: 1),
+      const Spacer(flex: 1),
+
       Expanded(
         flex: 5,
         child: ElevatedButton(
@@ -209,9 +208,9 @@ class LeaveLocatorFormState extends State<LeaveLocatorForm> {
             }
           },
 
-          child: Padding(
+          child: const Padding(
             padding: EdgeInsets.symmetric(vertical: 10),
-            child: const Text('Cancel'),
+            child: Text('Cancel'),
           ),
         ),
       ),
@@ -278,9 +277,9 @@ class LeaveLocatorFormState extends State<LeaveLocatorForm> {
                         emptyMessage: "Please enter a city"),
                   ),
                 ),
-                Spacer(
-                  flex: 1,
-                ),
+
+                const Spacer(flex: 1,),
+
                 Expanded(
                   flex: 2,
                   child: TextFormField(
@@ -295,22 +294,22 @@ class LeaveLocatorFormState extends State<LeaveLocatorForm> {
                 ),
               ],
             ),
+
             DropdownButtonFormField(
               value: state,
               decoration: InputDecoration(
                   labelStyle: Theme.of(context).textTheme.bodyLarge,
-                  labelText: "State"),
-
-              //Set value
+                  labelText: "State"
+              ),
               onChanged: (value) {
                 setState(() {
                   state = value!;
                 });
-                ;
               },
               validator: InputValidation.dropdown(),
               items: buildStateOptions(),
             ),
+
             TextFormField(
               controller: nameController,
               decoration: InputDecoration(
@@ -320,6 +319,7 @@ class LeaveLocatorFormState extends State<LeaveLocatorForm> {
               validator: InputValidation.stringLength(
                   emptyMessage: "Please enter a name"),
             ),
+
             TextFormField(
               controller: phoneController,
               decoration: InputDecoration(
@@ -329,16 +329,19 @@ class LeaveLocatorFormState extends State<LeaveLocatorForm> {
               validator: InputValidation.stringLength(
                   emptyMessage: "Please enter a phone number"),
             ),
-            Divider(
+
+            const Divider(
               thickness: 1,
               height: 40,
               indent: 10,
               endIndent: 10,
             ),
+
             Text(
               "Departure",
               style: Theme.of(context).textTheme.titleSmall,
             ),
+
             Row(
               children: [
                 Expanded(
@@ -358,7 +361,9 @@ class LeaveLocatorFormState extends State<LeaveLocatorForm> {
                     }),
                   ),
                 ),
-                Spacer(flex: 1),
+
+                const Spacer(flex: 1),
+
                 Expanded(
                   flex: 4,
                   child: TimeFormField(
@@ -373,20 +378,24 @@ class LeaveLocatorFormState extends State<LeaveLocatorForm> {
                 )
               ],
             ),
+
             LeaveMethodSubform(
               type: LeaveMethodSubformType.departure,
               controller: depMethodController,
             ),
-            Divider(
+
+            const Divider(
               thickness: 1,
               height: 40,
               indent: 10,
               endIndent: 10,
             ),
+
             Text(
               "Return",
               style: Theme.of(context).textTheme.titleSmall,
             ),
+
             Row(
               children: [
                 Expanded(
@@ -401,7 +410,9 @@ class LeaveLocatorFormState extends State<LeaveLocatorForm> {
                     }),
                   ),
                 ),
-                Spacer(flex: 1),
+
+                const Spacer(flex: 1),
+
                 Expanded(
                   flex: 4,
                   child: TimeFormField(
@@ -416,11 +427,15 @@ class LeaveLocatorFormState extends State<LeaveLocatorForm> {
                 )
               ],
             ),
+
             LeaveMethodSubform(
                 type: LeaveMethodSubformType.arrival,
-                controller: retMethodController),
+                controller: retMethodController
+            ),
+
             buildSubmissionBar(context),
           ],
-        ));
+        )
+    );
   }
 }

@@ -45,7 +45,7 @@ class DelegationFormState extends State<DelegationForm> {
           children: [
             ...roles.map(
                 (role) => Padding(
-                  padding: EdgeInsets.all(10),
+                  padding: const EdgeInsets.all(10),
                   child: RoleSubform(
                     existing: role,
                     applicable: widget.applicable,
@@ -62,7 +62,7 @@ class DelegationFormState extends State<DelegationForm> {
             ),
 
             Padding(
-              padding: EdgeInsets.all(10),
+              padding: const EdgeInsets.all(10),
               child: ElevatedButton(
                 onPressed: () => setState(() {
                   roles.add(
@@ -73,7 +73,7 @@ class DelegationFormState extends State<DelegationForm> {
                       )
                   );
                 }),
-                child: Padding(
+                child: const Padding(
                   padding: EdgeInsets.symmetric(vertical: 10),
                   child: Text("Add Role"),
                 ),
@@ -81,7 +81,7 @@ class DelegationFormState extends State<DelegationForm> {
             ),
 
             Padding(
-              padding: EdgeInsets.all(10),
+              padding: const EdgeInsets.all(10),
               child: Row(
                 children: [
                   Expanded(
@@ -93,21 +93,21 @@ class DelegationFormState extends State<DelegationForm> {
                         }
                       },
 
-                      child: Padding(
+                      child: const Padding(
                         padding: EdgeInsets.symmetric(vertical: 10),
                         child: Text("Save"),
                       ),
                     ),
                   ),
 
-                  Spacer(flex: 1,),
+                  const Spacer(flex: 1,),
 
                   Expanded(
                     flex: 5,
                     child: ElevatedButton(
                       style: Theme.of(context).extension<NegativeButtonTheme>()!.style,
                       onPressed: widget.onCancel,
-                      child: Padding(
+                      child: const Padding(
                         padding: EdgeInsets.symmetric(vertical: 10),
                         child: Text("Cancel"),
                       ),

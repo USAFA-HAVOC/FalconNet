@@ -51,7 +51,9 @@ const String tenant = '7ab80a06-f029-45c0-84d1-7dad19ce3c61';
 Future<void> authLogin() async {
   var res = await AuthService().login();
   res.fold((l) {
-    print("AUTH FAILURE $l");
+    if (kDebugMode) {
+      print("AUTH FAILURE $l");
+    }
   }, (r) {
     login(r.accessToken!);
   });

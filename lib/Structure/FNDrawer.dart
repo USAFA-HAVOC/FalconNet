@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
@@ -20,17 +18,17 @@ class FNDrawer extends StatelessWidget {
       child: DecoratedBox(
         decoration: BoxDecoration(
           color: Theme.of(context).primaryColor,
-          borderRadius: BorderRadiusDirectional.horizontal(end: Radius.circular(10)),
+          borderRadius: const BorderRadiusDirectional.horizontal(end: Radius.circular(10)),
         ),
 
         child: Padding(
-          padding: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+          padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
           child: PaddedColumn(
             mainAxisSize: MainAxisSize.min,
-            padding: EdgeInsets.symmetric(vertical: 20),
+            padding: const EdgeInsets.symmetric(vertical: 20),
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
+            children: const [
               DrawerItem(
                   icon: Icons.home,
                   title: "Dashboard",
@@ -94,7 +92,7 @@ class DrawerItem extends StatelessWidget {
               child: Icon(icon)
           ),
 
-          Spacer(flex: 1,),
+          const Spacer(flex: 1,),
 
           Expanded(
               flex: 7,

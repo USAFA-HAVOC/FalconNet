@@ -32,7 +32,7 @@ class SDOStatusWidget extends StatelessWidget {
             Expanded(
               flex: 3,
               child: Padding(
-                padding: EdgeInsets.all(10),
+                padding: const EdgeInsets.all(10),
                 child: AspectRatio(
                   aspectRatio: 1,
                   child: Stack(
@@ -55,7 +55,7 @@ class SDOStatusWidget extends StatelessWidget {
               ),
             ),
 
-            Spacer(flex: 1,),
+            const Spacer(flex: 1,),
 
             Expanded(
               flex: 3,

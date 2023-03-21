@@ -37,7 +37,7 @@ class TimeFormFieldState extends State<TimeFormField> {
 
     /*
     Overrides stateful properties according to present widget properties.
-    This is nessecary in order to allow ancestors to modify value.
+    This is necessary in order to allow ancestors to modify value.
      */
     var value = widget.value ?? describeTime(TimeOfDay.now());
     var controller = TextEditingController(text: value);

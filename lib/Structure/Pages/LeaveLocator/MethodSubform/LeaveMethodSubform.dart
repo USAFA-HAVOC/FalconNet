@@ -76,11 +76,11 @@ class LeaveMethodSubformState extends State<LeaveMethodSubform> {
   ///Determines specific method subform
   Widget methodSubform(String method) {
     switch (method) {
-      case "Select": return SizedBox.fromSize(size: Size.fromHeight(0),);
+      case "Select": return SizedBox.fromSize(size: const Size.fromHeight(0),);
       case "Airline": return AirlineMethodSubform(type: widget.type, controller: widget.controller,);
       case "Vehicle": return VehicleMethodSubform(type: widget.type, controller: widget.controller,);
       case "Other": return OtherMethodSubform(type: widget.type, controller: widget.controller,);
-      default: return SizedBox(width: 0, height: 0);
+      default: return const SizedBox(width: 0, height: 0);
     }
   }
 

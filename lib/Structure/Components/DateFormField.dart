@@ -41,7 +41,7 @@ class DateFormFieldState extends State<DateFormField> {
       validator: widget.validator,
       style: Theme.of(context).textTheme.bodyLarge,
       decoration: InputDecoration(
-          suffixIcon: Icon(Icons.calendar_today),
+          suffixIcon: const Icon(Icons.calendar_today),
           labelText: widget.label
       ),
       readOnly: true,
@@ -53,7 +53,7 @@ class DateFormFieldState extends State<DateFormField> {
         DateTime? pickedDate = await showDatePicker(
           context: context,
           initialDate: parseDate(value),
-          firstDate: widget.firstDate ?? DateTime.now().subtract(Duration(seconds: 10)),
+          firstDate: widget.firstDate ?? DateTime.now().subtract(const Duration(seconds: 10)),
           lastDate: widget.lastDate ?? DateTime(2300),
         );
 

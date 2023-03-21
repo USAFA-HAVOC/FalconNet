@@ -56,7 +56,7 @@ class LeaveInfo extends StatelessWidget {
 
               //Stack of destination information in a stack with labels
               PaddedColumn(
-                padding: EdgeInsets.symmetric(vertical: 2),
+                padding: const EdgeInsets.symmetric(vertical: 2),
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
@@ -81,7 +81,7 @@ class LeaveInfo extends StatelessWidget {
                 ],
               ),
 
-              Divider(thickness: 1,),
+              const Divider(thickness: 1,),
 
               Text(
                 "Departure",
@@ -89,14 +89,14 @@ class LeaveInfo extends StatelessWidget {
               ),
 
               Padding(
-                padding: EdgeInsets.symmetric(vertical: 10),
+                padding: const EdgeInsets.symmetric(vertical: 10),
                 child: Text(
                   describeTransport(leave.departure_method),
                   style: Theme.of(context).textTheme.bodyMedium,
                 ),
               ),
 
-              Divider(thickness: 1,),
+              const Divider(thickness: 1,),
 
               Text(
                 "Return",
@@ -104,7 +104,7 @@ class LeaveInfo extends StatelessWidget {
               ),
 
               Padding(
-                padding: EdgeInsets.symmetric(vertical: 10),
+                padding: const EdgeInsets.symmetric(vertical: 10),
                 child: Text(
                   describeTransport(leave.return_method),
                   style: Theme.of(context).textTheme.bodyMedium,
@@ -117,7 +117,7 @@ class LeaveInfo extends StatelessWidget {
                   Expanded(
                       flex: 5,
                       child: Padding(
-                        padding: EdgeInsets.symmetric(vertical: 20),
+                        padding: const EdgeInsets.symmetric(vertical: 20),
                         child: ElevatedButton(
 
                           //When pressed, display leave form in dialog with existing data
@@ -130,7 +130,7 @@ class LeaveInfo extends StatelessWidget {
                                       shrinkWrap: true,
                                       children: [
                                         Padding(
-                                          padding: EdgeInsets.all(10),
+                                          padding: const EdgeInsets.all(10),
                                           child: LeaveLocatorForm(
                                             editing: leave,
                                             dialog: true,
@@ -150,7 +150,7 @@ class LeaveInfo extends StatelessWidget {
                       )
                   ),
 
-                  Spacer(flex: 1),
+                  const Spacer(flex: 1),
 
                   Expanded(
                     flex: 5,

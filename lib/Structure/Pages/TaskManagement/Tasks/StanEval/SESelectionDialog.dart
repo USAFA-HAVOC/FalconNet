@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:string_similarity/string_similarity.dart';
 
+import '../../../../Components/InfoBar.dart';
+
 class SESelectionDialog<T> extends StatefulWidget {
   final Map<String, T> contents;
   final void Function(T) onAdd;
@@ -54,41 +56,28 @@ class SESelectionDialogState<T> extends State<SESelectionDialog> {
                 }
                 else {
                   var member = ordered[index - 2];
-                  return Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 10),
-                    child: DecoratedBox(
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10),
-                        border: Border.all(color: Theme.of(context).dividerColor),
+                  return InfoBar(
+                    children: [
+                      Expanded(
+                        flex: 5,
+                        child: Text(
+                          member.key,
+                          style: Theme.of(context).textTheme.titleSmall,
+                          textAlign: TextAlign.start,
+                        ),
                       ),
 
-                      child: Padding(
-                          padding: const EdgeInsets.all(10),
-                          child: Row(
-                            children: [
-                              Expanded(
-                                flex: 5,
-                                child: Text(
-                                  member.key,
-                                  style: Theme.of(context).textTheme.titleSmall,
-                                  textAlign: TextAlign.start,
-                                ),
-                              ),
-
-                              Expanded(
-                                  flex: 2,
-                                  child: IconButton(
-                                    onPressed: () {
-                                      (widget as SESelectionDialog<T>).onAdd(member.value);
-                                      context.pop();
-                                    },
-                                    icon: const Icon(Icons.add),
-                                  )
-                              )
-                            ],
+                      Expanded(
+                          flex: 2,
+                          child: IconButton(
+                            onPressed: () {
+                              (widget as SESelectionDialog<T>).onAdd(member.value);
+                              context.pop();
+                            },
+                            icon: const Icon(Icons.add),
                           )
-                      ),
-                    ),
+                      )
+                    ],
                   );
                 }
               }

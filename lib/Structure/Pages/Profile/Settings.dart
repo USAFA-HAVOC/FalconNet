@@ -12,7 +12,7 @@ import '../../../Theme/NegativeButtonTheme.dart';
 ///Settings page
 ///Modifies global state settings as values are changed
 class Settings extends StatelessWidget {
-  Settings({super.key});
+  const Settings({super.key});
 
   @override
   Widget build(BuildContext context) {

@@ -1,4 +1,5 @@
 import 'package:falcon_net/Model/Database/UserSummary.dart';
+import 'package:falcon_net/Structure/Components/InfoBar.dart';
 import 'package:flutter/material.dart';
 
 enum AssignmentStatus {
@@ -15,34 +16,21 @@ class AssignmentBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 10),
-      child: DecoratedBox(
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(10),
-          border: Border.all(color: Theme.of(context).dividerColor),
+    return InfoBar(
+      children: [
+        Expanded(
+          child: Text(
+            summary.name,
+            style: Theme.of(context).textTheme.titleSmall,
+            textAlign: TextAlign.start,
+          ),
         ),
 
-        child: Padding(
-            padding: const EdgeInsets.all(10),
-            child: Row(
-              children: [
-                Expanded(
-                  child: Text(
-                    summary.name,
-                    style: Theme.of(context).textTheme.titleSmall,
-                    textAlign: TextAlign.start,
-                  ),
-                ),
-
-                IconButton(
-                  onPressed: () => onToggle(summary),
-                  icon: Icon(status == AssignmentStatus.excluded ? Icons.add : Icons.delete),
-                )
-              ],
-            )
-        ),
-      ),
+        IconButton(
+          onPressed: () => onToggle(summary),
+          icon: Icon(status == AssignmentStatus.excluded ? Icons.add : Icons.delete),
+        )
+      ],
     );
   }
 }
