@@ -67,8 +67,9 @@ class PassFormState extends State<PassForm>
       timeValue =
           describeTime(TimeOfDay.fromDateTime(widget.existing!.end_time));
     } else {
-      dateValue = describeDate(DateTime.now());
-      timeValue = describeTime(const TimeOfDay(hour: 19, minute: 50));
+      var offset = DateTime.now().add(const Duration(hours: 2));
+      dateValue = describeDate(offset);
+      timeValue = describeTime(TimeOfDay.fromDateTime(offset));
     }
 
     scaController = TextEditingController(text: widget.existing?.sca_number);
@@ -93,7 +94,7 @@ class PassFormState extends State<PassForm>
     DateTime now = DateTime.now();
     DateTime last = DateTime(now.year, now.month, now.day, 19, 50);
 
-    if (now.weekday > 4) {
+    if (type == "weekend") {
       last = last.add(Duration(days: 7 - now.weekday));
     }
 

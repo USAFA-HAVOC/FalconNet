@@ -26,7 +26,7 @@ class SelectionView extends StatelessWidget {
               Buttons.Microsoft,
               text: "Sign in with USAFA",
               onPressed: () async {
-                attemptLogin();
+                await attemptLogin();
                 onSigned();
               },
             ),
@@ -39,7 +39,6 @@ class SelectionView extends StatelessWidget {
               Buttons.Apple,
               text: "Demo Mode (Apple)",
               onPressed: () async {
-                // attemptLogin();
                 onDemo();
               },
             ),

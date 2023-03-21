@@ -132,8 +132,9 @@ class FNAppState extends State<FNApp> {
     }
 
     if (widget.sign == SignState.account) {
-      attemptLogin();
-      widget.store.dispatch(GlobalAction.initialize());
+      attemptLogin().then((_) {
+        widget.store.dispatch(GlobalAction.initialize());
+      });
     }
 
     //Surrounds the app with a store provider so all child widgets can access global state

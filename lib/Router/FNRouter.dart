@@ -41,7 +41,7 @@ enum SignState {
 ///transparency effects during transitions
 GoRouter fnRouter(GlobalKey<NavigatorState> key, SignState sign) => GoRouter(
   navigatorKey: key,
-  initialLocation: sign != SignState.none ? "/" : "/selection",
+  initialLocation: sign == SignState.none ? "/selection" : "/",
   routes: [
     GoRoute(
       path: "/login",
