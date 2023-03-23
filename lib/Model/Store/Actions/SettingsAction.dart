@@ -1,7 +1,7 @@
 import 'package:async_redux/async_redux.dart';
 import 'package:falcon_net/Model/Database/UserSettings.dart';
 import 'package:falcon_net/Model/Serializers.dart';
-import 'package:falcon_net/Model/Store/GlobalStateModel.dart';
+import 'package:falcon_net/Model/Store/GlobalState.dart';
 import 'package:falcon_net/Services/NotificationService.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 

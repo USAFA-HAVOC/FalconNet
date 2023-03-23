@@ -1,7 +1,10 @@
 import 'package:async_redux/async_redux.dart';
 import 'package:falcon_net/Model/Database/Roles.dart';
+import 'package:falcon_net/Model/Store/AppStatus.dart';
 import 'package:falcon_net/Router/FNTransitions.dart';
+import 'package:falcon_net/Structure/Components/LoadingShimmer.dart';
 import 'package:falcon_net/Structure/Components/ViewModel.dart';
+import 'package:falcon_net/Structure/Pages/Failure/Failure.dart';
 import 'package:falcon_net/Structure/Pages/TaskManagement/TaskManagement.dart';
 import 'package:falcon_net/Structure/Pages/TaskManagement/Tasks/Assignment/AssignmentTask.dart';
 import 'package:falcon_net/Structure/Pages/TaskManagement/Tasks/Delegation/DelegationTask.dart';
@@ -15,7 +18,7 @@ import '../Model/Database/TimedRole.dart';
 import '../Model/Database/User.dart';
 import '../Model/Store/Actions/GlobalAction.dart';
 import '../Model/Store/Endpoints.dart';
-import '../Model/Store/GlobalStateModel.dart';
+import '../Model/Store/GlobalState.dart';
 import '../Structure/FNScaffold.dart';
 import '../Structure/Pages/Dashboard/Dashboard.dart';
 import '../Structure/Pages/Grades/Grades.dart';
@@ -69,8 +72,22 @@ GoRouter fnRouter(GlobalKey<NavigatorState> key, SignState sign) => GoRouter(
     //Shell route places contents of all sub-routes as child of the scaffold
     ShellRoute(
         builder: (context, state, child) {
-          return FNScaffold(
-              child: child
+          return StoreConnector<GlobalState, ViewModel<AppStatus>>(
+            converter: (store) => ViewModel(store: store, content: store.state.status),
+            builder: (context, model) {
+              if (model.content == AppStatus.nominal) {
+                return FNScaffold(child: child);
+              }
+              else if (model.content == AppStatus.loading) {
+                return LoadingShimmer(height: MediaQuery.of(context).size.height);
+              }
+              else if (model.content == AppStatus.failed) {
+                return const Failure(type: FailureType.failed);
+              }
+              else {
+                return const Failure(type: FailureType.error);
+              }
+            }
           );
         },
 

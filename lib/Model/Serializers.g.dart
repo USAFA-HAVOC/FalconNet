@@ -17,7 +17,6 @@ Serializers _$serializers = (new Serializers().toBuilder()
       ..add(FormList.serializer)
       ..add(FormOneData.serializer)
       ..add(FormSummary.serializer)
-      ..add(GlobalState.serializer)
       ..add(Grade.serializer)
       ..add(GradeSubmission.serializer)
       ..add(PassHistoryModel.serializer)
@@ -89,12 +88,6 @@ Serializers _$serializers = (new Serializers().toBuilder()
       ..addBuilderFactory(
           const FullType(BuiltList, const [const FullType(User)]),
           () => new ListBuilder<User>())
-      ..addBuilderFactory(
-          const FullType(BuiltList, const [const FullType(UserNotification)]),
-          () => new ListBuilder<UserNotification>())
-      ..addBuilderFactory(
-          const FullType(BuiltList, const [const FullType(FormSummary)]),
-          () => new ListBuilder<FormSummary>())
       ..addBuilderFactory(
           const FullType(BuiltList, const [const FullType(UserSummary)]),
           () => new ListBuilder<UserSummary>())

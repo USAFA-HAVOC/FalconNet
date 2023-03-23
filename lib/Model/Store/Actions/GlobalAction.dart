@@ -7,17 +7,22 @@ import 'package:falcon_net/Model/Store/Actions/HistoryAction.dart';
 import 'package:falcon_net/Model/Store/Actions/InfoAction.dart';
 import 'package:falcon_net/Model/Store/Actions/NotificationAction.dart';
 import 'package:falcon_net/Model/Store/Actions/SettingsAction.dart';
-import 'package:falcon_net/Model/Store/GlobalStateModel.dart';
+import 'package:falcon_net/Model/Store/AppStatus.dart';
+import 'package:falcon_net/Model/Store/GlobalState.dart';
+import 'package:falcon_net/Utility/ErrorFormatting.dart';
 
 class GlobalAction extends ReduxAction<GlobalState> {
   final GlobalState? replacement;
   final bool init;
+  final bool reset;
   final void Function()? onFail;
   final void Function()? onSucceed;
 
-  GlobalAction.set(this.replacement, {this.onFail, this.onSucceed}) : init = false;
+  GlobalAction.set(this.replacement, {this.onFail, this.onSucceed}) : init = false, reset = false;
 
-  GlobalAction.initialize({this.onFail, this.onSucceed}) : replacement = null, init = true;
+  GlobalAction.initialize({this.onFail, this.onSucceed}) : replacement = null, init = true, reset = false;
+
+  GlobalAction.reset({this.onFail, this.onSucceed}) : reset = true, init = false, replacement = null;
 
   @override
   Future<GlobalState?> reduce() async {
@@ -28,49 +33,33 @@ class GlobalAction extends ReduxAction<GlobalState> {
     }
 
     try {
+      if (reset) {
+        return state.rebuild((s) => s..status = AppStatus.loading);
+      }
+
       if (init) {
-
-        /*
-        List<FutureOr> futures = [];
-
-        futures.add(dispatch(InfoAction.retrieve(onFail: fail)));
-        futures.add(dispatch(GradeAction.retrieve(onFail: fail)));
-        futures.add(dispatch(SettingsAction.retrieve(onFail: fail)));
-        //futures.add(dispatch(FormAction.retrieve(onFail: fail)));
-        futures.add(dispatch(HistoryAction.retrieve(onFail: fail)));
-        futures.add(dispatch(NotificationAction.retrieve(onFail: fail)));
-
-        //Poor man's Promise.all()
-        for (var future in futures) {
-          await future;
-        }
-         */
-
-
         await dispatch(InfoAction.retrieve(onFail: fail));
         await dispatch(GradeAction.retrieve(onFail: fail));
         await dispatch(SettingsAction.retrieve(onFail: fail));
         await dispatch(HistoryAction.retrieve(onFail: fail));
         await dispatch(NotificationAction.retrieve(onFail: fail));
-        await dispatch(FormAction.retrieve(onFail: () => {
-          //print("Forms endpoint not implemented")
-        }));
+        await dispatch(FormAction.retrieve(onFail: fail));
 
         if (failed) {
           onFail?.call();
-          return null;
+          return state.rebuild((s) => s..status = AppStatus.failed);
         }
 
-        onSucceed?.call();
-        return null;
+        return state.rebuild((s) => s..status = AppStatus.nominal);
       }
       else {
         onSucceed?.call();
         return replacement;
       }
     }
-    catch (_) {
-      return null;
+    catch (error) {
+      displayError(prefix: "Global Action", exception: error);
+      return state.rebuild((s) => s..status = AppStatus.error);
     }
   }
 }

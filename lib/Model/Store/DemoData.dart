@@ -18,13 +18,14 @@ final defaultUser = User((u) => u
     ..email = "C26Du.Lee@afacademy.af.edu"
     ..phone_number = "2345677876"
     ..room_number = "2G40"
-    ..squadron = 25
-    ..group = "CG03"
+    ..squadron = 12
+    ..group = "CG02"
     ..unit = "CS25"
   ).toBuilder()
   ..pass_allocation = CadetPassAllocation((a) => a
     ..individual_pass_status = true
     ..effective_pass_status = true
+    ..class_year_idx = 3
     ..weekday_day_passes = 2
     ..weekday_overnight_passes = 1
     ..weekend_overnight_passes = 1
@@ -58,10 +59,12 @@ final defaultGrades = UserGrades((u) => u
     Grade((g) => g
       ..description = "Demo AMI Grade Description #1"
       ..score = 98
+      ..index = 0
     ),
     Grade((g) => g
       ..description = "Demo AMI Grade Description #2"
       ..score = 96
+      ..index = 1
     )
   ].build().toBuilder()
 
@@ -69,10 +72,12 @@ final defaultGrades = UserGrades((u) => u
     Grade((g) => g
       ..description = "Demo SAMI Grade Description #1"
       ..score = 45
+      ..index = 0
     ),
     Grade((g) => g
       ..description = "Demo SAMI Grade Description #2"
       ..score = 97
+      ..index = 1
     )
   ].build().toBuilder()
 
@@ -80,10 +85,12 @@ final defaultGrades = UserGrades((u) => u
     Grade((g) => g
       ..description = "Demo PAI Grade Description #1"
       ..score = 95
+      ..index = 0
     ),
     Grade((g) => g
       ..description = "Demo PAI Grade Description #2"
       ..score = 92
+      ..index = 1
     )
   ].build().toBuilder()
 );

@@ -23,6 +23,15 @@ ThemeData lightTheme = ThemeData(
           color: Colors.white
       )
   ),
+  switchTheme: SwitchThemeData(
+    thumbColor: MaterialStateColor.resolveWith((states) => Colors.blue),
+    trackColor: MaterialStateColor.resolveWith((states) {
+      if (states.contains(MaterialState.selected)) {
+        return Colors.blue;
+      }
+      return Colors.grey;
+    }),
+  ),
   extensions: [
     NegativeButtonTheme(style: ElevatedButton.styleFrom(
       backgroundColor: Colors.grey,
@@ -35,8 +44,8 @@ ThemeData lightTheme = ThemeData(
     ))
   ],
   colorScheme: const ColorScheme.light(
-    primary: Colors.black,
-    secondary: Colors.blue,
+    primary: Colors.blue,
+    secondary: Colors.black,
     error: Color.fromARGB(255, 230, 88, 78)
   )
 );

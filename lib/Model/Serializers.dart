@@ -20,7 +20,7 @@ import 'package:falcon_net/Model/Database/UserPersonalInfo.dart';
 import 'package:falcon_net/Model/Database/UserSettings.dart';
 import 'package:falcon_net/Model/Database/UserSummary.dart';
 import 'package:falcon_net/Model/Database/WingData.dart';
-import 'package:falcon_net/Model/Store/GlobalStateModel.dart';
+import 'package:falcon_net/Model/Store/GlobalState.dart';
 
 import 'Database/DIRequest.dart';
 import 'Database/FormDataList.dart';
@@ -62,7 +62,6 @@ part 'Serializers.g.dart';
   UserNotification,
   UserPersonalInfo,
   UserSettings,
-  GlobalState,
   RoleRequest,
   UserSummary,
   UserSummaryList,

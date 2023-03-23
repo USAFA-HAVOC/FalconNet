@@ -2,7 +2,7 @@ import 'package:async_redux/async_redux.dart';
 import 'package:falcon_net/Model/Database/UserSettings.dart';
 import 'package:falcon_net/Model/Store/Actions/SettingsAction.dart';
 import 'package:falcon_net/Model/Store/Endpoints.dart';
-import 'package:falcon_net/Model/Store/GlobalStateModel.dart';
+import 'package:falcon_net/Model/Store/GlobalState.dart';
 import 'package:falcon_net/Structure/Components/ViewModel.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';

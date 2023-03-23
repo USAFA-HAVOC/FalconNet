@@ -10,13 +10,13 @@ import 'package:falcon_net/Model/Database/UserSettings.dart';
 
 import '../Database/PassHistoryModel.dart';
 import '../Database/UserGrades.dart';
+import 'AppStatus.dart';
 
 
-part 'GlobalStateModel.g.dart';
+part 'GlobalState.g.dart';
 
 abstract class GlobalState implements Built<GlobalState, GlobalStateBuilder> {
-  static Serializer<GlobalState> get serializer => _$globalStateSerializer;
-
+  AppStatus get status;
   User get user;
   PassHistoryModel get history;
   BuiltList<UserNotification> get notifications;

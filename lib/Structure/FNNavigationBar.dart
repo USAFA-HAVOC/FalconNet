@@ -1,7 +1,7 @@
 import 'package:async_redux/async_redux.dart';
 import 'package:badges/badges.dart' as badges;
 import 'package:falcon_net/Model/Database/UserNotification.dart';
-import 'package:falcon_net/Model/Store/GlobalStateModel.dart';
+import 'package:falcon_net/Model/Store/GlobalState.dart';
 import 'package:falcon_net/Structure/Components/ViewModel.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';

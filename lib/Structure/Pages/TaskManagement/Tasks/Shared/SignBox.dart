@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:fluttericon/font_awesome5_icons.dart';
 
 import '../../../../Components/ConfirmationDialog.dart';
 import '../../../../Components/InfoBar.dart';
@@ -16,14 +17,6 @@ class SignBox extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    /*
-    () => showDialog(context: context, builder: (context) => ConfirmationDialog(
-                  title: "Confirm Signing",
-                  description: "Please confirm you would like to sign ${name}'s dormitory inspection. "
-                      "This action cannot be undone.",
-                  onConfirm: onSign
-              )),
-     */
     bool signable = status == "unsigned";
     return InfoBar(
       exteriorPadding: const EdgeInsets.symmetric(vertical: 3),
@@ -49,15 +42,18 @@ class SignBox extends StatelessWidget {
         Expanded(
             flex: 1,
             child: IconButton(
-              onPressed: signable ? () => showDialog(context: context, builder: (context) => ConfirmationDialog(
-                  title: "Confirm Signing",
-                  description: "Please confirm you would like to sign $name's dormitory inspection. "
-                      "This action cannot be undone.",
-                  onConfirm: onSign
-              )) : null,
+              onPressed: signable
+                  ? () => showDialog(context: context, builder: (context) => ConfirmationDialog(
+                      title: "Confirm Signing",
+                      description: "Please confirm you would like to sign $name's dormitory inspection. "
+                          "This action cannot be undone.",
+                      onConfirm: onSign
+                    ))
+                  : null,
               icon: Icon(
-                Icons.edit,
-                color: signable ? Theme.of(context).iconTheme.color : Theme.of(context).disabledColor,
+                FontAwesome5.pen_nib,
+                size: Theme.of(context).iconTheme.size ?? 24 * 0.8,
+                color: Theme.of(context).iconTheme.color?.withAlpha(signable ? 255 : 60),
               ),
             )
         )

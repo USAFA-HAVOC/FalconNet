@@ -2,7 +2,7 @@ import 'package:async_redux/async_redux.dart';
 import 'package:built_collection/built_collection.dart';
 import 'package:falcon_net/Model/Database/UserNotification.dart';
 import 'package:falcon_net/Model/Serializers.dart';
-import 'package:falcon_net/Model/Store/GlobalStateModel.dart';
+import 'package:falcon_net/Model/Store/GlobalState.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../Utility/ErrorFormatting.dart';

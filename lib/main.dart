@@ -10,8 +10,9 @@ import 'package:falcon_net/Model/Database/UserNotification.dart';
 import 'package:falcon_net/Model/Database/UserPersonalInfo.dart';
 import 'package:falcon_net/Model/Store/Actions/GlobalAction.dart';
 import 'package:falcon_net/Model/Store/Actions/SettingsAction.dart';
+import 'package:falcon_net/Model/Store/AppStatus.dart';
 import 'package:falcon_net/Model/Store/Endpoints.dart';
-import 'package:falcon_net/Model/Store/GlobalStateModel.dart';
+import 'package:falcon_net/Model/Store/GlobalState.dart';
 import 'package:falcon_net/Services/AuthService.dart';
 import 'package:falcon_net/Services/SchedulingService.dart';
 import 'package:falcon_net/Theme/Dark/DarkTheme.dart';
@@ -35,6 +36,7 @@ void main() async {
   //Replace the default global state with an api call
   final store = Store<GlobalState>(
       initialState: GlobalState((b1) => b1
+        ..status = AppStatus.loading
         ..user = User((b2) => b2
           ..id = ""
           ..personal_info = UserPersonalInfo((b3) => b3

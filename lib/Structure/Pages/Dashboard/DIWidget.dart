@@ -1,7 +1,7 @@
 import 'package:async_redux/async_redux.dart';
 import 'package:falcon_net/Model/Database/CadetAccountability.dart';
 import 'package:falcon_net/Model/Store/Actions/SignAction.dart';
-import 'package:falcon_net/Model/Store/GlobalStateModel.dart';
+import 'package:falcon_net/Model/Store/GlobalState.dart';
 import 'package:falcon_net/Services/SchedulingService.dart';
 import 'package:falcon_net/Structure/Components/ConfirmationDialog.dart';
 import 'package:falcon_net/Structure/Components/PageWidget.dart';

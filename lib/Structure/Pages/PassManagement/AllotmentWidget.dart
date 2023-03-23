@@ -1,6 +1,6 @@
 import 'package:async_redux/async_redux.dart';
 import 'package:falcon_net/Model/Database/CadetPassAllocation.dart';
-import 'package:falcon_net/Model/Store/GlobalStateModel.dart';
+import 'package:falcon_net/Model/Store/GlobalState.dart';
 import 'package:falcon_net/Structure/Components/PageWidget.dart';
 import 'package:falcon_net/Structure/Components/ViewModel.dart';
 import 'package:flutter/material.dart';
