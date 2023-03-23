@@ -1,117 +1,14 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'GlobalStateModel.dart';
+part of 'GlobalState.dart';
 
 // **************************************************************************
 // BuiltValueGenerator
 // **************************************************************************
 
-Serializer<GlobalState> _$globalStateSerializer = new _$GlobalStateSerializer();
-
-class _$GlobalStateSerializer implements StructuredSerializer<GlobalState> {
-  @override
-  final Iterable<Type> types = const [GlobalState, _$GlobalState];
-  @override
-  final String wireName = 'GlobalState';
-
-  @override
-  Iterable<Object?> serialize(Serializers serializers, GlobalState object,
-      {FullType specifiedType = FullType.unspecified}) {
-    final result = <Object?>[
-      'user',
-      serializers.serialize(object.user, specifiedType: const FullType(User)),
-      'history',
-      serializers.serialize(object.history,
-          specifiedType: const FullType(PassHistoryModel)),
-      'notifications',
-      serializers.serialize(object.notifications,
-          specifiedType: const FullType(
-              BuiltList, const [const FullType(UserNotification)])),
-      'settings',
-      serializers.serialize(object.settings,
-          specifiedType: const FullType(UserSettings)),
-      'grades',
-      serializers.serialize(object.grades,
-          specifiedType: const FullType(UserGrades)),
-      'forms',
-      serializers.serialize(object.forms,
-          specifiedType:
-              const FullType(BuiltList, const [const FullType(FormSummary)])),
-    ];
-    Object? value;
-    value = object.leave;
-    if (value != null) {
-      result
-        ..add('leave')
-        ..add(serializers.serialize(value,
-            specifiedType: const FullType(CadetLeave)));
-    }
-    value = object.pass;
-    if (value != null) {
-      result
-        ..add('pass')
-        ..add(serializers.serialize(value,
-            specifiedType: const FullType(CadetPass)));
-    }
-    return result;
-  }
-
-  @override
-  GlobalState deserialize(Serializers serializers, Iterable<Object?> serialized,
-      {FullType specifiedType = FullType.unspecified}) {
-    final result = new GlobalStateBuilder();
-
-    final iterator = serialized.iterator;
-    while (iterator.moveNext()) {
-      final key = iterator.current! as String;
-      iterator.moveNext();
-      final Object? value = iterator.current;
-      switch (key) {
-        case 'user':
-          result.user.replace(serializers.deserialize(value,
-              specifiedType: const FullType(User))! as User);
-          break;
-        case 'history':
-          result.history.replace(serializers.deserialize(value,
-                  specifiedType: const FullType(PassHistoryModel))!
-              as PassHistoryModel);
-          break;
-        case 'notifications':
-          result.notifications.replace(serializers.deserialize(value,
-                  specifiedType: const FullType(
-                      BuiltList, const [const FullType(UserNotification)]))!
-              as BuiltList<Object?>);
-          break;
-        case 'settings':
-          result.settings.replace(serializers.deserialize(value,
-              specifiedType: const FullType(UserSettings))! as UserSettings);
-          break;
-        case 'grades':
-          result.grades.replace(serializers.deserialize(value,
-              specifiedType: const FullType(UserGrades))! as UserGrades);
-          break;
-        case 'forms':
-          result.forms.replace(serializers.deserialize(value,
-                  specifiedType: const FullType(
-                      BuiltList, const [const FullType(FormSummary)]))!
-              as BuiltList<Object?>);
-          break;
-        case 'leave':
-          result.leave.replace(serializers.deserialize(value,
-              specifiedType: const FullType(CadetLeave))! as CadetLeave);
-          break;
-        case 'pass':
-          result.pass.replace(serializers.deserialize(value,
-              specifiedType: const FullType(CadetPass))! as CadetPass);
-          break;
-      }
-    }
-
-    return result.build();
-  }
-}
-
 class _$GlobalState extends GlobalState {
+  @override
+  final AppStatus status;
   @override
   final User user;
   @override
@@ -133,7 +30,8 @@ class _$GlobalState extends GlobalState {
       (new GlobalStateBuilder()..update(updates))._build();
 
   _$GlobalState._(
-      {required this.user,
+      {required this.status,
+      required this.user,
       required this.history,
       required this.notifications,
       required this.settings,
@@ -142,6 +40,7 @@ class _$GlobalState extends GlobalState {
       this.leave,
       this.pass})
       : super._() {
+    BuiltValueNullFieldError.checkNotNull(status, r'GlobalState', 'status');
     BuiltValueNullFieldError.checkNotNull(user, r'GlobalState', 'user');
     BuiltValueNullFieldError.checkNotNull(history, r'GlobalState', 'history');
     BuiltValueNullFieldError.checkNotNull(
@@ -162,6 +61,7 @@ class _$GlobalState extends GlobalState {
   bool operator ==(Object other) {
     if (identical(other, this)) return true;
     return other is GlobalState &&
+        status == other.status &&
         user == other.user &&
         history == other.history &&
         notifications == other.notifications &&
@@ -175,6 +75,7 @@ class _$GlobalState extends GlobalState {
   @override
   int get hashCode {
     var _$hash = 0;
+    _$hash = $jc(_$hash, status.hashCode);
     _$hash = $jc(_$hash, user.hashCode);
     _$hash = $jc(_$hash, history.hashCode);
     _$hash = $jc(_$hash, notifications.hashCode);
@@ -190,6 +91,7 @@ class _$GlobalState extends GlobalState {
   @override
   String toString() {
     return (newBuiltValueToStringHelper(r'GlobalState')
+          ..add('status', status)
           ..add('user', user)
           ..add('history', history)
           ..add('notifications', notifications)
@@ -204,6 +106,10 @@ class _$GlobalState extends GlobalState {
 
 class GlobalStateBuilder implements Builder<GlobalState, GlobalStateBuilder> {
   _$GlobalState? _$v;
+
+  AppStatus? _status;
+  AppStatus? get status => _$this._status;
+  set status(AppStatus? status) => _$this._status = status;
 
   UserBuilder? _user;
   UserBuilder get user => _$this._user ??= new UserBuilder();
@@ -247,6 +153,7 @@ class GlobalStateBuilder implements Builder<GlobalState, GlobalStateBuilder> {
   GlobalStateBuilder get _$this {
     final $v = _$v;
     if ($v != null) {
+      _status = $v.status;
       _user = $v.user.toBuilder();
       _history = $v.history.toBuilder();
       _notifications = $v.notifications.toBuilder();
@@ -279,6 +186,8 @@ class GlobalStateBuilder implements Builder<GlobalState, GlobalStateBuilder> {
     try {
       _$result = _$v ??
           new _$GlobalState._(
+              status: BuiltValueNullFieldError.checkNotNull(
+                  status, r'GlobalState', 'status'),
               user: user.build(),
               history: history.build(),
               notifications: notifications.build(),

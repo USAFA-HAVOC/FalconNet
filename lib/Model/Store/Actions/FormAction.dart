@@ -1,7 +1,7 @@
 import 'package:async_redux/async_redux.dart';
 import 'package:falcon_net/Model/Database/FormSummary.dart';
 import 'package:falcon_net/Model/Database/StringRequest.dart';
-import 'package:falcon_net/Model/Store/GlobalStateModel.dart';
+import 'package:falcon_net/Model/Store/GlobalState.dart';
 
 import '../../../Utility/ErrorFormatting.dart';
 import '../Endpoints.dart';

@@ -60,6 +60,7 @@ dependencies:
   firebase_analytics: ^10.1.5
   flutter_local_notifications: ^8.2.0
   timezone: ^0.8.0
+  fluttericon: ^2.0.0
 
 dev_dependencies:
   flutter_test:

@@ -2,7 +2,7 @@ import 'package:async_redux/async_redux.dart';
 import 'package:falcon_net/Model/Store/Endpoints.dart';
 
 import '../../../Utility/ErrorFormatting.dart';
-import '../GlobalStateModel.dart';
+import '../GlobalState.dart';
 
 class HistoryAction extends ReduxAction<GlobalState> {
   final void Function()? onFail;

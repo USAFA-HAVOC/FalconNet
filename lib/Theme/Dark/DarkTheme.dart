@@ -17,6 +17,7 @@ ThemeData darkTheme = ThemeData(
   canvasColor: const Color.fromARGB(255, 24, 24, 24), // Darkest
   dialogBackgroundColor: darkCardTheme.color,
   iconTheme: const IconThemeData(color: Colors.white),
+
   snackBarTheme: const SnackBarThemeData(
       backgroundColor: Color.fromARGB(255, 50, 50, 50),
       contentTextStyle: TextStyle(
@@ -24,6 +25,17 @@ ThemeData darkTheme = ThemeData(
           color: Colors.white
       )
   ),
+
+  switchTheme: SwitchThemeData(
+    thumbColor: MaterialStateColor.resolveWith((states) => const Color.fromARGB(255, 0, 78, 192)),
+    trackColor: MaterialStateColor.resolveWith((states) {
+      if (states.contains(MaterialState.selected)) {
+        return const Color.fromARGB(255, 0, 60, 150);
+      }
+      return Colors.grey;
+    }),
+  ),
+
   extensions: [
     NegativeButtonTheme(style: ElevatedButton.styleFrom(
       backgroundColor: const Color.fromARGB(255, 90, 90, 90),
@@ -35,8 +47,9 @@ ThemeData darkTheme = ThemeData(
       ),
     ))
   ],
+
   colorScheme: const ColorScheme.dark(
-    primary: Colors.black,
+    primary: Colors.blue,
     secondary: Colors.blue,
     error: Color.fromARGB(255, 100, 0, 0)
   )
