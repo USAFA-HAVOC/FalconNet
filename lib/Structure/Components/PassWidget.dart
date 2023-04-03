@@ -28,7 +28,10 @@ class PassWidget extends StatelessWidget {
           //List of children to filled
           List<Widget> children;
 
-          if (!(model.content.pass_allocation?.effective_pass_status ?? true)) {
+          if (
+            !(model.content.pass_allocation?.effective_pass_status ?? true) ||
+            !(model.content.accountability?.current_leave?.departure_time.isAfter(DateTime.now()) ?? true)
+          ) {
             children = const [
               PassStatus()
             ];

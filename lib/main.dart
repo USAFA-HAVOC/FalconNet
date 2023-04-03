@@ -89,12 +89,13 @@ void main() async {
   await store.dispatch(SettingsAction.retrieve());
   var account = (await SharedPreferences.getInstance()).getBool("account") ?? false;
 
-  /// todo: check for valid session and initialize app fully here
-
   FlutterNativeSplash.remove();
 
   runApp(
-      FNApp(store: store, sign: account ? SignState.account : SignState.none)
+    FNApp(
+      store: store,
+      sign: account ? SignState.account : SignState.none
+    )
   );
 }
 
@@ -115,7 +116,7 @@ class FNAppState extends State<FNApp> {
 
   @override
   void initState() {
-    Timer.periodic(const Duration(minutes: 20), (timer) {
+    Timer.periodic(const Duration(minutes: 5), (timer) {
       widget.store.dispatch(GlobalAction.initialize());
     });
     attemptGetWebToken();
@@ -148,9 +149,9 @@ class FNAppState extends State<FNApp> {
         builder: (context, model) => MaterialApp.router(
             theme: model.content == "light" ? lightTheme : randomTheme,
             darkTheme: darkTheme,
-            themeMode:
-                model.content == "dark" ? ThemeMode.dark : ThemeMode.light,
-            routerConfig: router),
+            themeMode: model.content == "dark" ? ThemeMode.dark : ThemeMode.light,
+            routerConfig: router
+        ),
       ),
     );
   }
