@@ -86,6 +86,12 @@ class SEEventState extends State<SEEvent> {
         descriptionError = "Discrepancies required for non-perfect scores";
       });
     }
+    else if (description.text.length < 10 && parsedScore < 100) {
+      setState(() {
+        scoreError = null;
+        descriptionError = "Minimum 10 characters";
+      });
+    }
     else if (gradees.isEmpty) {
       setState(() {
         scoreError = null;

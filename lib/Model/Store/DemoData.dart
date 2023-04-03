@@ -4,6 +4,7 @@ import 'package:falcon_net/Model/Database/FormSummary.dart';
 import '../Database/CadetAccountability.dart';
 import '../Database/CadetPass.dart';
 import '../Database/CadetPassAllocation.dart';
+import '../Database/FormList.dart';
 import '../Database/PassHistoryModel.dart';
 import '../Database/TimedRole.dart';
 import '../Database/User.dart';
@@ -95,18 +96,20 @@ final defaultGrades = UserGrades((u) => u
   ].build().toBuilder()
 );
 
-final defaultForms = <FormSummary>[
-  FormSummary((f) => f
-      ..title = "Demo Form"
-      ..description = "This is a signable document, which by some accounts, may be signed."
-      ..signed = false
-  ),
-  FormSummary((f) => f
-    ..title = "Demo Form #2"
-    ..description = "I think you get the point."
-    ..signed = false
-  ),
-].build();
+final defaultForms = FormList((f) => f
+    ..forms = <FormSummary>[
+      FormSummary((f) => f
+        ..title = "Demo Form"
+        ..description = "This is a signable document, which by some accounts, may be signed."
+        ..signed = false
+      ),
+      FormSummary((f) => f
+        ..title = "Demo Form #2"
+        ..description = "I think you get the point."
+        ..signed = false
+      ),
+    ].build().toBuilder()
+);
 
 final demoEndpoints = <String, dynamic Function(dynamic)>{
   "/profile/info" : (_) => defaultUser,
