@@ -1,13 +1,15 @@
+import 'package:falcon_net/Utility/ListExtensions.dart';
 import 'package:flutter/material.dart';
 
 import '../../../Model/Database/UserGrades.dart';
 import '../../Components/PageWidget.dart';
 
 class GradePanel extends StatefulWidget {
-  final List<Grade> grades;
+  final List<Grade> ordered;
   final String label;
 
-  const GradePanel({super.key, required this.grades, required this.label});
+  GradePanel({super.key, required List<Grade> grades, required this.label}) : 
+      ordered = grades.sorted((a, b) => a.index.compareTo(b.index));
 
   @override
   State<StatefulWidget> createState() => GradePanelState();
@@ -24,8 +26,8 @@ class GradePanelState extends State<GradePanel> {
 
   void closeExtensions() {
     extensions = Map<int, bool>.fromEntries(List<MapEntry<int, bool>>.generate(
-        widget.grades.length,
-            (index) => MapEntry(widget.grades[index].index, false)
+        widget.ordered.length,
+            (index) => MapEntry(widget.ordered[index].index, false)
     ));
   }
 
@@ -75,7 +77,7 @@ class GradePanelState extends State<GradePanel> {
     return PageWidget(
       title: widget.label,
       children: [
-        if (widget.grades.isEmpty) Padding(
+        if (widget.ordered.isEmpty) Padding(
           padding: const EdgeInsets.only(bottom: 20),
           child: Text(
             "No ${widget.label} scores to display",
@@ -83,17 +85,17 @@ class GradePanelState extends State<GradePanel> {
           ),
         ),
 
-        if (widget.grades.isNotEmpty) ExpansionPanelList(
+        if (widget.ordered.isNotEmpty) ExpansionPanelList(
 
           //Closes all panels other than current one
           expansionCallback: (index, status) {
             setState(() {
               closeExtensions();
-              extensions[widget.grades[index].index] = !status;
+              extensions[widget.ordered[index].index] = !status;
             });
           },
 
-          children: widget.grades.map(
+          children: widget.ordered.map(
             (grade) => buildGradePanel(
                 context,
                 "${widget.label} #${(grade.index + 1).toString()}",
