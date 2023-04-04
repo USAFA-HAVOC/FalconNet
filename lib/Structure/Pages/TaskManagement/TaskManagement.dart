@@ -22,7 +22,7 @@ class TaskManagement extends StatelessWidget {
       tasks.add(const ExternalTaskWidget(
           path: "/task_management/unit_editor",
           title: "Unit Editor",
-          description: "Create new units and edit existing ones"
+          description: "Create new units and edit existing ones."
       ));
     }
 
@@ -30,19 +30,19 @@ class TaskManagement extends StatelessWidget {
        tasks.add(const ExternalTaskWidget(
            path: "/task_management/delegation",
            title: "Delegation",
-           description: "Imagine being in cadet leadership"
+           description: "Assign cadet roles and responsibilities."
        ));
 
        tasks.add(const ExternalTaskWidget(
            path: "/task_management/unit_assignment",
            title: "Unit Assignment",
-           description: "Assign people to their units",
+           description: "Assign cadets to their appropriate unit.",
        ));
 
        tasks.add(const ExternalTaskWidget(
          path: "/task_management/squadron_assignment",
          title: "Squadron Assignment",
-         description: "Assign people to their squadrons",
+         description: "Assign cadets to their new squadrons.",
        ));
     }
 
@@ -50,7 +50,7 @@ class TaskManagement extends StatelessWidget {
       tasks.add(const ExternalTaskWidget(
           path: "/task_management/unit_management",
           title: "Unit Management",
-          description: "Manage your unit here"
+          description: "Manage pass status for your unit. Create and manage forms."
       ));
     }
 
@@ -58,7 +58,7 @@ class TaskManagement extends StatelessWidget {
       tasks.add(const ExternalTaskWidget(
           path: "/task_management/cwoc",
           title: "CWOC",
-          description: "Imagine being a cwoc controller, that's depressing"
+          description: "Wing-wide accountability data for CWOC controllers. Allows controllers to view group, unit, and individual DI status."
       ));
     }
 
@@ -66,7 +66,7 @@ class TaskManagement extends StatelessWidget {
       tasks.add(const ExternalTaskWidget(
           path: "/task_management/stan_eval",
           title: "Stan/Eval",
-          description: "I hope that you understand that you are a NARP"
+          description: "Entry point for stan/eval staff to assign grade and view unit-level analytics."
       ));
     }
 
@@ -74,7 +74,7 @@ class TaskManagement extends StatelessWidget {
       tasks.add(const ExternalTaskWidget(
           path: "/task_management/sdo",
           title: "SDO",
-          description: "Please perform DI for your squadron"
+          description: "Perform DI for your unit."
       ));
     }
 
