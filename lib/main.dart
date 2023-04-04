@@ -94,16 +94,16 @@ void main() async {
   runApp(
     FNApp(
       store: store,
-      sign: account ? SignState.account : SignState.none
+      account: account
     )
   );
 }
 
 class FNApp extends StatefulWidget {
   final Store<GlobalState> store;
-  final SignState sign;
+  final bool account;
 
-  const FNApp({super.key, required this.store, required this.sign});
+  const FNApp({super.key, required this.store, required this.account});
 
   @override
   State<StatefulWidget> createState() => FNAppState();
@@ -119,10 +119,13 @@ class FNAppState extends State<FNApp> {
     Timer.periodic(const Duration(minutes: 5), (timer) {
       widget.store.dispatch(GlobalAction.initialize());
     });
+
     attemptGetWebToken();
-    router = fnRouter(navigatorKey, widget.sign);
-    if (APIData.authenticated && router.location == "/selection") {
-      router.go("/");
+    if (APIData.authenticated) {
+      router = fnRouter(navigatorKey, SignState.signed);
+    }
+    else {
+      router = fnRouter(navigatorKey, widget.account ? SignState.account : SignState.none);
     }
 
     super.initState();
@@ -130,11 +133,11 @@ class FNAppState extends State<FNApp> {
 
   @override
   Widget build(BuildContext context) {
-    if (APIData.authenticated && router.location == "/selection") {
+    if (APIData.authenticated) {
       router.go("/");
     }
 
-    if (widget.sign == SignState.account) {
+    else if (widget.account) {
       attemptLogin().then((_) {
         widget.store.dispatch(GlobalAction.initialize());
       });
