@@ -24,6 +24,7 @@ import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:go_router/go_router.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import 'Model/Database/Roles.dart';
 import 'Model/Database/UserSettings.dart';
 import 'Router/FNRouter.dart';
 import 'Structure/Components/ViewModel.dart';
@@ -99,6 +100,14 @@ void main() async {
   );
 }
 
+class RouterComponents {
+  final String theme;
+  final bool party;
+  final bool loaded;
+
+  const RouterComponents({required this.theme, required this.party, required this.loaded});
+}
+
 class FNApp extends StatefulWidget {
   final Store<GlobalState> store;
   final bool account;
@@ -113,6 +122,7 @@ final navigatorKey = GlobalKey<NavigatorState>();
 
 class FNAppState extends State<FNApp> {
   late GoRouter router;
+  late GoRouter ppRouter;
 
   @override
   void initState() {
@@ -122,10 +132,12 @@ class FNAppState extends State<FNApp> {
 
     attemptGetWebToken();
     if (APIData.authenticated) {
-      router = fnRouter(navigatorKey, SignState.signed);
+      router = fnRouter(navigatorKey, SignState.signed, false);
+      ppRouter = fnRouter(navigatorKey, SignState.signed, true);
     }
     else {
-      router = fnRouter(navigatorKey, widget.account ? SignState.account : SignState.none);
+      router = fnRouter(navigatorKey, widget.account ? SignState.account : SignState.none, false);
+      ppRouter = fnRouter(navigatorKey, widget.account ? SignState.account : SignState.none, true);
     }
 
     super.initState();
@@ -133,11 +145,7 @@ class FNAppState extends State<FNApp> {
 
   @override
   Widget build(BuildContext context) {
-    if (APIData.authenticated) {
-      router.go("/");
-    }
-
-    else if (widget.account) {
+    if (widget.account) {
       attemptLogin().then((_) {
         widget.store.dispatch(GlobalAction.initialize());
       });
@@ -146,15 +154,31 @@ class FNAppState extends State<FNApp> {
     //Surrounds the app with a store provider so all child widgets can access global state
     return StoreProvider(
       store: widget.store,
-      child: StoreConnector<GlobalState, ViewModel<String>>(
-        converter: (store) =>
-            ViewModel(store: store, content: store.state.settings.theme),
-        builder: (context, model) => MaterialApp.router(
-            theme: model.content == "light" ? lightTheme : randomTheme,
-            darkTheme: darkTheme,
-            themeMode: model.content == "dark" ? ThemeMode.dark : ThemeMode.light,
-            routerConfig: router
+      child: StoreConnector<GlobalState, ViewModel<RouterComponents>>(
+        converter: (store) => ViewModel(
+          store: store,
+          content: RouterComponents(
+            theme: store.state.settings.theme,
+            party: store.state.user.roles.any((r) => r.role == Roles.pp.name),
+            loaded: store.state.status == AppStatus.nominal
+          )
         ),
+        builder: (context, model) {
+          if (!model.content.party || !model.content.loaded) {
+            return MaterialApp.router(
+                theme: model.content.theme == "light" ? lightTheme : randomTheme,
+                darkTheme: darkTheme,
+                themeMode: model.content.theme == "dark" ? ThemeMode.dark : ThemeMode.light,
+                routerConfig: router
+            );
+          }
+          return MaterialApp.router(
+              theme: model.content.theme == "light" ? lightTheme : randomTheme,
+              darkTheme: darkTheme,
+              themeMode: model.content.theme == "dark" ? ThemeMode.dark : ThemeMode.light,
+              routerConfig: ppRouter
+          );
+        }
       ),
     );
   }

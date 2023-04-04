@@ -4,6 +4,7 @@ import 'package:falcon_net/Model/Store/AppStatus.dart';
 import 'package:falcon_net/Router/FNTransitions.dart';
 import 'package:falcon_net/Structure/Components/LoadingShimmer.dart';
 import 'package:falcon_net/Structure/Components/ViewModel.dart';
+import 'package:falcon_net/Structure/FNDrawer.dart';
 import 'package:falcon_net/Structure/Pages/Failure/Failure.dart';
 import 'package:falcon_net/Structure/Pages/TaskManagement/TaskManagement.dart';
 import 'package:falcon_net/Structure/Pages/TaskManagement/Tasks/Assignment/AssignmentTask.dart';
@@ -20,6 +21,7 @@ import '../Model/Store/Actions/GlobalAction.dart';
 import '../Model/Store/Endpoints.dart';
 import '../Model/Store/GlobalState.dart';
 import '../Structure/FNScaffold.dart';
+import '../Structure/PPDrawer.dart';
 import '../Structure/Pages/Dashboard/Dashboard.dart';
 import '../Structure/Pages/Grades/Grades.dart';
 import '../Structure/Pages/LeaveLocator/LeaveLocator.dart';
@@ -27,10 +29,11 @@ import '../Structure/Pages/PassManagement/PassManagement.dart';
 import '../Structure/Pages/Profile/Profile.dart';
 import '../Structure/Pages/TaskManagement/Tasks/CWOC/CWOCTask.dart';
 import '../Structure/Pages/TaskManagement/Tasks/Ordering/OrderingTask.dart';
-import '../Structure/Pages/TaskManagement/Tasks/SDO/SDOTask.dart';
+import '../Structure/Pages/TaskManagement/Tasks/SDOTask.dart';
 import '../Structure/Pages/TaskManagement/Tasks/StanEval/SEParameters.dart';
 import '../Structure/Pages/TaskManagement/Tasks/StanEval/SEUnit.dart';
 import '../Structure/Pages/TaskManagement/Tasks/StanEval/StanEvalTask.dart';
+import '../Structure/PermanentParty/PPDashboard.dart';
 import '../Structure/SelectionView.dart';
 
 enum SignState {
@@ -42,9 +45,9 @@ enum SignState {
 ///Defines page routes within the app and places each within the app scaffold
 ///Contains each within the default background to prevent
 ///transparency effects during transitions
-GoRouter fnRouter(GlobalKey<NavigatorState> key, SignState sign) => GoRouter(
+GoRouter fnRouter(GlobalKey<NavigatorState> key, SignState sign, bool party) => GoRouter(
   navigatorKey: key,
-  initialLocation: sign == SignState.none ? "/selection" : "/",
+  initialLocation: sign == SignState.none ? "/selection" : (party ? "/permanent_party" : "/"),
   routes: [
     GoRoute(
       path: "/login",
@@ -69,6 +72,38 @@ GoRouter fnRouter(GlobalKey<NavigatorState> key, SignState sign) => GoRouter(
       )
     ),
 
+    ShellRoute(
+      builder: (context, state, child) {
+        return StoreConnector<GlobalState, ViewModel<AppStatus>>(
+            converter: (store) => ViewModel(store: store, content: store.state.status),
+            builder: (context, model) {
+              if (model.content == AppStatus.nominal) {
+                return FNScaffold(
+                  drawer: const PPDrawer(),
+                  child: child
+                );
+              }
+              else if (model.content == AppStatus.loading) {
+                return LoadingShimmer(height: MediaQuery.of(context).size.height);
+              }
+              else if (model.content == AppStatus.failed) {
+                return const Failure(type: FailureType.failed);
+              }
+              else {
+                return const Failure(type: FailureType.error);
+              }
+            }
+        );
+      },
+
+      routes: [
+        GoRoute(
+          path: "/permanent_party",
+          builder: (context, state) => const FNBackground(child: PPDashboard()),
+        )
+      ]
+    ),
+
     //Shell route places contents of all sub-routes as child of the scaffold
     ShellRoute(
         builder: (context, state, child) {
@@ -76,7 +111,10 @@ GoRouter fnRouter(GlobalKey<NavigatorState> key, SignState sign) => GoRouter(
             converter: (store) => ViewModel(store: store, content: store.state.status),
             builder: (context, model) {
               if (model.content == AppStatus.nominal) {
-                return FNScaffold(child: child);
+                return FNScaffold(
+                    drawer: const FNDrawer(),
+                    child: child
+                );
               }
               else if (model.content == AppStatus.loading) {
                 return LoadingShimmer(height: MediaQuery.of(context).size.height);

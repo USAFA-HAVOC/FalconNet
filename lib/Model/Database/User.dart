@@ -1,8 +1,6 @@
 import 'package:built_collection/built_collection.dart';
 import 'package:built_value/built_value.dart';
-import 'package:built_value/iso_8601_date_time_serializer.dart';
 import 'package:built_value/serializer.dart';
-import 'package:built_value/standard_json_plugin.dart';
 import 'package:falcon_net/Model/Database/TimedRole.dart';
 
 import 'CadetAccountability.dart';
@@ -29,20 +27,22 @@ abstract class User implements Built<User, UserBuilder> {
   }
 
   String status() {
-    var status = "unsigned";
     if (accountability != null) {
-      if (accountability!.current_pass != null) {
-        status = "out";
+      if (accountability!.current_leave?.departure_time.isAfter(DateTime.now()) ?? false) {
+        return "leave";
       }
-      if (accountability!.di_last_signed != null) {
+      else if (accountability!.current_pass != null) {
+        return "out";
+      }
+      else if (accountability!.di_last_signed != null) {
         DateTime signature = accountability!.di_last_signed!.toLocal();
         DateTime present = DateTime.now().toLocal();
         if (signature.year == present.year && signature.month == present.month && signature.day == present.day) {
-          status = "signed";
+          return "signed";
         }
       }
     }
-    return status;
+    return "unsigned";
   }
 
   User._();

@@ -28,10 +28,12 @@ class PassStatus extends StatelessWidget {
                     String status;
                     String tooltip;
                     bool expired = false;
+
                     if (!(model.content.accountability?.current_leave?.departure_time.isAfter(DateTime.now()) ?? true)) {
                       status = "On Leave";
                       tooltip = "Cannot Sign-Out on Leave";
                     }
+
                     else if (model.content.accountability?.current_pass == null) {
                       if (!(model.content.pass_allocation?.effective_pass_status ?? true)) {
                         status = "Here";
@@ -42,12 +44,13 @@ class PassStatus extends StatelessWidget {
                         tooltip = "Passes Are Open";
                       }
                     }
+
                     else {
                       //If there is a current pass, display pass information
                       //Determine expiration message
                       CadetPass pass = model.content.accountability!.current_pass!.toLocal();
                       var difference = pass.end_time.difference(DateTime.now());
-                      status = "Signed Out";
+                      status = pass.description;
 
                       if (difference.inSeconds <= 0) {
                         tooltip =

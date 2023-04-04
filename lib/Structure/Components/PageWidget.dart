@@ -7,8 +7,16 @@ import 'PaddedColumn.dart';
 class PageWidget extends StatelessWidget {
   final String title;
   final List<Widget> children;
+  final EdgeInsets padding;
+  final EdgeInsets spacing;
 
-  const PageWidget({super.key, required this.title, required this.children});
+  const PageWidget({
+    super.key,
+    required this.title,
+    required this.children,
+    this.padding = const EdgeInsets.only(top: 10, left: 10, right: 10, bottom: 5),
+    this.spacing = const EdgeInsets.symmetric(vertical: 5),
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -18,7 +26,7 @@ class PageWidget extends StatelessWidget {
         child: PaddedColumn(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           mainAxisSize: MainAxisSize.min,
-          padding: const EdgeInsets.only(top: 10, left: 10, right: 10, bottom: 5),
+          padding: padding,
           children: [
             Text(
               title,
@@ -27,7 +35,7 @@ class PageWidget extends StatelessWidget {
 
             PaddedColumn(
               crossAxisAlignment: CrossAxisAlignment.stretch,
-              padding: const EdgeInsets.symmetric(vertical: 5),
+              padding: spacing,
               children: children,
             ),
           ]

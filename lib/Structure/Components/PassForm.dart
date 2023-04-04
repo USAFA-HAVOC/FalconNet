@@ -10,6 +10,8 @@ import 'package:falcon_net/Utility/TemporalFormatting.dart';
 import 'package:falcon_net/Structure/Components/TimeFormField.dart';
 import 'package:flutter/material.dart';
 
+import '../../Model/Database/User.dart';
+
 ///Form for submitting or editing a pass
 class PassForm extends StatefulWidget {
   //Closures for submission and cancellation
@@ -125,34 +127,42 @@ class PassFormState extends State<PassForm>
   }
 
   ///Builds type options based on current date
-  List<DropdownMenuItem<String>> buildTypeOptions() {
-    Map<String, String> options = <String, String>{};
-
-    if (DateTime.now().weekday < 5) {
-      options.addAll({"Weekday Sign-Out Period": "weekday"});
-    } else {
-      options.addAll({"Weekend Sign-Out Period": "weekend"});
-    }
-
-    options.addAll({
+  List<DropdownMenuItem<String>> buildTypeOptions(bool overnight) {
+    Map<String, String> options = <String, String>{
       "Discretionary": "discretionary",
       "SCA": "sca",
       "eSSS": "esss",
-    });
+    };
 
-    return options
-        .map(
-          (key, value) => MapEntry(
+    if (DateTime.now().weekday < 5) {
+      options.addAll({
+        "Weekday Sign-Out Period": "weekday"
+      });
+      if (overnight) {
+        options.addAll({
+          "Weekday Overnight" : "weekday-overnight"
+        });
+      }
+    }
+    else {
+      options.addAll({
+        "Weekend Sign-Out Period": "weekend",
+        "Weekend Overnight" : "weekend-overnight"
+      });
+    }
+
+    return options.map(
+      (key, value) => MapEntry(
+        key,
+        DropdownMenuItem<String>(
+          value: value,
+          child: Text(
             key,
-            DropdownMenuItem<String>(
-              value: value,
-              child: Text(
-                key,
-                style: Theme.of(context).textTheme.bodyLarge,
-              ),
-            ),
+            style: Theme.of(context).textTheme.bodyLarge,
           ),
-        ).values.toList();
+        ),
+      ),
+    ).values.toList();
   }
 
   ///Builds state menu options
@@ -225,9 +235,9 @@ class PassFormState extends State<PassForm>
 
   @override
   Widget build(BuildContext context) {
-    return StoreConnector<GlobalState, ViewModel<String>>(
+    return StoreConnector<GlobalState, ViewModel<User>>(
         converter: (store) =>
-            ViewModel<String>(store: store, content: store.state.user.id!),
+            ViewModel<User>(store: store, content: store.state.user),
         builder: (context, model) => Form(
             key: key,
             child: ListView(
@@ -242,7 +252,8 @@ class PassFormState extends State<PassForm>
                       value: type,
                       decoration: InputDecoration(
                           labelStyle: Theme.of(context).textTheme.bodyLarge,
-                          labelText: "Pass Type"),
+                          labelText: "Pass Type"
+                      ),
 
                       //Called when a new type options is selected
                       onChanged: (value) {
@@ -260,7 +271,7 @@ class PassFormState extends State<PassForm>
                         //Set value
                         type = value!;
                       },
-                      items: buildTypeOptions(),
+                      items: buildTypeOptions((model.content.pass_allocation?.weekday_overnight_passes ?? 0) > 0),
                     ),
 
                     const SizedBox(
@@ -305,7 +316,7 @@ class PassFormState extends State<PassForm>
                       controller: descriptionController,
                       decoration: InputDecoration(
                           labelStyle: Theme.of(context).textTheme.bodyLarge,
-                          labelText: "Description"
+                          labelText: "Address"
                       ),
                       style: Theme.of(context).textTheme.bodyLarge,
                       validator: InputValidation.stringLength(
@@ -440,7 +451,7 @@ class PassFormState extends State<PassForm>
                               onPressed: () {
                                 //If form entries are valid, call submission closure with formatted pass
                                 if (key.currentState!.validate()) {
-                                  widget.onSubmit(formatPass(model.content));
+                                  widget.onSubmit(formatPass(model.content.id!));
                                 }
                               },
                               child: Padding(
