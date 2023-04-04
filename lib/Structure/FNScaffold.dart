@@ -8,8 +8,9 @@ import 'FNNavigationBar.dart';
 ///initiates navigation drawer to the left
 class FNScaffold extends StatelessWidget {
   final Widget child;
+  final Widget drawer;
 
-  const FNScaffold({super.key, required this.child});
+  const FNScaffold({super.key, required this.child, required this.drawer});
 
   @override
   Widget build(BuildContext context) {
@@ -27,7 +28,7 @@ class FNScaffold extends StatelessWidget {
           flexibleSpace: const FNNavigationBar()
         ),
 
-        drawer: const FNDrawer(),
+        drawer: drawer,
 
         body: child,
       ),

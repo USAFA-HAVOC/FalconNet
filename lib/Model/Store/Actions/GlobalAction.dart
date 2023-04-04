@@ -9,6 +9,7 @@ import 'package:falcon_net/Model/Store/Actions/NotificationAction.dart';
 import 'package:falcon_net/Model/Store/Actions/SettingsAction.dart';
 import 'package:falcon_net/Model/Store/AppStatus.dart';
 import 'package:falcon_net/Model/Store/GlobalState.dart';
+import 'package:falcon_net/Services/NotificationService.dart';
 import 'package:falcon_net/Utility/ErrorFormatting.dart';
 
 class GlobalAction extends ReduxAction<GlobalState> {
@@ -44,6 +45,14 @@ class GlobalAction extends ReduxAction<GlobalState> {
         await dispatch(HistoryAction.retrieve(onFail: fail));
         await dispatch(NotificationAction.retrieve(onFail: fail));
         await dispatch(FormAction.retrieve(onFail: fail));
+
+        if (
+            !(state.leave?.departure_time.isAfter(DateTime.now()) ?? false)
+            && state.pass == null
+            && state.settings.diPush
+        ) {
+          NotificationService().scheduleDINotification();
+        }
 
         if (failed) {
           onFail?.call();

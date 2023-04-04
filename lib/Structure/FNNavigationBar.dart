@@ -1,14 +1,5 @@
-import 'package:async_redux/async_redux.dart';
-import 'package:badges/badges.dart' as badges;
-import 'package:falcon_net/Model/Database/UserNotification.dart';
-import 'package:falcon_net/Model/Store/GlobalState.dart';
-import 'package:falcon_net/Structure/Components/ViewModel.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:go_router/go_router.dart';
-import 'package:popover/popover.dart';
-import '../Model/Store/Actions/NotificationAction.dart';
-import 'FNNotifications.dart';
 
 ///Overhead navigation bar
 class FNNavigationBar extends StatefulWidget {
@@ -103,94 +94,27 @@ class FNNavigationBarState extends State<FNNavigationBar> {
 
             Expanded(
               child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.end,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    Expanded(
-                        child: StoreConnector<GlobalState, ViewModel<List<UserNotification>>>(
-                            converter: (store) => ViewModel<List<UserNotification>>(store: store, content: store.state.notifications.toList(growable: false)),
-                            builder: (context, model) {
-                              //If there are notifications display a badge icon
-                              if (model.content.isNotEmpty) {
-                                return GestureDetector(
-
-                                  behavior: HitTestBehavior.opaque,
-
-                                  onTap: () {
-
-                                    //On tap, display a popover under the notification icon
-                                    showPopover(
-                                      context: context,
-                                      width: constraints.maxWidth / 2,
-                                      height: model.content.length * 50,
-
-                                      //On closing, dispatch dismiss all action
-                                      onPop: () {
-                                        model.dispatch(NotificationAction.dismissAll());
-                                      },
-
-                                      //Display FNNotifications in popover
-                                      bodyBuilder: (context) => FNNotifications(
-                                        notifications: model.content,
-
-                                        //On click, dispatch dismiss action
-                                        onClick: (notification) {
-                                          model.dispatch(NotificationAction.dismiss(notification));
-                                        },
-                                      ),
-                                    );
-                                  },
-
-                                  //Badge icon containing number of notifications
-                                  child: Padding(
-                                    padding: const EdgeInsets.symmetric(vertical: 25),
-                                    child: badges.Badge(
-                                      badgeContent: Text(model.content.length.toString()),
-                                      badgeColor: Theme.of(context).indicatorColor,
-
-                                      //Very empirical formula
-                                      position: badges.BadgePosition.topEnd(end: -15 + MediaQuery.of(context).size.width / 17),
-                                      child: const Icon(Icons.notifications),
-                                    ),
-                                  ),
-                                );
-                              }
-
-                              //If no notifications, don't include badge
-                              return GestureDetector(
-                                behavior: HitTestBehavior.opaque,
-
-                                //Can't open notifications, so execute haptic feedback
-                                onTap: () {
-                                  HapticFeedback.mediumImpact();
-                                },
-
-                                child: const Padding(
-                                  padding: EdgeInsets.symmetric(vertical: 25),
-                                  child: Icon(Icons.notifications),
-                                ),
-                              );
-                            }
-                        )
-                    ),
-
-                    Expanded(
-                        child: GestureDetector(
-                          behavior: HitTestBehavior.opaque,
-                          onTap: () {
-                            if (profile) {
-                              context.go("/");
-                            }
-                            else {
-                              context.go("/profile");
-                            }
-                          },
-                          child: const Padding(
-                            padding: EdgeInsets.symmetric(vertical: 25),
-                            child: Icon(Icons.person_rounded),
-                          ),
-                        )
-                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(right: 25),
+                      child: GestureDetector(
+                        behavior: HitTestBehavior.opaque,
+                        onTap: () {
+                          if (profile) {
+                            context.go("/");
+                          }
+                          else {
+                            context.go("/profile");
+                          }
+                        },
+                        child: const Padding(
+                          padding: EdgeInsets.symmetric(vertical: 25),
+                          child: Icon(Icons.person_rounded),
+                        ),
+                      ),
+                    )
                   ]
               ),
             ),

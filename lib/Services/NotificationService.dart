@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:timezone/data/latest.dart';
 import 'package:timezone/timezone.dart';
@@ -32,11 +33,13 @@ class NotificationService {
 
   List<void Function(String?)> listeners = [];
 
-  factory NotificationService() => _notificationService;
+  factory NotificationService() => kIsWeb ? NotificationService._internal() : _notificationService;
 
   NotificationService._internal();
 
   Future<void> init() async {
+    if (kIsWeb) return;
+
     const AndroidInitializationSettings initializationSettingsAndroid = AndroidInitializationSettings('app_icon');
 
     const IOSInitializationSettings initializationSettingsIOS = IOSInitializationSettings(
@@ -63,6 +66,8 @@ class NotificationService {
   }
 
   Future<bool> requestPermissions() async {
+    if (kIsWeb) return false;
+
     return await _flutterLocalNotificationsPlugin
         .resolvePlatformSpecificImplementation<IOSFlutterLocalNotificationsPlugin>()
         ?.requestPermissions(
@@ -83,6 +88,8 @@ class NotificationService {
   }
 
   void show({required String title, required String body, String? payload, String? id}) async {
+    if (kIsWeb) return;
+
     await _flutterLocalNotificationsPlugin.show(
         id?.hashCode ?? Random().nextInt(10000),
         title,
@@ -93,6 +100,8 @@ class NotificationService {
   }
 
   void schedule({required String title, required String body, String? payload, required DateTime time, String? id}) async {
+    if (kIsWeb) return;
+
     var utc = time.toUtc();
     await _flutterLocalNotificationsPlugin.zonedSchedule(
         id?.hashCode ?? Random().nextInt(10000000),
@@ -105,23 +114,36 @@ class NotificationService {
     );
   }
 
-  void scheduleDINotification() => _notificationService.schedule(
-      title: "DI is Open",
-      body: "Please sign DI as soon as practical",
-      time: DateTime.now().isBefore(combineDate(DateTime.now(), diOpens))
-          ? combineDate(DateTime.now(), diOpens)
-          : combineDate(DateTime.now(), diOpens).add(const Duration(days: 1)),
-      id: "di",
-      payload: "/"
-  );
+  void scheduleDINotification() {
+    _notificationService.cancel(id: "di");
+    _notificationService.schedule(
+        title: "DI is Open",
+        body: "Please sign DI as soon as practical",
+        time: DateTime.now().isBefore(combineDate(DateTime.now(), diOpens))
+            ? combineDate(DateTime.now(), diOpens)
+            : combineDate(DateTime.now(), diOpens).add(const Duration(days: 1)),
+        id: "di",
+        payload: "/"
+    );
+  }
 
   void cancelDINotification() => _notificationService.cancel(id: "di");
 
-  void cancel({required String id}) async => await _flutterLocalNotificationsPlugin.cancel(id.hashCode);
+  void cancel({required String id}) async {
+    if (kIsWeb) return;
 
-  void cancelAll() async => await _flutterLocalNotificationsPlugin.cancelAll();
+    await _flutterLocalNotificationsPlugin.cancel(id.hashCode);
+  }
 
-  Future<bool> requestExists({required String id}) async =>
-      (await _flutterLocalNotificationsPlugin.pendingNotificationRequests())
-          .where((r) => r.id == id.hashCode).isNotEmpty;
+  void cancelAll() async {
+    if (kIsWeb) return;
+
+    await _flutterLocalNotificationsPlugin.cancelAll();
+  }
+
+  Future<bool> exists({required String id}) async {
+    if (kIsWeb) return false;
+    return (await _flutterLocalNotificationsPlugin.pendingNotificationRequests())
+        .where((r) => r.id == id.hashCode).isNotEmpty;
+  }
 }
