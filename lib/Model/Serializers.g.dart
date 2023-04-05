@@ -102,9 +102,6 @@ Serializers _$serializers = (new Serializers().toBuilder()
           const FullType(BuiltList, const [const FullType(bool)]),
           () => new ListBuilder<bool>())
       ..addBuilderFactory(
-          const FullType(BuiltList, const [const FullType(bool)]),
-          () => new ListBuilder<bool>())
-      ..addBuilderFactory(
           const FullType(
               BuiltMap, const [const FullType(String), const FullType(bool)]),
           () => new MapBuilder<String, bool>())

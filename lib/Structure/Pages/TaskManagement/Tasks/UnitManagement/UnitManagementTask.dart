@@ -1,5 +1,4 @@
 import 'dart:core';
-import 'package:built_collection/built_collection.dart';
 import 'package:falcon_net/Model/Database/PassStatusRequest.dart';
 import 'package:falcon_net/Model/Database/StringRequest.dart';
 import 'package:falcon_net/Structure/Components/LoadingShimmer.dart';
@@ -62,7 +61,8 @@ class UnitManagementTaskState extends State<UnitManagementTask> {
       var mutable = data.status.toList();
       mutable[degree] = status;
       await Endpoints.setPassStatus(PassStatusRequest((p) => p
-          ..status = mutable.build().toBuilder()
+          ..index = degree
+          ..status = status
       ));
       setState(() {
         connection = Future.value(UnitManagementData(status: mutable, forms: data.forms));
