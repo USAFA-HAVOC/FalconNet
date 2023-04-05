@@ -1,3 +1,4 @@
+import 'package:built_collection/built_collection.dart';
 import 'package:falcon_net/Model/Database/UnitList.dart';
 import 'package:falcon_net/Model/Database/UnitSummary.dart';
 import 'package:falcon_net/Structure/Components/PaddedColumn.dart';
@@ -11,12 +12,13 @@ class UnitForm extends StatefulWidget {
   final UnitSummary? existing;
   final UnitList list;
 
-  const UnitForm(
-      {super.key,
+  const UnitForm({
+      super.key,
       this.onCancel,
       required this.onSubmit,
       required this.list,
-      this.existing});
+      this.existing
+  });
 
   @override
   State<StatefulWidget> createState() => UnitFormState();
@@ -108,7 +110,7 @@ class UnitFormState extends State<UnitForm> {
                   ..name = name.text
                   ..group = group.text.isEmpty ? null : group.text
                   ..is_squadron = widget.existing?.unit.is_squadron ?? false
-                  ..pass_status = widget.existing?.unit.pass_status.toBuilder()
+                  ..pass_status = (widget.existing?.unit.pass_status ?? [true, true, true, true].build()).toBuilder()
                   ..id = widget.existing?.unit.id).toBuilder()));
 
               setState(() {
