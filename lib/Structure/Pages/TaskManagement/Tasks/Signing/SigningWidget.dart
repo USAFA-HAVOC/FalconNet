@@ -80,8 +80,7 @@ class SigningWidgetState extends State<SigningWidget> {
         var member = ordered[index - 1];
 
         return SignBox(
-          name: member.personal_info.full_name,
-          status: member.status(),
+          user: member,
           onSign: () => widget.onSign(member),
         );
       },

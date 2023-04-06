@@ -1,12 +1,14 @@
 import 'package:async_redux/async_redux.dart';
 import 'package:falcon_net/Model/Database/Roles.dart';
+import 'package:falcon_net/Model/Database/StringRequest.dart';
 import 'package:falcon_net/Model/Store/AppStatus.dart';
 import 'package:falcon_net/Router/FNTransitions.dart';
+import 'package:falcon_net/Structure/Components/FNPage.dart';
 import 'package:falcon_net/Structure/Components/LoadingShimmer.dart';
 import 'package:falcon_net/Structure/Components/ViewModel.dart';
-import 'package:falcon_net/Structure/FNDrawer.dart';
-import 'package:falcon_net/Structure/Pages/Failure/Failure.dart';
+import 'package:falcon_net/Structure/Pages/Failure.dart';
 import 'package:falcon_net/Structure/Pages/TaskManagement/TaskManagement.dart';
+import 'package:falcon_net/Structure/Pages/TaskManagement/Tasks/Accountability/AccountabilityTask.dart';
 import 'package:falcon_net/Structure/Pages/TaskManagement/Tasks/Assignment/AssignmentTask.dart';
 import 'package:falcon_net/Structure/Pages/TaskManagement/Tasks/Delegation/DelegationTask.dart';
 import 'package:falcon_net/Structure/Pages/TaskManagement/Tasks/StanEval/SEAnalytics.dart';
@@ -20,14 +22,15 @@ import '../Model/Database/User.dart';
 import '../Model/Store/Actions/GlobalAction.dart';
 import '../Model/Store/Endpoints.dart';
 import '../Model/Store/GlobalState.dart';
+import '../Structure/FNNavigationBar.dart';
 import '../Structure/FNScaffold.dart';
-import '../Structure/PPDrawer.dart';
+import '../Structure/PermanentParty/PPDrawer.dart';
 import '../Structure/Pages/Dashboard/Dashboard.dart';
 import '../Structure/Pages/Grades/Grades.dart';
 import '../Structure/Pages/LeaveLocator/LeaveLocator.dart';
 import '../Structure/Pages/PassManagement/PassManagement.dart';
 import '../Structure/Pages/Profile/Profile.dart';
-import '../Structure/Pages/TaskManagement/Tasks/CWOC/CWOCTask.dart';
+import '../Structure/Pages/TaskManagement/Tasks/CWOCTask.dart';
 import '../Structure/Pages/TaskManagement/Tasks/Ordering/OrderingTask.dart';
 import '../Structure/Pages/TaskManagement/Tasks/SDOTask.dart';
 import '../Structure/Pages/TaskManagement/Tasks/StanEval/SEParameters.dart';
@@ -79,6 +82,10 @@ GoRouter fnRouter(GlobalKey<NavigatorState> key, SignState sign, bool party) => 
             builder: (context, model) {
               if (model.content == AppStatus.nominal) {
                 return FNScaffold(
+                  navBar: const FNNavigationBar(
+                    dashboardPath: "/permanent_party",
+                    profilePath: "/permanent_party/profile",
+                  ),
                   drawer: const PPDrawer(),
                   child: child
                 );
@@ -100,6 +107,94 @@ GoRouter fnRouter(GlobalKey<NavigatorState> key, SignState sign, bool party) => 
         GoRoute(
           path: "/permanent_party",
           builder: (context, state) => const FNBackground(child: PPDashboard()),
+          routes: [
+            GoRoute(
+              path: "profile",
+              pageBuilder: fullSlide(const Profile(party: true))
+            ),
+
+            GoRoute(
+                path: "stan_eval",
+                pageBuilder: fullSlide(StoreConnector<GlobalState, ViewModel<String>>(
+                  converter: (store) => ViewModel(store: store, content: store.state.user.personal_info.unit!),
+                  builder: (context, model) => FutureBuilder(
+                      future: Endpoints.unitGrades(StringRequest((r) => r..string = model.content)),
+                      builder: (context, snapshot) {
+                        if (snapshot.hasData) {
+                          return SEAnalytics(parameters: SEParameters(
+                            name: model.content,
+                            grades: snapshot.data!
+                          ));
+                        }
+                        else {
+                          return FNPage(
+                            title: "${model.content} Analytics",
+                            children: const [
+                              LoadingShimmer(height: 200,)
+                            ]
+                          );
+                        }
+                      }
+                  )
+                ))
+            ),
+
+            GoRoute(
+              path: "accountability",
+              pageBuilder: fullSlide(const AccountabilityTask())
+            ),
+
+            GoRoute(
+              path: "unit_management",
+              pageBuilder: fullSlide(const UnitManagementTask())
+            ),
+
+            GoRoute(
+              path: "delegation",
+              pageBuilder: fullSlide(DelegationTask(owner: [
+                TimedRole((r) => r
+                    ..role = Roles.permanent_party.name
+                ),
+
+                TimedRole((r) => r
+                  ..role = Roles.wing_admin.name
+                ),
+              ]))
+            ),
+
+            GoRoute(
+              path: "signing",
+              pageBuilder: fullSlide(const CWOCTask(label: "Signing",))
+            ),
+
+            GoRoute(
+              path: "unit_assignment",
+              pageBuilder: fullSlide(
+                  StoreConnector<GlobalState, ViewModel<User>>(
+                    converter: (store) => ViewModel(store: store, content: store.state.user),
+                    builder: (context, model) => AssignmentTask(
+                      info: model.content.personal_info,
+                      type: AssignmentType.unit,
+                      scope: AssignmentScope.all,
+                    ),
+                  )
+              ),
+            ),
+
+            GoRoute(
+              path: "squadron_assignment",
+              pageBuilder: fullSlide(
+                  StoreConnector<GlobalState, ViewModel<User>>(
+                    converter: (store) => ViewModel(store: store, content: store.state.user),
+                    builder: (context, model) => AssignmentTask(
+                      info: model.content.personal_info,
+                      type: AssignmentType.squadron,
+                      scope: AssignmentScope.all,
+                    ),
+                  )
+              ),
+            ),
+          ]
         )
       ]
     ),
@@ -112,7 +207,6 @@ GoRouter fnRouter(GlobalKey<NavigatorState> key, SignState sign, bool party) => 
             builder: (context, model) {
               if (model.content == AppStatus.nominal) {
                 return FNScaffold(
-                    drawer: const FNDrawer(),
                     child: child
                 );
               }
@@ -134,7 +228,6 @@ GoRouter fnRouter(GlobalKey<NavigatorState> key, SignState sign, bool party) => 
           GoRoute(
               path: "/",
               builder: (context, state) => const FNBackground(child: Dashboard()),
-
               routes: [
                 GoRoute(
                   path: "profile",
@@ -228,6 +321,11 @@ GoRouter fnRouter(GlobalKey<NavigatorState> key, SignState sign, bool party) => 
                             builder: (context, model) => DelegationTask(owner: model.content,),
                           )
                         ),
+                      ),
+
+                      GoRoute(
+                        path: "accountability",
+                        pageBuilder: fullSlide(const AccountabilityTask())
                       ),
 
                       GoRoute(

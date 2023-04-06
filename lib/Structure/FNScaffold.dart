@@ -9,8 +9,14 @@ import 'FNNavigationBar.dart';
 class FNScaffold extends StatelessWidget {
   final Widget child;
   final Widget drawer;
+  final Widget navBar;
 
-  const FNScaffold({super.key, required this.child, required this.drawer});
+  const FNScaffold({
+    super.key,
+    this.drawer = const FNDrawer(),
+    this.navBar = const FNNavigationBar(),
+    required this.child,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +31,7 @@ class FNScaffold extends StatelessWidget {
           automaticallyImplyLeading: false,
           toolbarHeight: 70,
           backgroundColor: Theme.of(context).primaryColor,
-          flexibleSpace: const FNNavigationBar()
+          flexibleSpace: navBar
         ),
 
         drawer: drawer,

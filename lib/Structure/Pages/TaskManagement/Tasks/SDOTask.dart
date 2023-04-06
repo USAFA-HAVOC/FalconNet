@@ -1,7 +1,7 @@
 import 'package:falcon_net/Model/Database/DIRequest.dart';
 import 'package:falcon_net/Model/Store/Endpoints.dart';
 import 'package:falcon_net/Structure/Components/UnitStatusWidget.dart';
-import 'package:falcon_net/Structure/Pages/TaskManagement/Tasks/Shared/SigningWidget.dart';
+import 'package:falcon_net/Structure/Pages/TaskManagement/Tasks/Signing/SigningWidget.dart';
 import 'package:falcon_net/Utility/ErrorFormatting.dart';
 import 'package:flutter/material.dart';
 
@@ -14,7 +14,9 @@ import '../../../Components/PageWidget.dart';
 ///Task for completing DI as Squadron SDO
 ///Shows present status and allows SDO to sign individuals' DIs
 class SDOTask extends StatefulWidget {
-  const SDOTask({super.key});
+  final String label;
+
+  const SDOTask({super.key, this.label = "SDO"});
 
   @override
   State<SDOTask> createState() => SDOTaskState();
@@ -53,7 +55,7 @@ class SDOTaskState extends State<SDOTask> {
   @override
   Widget build(BuildContext context) {
     return AsyncPage(
-      title: "SDO",
+      title: widget.label,
       connection: future,
       placeholder: const [
         LoadingShimmer(height: 200,),

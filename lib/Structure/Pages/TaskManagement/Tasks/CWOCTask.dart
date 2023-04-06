@@ -7,19 +7,21 @@ import 'package:falcon_net/Model/Database/UnitSummary.dart';
 import 'package:falcon_net/Model/Database/WingData.dart';
 import 'package:falcon_net/Model/Store/Endpoints.dart';
 import 'package:falcon_net/Structure/Components/LoadingShimmer.dart';
-import 'package:falcon_net/Structure/Pages/TaskManagement/Tasks/CWOC/CWOCStatusWidget.dart';
-import 'package:falcon_net/Structure/Pages/TaskManagement/Tasks/Shared/SigningWidget.dart';
+import 'package:falcon_net/Structure/Components/UnitStatusWidget.dart';
+import 'package:falcon_net/Structure/Pages/TaskManagement/Tasks/Signing/SigningWidget.dart';
 import 'package:flutter/material.dart';
 
-import '../../../../../Model/Database/User.dart';
-import '../../../../../Utility/ErrorFormatting.dart';
-import '../../../../Components/AsyncPage.dart';
+import '../../../../Model/Database/User.dart';
+import '../../../../Utility/ErrorFormatting.dart';
+import '../../../Components/AsyncPage.dart';
 
 ///Page displaying information for CWOC controllers
 ///Shows statistics for groups as well as individual units
 ///Allows controller to view individual cadet statuses and sign if necessary
 class CWOCTask extends StatefulWidget {
-  const CWOCTask({super.key});
+  final String label;
+
+  const CWOCTask({super.key, this.label = "CWOC"});
 
   @override
   State<CWOCTask> createState() => CWOCTaskState();
@@ -158,7 +160,8 @@ class CWOCTaskState extends State<CWOCTask> {
 
       (g % 2 == 0 ? left : right).addAll(
         [
-          CWOCStatusWidget(units: units.where((unit) => unit.unit.group == group).toList(), label: group),
+          UnitStatusWidget.fromList(units: units, label: group),
+
           const SizedBox(height: 20,)
         ]
       );
@@ -195,7 +198,7 @@ class CWOCTaskState extends State<CWOCTask> {
 
     for (var group in groups) {
       children.addAll([
-        CWOCStatusWidget(units: units.where((u) => u.unit.group == group).toList(), label: group),
+        UnitStatusWidget.fromList(units: units.where((u) => u.unit.group == group).toList(), label: group),
 
         const SizedBox(height: 20,),
       ]);
@@ -210,7 +213,7 @@ class CWOCTaskState extends State<CWOCTask> {
   @override
   Widget build(BuildContext context) {
     return AsyncPage(
-      title: 'CWOC',
+      title: widget.label,
       connection: connection,
       placeholder: const [
         LoadingShimmer(height: 200,),

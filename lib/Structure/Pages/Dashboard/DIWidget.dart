@@ -1,5 +1,4 @@
 import 'package:async_redux/async_redux.dart';
-import 'package:falcon_net/Model/Database/CadetAccountability.dart';
 import 'package:falcon_net/Model/Store/Actions/SignAction.dart';
 import 'package:falcon_net/Model/Store/GlobalState.dart';
 import 'package:falcon_net/Services/SchedulingService.dart';
@@ -10,14 +9,8 @@ import 'package:falcon_net/Utility/TemporalFormatting.dart';
 import 'package:flutter/material.dart';
 
 import '../../../Model/Database/Roles.dart';
+import '../../../Model/Database/User.dart';
 import '../../../Utility/FNConstants.dart';
-
-class DITuple {
-  final CadetAccountability? accountability;
-  final List<String> roles;
-
-  const DITuple({required this.accountability, required this.roles});
-}
 
 ///Page widget for displaying DI information with signing ui
 class DIWidget extends StatelessWidget {
@@ -28,17 +21,16 @@ class DIWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var messenger = ScaffoldMessenger.of(context);
-    return StoreConnector<GlobalState, ViewModel<DITuple>>(
-        converter: (store) => ViewModel<DITuple>(
+    return StoreConnector<GlobalState, ViewModel<User>>(
+        converter: (store) => ViewModel<User>(
             store: store,
-            content: DITuple(
-                accountability: store.state.user.accountability,
-                roles: store.state.user.roles.map((r) => r.role).toList())),
+            content: store.state.user
+        ),
         builder: (context, model) => ScheduledBuilder(
           id: "di",
           builder: (context, payload) {
             //Whether cadet is able to sign own di based on roles
-            bool senior = model.content.roles.any((role) => role == Roles.signable.name);
+            bool senior = model.content.roles.any((role) => role.role == Roles.signable.name);
 
             //Determines whether time is signable
             bool time = !DateTime.now().isBefore(combineDate(DateTime.now(), diOpens));
@@ -48,19 +40,9 @@ class DIWidget extends StatelessWidget {
             }
 
             //Whether cadet has already signed
-            bool signed = false;
-            if (model.content.accountability?.di_last_signed != null) {
-              var signature =
-              model.content.accountability!.di_last_signed!.toLocal();
-              var present = DateTime.now().toLocal();
-              if (signature.year == present.year &&
-                  signature.month == present.month &&
-                  signature.day == present.day) {
-                signed = true;
-              }
-            }
+            String status = model.content.status();
 
-            bool signable = !signed && senior && time;
+            bool signable = status == "unsigned" && senior && time;
 
             //Determine text based on state values
             List<Widget> text;
@@ -71,21 +53,40 @@ class DIWidget extends StatelessWidget {
                   style: Theme.of(context).textTheme.headlineMedium,
                 )
               ];
-            } else if (signed) {
+            }
+            else if (status == "signed") {
               text = [
                 Text(
-                  "DI Signed by ${model.content.accountability!.di_signed_name ?? "Himothy"}",
+                  "DI Signed by ${model.content.accountability!.di_signed_name ?? "Loading"}",
                   style: Theme.of(context).textTheme.headlineMedium,
                 )
               ];
-            } else if (!senior) {
+            }
+            else if (status == "out") {
+              text = [
+                Text(
+                  "Sign In to Sign DI",
+                  style: Theme.of(context).textTheme.headlineMedium,
+                )
+              ];
+            }
+            else if (status == "leave") {
+              text = [
+                Text(
+                  "Cannot Sign DI on Leave",
+                  style: Theme.of(context).textTheme.headlineMedium,
+                )
+              ];
+            }
+            else if (!senior) {
               text = [
                 Text(
                   "Cannot Sign Own DI",
                   style: Theme.of(context).textTheme.headlineMedium,
                 )
               ];
-            } else {
+            }
+            else {
               text = [
                 Text(
                   "DI Opens at ${diOpens.hour}:${diOpens.minute}",

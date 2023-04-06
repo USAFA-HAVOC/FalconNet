@@ -131,7 +131,7 @@ class Endpoints {
   static Endpoint<void, UnitList> listUnits = Endpoint("/unit/list");
   static Endpoint<Unit, Unit> createUnit = Endpoint("/unit/create");
   static Endpoint<Unit, bool> editUnit = Endpoint("/unit/modify");
-  static Endpoint<Unit, bool> deleteUnit = Endpoint("/unit/delete");
+  static Endpoint<Unit, Unit> deleteUnit = Endpoint("/unit/delete");
   static Endpoint<PassStatusRequest, bool> setPassStatus = Endpoint("/unit/set-pass-status");
 }
 
