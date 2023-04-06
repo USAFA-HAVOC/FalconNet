@@ -22,7 +22,29 @@ class FNPieChart extends StatefulWidget {
 }
 
 class FNPieChartState extends State<FNPieChart> {
-  int touchedIndex = -1;
+  String touched = "";
+
+  List<PieChartSectionData> showingSections(double total) {
+    return List.generate(widget.values.length, (i) {
+      final isTouched = widget.values[i].label == touched;
+      final fontSize = isTouched ? 20.0 : 15.0;
+      final radius = isTouched ? 40.0 : 30.0;
+      const shadows = [Shadow(color: Colors.black, blurRadius: 2)];
+      return PieChartSectionData(
+        color: widget.values[i].color,
+        value: widget.values[i].value,
+        title: widget.values[i].value.toStringAsFixed(0),
+        radius: radius,
+        showTitle: widget.values[i].value != total,
+        titleStyle: TextStyle(
+          fontSize: fontSize,
+          fontWeight: FontWeight.bold,
+          color: Colors.white,
+          shadows: shadows,
+        ),
+      );
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -49,6 +71,7 @@ class FNPieChartState extends State<FNPieChart> {
     return Row(
       children: <Widget>[
         Expanded(
+          flex: 6,
           child: AspectRatio(
             aspectRatio: 1,
             child: Stack(
@@ -62,11 +85,16 @@ class FNPieChartState extends State<FNPieChart> {
                           if (!event.isInterestedForInteractions ||
                               pieTouchResponse == null ||
                               pieTouchResponse.touchedSection == null) {
-                            touchedIndex = -1;
+                            touched = "";
                             return;
                           }
-                          touchedIndex = pieTouchResponse
-                              .touchedSection!.touchedSectionIndex;
+                          int index = pieTouchResponse.touchedSection!.touchedSectionIndex;
+                          if (index >= 0) {
+                            touched = widget.values.where((section) => section.value != 0).toList()[index].label;
+                          }
+                          else {
+                            touched = "";
+                          }
                         });
                       },
                     ),
@@ -76,6 +104,7 @@ class FNPieChartState extends State<FNPieChart> {
                     sectionsSpace: 0,
                     centerSpaceRadius: 40,
                     sections: showingSections(total),
+                    startDegreeOffset: -90
                   ),
                 ),
 
@@ -88,35 +117,18 @@ class FNPieChartState extends State<FNPieChart> {
           ),
         ),
 
-        Column(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisSize: MainAxisSize.max,
-            children: indicators
-        ),
+        const Spacer(flex: 1,),
+
+        Expanded(
+          flex: 4,
+          child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              mainAxisSize: MainAxisSize.max,
+              children: indicators
+          ),
+        )
       ],
     );
-  }
-
-  List<PieChartSectionData> showingSections(double total) {
-    return List.generate(widget.values.length, (i) {
-      final isTouched = i == touchedIndex;
-      final fontSize = isTouched ? 20.0 : 15.0;
-      final radius = isTouched ? 40.0 : 30.0;
-      const shadows = [Shadow(color: Colors.black, blurRadius: 2)];
-      return PieChartSectionData(
-        color: widget.values[i].color,
-        value: widget.values[i].value,
-        title: widget.values[i].value.toStringAsFixed(0),
-        radius: radius,
-        showTitle: widget.values[i].value != total,
-        titleStyle: TextStyle(
-          fontSize: fontSize,
-          fontWeight: FontWeight.bold,
-          color: Colors.white,
-          shadows: shadows,
-        ),
-      );
-    });
   }
 }

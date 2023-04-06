@@ -9,7 +9,7 @@ enum Roles {
   cwoc,
   signable,
   jdo,
-  pp
+  permanent_party
 }
 
 extension RoleNames on Roles {
@@ -25,7 +25,7 @@ extension RoleNames on Roles {
       case Roles.jdo: return "JDO";
       case Roles.cadet: return "Cadet";
       case Roles.stan_eval: return "Stan/Eval";
-      case Roles.pp: return "Permanent Party";
+      case Roles.permanent_party: return "Permanent Party";
     }
   }
 

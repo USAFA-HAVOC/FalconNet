@@ -159,7 +159,7 @@ class FNAppState extends State<FNApp> {
           store: store,
           content: RouterComponents(
             theme: store.state.settings.theme,
-            party: store.state.user.roles.any((r) => r.role == Roles.pp.name),
+            party: store.state.user.roles.any((r) => r.role == Roles.permanent_party.name),
             loaded: store.state.status == AppStatus.nominal
           )
         ),

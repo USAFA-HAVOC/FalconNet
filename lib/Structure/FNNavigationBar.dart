@@ -3,7 +3,10 @@ import 'package:go_router/go_router.dart';
 
 ///Overhead navigation bar
 class FNNavigationBar extends StatefulWidget {
-  const FNNavigationBar({super.key});
+  final String dashboardPath;
+  final String profilePath;
+
+  const FNNavigationBar({super.key, this.dashboardPath = "/", this.profilePath = "/profile"});
 
   @override
   State<StatefulWidget> createState() => FNNavigationBarState();
@@ -41,7 +44,6 @@ class FNNavigationBarState extends State<FNNavigationBar> {
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.end,
           children: [
-
             Expanded(
               child: Container(
                 alignment: AlignmentDirectional.bottomStart,
@@ -78,7 +80,7 @@ class FNNavigationBarState extends State<FNNavigationBar> {
                   behavior: HitTestBehavior.opaque,
 
                   onTap: () {
-                    context.go("/");
+                    context.go(widget.dashboardPath);
                   },
 
                   child: Padding(
@@ -103,10 +105,10 @@ class FNNavigationBarState extends State<FNNavigationBar> {
                         behavior: HitTestBehavior.opaque,
                         onTap: () {
                           if (profile) {
-                            context.go("/");
+                            context.go(widget.dashboardPath);
                           }
                           else {
-                            context.go("/profile");
+                            context.go(widget.profilePath);
                           }
                         },
                         child: const Padding(

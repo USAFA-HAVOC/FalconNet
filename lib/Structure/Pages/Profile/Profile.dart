@@ -11,7 +11,9 @@ import 'Settings.dart';
 
 ///Page displaying info, settings, and pass history tabs
 class Profile extends StatefulWidget {
-  const Profile({super.key});
+  final bool party;
+
+  const Profile({super.key, this.party = false});
 
   @override
   State<Profile> createState() => ProfileState();
@@ -20,11 +22,11 @@ class Profile extends StatefulWidget {
 class ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
 
   //Tabs in tabview
-  static const List<Tab> tabs = [
+  late List<Tab> tabs = [
     Tab(
         text: "Info"
     ),
-    Tab(
+    if (!widget.party) Tab(
         text: "Pass History"
     ),
     Tab(
@@ -32,9 +34,9 @@ class ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
     ),
   ];
 
-  static List<Widget> pages = const [
+  late List<Widget> pages = [
     CadetInfo(),
-    PassHistory(),
+    if (!widget.party) PassHistory(),
     Settings(),
   ];
 

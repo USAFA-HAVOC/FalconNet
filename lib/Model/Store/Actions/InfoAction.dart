@@ -22,7 +22,7 @@ class InfoAction extends ReduxAction<GlobalState> {
     try {
       if (retrieval) {
         User c = await Endpoints.getProfile(null);
-        //c = c.rebuild((b) => b.roles.add(TimedRole((t) => t..role = Roles.pp.name)));
+        //c = c.rebuild((b) => b.roles.add(TimedRole((t) => t..role = Roles.permanent_party.name)));
         onSucceed?.call();
         return (state.toBuilder()..user=c.toBuilder()).build();
       }

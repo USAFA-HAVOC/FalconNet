@@ -4,7 +4,7 @@ import 'package:falcon_net/Model/Store/GlobalState.dart';
 import 'package:falcon_net/Structure/Components/PageWidget.dart';
 import 'package:flutter/material.dart';
 
-import '../../Components/ViewModel.dart';
+import '../Components/ViewModel.dart';
 
 enum FailureType {
   failed,

@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:fluttericon/font_awesome5_icons.dart';
 
-import 'Components/PaddedColumn.dart';
-import 'DrawerItem.dart';
+import '../Components/PaddedColumn.dart';
+import '../DrawerItem.dart';
 
 ///Side menu for page navigation
 class PPDrawer extends StatelessWidget {
@@ -42,9 +43,33 @@ class PPDrawer extends StatelessWidget {
                 ),
 
                 DrawerItem(
+                    icon: Icons.grade,
+                    title: "Unit Grades",
+                    path: "/permanent_party/stan_eval"
+                ),
+
+                DrawerItem(
                     icon: Icons.people,
                     title: "Unit Management",
                     path: "/permanent_party/unit_management"
+                ),
+
+                DrawerItem(
+                    icon: FontAwesome5.pen,
+                    title: "Signing",
+                    path: "/permanent_party/signing"
+                ),
+
+                DrawerItem(
+                    icon: Icons.task_rounded,
+                    title: "Unit Assignment",
+                    path: "/permanent_party/unit_assignment"
+                ),
+
+                DrawerItem(
+                    icon: Icons.numbers,
+                    title: "Squad Assignment",
+                    path: "/permanent_party/squadron_assignment"
                 ),
               ],
             ),

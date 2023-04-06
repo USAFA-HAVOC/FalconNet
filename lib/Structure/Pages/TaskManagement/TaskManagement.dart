@@ -27,23 +27,31 @@ class TaskManagement extends StatelessWidget {
     }
 
     if (state.user.roles.any((role) => role.isAdmin())) {
-       tasks.add(const ExternalTaskWidget(
-           path: "/task_management/delegation",
-           title: "Delegation",
-           description: "Assign cadet roles and responsibilities."
-       ));
+      tasks.addAll(const [
+        ExternalTaskWidget(
+            path: "/task_management/delegation",
+            title: "Delegation",
+            description: "Assign cadet roles and responsibilities."
+        ),
 
-       tasks.add(const ExternalTaskWidget(
-           path: "/task_management/unit_assignment",
-           title: "Unit Assignment",
-           description: "Assign cadets to their appropriate unit.",
-       ));
+        ExternalTaskWidget(
+          path: "/task_management/unit_assignment",
+          title: "Unit Assignment",
+          description: "Assign cadets to their appropriate unit.",
+        ),
 
-       tasks.add(const ExternalTaskWidget(
-         path: "/task_management/squadron_assignment",
-         title: "Squadron Assignment",
-         description: "Assign cadets to their new squadrons.",
-       ));
+        ExternalTaskWidget(
+          path: "/task_management/squadron_assignment",
+          title: "Squadron Assignment",
+          description: "Assign cadets to their new squadrons.",
+        ),
+
+        ExternalTaskWidget(
+            path: "/task_management/accountability",
+            title: "Accountability",
+            description: "Locate unit members whether they are on pass, leave, or on base."
+        )
+      ]);
     }
 
     if (state.user.roles.any((role) => role.role == Roles.unit_admin.name)) {

@@ -1,23 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:fluttericon/font_awesome5_icons.dart';
 
+import '../../../../../Model/Database/User.dart';
 import '../../../../Components/ConfirmationDialog.dart';
 import '../../../../Components/InfoBar.dart';
 
 ///Box for displaying name, signing status, and signing button
 class SignBox extends StatelessWidget {
-  final String name;
-  final String status;
+  final User user;
   final void Function() onSign;
 
-  final String statusDescription;
-
-  const SignBox({super.key, required this.onSign, required this.name, required this.status}) :
-      statusDescription = status == "signed" ? "Signed" : (status == "unsigned" ? "Unsigned" : "Out");
+  const SignBox({super.key, required this.onSign, required this.user});
 
   @override
   Widget build(BuildContext context) {
-    bool signable = status == "unsigned";
+    bool signable = user.status() == "unsigned";
+
     return InfoBar(
       exteriorPadding: const EdgeInsets.symmetric(vertical: 3),
       interiorPadding: const EdgeInsets.symmetric(vertical: 3, horizontal: 10),
@@ -25,7 +23,7 @@ class SignBox extends StatelessWidget {
         Expanded(
           flex: 3,
           child: Text(
-            name,
+            user.personal_info.full_name,
             style: Theme.of(context).textTheme.titleSmall,
           ),
         ),
@@ -33,7 +31,7 @@ class SignBox extends StatelessWidget {
         Expanded(
             flex: 2,
             child: Text(
-              statusDescription,
+              user.displayStatus(),
               style: Theme.of(context).textTheme.bodyLarge,
               textAlign: TextAlign.center,
             )
@@ -45,7 +43,8 @@ class SignBox extends StatelessWidget {
               onPressed: signable
                   ? () => showDialog(context: context, builder: (context) => ConfirmationDialog(
                       title: "Confirm Signing",
-                      description: "Please confirm you would like to sign $name's dormitory inspection. "
+                      description: "Please confirm you would like to sign "
+                          "${user.personal_info.full_name}'s dormitory inspection. "
                           "This action cannot be undone.",
                       onConfirm: onSign
                     ))

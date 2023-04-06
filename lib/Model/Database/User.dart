@@ -28,7 +28,7 @@ abstract class User implements Built<User, UserBuilder> {
 
   String status() {
     if (accountability != null) {
-      if (accountability!.current_leave?.departure_time.isAfter(DateTime.now()) ?? false) {
+      if (accountability!.current_leave?.departure_time.isBefore(DateTime.now()) ?? false) {
         return "leave";
       }
       else if (accountability!.current_pass != null) {
@@ -43,6 +43,16 @@ abstract class User implements Built<User, UserBuilder> {
       }
     }
     return "unsigned";
+  }
+
+  String displayStatus() {
+    switch (status()) {
+      case "leave": return "On Leave";
+      case "out": return "Signed-Out";
+      case "signed": return "Signed DI";
+      case "unsigned": return "Unsigned";
+      default: throw Exception("Unknown Status Code");
+    }
   }
 
   User._();

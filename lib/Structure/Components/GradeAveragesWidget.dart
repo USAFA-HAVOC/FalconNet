@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
 
-import '../../../../../Model/Database/UnitGrades.dart';
-import '../../../../Components/PageWidget.dart';
+import '../../Model/Database/UnitGrades.dart';
+import 'PageWidget.dart';
 
-class SEAveragesWidget extends StatelessWidget {
+class GradeAveragesWidget extends StatelessWidget {
   final UnitGrades unit;
   final void Function()? onTap;
+  final String label;
 
-  const SEAveragesWidget({super.key, required this.unit, this.onTap});
+  const GradeAveragesWidget({super.key, required this.unit, this.onTap, this.label = "Averages"});
 
   double calculateAverage({required String type}) {
     List<int> array = <int>[];
@@ -35,7 +36,7 @@ class SEAveragesWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return PageWidget(
-        title: "Averages",
+        title: label,
         children: [
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 10),

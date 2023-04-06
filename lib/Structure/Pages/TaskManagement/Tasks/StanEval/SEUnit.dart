@@ -3,7 +3,7 @@ import 'package:falcon_net/Structure/Components/AsyncPage.dart';
 import 'package:falcon_net/Structure/Components/InfoBar.dart';
 import 'package:falcon_net/Structure/Components/LoadingShimmer.dart';
 import 'package:falcon_net/Structure/Components/PageWidget.dart';
-import 'package:falcon_net/Structure/Pages/TaskManagement/Tasks/StanEval/SEAveragesWidget.dart';
+import 'package:falcon_net/Structure/Components/GradeAveragesWidget.dart';
 import 'package:falcon_net/Utility/ErrorFormatting.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -67,7 +67,7 @@ class SEUnitState extends State<SEUnit> {
           LoadingShimmer(height: 500,),
         ],
         builder: (context, grades) => [
-          SEAveragesWidget(
+          GradeAveragesWidget(
             unit: grades,
             onTap: () => context.push(
               "/task_management/stan_eval/unit/analytics",
