@@ -18,9 +18,6 @@ class _$UserSerializer implements StructuredSerializer<User> {
   Iterable<Object?> serialize(Serializers serializers, User object,
       {FullType specifiedType = FullType.unspecified}) {
     final result = <Object?>[
-      'ms_oid',
-      serializers.serialize(object.ms_oid,
-          specifiedType: const FullType(String)),
       'personal_info',
       serializers.serialize(object.personal_info,
           specifiedType: const FullType(UserPersonalInfo)),
@@ -34,6 +31,13 @@ class _$UserSerializer implements StructuredSerializer<User> {
     if (value != null) {
       result
         ..add('id')
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(String)));
+    }
+    value = object.ms_oid;
+    if (value != null) {
+      result
+        ..add('ms_oid')
         ..add(serializers.serialize(value,
             specifiedType: const FullType(String)));
     }
@@ -78,7 +82,7 @@ class _$UserSerializer implements StructuredSerializer<User> {
           break;
         case 'ms_oid':
           result.ms_oid = serializers.deserialize(value,
-              specifiedType: const FullType(String))! as String;
+              specifiedType: const FullType(String)) as String?;
           break;
         case 'personal_info':
           result.personal_info.replace(serializers.deserialize(value,
@@ -116,7 +120,7 @@ class _$User extends User {
   @override
   final String? id;
   @override
-  final String ms_oid;
+  final String? ms_oid;
   @override
   final UserPersonalInfo personal_info;
   @override
@@ -133,14 +137,13 @@ class _$User extends User {
 
   _$User._(
       {this.id,
-      required this.ms_oid,
+      this.ms_oid,
       required this.personal_info,
       this.pass_allocation,
       this.accountability,
       this.last_login,
       required this.roles})
       : super._() {
-    BuiltValueNullFieldError.checkNotNull(ms_oid, r'User', 'ms_oid');
     BuiltValueNullFieldError.checkNotNull(
         personal_info, r'User', 'personal_info');
     BuiltValueNullFieldError.checkNotNull(roles, r'User', 'roles');
@@ -269,8 +272,7 @@ class UserBuilder implements Builder<User, UserBuilder> {
       _$result = _$v ??
           new _$User._(
               id: id,
-              ms_oid: BuiltValueNullFieldError.checkNotNull(
-                  ms_oid, r'User', 'ms_oid'),
+              ms_oid: ms_oid,
               personal_info: personal_info.build(),
               pass_allocation: _pass_allocation?.build(),
               accountability: _accountability?.build(),
