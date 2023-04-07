@@ -68,67 +68,70 @@ class FNPieChartState extends State<FNPieChart> {
     double total = widget.values.map((s) => s.value).reduce((carry, s) => carry + s);
     double primary = widget.values.where((section) => section.primary).map((s) => s.value).reduce((carry, s) => carry + s);
 
-    return Row(
-      children: <Widget>[
-        Expanded(
-          flex: 6,
-          child: AspectRatio(
-            aspectRatio: 1,
-            child: Stack(
-              alignment: AlignmentDirectional.center,
-              children: [
-                PieChart(
-                  PieChartData(
-                    pieTouchData: PieTouchData(
-                      touchCallback: (FlTouchEvent event, pieTouchResponse) {
-                        setState(() {
-                          if (!event.isInterestedForInteractions ||
-                              pieTouchResponse == null ||
-                              pieTouchResponse.touchedSection == null) {
-                            touched = "";
-                            return;
-                          }
-                          int index = pieTouchResponse.touchedSection!.touchedSectionIndex;
-                          if (index >= 0) {
-                            touched = widget.values.where((section) => section.value != 0).toList()[index].label;
-                          }
-                          else {
-                            touched = "";
-                          }
-                        });
-                      },
+    return ConstrainedBox(
+      constraints: BoxConstraints.loose(const Size.fromHeight(200)),
+      child: Row(
+        children: <Widget>[
+          Expanded(
+            flex: 6,
+            child: AspectRatio(
+                aspectRatio: 1,
+                child: Stack(
+                  alignment: AlignmentDirectional.center,
+                  children: [
+                    PieChart(
+                      PieChartData(
+                          pieTouchData: PieTouchData(
+                            touchCallback: (FlTouchEvent event, pieTouchResponse) {
+                              setState(() {
+                                if (!event.isInterestedForInteractions ||
+                                    pieTouchResponse == null ||
+                                    pieTouchResponse.touchedSection == null) {
+                                  touched = "";
+                                  return;
+                                }
+                                int index = pieTouchResponse.touchedSection!.touchedSectionIndex;
+                                if (index >= 0) {
+                                  touched = widget.values.where((section) => section.value != 0).toList()[index].label;
+                                }
+                                else {
+                                  touched = "";
+                                }
+                              });
+                            },
+                          ),
+                          borderData: FlBorderData(
+                            show: false,
+                          ),
+                          sectionsSpace: 0,
+                          centerSpaceRadius: 40,
+                          sections: showingSections(total),
+                          startDegreeOffset: -90
+                      ),
                     ),
-                    borderData: FlBorderData(
-                      show: false,
+
+                    Text(
+                      "${(100 * primary / total).toStringAsFixed(0)}%",
+                      style: Theme.of(context).textTheme.titleSmall,
                     ),
-                    sectionsSpace: 0,
-                    centerSpaceRadius: 40,
-                    sections: showingSections(total),
-                    startDegreeOffset: -90
-                  ),
-                ),
-
-                Text(
-                  "${(100 * primary / total).toStringAsFixed(0)}%",
-                  style: Theme.of(context).textTheme.titleSmall,
-                ),
-              ],
-            )
+                  ],
+                )
+            ),
           ),
-        ),
 
-        const Spacer(flex: 1,),
+          const Spacer(flex: 1,),
 
-        Expanded(
-          flex: 4,
-          child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              mainAxisSize: MainAxisSize.max,
-              children: indicators
-          ),
-        )
-      ],
+          Expanded(
+            flex: 4,
+            child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                mainAxisSize: MainAxisSize.max,
+                children: indicators
+            ),
+          )
+        ],
+      ),
     );
   }
 }

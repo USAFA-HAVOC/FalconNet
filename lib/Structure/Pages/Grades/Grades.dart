@@ -2,6 +2,7 @@ import 'package:async_redux/async_redux.dart';
 import 'package:falcon_net/Model/Database/UserGrades.dart';
 import 'package:falcon_net/Model/Store/GlobalState.dart';
 import 'package:falcon_net/Structure/Components/FNPage.dart';
+import 'package:falcon_net/Structure/Components/GradeAveragesWidget.dart';
 import 'package:falcon_net/Structure/Components/PageWidget.dart';
 import 'package:falcon_net/Structure/Pages/Grades/GradePanel.dart';
 import 'package:fl_chart/fl_chart.dart';
@@ -29,55 +30,7 @@ class Grades extends StatelessWidget {
       builder: (context, model) => FNPage(
         title: "Grades",
         children: [
-            PageWidget(
-                title: "Averages",
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.only(top: 10, bottom: 20),
-                    child: Row(
-                      children: [
-                        Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              Text(
-                                calculateAverage(model.content.amis.toList()),
-                                style: Theme.of(context).textTheme.displayMedium,
-                              ),
-
-                              Text(
-                                "AMI Average",
-                                style: Theme.of(context).textTheme.titleSmall,
-                              )
-                            ],
-                          ),
-                        ),
-
-                        const VerticalDivider(thickness: 1,),
-
-                        Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              Text(
-                                calculateAverage(model.content.samis.toList()),
-                                style: Theme.of(context).textTheme.displayMedium,
-                              ),
-
-                              Text(
-                                "SAMI Average",
-                                style: Theme.of(context).textTheme.titleSmall,
-                              )
-                            ],
-                          ),
-                        )
-                      ],
-                    ),
-                  )
-                ]
-            ),
+            GradeAveragesWidget.user(user: model.content),
 
             if (model.content.amis.isNotEmpty) GraphWidget(
               name: "AMI Scores",

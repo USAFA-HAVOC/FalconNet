@@ -1,37 +1,39 @@
 import 'package:flutter/material.dart';
 
 import '../../Model/Database/UnitGrades.dart';
+import '../../Model/Database/UserGrades.dart';
+import 'GradeBoard.dart';
 import 'PageWidget.dart';
 
 class GradeAveragesWidget extends StatelessWidget {
-  final UnitGrades unit;
+  final String ami;
+  final String sami;
   final void Function()? onTap;
   final String label;
 
-  const GradeAveragesWidget({super.key, required this.unit, this.onTap, this.label = "Averages"});
+  GradeAveragesWidget.unit({super.key, required UnitGrades unit, this.onTap, this.label = "Averages"}) :
+        ami = !unit.grades.values.any((grade) => grade.amis.isNotEmpty)
+            ? "NA"
+            : GradeBoard.fromUnitGrades(unit: unit)
+                .average("ami")
+                .toStringAsFixed(0),
+        sami = !unit.grades.values.any((grade) => grade.samis.isNotEmpty)
+            ? "NA"
+            : GradeBoard.fromUnitGrades(unit: unit)
+                .average("sami")
+                .toStringAsFixed(0);
 
-  double calculateAverage({required String type}) {
-    List<int> array = <int>[];
-    for (var grade in unit.grades.values) {
-      if (type == "ami") {
-        array.addAll(grade.amis.map((g) => g.score));
-      }
-
-      if (type == "pai") {
-        array.addAll(grade.pais.map((g) => g.score));
-      }
-
-      if (type == "sami") {
-        array.addAll(grade.samis.map((g) => g.score));
-      }
-    }
-
-    if (array.isEmpty) {
-      return 0;
-    }
-
-    return array.reduce((value, element) => value + element) / array.length;
-  }
+  GradeAveragesWidget.user({super.key, required UserGrades user, this.onTap, this.label = "Averages"}) :
+        ami = user.amis.isEmpty
+            ? "NA"
+            : (user.amis.map((g) => g.score)
+                .reduce((carry, value) => carry + value) / user.amis.length)
+                .toStringAsFixed(1),
+        sami = user.samis.isEmpty
+            ? "NA"
+            : (user.samis.map((g) => g.score)
+                .reduce((carry, value) => carry + value) / user.samis.length)
+                .toStringAsFixed(1);
 
   @override
   Widget build(BuildContext context) {
@@ -48,7 +50,7 @@ class GradeAveragesWidget extends StatelessWidget {
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       Text(
-                        calculateAverage(type: "ami").toStringAsFixed(1),
+                        ami,
                         style: Theme.of(context).textTheme.displayMedium,
                       ),
 
@@ -68,7 +70,7 @@ class GradeAveragesWidget extends StatelessWidget {
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       Text(
-                        calculateAverage(type: "sami").toStringAsFixed(1),
+                        sami,
                         style: Theme.of(context).textTheme.displayMedium,
                       ),
 

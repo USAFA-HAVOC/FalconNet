@@ -38,9 +38,6 @@ class _$CadetPassSerializer implements StructuredSerializer<CadetPass> {
       'state',
       serializers.serialize(object.state,
           specifiedType: const FullType(String)),
-      'zip_code',
-      serializers.serialize(object.zip_code,
-          specifiedType: const FullType(String)),
     ];
     Object? value;
     value = object.id;
@@ -107,10 +104,6 @@ class _$CadetPassSerializer implements StructuredSerializer<CadetPass> {
           result.state = serializers.deserialize(value,
               specifiedType: const FullType(String))! as String;
           break;
-        case 'zip_code':
-          result.zip_code = serializers.deserialize(value,
-              specifiedType: const FullType(String))! as String;
-          break;
       }
     }
 
@@ -137,8 +130,6 @@ class _$CadetPass extends CadetPass {
   final String city;
   @override
   final String state;
-  @override
-  final String zip_code;
 
   factory _$CadetPass([void Function(CadetPassBuilder)? updates]) =>
       (new CadetPassBuilder()..update(updates))._build();
@@ -152,8 +143,7 @@ class _$CadetPass extends CadetPass {
       required this.description,
       this.sca_number,
       required this.city,
-      required this.state,
-      required this.zip_code})
+      required this.state})
       : super._() {
     BuiltValueNullFieldError.checkNotNull(cadet_id, r'CadetPass', 'cadet_id');
     BuiltValueNullFieldError.checkNotNull(pass_type, r'CadetPass', 'pass_type');
@@ -164,7 +154,6 @@ class _$CadetPass extends CadetPass {
         description, r'CadetPass', 'description');
     BuiltValueNullFieldError.checkNotNull(city, r'CadetPass', 'city');
     BuiltValueNullFieldError.checkNotNull(state, r'CadetPass', 'state');
-    BuiltValueNullFieldError.checkNotNull(zip_code, r'CadetPass', 'zip_code');
   }
 
   @override
@@ -186,8 +175,7 @@ class _$CadetPass extends CadetPass {
         description == other.description &&
         sca_number == other.sca_number &&
         city == other.city &&
-        state == other.state &&
-        zip_code == other.zip_code;
+        state == other.state;
   }
 
   @override
@@ -202,7 +190,6 @@ class _$CadetPass extends CadetPass {
     _$hash = $jc(_$hash, sca_number.hashCode);
     _$hash = $jc(_$hash, city.hashCode);
     _$hash = $jc(_$hash, state.hashCode);
-    _$hash = $jc(_$hash, zip_code.hashCode);
     _$hash = $jf(_$hash);
     return _$hash;
   }
@@ -218,8 +205,7 @@ class _$CadetPass extends CadetPass {
           ..add('description', description)
           ..add('sca_number', sca_number)
           ..add('city', city)
-          ..add('state', state)
-          ..add('zip_code', zip_code))
+          ..add('state', state))
         .toString();
   }
 }
@@ -263,10 +249,6 @@ class CadetPassBuilder implements Builder<CadetPass, CadetPassBuilder> {
   String? get state => _$this._state;
   set state(String? state) => _$this._state = state;
 
-  String? _zip_code;
-  String? get zip_code => _$this._zip_code;
-  set zip_code(String? zip_code) => _$this._zip_code = zip_code;
-
   CadetPassBuilder();
 
   CadetPassBuilder get _$this {
@@ -281,7 +263,6 @@ class CadetPassBuilder implements Builder<CadetPass, CadetPassBuilder> {
       _sca_number = $v.sca_number;
       _city = $v.city;
       _state = $v.state;
-      _zip_code = $v.zip_code;
       _$v = null;
     }
     return this;
@@ -319,9 +300,7 @@ class CadetPassBuilder implements Builder<CadetPass, CadetPassBuilder> {
             city: BuiltValueNullFieldError.checkNotNull(
                 city, r'CadetPass', 'city'),
             state: BuiltValueNullFieldError.checkNotNull(
-                state, r'CadetPass', 'state'),
-            zip_code: BuiltValueNullFieldError.checkNotNull(
-                zip_code, r'CadetPass', 'zip_code'));
+                state, r'CadetPass', 'state'));
     replace(_$result);
     return _$result;
   }

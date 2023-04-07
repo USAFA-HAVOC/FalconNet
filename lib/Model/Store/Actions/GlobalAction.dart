@@ -12,6 +12,8 @@ import 'package:falcon_net/Model/Store/GlobalState.dart';
 import 'package:falcon_net/Services/NotificationService.dart';
 import 'package:falcon_net/Utility/ErrorFormatting.dart';
 
+import '../../Database/Roles.dart';
+
 class GlobalAction extends ReduxAction<GlobalState> {
   final GlobalState? replacement;
   final bool init;
@@ -40,11 +42,15 @@ class GlobalAction extends ReduxAction<GlobalState> {
 
       if (init) {
         await dispatch(InfoAction.retrieve(onFail: fail));
-        await dispatch(GradeAction.retrieve(onFail: fail));
-        await dispatch(SettingsAction.retrieve(onFail: fail));
-        await dispatch(HistoryAction.retrieve(onFail: fail));
+
+        if (!state.user.roles.any((r) => r.role == Roles.permanent_party.name)) {
+          await dispatch(GradeAction.retrieve(onFail: fail));
+          await dispatch(SettingsAction.retrieve(onFail: fail));
+          await dispatch(HistoryAction.retrieve(onFail: fail));
+          await dispatch(FormAction.retrieve(onFail: fail));
+        }
+
         await dispatch(NotificationAction.retrieve(onFail: fail));
-        await dispatch(FormAction.retrieve(onFail: fail));
 
         if (
             !(state.leave?.departure_time.isAfter(DateTime.now()) ?? false)

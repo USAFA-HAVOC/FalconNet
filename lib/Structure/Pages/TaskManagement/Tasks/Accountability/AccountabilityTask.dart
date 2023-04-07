@@ -58,30 +58,22 @@ class AccountabilityTaskState extends State<AccountabilityTask> {
         break;
       }
       case "unsigned": {
-        body = Padding(
+        body = const Padding(
           padding: const EdgeInsets.all(10),
-          child: Row(
-            children: const [
-              Text(
-                "User has not signed DI and is neither signed out nor on leave.",
-                textAlign: TextAlign.start,
-              ),
-            ],
-          )
+          child: Text(
+            "User has not signed DI and is neither signed out nor on leave.",
+            textAlign: TextAlign.start,
+          ),
         );
         break;
       }
       case "signed": {
         body = Padding(
           padding: const EdgeInsets.all(10),
-          child: Row(
-            children: [
-              Text(
-                "DI signed by ${user.accountability!.di_signed_name} at ${describeTime(TimeOfDay.fromDateTime(user.accountability!.di_last_signed!))}",
-                textAlign: TextAlign.start,
-              ),
-            ],
-          )
+          child: Text(
+            "DI signed by ${user.accountability!.di_signed_name} at ${describeTime(TimeOfDay.fromDateTime(user.accountability!.di_last_signed!))}",
+            textAlign: TextAlign.start,
+          ),
         );
         break;
       }

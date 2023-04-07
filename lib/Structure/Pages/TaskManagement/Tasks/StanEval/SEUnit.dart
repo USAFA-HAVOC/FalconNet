@@ -67,7 +67,7 @@ class SEUnitState extends State<SEUnit> {
           LoadingShimmer(height: 500,),
         ],
         builder: (context, grades) => [
-          GradeAveragesWidget(
+          GradeAveragesWidget.unit(
             unit: grades,
             onTap: () => context.push(
               "/task_management/stan_eval/unit/analytics",

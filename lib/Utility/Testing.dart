@@ -34,7 +34,6 @@ List<User> generateMembers(int count, String status, String unit) {
     if (status == "out") {
       pass = CadetPass((p) => p
           ..sca_number = "q42345"
-          ..zip_code = "50035"
           ..end_time = DateTime(3000)
           ..start_time = DateTime.now().subtract(Duration(days: 1))
           ..description = "Spondors"
