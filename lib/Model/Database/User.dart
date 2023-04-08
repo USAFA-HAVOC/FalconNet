@@ -15,6 +15,7 @@ abstract class User implements Built<User, UserBuilder> {
   static Serializer<User> get serializer => _$userSerializer;
 
   String? get id;
+  String? get ms_oid;
   UserPersonalInfo get personal_info;
   CadetPassAllocation? get pass_allocation;
   CadetAccountability? get accountability;
