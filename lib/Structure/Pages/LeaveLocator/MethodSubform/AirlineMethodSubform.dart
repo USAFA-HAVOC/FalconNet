@@ -93,6 +93,7 @@ class AirlineMethodSubformState extends State<AirlineMethodSubform> {
             Expanded(
               flex: 5,
               child: TextFormField(
+                keyboardType: TextInputType.text,
                 controller: airline,
                 decoration: InputDecoration(
                     labelStyle: Theme.of(context).textTheme.bodyLarge,
@@ -112,13 +113,17 @@ class AirlineMethodSubformState extends State<AirlineMethodSubform> {
               flex: 5,
               child: TextFormField(
                 controller: number,
+                keyboardType: TextInputType.text,
                 decoration: InputDecoration(
                     labelStyle: Theme.of(context).textTheme.bodyLarge,
                     labelText: "Flight Number"
                 ),
                 style: Theme.of(context).textTheme.bodyLarge,
                 validator: InputValidation.override(
-                    InputValidation.stringLength(length: 0, emptyMessage: "Please enter a flight number"),
+                    InputValidation.stringLength(
+                        length: 0,
+                        emptyMessage: "Please enter a flight number"
+                    ),
                     inactive
                 ),
               ),

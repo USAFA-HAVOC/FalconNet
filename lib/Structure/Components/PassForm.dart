@@ -44,8 +44,7 @@ class PassForm extends StatefulWidget {
   State<PassForm> createState() => PassFormState();
 }
 
-class PassFormState extends State<PassForm>
-    with SingleTickerProviderStateMixin {
+class PassFormState extends State<PassForm> with SingleTickerProviderStateMixin {
   //Key for maintaining access to form state across redraws
   final key = GlobalKey<FormState>();
 
@@ -271,6 +270,7 @@ class PassFormState extends State<PassForm>
                         children: [
                           TextFormField(
                             controller: scaController,
+                            keyboardType: TextInputType.number,
                             decoration: InputDecoration(
                                 labelStyle:
                                     Theme.of(context).textTheme.bodyLarge,
@@ -333,10 +333,12 @@ class PassFormState extends State<PassForm>
 
                     TextFormField(
                       controller: cityController,
+                      keyboardType: TextInputType.text,
                       decoration: InputDecoration(
                           labelStyle:
                           Theme.of(context).textTheme.bodyLarge,
-                          labelText: "City"),
+                          labelText: "City"
+                      ),
                       style: Theme.of(context).textTheme.bodyLarge,
                       validator: InputValidation.stringLength(
                           emptyMessage: "Please enter a city"),

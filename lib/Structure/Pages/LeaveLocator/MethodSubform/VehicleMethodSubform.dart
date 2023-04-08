@@ -158,7 +158,7 @@ class VehicleMethodSubformState extends State<VehicleMethodSubform> with SingleT
             children: [
               TextFormField(
                 controller: time,
-                keyboardType: TextInputType.number,
+                keyboardType: const TextInputType.numberWithOptions(signed: false, decimal: true),
                 decoration: InputDecoration(
                     labelStyle: Theme.of(context).textTheme.bodyLarge,
                     labelText: "Hours of Travel"
@@ -174,6 +174,7 @@ class VehicleMethodSubformState extends State<VehicleMethodSubform> with SingleT
 
               TextFormField(
                 controller: name,
+                keyboardType: TextInputType.name,
                 decoration: InputDecoration(
                     labelStyle: Theme.of(context).textTheme.bodyLarge,
                     labelText: "Driver's Name"

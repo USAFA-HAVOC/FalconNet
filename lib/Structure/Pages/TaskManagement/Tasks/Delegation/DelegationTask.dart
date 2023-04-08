@@ -3,6 +3,7 @@ import 'package:falcon_net/Model/Database/RoleRequest.dart';
 import 'package:falcon_net/Model/Database/Roles.dart';
 import 'package:falcon_net/Structure/Components/LoadingShimmer.dart';
 import 'package:falcon_net/Structure/Components/PageWidget.dart';
+import 'package:falcon_net/Structure/Components/SearchBar.dart';
 import 'package:falcon_net/Utility/ErrorFormatting.dart';
 import 'package:flutter/material.dart';
 import  'package:string_similarity/string_similarity.dart';
@@ -136,15 +137,7 @@ class DelegationTaskState extends State<DelegationTask> {
                     itemCount: ordered.length + 1,
                     itemBuilder: (context, index) {
                       if (index == 0) {
-                        return TextField(
-                          decoration: InputDecoration(
-                              border: OutlineInputBorder(borderSide: BorderSide(color: Theme.of(context).dividerColor), borderRadius: BorderRadius.circular(10)),
-                              labelStyle: Theme.of(context).textTheme.bodyLarge,
-                              labelText: "Search",
-                              suffixIcon: const Icon(Icons.search)
-                          ),
-                          onChanged: (q) => setState(() => query = q),
-                        );
+                        return SearchBar(onChanged: (q) => setState(() => query = q));
                       }
 
                       return DelegateBar(

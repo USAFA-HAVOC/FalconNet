@@ -12,6 +12,7 @@ import '../../../../../Model/Database/Unit.dart';
 import '../../../../../Model/Store/Endpoints.dart';
 import '../../../../Components/AsyncPage.dart';
 import '../../../../Components/LoadingShimmer.dart';
+import '../../../../Components/SearchBar.dart';
 
 class UnitEditorTask extends StatefulWidget {
   const UnitEditorTask({super.key});
@@ -156,15 +157,7 @@ class UnitEditorTaskState extends State<UnitEditorTask> {
                   primary: false,
                   itemBuilder: (context, index) {
                     if (index == 0) {
-                      return TextField(
-                        decoration: InputDecoration(
-                            border: OutlineInputBorder(borderSide: BorderSide(color: Theme.of(context).dividerColor), borderRadius: BorderRadius.circular(10)),
-                            labelStyle: Theme.of(context).textTheme.bodyLarge,
-                            labelText: "Search",
-                            suffixIcon: const Icon(Icons.search)
-                        ),
-                        onChanged: (q) => setState(() => query = q),
-                      );
+                      return SearchBar(onChanged: (q) => setState(() => query = q));
                     }
 
                     else {

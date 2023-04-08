@@ -6,9 +6,11 @@ import 'package:falcon_net/Utility/TemporalFormatting.dart';
 import 'package:flutter/material.dart';
 import 'package:string_similarity/string_similarity.dart';
 
+import '../../../../../Model/Database/Roles.dart';
 import '../../../../../Model/Database/User.dart';
 import '../../../../../Model/Database/UserStatus.dart';
 import '../../../../../Model/Store/Endpoints.dart';
+import '../../../../Components/SearchBar.dart';
 import 'LeaveDescriptionWidget.dart';
 import 'PassDescriptionWidget.dart';
 
@@ -27,7 +29,9 @@ class AccountabilityTaskState extends State<AccountabilityTask> {
   @override
   void initState() {
     super.initState();
-    connection = Endpoints.getUsers(null).then((list) => list.users.toList());
+    connection = Endpoints.getUsers(null).then(
+      (list) => list.users.where((u) => !u.roles.any((r) => r.role == Roles.permanent_party.name)).toList()
+    );
     connection.then((users) => expansions = Map<String, bool>.fromIterables(
         users.map((m) => m.id!),
         List<bool>.filled(users.length, false)
@@ -122,15 +126,7 @@ class AccountabilityTaskState extends State<AccountabilityTask> {
           PageWidget(
             title: "Members",
             children: [
-              TextField(
-                decoration: InputDecoration(
-                  border: OutlineInputBorder(borderSide: BorderSide(color: Theme.of(context).dividerColor), borderRadius: BorderRadius.circular(10)),
-                  labelStyle: Theme.of(context).textTheme.bodyLarge,
-                  labelText: "Search",
-                  suffixIcon: const Icon(Icons.search)
-                ),
-                onChanged: (q) => setState(() => query = q),
-              ),
+              SearchBar(onChanged: (q) => setState(() => query = q)),
 
               ExpansionPanelList(
                 expansionCallback: (index, state) => setState(() => expansions[ordered[index].id!] = !state),

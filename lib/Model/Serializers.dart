@@ -20,11 +20,11 @@ import 'package:falcon_net/Model/Database/UserPersonalInfo.dart';
 import 'package:falcon_net/Model/Database/UserSettings.dart';
 import 'package:falcon_net/Model/Database/UserSummary.dart';
 import 'package:falcon_net/Model/Database/WingData.dart';
-import 'package:falcon_net/Model/Store/GlobalState.dart';
 
 import 'Database/DIRequest.dart';
 import 'Database/FormDataList.dart';
 import 'Database/FormList.dart';
+import 'Database/IndividualStatusRequest.dart';
 import 'Database/PassHistoryModel.dart';
 import 'Database/RoleRequest.dart';
 import 'Database/StringRequest.dart';
@@ -78,7 +78,8 @@ part 'Serializers.g.dart';
   StringRequest,
   SchedulingEvent,
   FormList,
-  FormDataList
+  FormDataList,
+  IndividualStatusRequest
 ])
 
 

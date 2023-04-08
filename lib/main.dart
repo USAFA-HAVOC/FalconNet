@@ -39,13 +39,13 @@ void main() async {
           ..id = ""
           ..roles = ListBuilder()
           ..personal_info = UserPersonalInfo((b3) => b3
-              ..full_name = "Ethan Chapman"
-              ..email = "C26Ethan.Chapman@afacademy.af.edu"
-              ..phone_number = "3037461308"
-              ..room_number = "Vandy 6D6"
-              ..squadron = 18
-              ..group = "CG02"
-              ..unit = "CS18"
+              ..full_name = ""
+              ..email = ""
+              ..phone_number = ""
+              ..room_number = ""
+              ..squadron = 0
+              ..group = ""
+              ..unit = ""
             ).toBuilder()
           ).toBuilder()
         ..settings = UserSettings((b2) => b2

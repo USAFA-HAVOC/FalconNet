@@ -25,6 +25,7 @@ import '../Database/DIRequest.dart';
 import '../Database/FormList.dart';
 import '../Database/FormOneData.dart';
 import '../Database/GradeSubmission.dart';
+import '../Database/IndividualStatusRequest.dart';
 import '../Database/SquadronAssignRequest.dart';
 import '../Database/Unit.dart';
 import '../Database/UnitAssignRequest.dart';
@@ -133,6 +134,7 @@ class Endpoints {
   static Endpoint<Unit, bool> editUnit = Endpoint("/unit/modify");
   static Endpoint<Unit, Unit> deleteUnit = Endpoint("/unit/delete");
   static Endpoint<PassStatusRequest, bool> setPassStatus = Endpoint("/unit/set-pass-status");
+  static Endpoint<IndividualStatusRequest, bool> setIndividualPassStatus = Endpoint("unit/set-individual-status");
 }
 
 class APIData {

@@ -5,19 +5,22 @@ import 'package:falcon_net/Structure/Components/LoadingShimmer.dart';
 import 'package:falcon_net/Structure/Components/PageWidget.dart';
 import 'package:falcon_net/Structure/Pages/TaskManagement/Tasks/UnitManagement/FormBar.dart';
 import 'package:falcon_net/Structure/Pages/TaskManagement/Tasks/UnitManagement/FormStatusDialog.dart';
+import 'package:falcon_net/Structure/Pages/TaskManagement/Tasks/UnitManagement/IndividualStatusWidget.dart';
 import 'package:falcon_net/Utility/ErrorFormatting.dart';
 import 'package:flutter/material.dart';
 
 import '../../../../../Model/Database/FormOneData.dart';
 import '../../../../../Model/Database/FormSummary.dart';
+import '../../../../../Model/Database/User.dart';
 import '../../../../../Model/Store/Endpoints.dart';
 import '../../../../Components/AsyncPage.dart';
 
 class UnitManagementData {
   final List<bool> status;
+  final List<User> users;
   final List<FormOneData> forms;
 
-  const UnitManagementData({required this.status, required this.forms});
+  const UnitManagementData({required this.status, required this.users, required this.forms});
 }
 
 class UnitManagementTask extends StatefulWidget {
@@ -43,15 +46,22 @@ class UnitManagementTaskState extends State<UnitManagementTask> {
 
   Future<UnitManagementData> requestData() async {
     try {
-      var status = await Endpoints.getOwnUnit(null);
+      var data = await Endpoints.getOwnUnit(null);
       var forms = await Endpoints.getFormData(null);
-      return UnitManagementData(status: status.unit.pass_status.toList(), forms: forms.forms.toList());
-      //return const UnitManagementData(status: [true, true, true, true], forms: []);
+      return UnitManagementData(
+          status: data.unit.pass_status.toList(),
+          users: data.members.toList(),
+          forms: forms.forms.toList()
+      );
     }
 
     catch (e) {
       displayError(prefix: "Unit Management", exception: e);
-      return const UnitManagementData(status: [true, true, true, true], forms: []);
+      return const UnitManagementData(
+          status: [true, true, true, true],
+          users: [],
+          forms: []
+      );
     }
   }
 
@@ -65,7 +75,11 @@ class UnitManagementTaskState extends State<UnitManagementTask> {
           ..status = status
       ));
       setState(() {
-        connection = Future.value(UnitManagementData(status: mutable, forms: data.forms));
+        connection = Future.value(UnitManagementData(
+            status: mutable,
+            users: data.users,
+            forms: data.forms
+        ));
       });
 
       messenger.showSnackBar(const SnackBar(
@@ -99,7 +113,11 @@ class UnitManagementTaskState extends State<UnitManagementTask> {
       var assigned = await Endpoints.addForm(form);
 
       setState(() {
-        connection = Future.value(UnitManagementData(status: data.status, forms: [assigned] + data.forms));
+        connection = Future.value(UnitManagementData(
+            status: data.status,
+            users: data.users,
+            forms: [assigned] + data.forms
+        ));
       });
 
       messenger.showSnackBar(const SnackBar(
@@ -129,7 +147,11 @@ class UnitManagementTaskState extends State<UnitManagementTask> {
       var mutable = data.forms.toList();
       mutable.remove(form);
       setState(() {
-        connection = Future.value(UnitManagementData(status: data.status, forms: mutable));
+        connection = Future.value(UnitManagementData(
+            status: data.status,
+            users: data.users,
+            forms: mutable
+        ));
       });
 
       messenger.showSnackBar(const SnackBar(
@@ -226,6 +248,8 @@ class UnitManagementTaskState extends State<UnitManagementTask> {
                   ],
                 ))).values.toList()
             ),
+
+            IndividualStatusWidget(users: data.users),
 
             PageWidget(
                 title: "New Form",
