@@ -97,7 +97,7 @@ class TaskManagement extends StatelessWidget {
      */
 
     //Add form one task widgets from state
-    tasks.addAll(state.forms.where((f) => !f.signed).map((f) => FormOneWidget(form: f)));
+    tasks.addAll(state.forms!.where((f) => !f.signed).map((f) => FormOneWidget(form: f)));
 
     //If no relevant tasks, display no tasks message
     if (tasks.isEmpty) {

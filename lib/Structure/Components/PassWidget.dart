@@ -53,6 +53,8 @@ class PassWidget extends StatelessWidget {
                       child: Padding(
                         padding: const EdgeInsets.all(20),
                         child: PassForm(
+                          allocation: model.content.pass_allocation!,
+
                           //Closes dialog and dispatches open pass action
                           onSubmit: (pass) {
                             Navigator.of(context).pop();
@@ -110,6 +112,8 @@ class PassWidget extends StatelessWidget {
                               child: Padding(
                                 padding: const EdgeInsets.all(10),
                                 child: PassForm(
+                                  allocation: model.content.pass_allocation!,
+
                                   //Passes existing data
                                   editing: model.content.accountability!.current_pass,
 

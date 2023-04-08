@@ -16,7 +16,7 @@ class PassHistory extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return StoreConnector<GlobalState, ViewModel<List<CadetPass>>>(
-        converter: (store) => ViewModel<List<CadetPass>>(store: store, content: store.state.history.history.toList()),
+        converter: (store) => ViewModel<List<CadetPass>>(store: store, content: store.state.history!.history.toList()),
         builder: (context, model) {
 
           var mutable = model.content;
@@ -97,11 +97,6 @@ class PassRecord extends StatelessWidget {
               Text(
                   (pass.sca_number == null ? "" : "SCA: ${pass.sca_number!}. ") + pass.description,
                   style: Theme.of(context).textTheme.bodyMedium
-              ),
-
-              Text(
-                  "${pass.city}, ${pass.state} ${pass.zip_code}",
-                  style: Theme.of(context).textTheme.bodySmall
               ),
             ],
           ),

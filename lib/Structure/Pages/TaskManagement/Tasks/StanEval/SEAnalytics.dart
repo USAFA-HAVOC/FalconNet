@@ -10,6 +10,7 @@ import 'package:flutter/material.dart';
 
 import '../../../../../Model/Database/UserGrades.dart';
 import '../../../../Components/GradeAveragesWidget.dart';
+import '../../../../Components/GradeBoard.dart';
 import 'SEParameters.dart';
 
 class SEAnalytics extends StatelessWidget {
@@ -94,7 +95,7 @@ class SEAnalytics extends StatelessWidget {
     return FNPage(
       title: "${parameters.name} Analytics",
       children: [
-        GradeAveragesWidget(unit: parameters.grades),
+        GradeAveragesWidget.unit(unit: parameters.grades),
 
         GraphWidget(
           name: "AMI Trends",

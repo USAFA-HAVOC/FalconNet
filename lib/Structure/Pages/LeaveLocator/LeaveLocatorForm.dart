@@ -85,58 +85,15 @@ class LeaveLocatorFormState extends State<LeaveLocatorForm> {
   ///Build state options
   List<DropdownMenuItem<String>> buildStateOptions() {
     List<String> options = <String>[
-      "Alaska",
-      "Alabama",
-      "Arkansas",
-      "Arizona",
-      "California",
-      "Colorado",
-      "Connecticut",
-      "District of Columbia",
-      "Delaware",
-      "Florida",
-      "Georgia",
-      "Hawaii",
-      "Iowa",
-      "Idaho",
-      "Illinois",
-      "Indiana",
-      "Kansas",
-      "Kentucky",
-      "Louisiana",
-      "Massachusetts",
-      "Maryland",
-      "Maine",
-      "Michigan",
-      "Minnesota",
-      "Missouri",
-      "Mississippi",
-      "Montana",
-      "North Carolina",
-      "North Dakota",
-      "Nebraska",
-      "New Hampshire",
-      "New Jersey",
-      "New Mexico",
-      "Nevada",
-      "New York",
-      "Ohio",
-      "Oklahoma",
-      "Oregon",
-      "Pennsylvania",
-      "Rhode Island",
-      "South Carolina",
-      "South Dakota",
-      "Tennessee",
-      "Texas",
-      "Utah",
-      "Virginia",
-      "Vermont",
-      "Washington",
-      "Wisconsin",
-      "West Virginia",
-      "Wyoming",
-      "Select"
+      "Alaska", "Alabama", "Arkansas", "Arizona", "California", "Colorado",
+      "Connecticut", "DC", "Delaware", "Florida", "Georgia", "Hawaii", "Iowa",
+      "Idaho", "Illinois", "Indiana", "Kansas", "Kentucky", "Louisiana",
+      "Massachusetts", "Maryland", "Maine", "Michigan", "Minnesota", "Missouri",
+      "Mississippi", "Montana", "North Carolina", "North Dakota", "Nebraska",
+      "New Hampshire", "New Jersey", "New Mexico", "Nevada", "New York", "Ohio",
+      "Oklahoma", "Oregon", "Pennsylvania", "Rhode Island", "South Carolina",
+      "South Dakota", "Tennessee", "Texas", "Utah", "Virginia", "Vermont",
+      "Washington", "Wisconsin", "West Virginia", "Wyoming", "Select"
     ];
 
     //Map each to a menu item
@@ -256,6 +213,7 @@ class LeaveLocatorFormState extends State<LeaveLocatorForm> {
             ),
             TextFormField(
               controller: addressController,
+              keyboardType: TextInputType.streetAddress,
               decoration: InputDecoration(
                   labelStyle: Theme.of(context).textTheme.bodyLarge,
                   labelText: "Final Address"),
@@ -269,6 +227,7 @@ class LeaveLocatorFormState extends State<LeaveLocatorForm> {
                   flex: 5,
                   child: TextFormField(
                     controller: cityController,
+                    keyboardType: TextInputType.text,
                     decoration: InputDecoration(
                         labelStyle: Theme.of(context).textTheme.bodyLarge,
                         labelText: "City"),
@@ -284,12 +243,16 @@ class LeaveLocatorFormState extends State<LeaveLocatorForm> {
                   flex: 2,
                   child: TextFormField(
                     controller: zipController,
+                    keyboardType: TextInputType.number,
                     decoration: InputDecoration(
                         labelStyle: Theme.of(context).textTheme.bodyLarge,
-                        labelText: "Zip"),
+                        labelText: "Zip"
+                    ),
                     style: Theme.of(context).textTheme.bodyLarge,
                     validator: InputValidation.stringLength(
-                        emptyMessage: "Please enter a zip code"),
+                        length: 5,
+                        emptyMessage: "Please enter a zip code"
+                    ),
                   ),
                 ),
               ],
@@ -312,6 +275,7 @@ class LeaveLocatorFormState extends State<LeaveLocatorForm> {
 
             TextFormField(
               controller: nameController,
+              keyboardType: TextInputType.name,
               decoration: InputDecoration(
                   labelStyle: Theme.of(context).textTheme.bodyLarge,
                   labelText: "Emergency Contact Name"),
@@ -322,6 +286,7 @@ class LeaveLocatorFormState extends State<LeaveLocatorForm> {
 
             TextFormField(
               controller: phoneController,
+              keyboardType: TextInputType.phone,
               decoration: InputDecoration(
                   labelStyle: Theme.of(context).textTheme.bodyLarge,
                   labelText: "Emergency Contact Phone"),

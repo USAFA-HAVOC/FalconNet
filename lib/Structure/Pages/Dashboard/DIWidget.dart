@@ -1,4 +1,5 @@
 import 'package:async_redux/async_redux.dart';
+import 'package:falcon_net/Model/Database/UserStatus.dart';
 import 'package:falcon_net/Model/Store/Actions/SignAction.dart';
 import 'package:falcon_net/Model/Store/GlobalState.dart';
 import 'package:falcon_net/Services/SchedulingService.dart';
@@ -29,70 +30,76 @@ class DIWidget extends StatelessWidget {
         builder: (context, model) => ScheduledBuilder(
           id: "di",
           builder: (context, payload) {
+
+            //Determine text based on state values
+            List<Widget> text;
+
             //Whether cadet is able to sign own di based on roles
             bool senior = model.content.roles.any((role) => role.role == Roles.signable.name);
 
             //Determines whether time is signable
             bool time = !DateTime.now().isBefore(combineDate(DateTime.now(), diOpens));
 
-            if (!time) {
-              SchedulingService().schedule(id: "di", time: combineDate(DateTime.now(), diOpens), payload: "opened");
-            }
+            UserStatus status = model.content.status();
 
-            //Whether cadet has already signed
-            String status = model.content.status();
+            bool signable = status == UserStatus.unsigned && senior && time;
 
-            bool signable = status == "unsigned" && senior && time;
+            switch (status) {
+              case UserStatus.leave:
+                text = [
+                  Text(
+                    "Cannot Sign DI on Leave",
+                    style: Theme.of(context).textTheme.headlineMedium,
+                  )
+                ];
+                break;
+              case UserStatus.signed:
+                text = [
+                  Text(
+                    "DI Signed by ${model.content.accountability!.di_signed_name ?? "Loading"}",
+                    style: Theme.of(context).textTheme.headlineMedium,
+                  )
+                ];
+                break;
+              case UserStatus.out:
+                text = [
+                  Text(
+                    "Sign In to Sign DI",
+                    style: Theme.of(context).textTheme.headlineMedium,
+                  )
+                ];
+                break;
+              case UserStatus.unsigned:
+                if (!time) {
+                  SchedulingService().schedule(id: "di", time: combineDate(DateTime.now(), diOpens), payload: "opened");
+                }
 
-            //Determine text based on state values
-            List<Widget> text;
-            if (signable) {
-              text = [
-                Text(
-                  "DI is Open",
-                  style: Theme.of(context).textTheme.headlineMedium,
-                )
-              ];
-            }
-            else if (status == "signed") {
-              text = [
-                Text(
-                  "DI Signed by ${model.content.accountability!.di_signed_name ?? "Loading"}",
-                  style: Theme.of(context).textTheme.headlineMedium,
-                )
-              ];
-            }
-            else if (status == "out") {
-              text = [
-                Text(
-                  "Sign In to Sign DI",
-                  style: Theme.of(context).textTheme.headlineMedium,
-                )
-              ];
-            }
-            else if (status == "leave") {
-              text = [
-                Text(
-                  "Cannot Sign DI on Leave",
-                  style: Theme.of(context).textTheme.headlineMedium,
-                )
-              ];
-            }
-            else if (!senior) {
-              text = [
-                Text(
-                  "Cannot Sign Own DI",
-                  style: Theme.of(context).textTheme.headlineMedium,
-                )
-              ];
-            }
-            else {
-              text = [
-                Text(
-                  "DI Opens at ${diOpens.hour}:${diOpens.minute}",
-                  style: Theme.of(context).textTheme.headlineMedium,
-                )
-              ];
+                if (senior && time) {
+                  text = [
+                    Text(
+                      "DI is Open",
+                      style: Theme.of(context).textTheme.headlineMedium,
+                    )
+                  ];
+                }
+                else if (!senior) {
+                  text = [
+                    Text(
+                      "Cannot Sign Own DI",
+                      style: Theme.of(context).textTheme.headlineMedium,
+                    )
+                  ];
+                  break;
+                }
+                else {
+                  text = [
+                    Text(
+                      "DI Opens at ${diOpens.hour}:${diOpens.minute}",
+                      style: Theme.of(context).textTheme.headlineMedium,
+                    )
+                  ];
+                }
+                break;
             }
 
             //Sets content to card with info text

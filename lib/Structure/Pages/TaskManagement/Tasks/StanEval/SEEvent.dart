@@ -1,6 +1,7 @@
 import 'package:async_redux/async_redux.dart';
 import 'package:built_collection/built_collection.dart';
 import 'package:falcon_net/Model/Database/GradeSubmission.dart';
+import 'package:falcon_net/Model/Database/GradeType.dart';
 import 'package:falcon_net/Model/Store/GlobalState.dart';
 import 'package:falcon_net/Structure/Components/FNPage.dart';
 import 'package:falcon_net/Structure/Components/PageWidget.dart';
@@ -15,7 +16,7 @@ import '../../../../../Model/Database/UserSummary.dart';
 import '../../../../../Model/Store/Endpoints.dart';
 
 class SEEvent extends StatefulWidget {
-  final String type;
+  final GradeType type;
   final int index;
   final List<UserSummary> members;
 
@@ -108,7 +109,7 @@ class SEEventState extends State<SEEvent> {
         await Endpoints.setGrades(GradeSubmission((s) => s
           ..value = parsedScore
           ..description = description.text
-          ..type = widget.type
+          ..type = widget.type.name
           ..number = widget.index
           ..cadets = gradees.map((g) => g.user_id).toList().build().toBuilder()
           ..grader_id = graderID
@@ -142,7 +143,7 @@ class SEEventState extends State<SEEvent> {
     return StoreConnector<GlobalState, String>(
         converter: (model) => model.state.user.id!,
         builder: (context, id) => FNPage(
-            title: "Submit ${widget.type.toUpperCase()} #${(widget.index + 1).toString()}",
+            title: "Submit ${widget.type.display()} #${(widget.index + 1).toString()}",
             children: [
               PageWidget(
                   title: "Gradees",

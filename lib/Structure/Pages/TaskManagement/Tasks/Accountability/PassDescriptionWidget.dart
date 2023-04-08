@@ -21,8 +21,6 @@ class PassDescriptionWidget extends StatelessWidget {
 
           Text("City: ${pass.city}"),
 
-          Text("Zip Code: ${pass.zip_code}"),
-
           Text("State: ${pass.state}"),
 
           Text("Start: ${describeDate(pass.start_time)} ${describeTime(TimeOfDay.fromDateTime(pass.start_time))}"),

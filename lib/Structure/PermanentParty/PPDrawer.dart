@@ -61,6 +61,12 @@ class PPDrawer extends StatelessWidget {
                 ),
 
                 DrawerItem(
+                    icon: Icons.edit_document,
+                    title: "Delegation",
+                    path: "/permanent_party/delegation"
+                ),
+
+                DrawerItem(
                     icon: Icons.task_rounded,
                     title: "Unit Assignment",
                     path: "/permanent_party/unit_assignment"

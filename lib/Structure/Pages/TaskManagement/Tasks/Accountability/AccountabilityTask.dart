@@ -6,9 +6,11 @@ import 'package:falcon_net/Utility/TemporalFormatting.dart';
 import 'package:flutter/material.dart';
 import 'package:string_similarity/string_similarity.dart';
 
-import '../../../../../Model/Database/UnitData.dart';
+import '../../../../../Model/Database/Roles.dart';
 import '../../../../../Model/Database/User.dart';
+import '../../../../../Model/Database/UserStatus.dart';
 import '../../../../../Model/Store/Endpoints.dart';
+import '../../../../Components/SearchBar.dart';
 import 'LeaveDescriptionWidget.dart';
 import 'PassDescriptionWidget.dart';
 
@@ -21,16 +23,18 @@ class AccountabilityTask extends StatefulWidget {
 
 class AccountabilityTaskState extends State<AccountabilityTask> {
   String query = "";
-  late Future<UnitData> connection;
+  late Future<List<User>> connection;
   late Map<String, bool> expansions;
 
   @override
   void initState() {
     super.initState();
-    connection = Endpoints.getOwnUnit(null);
-    connection.then((unit) => expansions = Map<String, bool>.fromIterables(
-        unit.members.map((m) => m.id!),
-        List<bool>.filled(unit.members.length, false)
+    connection = Endpoints.getUsers(null).then(
+      (list) => list.users.where((u) => !u.roles.any((r) => r.role == Roles.permanent_party.name)).toList()
+    );
+    connection.then((users) => expansions = Map<String, bool>.fromIterables(
+        users.map((m) => m.id!),
+        List<bool>.filled(users.length, false)
     ));
   }
 
@@ -49,45 +53,33 @@ class AccountabilityTaskState extends State<AccountabilityTask> {
   ExpansionPanel buildExpansionPanel(User user, bool expanded) {
     Widget body;
     switch (user.status()) {
-      case "out": {
+      case UserStatus.out:
         body = PassDescriptionWidget(pass: user.accountability!.current_pass!,);
         break;
-      }
-      case "leave": {
+
+      case UserStatus.leave:
         body = LeaveDescriptionWidget(leave: user.accountability!.current_leave!,);
         break;
-      }
-      case "unsigned": {
-        body = Padding(
-          padding: const EdgeInsets.all(10),
-          child: Row(
-            children: const [
-              Text(
-                "User has not signed DI and is neither signed out nor on leave.",
-                textAlign: TextAlign.start,
-              ),
-            ],
-          )
+
+      case UserStatus.unsigned:
+        body = const Padding(
+          padding: EdgeInsets.all(10),
+          child: Text(
+            "User has not signed DI and is neither signed out nor on leave.",
+            textAlign: TextAlign.start,
+          ),
         );
         break;
-      }
-      case "signed": {
+        
+      case UserStatus.signed:
         body = Padding(
           padding: const EdgeInsets.all(10),
-          child: Row(
-            children: [
-              Text(
-                "DI signed by ${user.accountability!.di_signed_name} at ${describeTime(TimeOfDay.fromDateTime(user.accountability!.di_last_signed!))}",
-                textAlign: TextAlign.start,
-              ),
-            ],
-          )
+          child: Text(
+            "DI signed by ${user.accountability!.di_signed_name} at ${describeTime(TimeOfDay.fromDateTime(user.accountability!.di_last_signed!))}",
+            textAlign: TextAlign.start,
+          ),
         );
         break;
-      }
-      default: {
-        body = ErrorWidget(Exception("Cannot read cadet status code"));
-      }
     }
     return ExpansionPanel(
         canTapOnHeader: true,
@@ -125,24 +117,16 @@ class AccountabilityTaskState extends State<AccountabilityTask> {
     return AsyncPage(
       title: "Accountability",
       connection: connection,
-      builder: (context, unit) {
-        var ordered = search(unit.members.toList());
+      builder: (context, users) {
+        var ordered = search(users.toList());
 
         return [
-          UnitStatusWidget(data: unit),
+          UnitStatusWidget.fromUsers(users: users),
 
           PageWidget(
             title: "Members",
             children: [
-              TextField(
-                decoration: InputDecoration(
-                  border: OutlineInputBorder(borderSide: BorderSide(color: Theme.of(context).dividerColor), borderRadius: BorderRadius.circular(10)),
-                  labelStyle: Theme.of(context).textTheme.bodyLarge,
-                  labelText: "Search",
-                  suffixIcon: const Icon(Icons.search)
-                ),
-                onChanged: (q) => setState(() => query = q),
-              ),
+              SearchBar(onChanged: (q) => setState(() => query = q)),
 
               ExpansionPanelList(
                 expansionCallback: (index, state) => setState(() => expansions[ordered[index].id!] = !state),

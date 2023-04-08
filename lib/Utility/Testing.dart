@@ -8,6 +8,7 @@ import 'package:falcon_net/Model/Database/UnitData.dart';
 import 'package:falcon_net/Model/Database/UnitGrades.dart';
 import 'package:falcon_net/Model/Database/UnitSummary.dart';
 import 'package:falcon_net/Model/Database/UserPersonalInfo.dart';
+import 'package:falcon_net/Model/Database/UserStatus.dart';
 import 'package:falcon_net/Model/Database/UserSummary.dart';
 
 import '../Model/Database/User.dart';
@@ -22,21 +23,20 @@ String randString(int lengthOfString){
 }
 
 ///For local testing purposes only
-List<User> generateMembers(int count, String status, String unit) {
+List<User> generateMembers(int count, UserStatus status, String unit) {
   List<User> members = [];
 
   for (int i = 0; i < count; i++) {
     DateTime di = DateTime(2000);
-    if (status == "signed") {
+    if (status == UserStatus.signed) {
       di = DateTime.now().subtract(const Duration(hours: 1));
     }
     CadetPass? pass;
-    if (status == "out") {
+    if (status == UserStatus.out) {
       pass = CadetPass((p) => p
           ..sca_number = "q42345"
-          ..zip_code = "50035"
           ..end_time = DateTime(3000)
-          ..start_time = DateTime.now().subtract(Duration(days: 1))
+          ..start_time = DateTime.now().subtract(const Duration(days: 1))
           ..description = "Spondors"
           ..state = "Coorsorado"
           ..cadet_id = "asdfklasjdf;lasd"
@@ -56,7 +56,7 @@ List<User> generateMembers(int count, String status, String unit) {
       ).toBuilder()
       ..accountability = CadetAccountability((a) => a
           ..di_last_signed = di
-          ..di_signed_by = status == "signed" ? "narp" : null
+          ..di_signed_by = status == UserStatus.signed ? "narp" : null
           ..current_pass = pass?.toBuilder()
       ).toBuilder()
       ..id = randString(15)
@@ -69,9 +69,9 @@ List<User> generateMembers(int count, String status, String unit) {
 
 ///For local testing purposes only
 UnitData generateUnit(UnitSummary info) {
-  var members = generateMembers(info.signed!, "signed", info.unit.name) +
-      generateMembers(info.unsigned!, "unsigned", info.unit.name) +
-      generateMembers(info.out!, "out", info.unit.name);
+  var members = generateMembers(info.signed!, UserStatus.signed, info.unit.name) +
+      generateMembers(info.unsigned!, UserStatus.unsigned, info.unit.name) +
+      generateMembers(info.out!, UserStatus.out, info.unit.name);
   return UnitData((b) => b
       ..members = BuiltList<User>(members).toBuilder()
       ..unsigned = info.unsigned

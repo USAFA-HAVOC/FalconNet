@@ -5,7 +5,6 @@ import 'package:falcon_net/Model/Store/GlobalState.dart';
 import 'package:falcon_net/Structure/Components/ConfirmationDialog.dart';
 import 'package:falcon_net/Structure/Components/PageWidget.dart';
 import 'package:falcon_net/Structure/Components/ViewModel.dart';
-import 'package:falcon_net/Theme/Light/LightElevatedTheme.dart';
 import 'package:flutter/material.dart';
 
 ///Page Widget for signing a form one

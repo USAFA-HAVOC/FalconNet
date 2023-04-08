@@ -36,7 +36,7 @@ class VehicleMethodSubformState extends State<VehicleMethodSubform> with SingleT
   @override
   void initState() {
     super.initState();
-    if (widget.controller.value != null && widget.controller.value!.transport_type == "vehicle") {
+    if (widget.controller.value != null && widget.controller.value!.transport_type == TransportType.vehicle.name) {
       CadetLeaveTransportMethod method = widget.controller.value!;
       vehicleType = method.vehicle_type!;
       time = TextEditingController(text: method.vehicle_travel_time_hours!.toStringAsFixed(1));
@@ -84,7 +84,7 @@ class VehicleMethodSubformState extends State<VehicleMethodSubform> with SingleT
   CadetLeaveTransportMethod buildLeaveMethod() {
     if (requiresInfo(vehicleType)) {
       return CadetLeaveTransportMethod((b) => b
-          ..transport_type = "vehicle"
+          ..transport_type = TransportType.vehicle.name
           ..vehicle_driver_name = name.text
           ..vehicle_travel_time_hours = double.parse(time.text)
           ..vehicle_type = vehicleType
@@ -97,7 +97,7 @@ class VehicleMethodSubformState extends State<VehicleMethodSubform> with SingleT
     }
     else {
       return CadetLeaveTransportMethod((b) => b
-          ..transport_type = "vehicle"
+          ..transport_type = TransportType.vehicle.name
           ..vehicle_type = vehicleType
           ..vehicle_travel_time_hours = 0
           ..vehicle_driver_name = ""
@@ -120,7 +120,7 @@ class VehicleMethodSubformState extends State<VehicleMethodSubform> with SingleT
 
   @override
   Widget build(BuildContext context) {
-    bool inactive = LeaveMethodSelection.of(context).type != "vehicle";
+    bool inactive = LeaveMethodSelection.of(context).type != TransportType.vehicle.name;
 
     return Column(
       children: [
@@ -158,7 +158,7 @@ class VehicleMethodSubformState extends State<VehicleMethodSubform> with SingleT
             children: [
               TextFormField(
                 controller: time,
-                keyboardType: TextInputType.number,
+                keyboardType: const TextInputType.numberWithOptions(signed: false, decimal: true),
                 decoration: InputDecoration(
                     labelStyle: Theme.of(context).textTheme.bodyLarge,
                     labelText: "Hours of Travel"
@@ -174,6 +174,7 @@ class VehicleMethodSubformState extends State<VehicleMethodSubform> with SingleT
 
               TextFormField(
                 controller: name,
+                keyboardType: TextInputType.name,
                 decoration: InputDecoration(
                     labelStyle: Theme.of(context).textTheme.bodyLarge,
                     labelText: "Driver's Name"

@@ -2,6 +2,7 @@ import 'dart:core';
 
 import 'package:async_redux/async_redux.dart';
 import 'package:falcon_net/Model/Database/CadetPass.dart';
+import 'package:falcon_net/Model/Database/CadetPassAllocation.dart';
 import 'package:falcon_net/Model/Store/GlobalState.dart';
 import 'package:falcon_net/Structure/Components/DateFormField.dart';
 import 'package:falcon_net/Structure/Components/ViewModel.dart';
@@ -10,7 +11,15 @@ import 'package:falcon_net/Utility/TemporalFormatting.dart';
 import 'package:falcon_net/Structure/Components/TimeFormField.dart';
 import 'package:flutter/material.dart';
 
+import '../../Model/Database/PassType.dart';
 import '../../Model/Database/User.dart';
+
+class PassParameters {
+  final User user;
+  final List<CadetPass> history;
+
+  const PassParameters({required this.user, required this.history});
+}
 
 ///Form for submitting or editing a pass
 class PassForm extends StatefulWidget {
@@ -18,22 +27,24 @@ class PassForm extends StatefulWidget {
   final void Function(CadetPass pass) onSubmit;
   final void Function() onCancel;
 
+  final CadetPassAllocation allocation;
+
   //Existing pass to be edited
   final CadetPass? existing;
 
-  PassForm(
-      {super.key,
+  PassForm({
+      super.key,
       required this.onSubmit,
       required this.onCancel,
-      CadetPass? editing})
-      : existing = editing?.toLocal();
+      required this.allocation,
+      CadetPass? editing
+  }) : existing = editing?.toLocal();
 
   @override
   State<PassForm> createState() => PassFormState();
 }
 
-class PassFormState extends State<PassForm>
-    with SingleTickerProviderStateMixin {
+class PassFormState extends State<PassForm> with SingleTickerProviderStateMixin {
   //Key for maintaining access to form state across redraws
   final key = GlobalKey<FormState>();
 
@@ -45,7 +56,6 @@ class PassFormState extends State<PassForm>
   late TextEditingController descriptionController;
   late String state;
   late TextEditingController cityController;
-  late TextEditingController zipController;
 
   //Controllers for expansion animation
   late final AnimationController animationController = AnimationController(
@@ -62,13 +72,14 @@ class PassFormState extends State<PassForm>
   @override
   void initState() {
     super.initState();
-    type = DateTime.now().weekday < 5 ? "weekday" : "weekend";
+    type = DateTime.now().weekday < 5 ? PassType.day.name : PassType.weekend.name;
 
     if (widget.existing != null) {
       dateValue = describeDate(widget.existing!.end_time);
       timeValue =
           describeTime(TimeOfDay.fromDateTime(widget.existing!.end_time));
-    } else {
+    }
+    else {
       var offset = DateTime.now().add(const Duration(hours: 2));
       dateValue = describeDate(offset);
       timeValue = describeTime(TimeOfDay.fromDateTime(offset));
@@ -80,8 +91,6 @@ class PassFormState extends State<PassForm>
     state = widget.existing?.state ?? "Colorado";
     cityController = TextEditingController(
         text: widget.existing?.city ?? "Colorado Springs");
-    zipController =
-        TextEditingController(text: widget.existing?.zip_code ?? "80841");
   }
 
   @override
@@ -93,17 +102,22 @@ class PassFormState extends State<PassForm>
   ///Maximizes pass duration based on pass type and current time
   void maximizePass() {
     //Implement a model call to determine latest possible time
-    DateTime now = DateTime.now();
-    DateTime last = DateTime(now.year, now.month, now.day, 19, 50);
+    var last = PassTypeNames.parse(type).duration(widget.allocation.class_year_idx);
 
-    if (type == "weekend") {
-      last = last.add(Duration(days: 7 - now.weekday));
+    if (last != null) {
+      setState(() {
+        dateValue = describeDate(last);
+        timeValue = describeTime(TimeOfDay(hour: last.hour, minute: last.minute));
+      });
     }
 
-    setState(() {
-      dateValue = describeDate(last);
-      timeValue = describeTime(TimeOfDay(hour: last.hour, minute: last.minute));
-    });
+    else {
+      var def = DateTime.now().add(const Duration(days: 1));
+      setState(() {
+        dateValue = describeDate(def);
+        timeValue = describeTime(TimeOfDay(hour: def.hour, minute: def.minute));
+      });
+    }
   }
 
   ///Format pass object based on form data
@@ -122,33 +136,38 @@ class PassFormState extends State<PassForm>
       ..sca_number = scaController.text == "" ? null : scaController.text
       ..city = cityController.text
       ..state = state
-      ..zip_code = zipController.text
     ).toUtc();
   }
 
   ///Builds type options based on current date
-  List<DropdownMenuItem<String>> buildTypeOptions(bool overnight) {
+  List<DropdownMenuItem<String>> buildTypeOptions(CadetPassAllocation allocation) {
     Map<String, String> options = <String, String>{
-      "Discretionary": "discretionary",
-      "SCA": "sca",
-      "eSSS": "esss",
+      PassType.discretionary.description() : PassType.discretionary.name,
+      PassType.sca.description() : PassType.sca.name,
+      PassType.esss.description() : PassType.esss.name,
     };
 
-    if (DateTime.now().weekday < 5) {
+    if (DateTime.now().weekday < DateTime.friday) {
       options.addAll({
-        "Weekday Sign-Out Period": "weekday"
+        PassType.day.description(): PassType.day.name
       });
-      if (overnight) {
+      if ((allocation.weekday_overnight_passes ?? 1) > 0 && allocation.class_year_idx != 0) {
         options.addAll({
-          "Weekday Overnight" : "weekday-overnight"
+          PassType.weekday_overnight.description() : PassType.weekday_overnight.name
         });
       }
     }
     else {
-      options.addAll({
-        "Weekend Sign-Out Period": "weekend",
-        "Weekend Overnight" : "weekend-overnight"
-      });
+      if (allocation.class_year_idx == 0 && DateTime.now().weekday == DateTime.sunday) {
+        options.addAll({
+          PassType.sunday.description() : PassType.sunday.name
+        });
+      }
+      if ((allocation.weekend_overnight_passes ?? 1) > 0) {
+        options.addAll({
+          PassType.weekend.description() : PassType.weekend.name
+        });
+      }
     }
 
     return options.map(
@@ -168,56 +187,15 @@ class PassFormState extends State<PassForm>
   ///Builds state menu options
   List<DropdownMenuItem<String>> buildStateOptions() {
     List<String> options = <String>[
-      "Alaska",
-      "Alabama",
-      "Arkansas",
-      "Arizona",
-      "California",
-      "Colorado",
-      "Connecticut",
-      "District of Columbia",
-      "Delaware",
-      "Florida",
-      "Georgia",
-      "Hawaii",
-      "Iowa",
-      "Idaho",
-      "Illinois",
-      "Indiana",
-      "Kansas",
-      "Kentucky",
-      "Louisiana",
-      "Massachusetts",
-      "Maryland",
-      "Maine",
-      "Michigan",
-      "Minnesota",
-      "Missouri",
-      "Mississippi",
-      "Montana",
-      "North Carolina",
-      "North Dakota",
-      "Nebraska",
-      "New Hampshire",
-      "New Jersey",
-      "New Mexico",
-      "Nevada",
-      "New York",
-      "Ohio",
-      "Oklahoma",
-      "Oregon",
-      "Pennsylvania",
-      "Rhode Island",
-      "South Carolina",
-      "South Dakota",
-      "Tennessee",
-      "Texas",
-      "Utah",
-      "Virginia",
-      "Vermont",
-      "Washington",
-      "Wisconsin",
-      "West Virginia",
+      "Alaska", "Alabama", "Arkansas", "Arizona", "California", "Colorado",
+      "Connecticut", "District of Columbia", "Delaware", "Florida", "Georgia",
+      "Hawaii", "Iowa", "Idaho", "Illinois", "Indiana", "Kansas", "Kentucky",
+      "Louisiana", "Massachusetts", "Maryland", "Maine", "Michigan",
+      "Minnesota", "Missouri", "Mississippi", "Montana", "North Carolina",
+      "North Dakota", "Nebraska", "New Hampshire", "New Jersey", "New Mexico",
+      "Nevada", "New York", "Ohio", "Oklahoma", "Oregon", "Pennsylvania",
+      "Rhode Island", "South Carolina", "South Dakota", "Tennessee", "Texas",
+      "Utah", "Virginia", "Vermont", "Washington", "Wisconsin", "West Virginia",
       "Wyoming",
     ];
 
@@ -235,9 +213,14 @@ class PassFormState extends State<PassForm>
 
   @override
   Widget build(BuildContext context) {
-    return StoreConnector<GlobalState, ViewModel<User>>(
-        converter: (store) =>
-            ViewModel<User>(store: store, content: store.state.user),
+    return StoreConnector<GlobalState, ViewModel<PassParameters>>(
+        converter: (store) => ViewModel<PassParameters>(
+            store: store,
+            content: PassParameters(
+              user: store.state.user,
+              history: store.state.history!.history.toList()
+            )
+        ),
         builder: (context, model) => Form(
             key: key,
             child: ListView(
@@ -258,7 +241,7 @@ class PassFormState extends State<PassForm>
                       //Called when a new type options is selected
                       onChanged: (value) {
                         //If sca is selected, extend sca number option
-                        if (value == "sca") {
+                        if (value == PassType.sca.name) {
                           animationController.animateTo(1.0);
                         }
 
@@ -271,7 +254,7 @@ class PassFormState extends State<PassForm>
                         //Set value
                         type = value!;
                       },
-                      items: buildTypeOptions((model.content.pass_allocation?.weekday_overnight_passes ?? 0) > 0),
+                      items: buildTypeOptions(widget.allocation),
                     ),
 
                     const SizedBox(
@@ -287,6 +270,7 @@ class PassFormState extends State<PassForm>
                         children: [
                           TextFormField(
                             controller: scaController,
+                            keyboardType: TextInputType.number,
                             decoration: InputDecoration(
                                 labelStyle:
                                     Theme.of(context).textTheme.bodyLarge,
@@ -296,7 +280,7 @@ class PassFormState extends State<PassForm>
 
                             //Requires input only if selected pass type is sca
                             validator: (content) {
-                              if (type == "sca") {
+                              if (type == PassType.sca.name) {
                                 return InputValidation.stringLength(
                                     emptyMessage: "Please enter an SCA number"
                                 )(content);
@@ -320,7 +304,7 @@ class PassFormState extends State<PassForm>
                       ),
                       style: Theme.of(context).textTheme.bodyLarge,
                       validator: InputValidation.stringLength(
-                          emptyMessage: "Please enter a description"
+                          emptyMessage: "Please enter an address"
                       ),
                     ),
 
@@ -347,38 +331,17 @@ class PassFormState extends State<PassForm>
                       height: 10,
                     ),
 
-                    Row(
-                      children: [
-                        Expanded(
-                          flex: 7,
-                          child: TextFormField(
-                            controller: cityController,
-                            decoration: InputDecoration(
-                                labelStyle:
-                                    Theme.of(context).textTheme.bodyLarge,
-                                labelText: "City"),
-                            style: Theme.of(context).textTheme.bodyLarge,
-                            validator: InputValidation.stringLength(
-                                emptyMessage: "Please enter a city"),
-                          ),
-                        ),
-
-                        const Spacer(flex: 1),
-
-                        Expanded(
-                          flex: 3,
-                          child: TextFormField(
-                            controller: zipController,
-                            decoration: InputDecoration(
-                                labelStyle: Theme.of(context).textTheme.bodyLarge,
-                                labelText: "Zip"
-                            ),
-                            style: Theme.of(context).textTheme.bodyLarge,
-                            validator: InputValidation.stringLength(
-                                emptyMessage: "Please enter a zip code"),
-                          ),
-                        ),
-                      ],
+                    TextFormField(
+                      controller: cityController,
+                      keyboardType: TextInputType.text,
+                      decoration: InputDecoration(
+                          labelStyle:
+                          Theme.of(context).textTheme.bodyLarge,
+                          labelText: "City"
+                      ),
+                      style: Theme.of(context).textTheme.bodyLarge,
+                      validator: InputValidation.stringLength(
+                          emptyMessage: "Please enter a city"),
                     ),
 
                     const SizedBox(
@@ -392,7 +355,15 @@ class PassFormState extends State<PassForm>
                           child: DateFormField(
                             value: dateValue,
                             label: "Return Date",
-                            validator: InputValidation.date(),
+                            validator: (date) {
+                              var max = PassTypeNames.parse(type).duration(widget.allocation.class_year_idx);
+                              if (max != null && date != null) {
+                                if (combineDate(parseDate(date), parseTime(timeValue)).isAfter(max)) {
+                                  return "Exceeds pass limits";
+                                }
+                              }
+                              return InputValidation.date()(date);
+                            },
                             onChanged: (change) {
                               setState(() {
                                 dateValue = change;
@@ -408,7 +379,16 @@ class PassFormState extends State<PassForm>
                           child: TimeFormField(
                             value: timeValue,
                             label: "Return Time",
-                            validator: InputValidation.time(date: parseDate(dateValue)),
+                            validator: (time) {
+                              var max = PassTypeNames.parse(type).duration(widget.allocation.class_year_idx);
+                              if (max != null && time != null) {
+                                if (combineDate(parseDate(dateValue), parseTime(time)).isAfter(max)) {
+                                  return "Exceeds pass limits";
+                                }
+                              }
+
+                              return InputValidation.time(date: parseDate(dateValue))(time);
+                            },
                             onChanged: (change) {
                               setState(() {
                                 timeValue = change;
@@ -451,13 +431,15 @@ class PassFormState extends State<PassForm>
                               onPressed: () {
                                 //If form entries are valid, call submission closure with formatted pass
                                 if (key.currentState!.validate()) {
-                                  widget.onSubmit(formatPass(model.content.id!));
+                                  widget.onSubmit(formatPass(model.content.user.id!));
                                 }
                               },
                               child: Padding(
                                 padding: const EdgeInsets.symmetric(vertical: 10),
-                                child: Text('Submit',
-                                    style: Theme.of(context).textTheme.labelLarge),
+                                child: Text(
+                                    'Submit',
+                                    style: Theme.of(context).textTheme.labelLarge
+                                ),
                               ),
                             ),
                           ),

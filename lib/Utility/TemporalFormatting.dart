@@ -56,6 +56,6 @@ String formatWeekday(int day) {
     case 5: return "Friday";
     case 6: return "Saturday";
     case 7: return "Sunday";
-    default: return "Noday";
+    default: throw Exception("Unrecognized day code");
   }
 }

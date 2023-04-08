@@ -15,7 +15,6 @@ abstract class CadetPass implements Built<CadetPass, CadetPassBuilder> {
   String? get sca_number;
   String get city;
   String get state;
-  String get zip_code;
 
   CadetPass toUtc() {
     return rebuild((p) => p

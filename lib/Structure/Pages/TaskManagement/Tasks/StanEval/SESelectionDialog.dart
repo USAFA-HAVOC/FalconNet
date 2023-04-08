@@ -3,6 +3,7 @@ import 'package:go_router/go_router.dart';
 import 'package:string_similarity/string_similarity.dart';
 
 import '../../../../Components/InfoBar.dart';
+import '../../../../Components/SearchBar.dart';
 
 class SESelectionDialog<T> extends StatefulWidget {
   final Map<String, T> contents;
@@ -44,15 +45,7 @@ class SESelectionDialogState<T> extends State<SESelectionDialog> {
                   );
                 }
                 else if (index == 1) {
-                  return TextField(
-                    decoration: InputDecoration(
-                        border: OutlineInputBorder(borderSide: BorderSide(color: Theme.of(context).dividerColor), borderRadius: BorderRadius.circular(10)),
-                        labelStyle: Theme.of(context).textTheme.bodyLarge,
-                        labelText: "Search",
-                        suffixIcon: const Icon(Icons.search)
-                    ),
-                    onChanged: (q) => setState(() => query = q),
-                  );
+                  return SearchBar(onChanged: (q) => setState(() => query = q));
                 }
                 else {
                   var member = ordered[index - 2];
