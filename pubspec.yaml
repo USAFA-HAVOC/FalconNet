@@ -55,7 +55,7 @@ dependencies:
   dartz: ^0.10.1
   flutter_signin_button: ^2.0.0
   flutter_time_picker_spinner: ^2.0.0
-  flutter_native_splash: ^2.2.19
+  flutter_native_splash: any
   fl_chart: ^0.61.0
   firebase_analytics: ^10.1.5
   flutter_local_notifications: ^8.2.0
