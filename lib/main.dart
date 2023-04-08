@@ -3,10 +3,7 @@ import 'dart:async';
 import 'package:aad_oauth/model/config.dart';
 import 'package:async_redux/async_redux.dart';
 import 'package:built_collection/built_collection.dart';
-import 'package:falcon_net/Model/Database/CadetAccountability.dart';
-import 'package:falcon_net/Model/Database/CadetPassAllocation.dart';
 import 'package:falcon_net/Model/Database/User.dart';
-import 'package:falcon_net/Model/Database/UserNotification.dart';
 import 'package:falcon_net/Model/Database/UserPersonalInfo.dart';
 import 'package:falcon_net/Model/Store/Actions/GlobalAction.dart';
 import 'package:falcon_net/Model/Store/Actions/SettingsAction.dart';
@@ -40,32 +37,24 @@ void main() async {
         ..status = AppStatus.loading
         ..user = User((b2) => b2
           ..id = ""
+          ..roles = ListBuilder()
           ..personal_info = UserPersonalInfo((b3) => b3
-            ..full_name = "Ethan Chapman"
-            ..email = "C26Ethan.Chapman@afacademy.af.edu"
-            ..phone_number = "3037461308"
-            ..room_number = "Vandy 6D6"
-            ..squadron = 18
-            ..group = "CG02"
-            ..unit = "CS18").toBuilder()
-          ..pass_allocation = CadetPassAllocation((b3) => b3
-            ..individual_pass_status = true
-            ..effective_pass_status = true
-            ..class_year_idx = 3
-            ..weekday_day_passes = 0
-            ..weekday_overnight_passes = 0
-            ..weekend_overnight_passes = 0).toBuilder()
-          ..accountability = CadetAccountability((b3) => b3
-            ..di_last_signed = DateTime.now().toUtc()
-            ..di_signed_by = ""
-            ..di_signed_name = "").toBuilder()).toBuilder()
-        ..notifications = ListBuilder<UserNotification>([])
+              ..full_name = "Ethan Chapman"
+              ..email = "C26Ethan.Chapman@afacademy.af.edu"
+              ..phone_number = "3037461308"
+              ..room_number = "Vandy 6D6"
+              ..squadron = 18
+              ..group = "CG02"
+              ..unit = "CS18"
+            ).toBuilder()
+          ).toBuilder()
         ..settings = UserSettings((b2) => b2
-          ..theme = "light"
-          ..taskPush = true
-          ..diPush = true
-          ..passPush = true
-          ..pushNotifications = true).toBuilder()
+            ..theme = "light"
+            ..taskPush = false
+            ..diPush = false
+            ..passPush = false
+            ..pushNotifications = false
+          ).toBuilder()
       )
   );
 

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../Model/Database/GradeType.dart';
 import '../../Model/Database/UnitGrades.dart';
 import '../../Model/Database/UserGrades.dart';
 import 'GradeBoard.dart';
@@ -15,12 +16,12 @@ class GradeAveragesWidget extends StatelessWidget {
         ami = !unit.grades.values.any((grade) => grade.amis.isNotEmpty)
             ? "NA"
             : GradeBoard.fromUnitGrades(unit: unit)
-                .average("ami")
+                .average(GradeType.ami)
                 .toStringAsFixed(0),
         sami = !unit.grades.values.any((grade) => grade.samis.isNotEmpty)
             ? "NA"
             : GradeBoard.fromUnitGrades(unit: unit)
-                .average("sami")
+                .average(GradeType.sami)
                 .toStringAsFixed(0);
 
   GradeAveragesWidget.user({super.key, required UserGrades user, this.onTap, this.label = "Averages"}) :

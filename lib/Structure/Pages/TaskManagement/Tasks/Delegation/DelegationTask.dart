@@ -37,7 +37,11 @@ class DelegationTaskState extends State<DelegationTask> {
 
   Future<List<User>> retrieveData() async {
     try {
-      if (widget.owner.any((role) => role.role == Roles.fn_admin.name || role.role == Roles.wing_admin.name)) {
+      if (widget.owner.any((role) =>
+        role.role == Roles.fn_admin.name ||
+        role.role == Roles.wing_admin.name ||
+        role.role == Roles.group_admin.name
+      )) {
         return (await Endpoints.getUsers(null)).users.toList();
       }
       else {

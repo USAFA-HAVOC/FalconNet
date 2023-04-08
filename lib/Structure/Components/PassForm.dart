@@ -14,6 +14,13 @@ import 'package:flutter/material.dart';
 import '../../Model/Database/PassType.dart';
 import '../../Model/Database/User.dart';
 
+class PassParameters {
+  final User user;
+  final List<CadetPass> history;
+
+  const PassParameters({required this.user, required this.history});
+}
+
 ///Form for submitting or editing a pass
 class PassForm extends StatefulWidget {
   //Closures for submission and cancellation
@@ -207,9 +214,14 @@ class PassFormState extends State<PassForm>
 
   @override
   Widget build(BuildContext context) {
-    return StoreConnector<GlobalState, ViewModel<User>>(
-        converter: (store) =>
-            ViewModel<User>(store: store, content: store.state.user),
+    return StoreConnector<GlobalState, ViewModel<PassParameters>>(
+        converter: (store) => ViewModel<PassParameters>(
+            store: store,
+            content: PassParameters(
+              user: store.state.user,
+              history: store.state.history!.history.toList()
+            )
+        ),
         builder: (context, model) => Form(
             key: key,
             child: ListView(
@@ -292,7 +304,7 @@ class PassFormState extends State<PassForm>
                       ),
                       style: Theme.of(context).textTheme.bodyLarge,
                       validator: InputValidation.stringLength(
-                          emptyMessage: "Please enter a description"
+                          emptyMessage: "Please enter an address"
                       ),
                     ),
 
@@ -417,7 +429,7 @@ class PassFormState extends State<PassForm>
                               onPressed: () {
                                 //If form entries are valid, call submission closure with formatted pass
                                 if (key.currentState!.validate()) {
-                                  widget.onSubmit(formatPass(model.content.id!));
+                                  widget.onSubmit(formatPass(model.content.user.id!));
                                 }
                               },
                               child: Padding(

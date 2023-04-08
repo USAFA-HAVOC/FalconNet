@@ -1,5 +1,5 @@
+import '../../../../../Model/Database/GradeType.dart';
 import '../../../../../Model/Database/UnitGrades.dart';
-import '../../../../../Model/Database/UserGrades.dart';
 import '../../../../../Model/Database/UserSummary.dart';
 
 class SEParameters {
@@ -10,7 +10,7 @@ class SEParameters {
 }
 
 class SEEventParameters {
-  final String type;
+  final GradeType type;
   final int index;
   final List<UserSummary> members;
 

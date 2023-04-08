@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:fluttericon/font_awesome5_icons.dart';
 
 import '../../../../../Model/Database/User.dart';
+import '../../../../../Model/Database/UserStatus.dart';
 import '../../../../Components/ConfirmationDialog.dart';
 import '../../../../Components/InfoBar.dart';
 
@@ -14,7 +15,7 @@ class SignBox extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    bool signable = user.status() == "unsigned";
+    bool signable = user.status() == UserStatus.unsigned;
 
     return InfoBar(
       exteriorPadding: const EdgeInsets.symmetric(vertical: 3),

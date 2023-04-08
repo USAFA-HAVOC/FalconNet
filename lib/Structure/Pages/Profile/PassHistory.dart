@@ -16,7 +16,7 @@ class PassHistory extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return StoreConnector<GlobalState, ViewModel<List<CadetPass>>>(
-        converter: (store) => ViewModel<List<CadetPass>>(store: store, content: store.state.history.history.toList()),
+        converter: (store) => ViewModel<List<CadetPass>>(store: store, content: store.state.history!.history.toList()),
         builder: (context, model) {
 
           var mutable = model.content;

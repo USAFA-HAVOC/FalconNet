@@ -1,3 +1,5 @@
+import 'package:falcon_net/Model/Database/GradeType.dart';
+
 import '../../Model/Database/UnitGrades.dart';
 import '../../Model/Database/UserGrades.dart';
 import '../../Model/Database/UserSummary.dart';
@@ -7,17 +9,12 @@ class GradeBoard {
   Map<int, Map<UserSummary, Grade>> samis;
   Map<int, Map<UserSummary, Grade>> pais;
 
-  Map<UserSummary, Grade> getRow(String type, int index) {
-    if (type == "ami") {
-      return amis[index]!;
+  Map<UserSummary, Grade> getRow(GradeType type, int index) {
+    switch (type) {
+      case GradeType.ami: return amis[index]!;
+      case GradeType.sami: return samis[index]!;
+      case GradeType.pai: return pais[index]!;
     }
-    else if (type == "sami") {
-      return samis[index]!;
-    }
-    else if (type == "pai") {
-      return pais[index]!;
-    }
-    throw Exception("Cannot retrieve event of type $type!");
   }
 
   GradeBoard({required this.amis, required this.samis, required this.pais});
@@ -51,22 +48,20 @@ class GradeBoard {
     }
   }
 
-  double average(String type) {
+  double average(GradeType type) {
     Map<int, Map<UserSummary, Grade>> relevant;
     switch (type) {
-      case "ami": {
+      case GradeType.ami:
         relevant = amis;
         break;
-      }
-      case "sami": {
+
+      case GradeType.sami:
         relevant = samis;
         break;
-      }
-      case "pai": {
+
+      case GradeType.pai:
         relevant = pais;
         break;
-      }
-      default: throw Exception("Unrecognized score type");
     }
     var scores = relevant.entries.map((e) => e.value.values)
         .reduce((carry, value) => carry.toList() + value.toList())

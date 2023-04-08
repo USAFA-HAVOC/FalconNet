@@ -12,15 +12,13 @@ class _$GlobalState extends GlobalState {
   @override
   final User user;
   @override
-  final PassHistoryModel history;
-  @override
-  final BuiltList<UserNotification> notifications;
+  final PassHistoryModel? history;
   @override
   final UserSettings settings;
   @override
-  final UserGrades grades;
+  final UserGrades? grades;
   @override
-  final BuiltList<FormSummary> forms;
+  final BuiltList<FormSummary>? forms;
   @override
   final CadetLeave? leave;
   @override
@@ -32,22 +30,16 @@ class _$GlobalState extends GlobalState {
   _$GlobalState._(
       {required this.status,
       required this.user,
-      required this.history,
-      required this.notifications,
+      this.history,
       required this.settings,
-      required this.grades,
-      required this.forms,
+      this.grades,
+      this.forms,
       this.leave,
       this.pass})
       : super._() {
     BuiltValueNullFieldError.checkNotNull(status, r'GlobalState', 'status');
     BuiltValueNullFieldError.checkNotNull(user, r'GlobalState', 'user');
-    BuiltValueNullFieldError.checkNotNull(history, r'GlobalState', 'history');
-    BuiltValueNullFieldError.checkNotNull(
-        notifications, r'GlobalState', 'notifications');
     BuiltValueNullFieldError.checkNotNull(settings, r'GlobalState', 'settings');
-    BuiltValueNullFieldError.checkNotNull(grades, r'GlobalState', 'grades');
-    BuiltValueNullFieldError.checkNotNull(forms, r'GlobalState', 'forms');
   }
 
   @override
@@ -64,7 +56,6 @@ class _$GlobalState extends GlobalState {
         status == other.status &&
         user == other.user &&
         history == other.history &&
-        notifications == other.notifications &&
         settings == other.settings &&
         grades == other.grades &&
         forms == other.forms &&
@@ -78,7 +69,6 @@ class _$GlobalState extends GlobalState {
     _$hash = $jc(_$hash, status.hashCode);
     _$hash = $jc(_$hash, user.hashCode);
     _$hash = $jc(_$hash, history.hashCode);
-    _$hash = $jc(_$hash, notifications.hashCode);
     _$hash = $jc(_$hash, settings.hashCode);
     _$hash = $jc(_$hash, grades.hashCode);
     _$hash = $jc(_$hash, forms.hashCode);
@@ -94,7 +84,6 @@ class _$GlobalState extends GlobalState {
           ..add('status', status)
           ..add('user', user)
           ..add('history', history)
-          ..add('notifications', notifications)
           ..add('settings', settings)
           ..add('grades', grades)
           ..add('forms', forms)
@@ -119,12 +108,6 @@ class GlobalStateBuilder implements Builder<GlobalState, GlobalStateBuilder> {
   PassHistoryModelBuilder get history =>
       _$this._history ??= new PassHistoryModelBuilder();
   set history(PassHistoryModelBuilder? history) => _$this._history = history;
-
-  ListBuilder<UserNotification>? _notifications;
-  ListBuilder<UserNotification> get notifications =>
-      _$this._notifications ??= new ListBuilder<UserNotification>();
-  set notifications(ListBuilder<UserNotification>? notifications) =>
-      _$this._notifications = notifications;
 
   UserSettingsBuilder? _settings;
   UserSettingsBuilder get settings =>
@@ -155,11 +138,10 @@ class GlobalStateBuilder implements Builder<GlobalState, GlobalStateBuilder> {
     if ($v != null) {
       _status = $v.status;
       _user = $v.user.toBuilder();
-      _history = $v.history.toBuilder();
-      _notifications = $v.notifications.toBuilder();
+      _history = $v.history?.toBuilder();
       _settings = $v.settings.toBuilder();
-      _grades = $v.grades.toBuilder();
-      _forms = $v.forms.toBuilder();
+      _grades = $v.grades?.toBuilder();
+      _forms = $v.forms?.toBuilder();
       _leave = $v.leave?.toBuilder();
       _pass = $v.pass?.toBuilder();
       _$v = null;
@@ -189,11 +171,10 @@ class GlobalStateBuilder implements Builder<GlobalState, GlobalStateBuilder> {
               status: BuiltValueNullFieldError.checkNotNull(
                   status, r'GlobalState', 'status'),
               user: user.build(),
-              history: history.build(),
-              notifications: notifications.build(),
+              history: _history?.build(),
               settings: settings.build(),
-              grades: grades.build(),
-              forms: forms.build(),
+              grades: _grades?.build(),
+              forms: _forms?.build(),
               leave: _leave?.build(),
               pass: _pass?.build());
     } catch (_) {
@@ -202,15 +183,13 @@ class GlobalStateBuilder implements Builder<GlobalState, GlobalStateBuilder> {
         _$failedField = 'user';
         user.build();
         _$failedField = 'history';
-        history.build();
-        _$failedField = 'notifications';
-        notifications.build();
+        _history?.build();
         _$failedField = 'settings';
         settings.build();
         _$failedField = 'grades';
-        grades.build();
+        _grades?.build();
         _$failedField = 'forms';
-        forms.build();
+        _forms?.build();
         _$failedField = 'leave';
         _leave?.build();
         _$failedField = 'pass';

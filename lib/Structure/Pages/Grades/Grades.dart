@@ -3,7 +3,6 @@ import 'package:falcon_net/Model/Database/UserGrades.dart';
 import 'package:falcon_net/Model/Store/GlobalState.dart';
 import 'package:falcon_net/Structure/Components/FNPage.dart';
 import 'package:falcon_net/Structure/Components/GradeAveragesWidget.dart';
-import 'package:falcon_net/Structure/Components/PageWidget.dart';
 import 'package:falcon_net/Structure/Pages/Grades/GradePanel.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
@@ -26,7 +25,7 @@ class Grades extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return StoreConnector<GlobalState, ViewModel<UserGrades>>(
-      converter: (store) => ViewModel<UserGrades>(store: store, content: store.state.grades),
+      converter: (store) => ViewModel<UserGrades>(store: store, content: store.state.grades!),
       builder: (context, model) => FNPage(
         title: "Grades",
         children: [
