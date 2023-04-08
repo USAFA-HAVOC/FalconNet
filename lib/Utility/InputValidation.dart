@@ -20,7 +20,7 @@ class InputValidation {
   static String? Function(String?) stringLength({int? length, String? emptyMessage}) => (String? content) {
     if (content != null) {
       if (content.isNotEmpty) {
-        if (content.characters.length > (length ?? 0)) {
+        if (content.characters.length >= (length ?? 1)) {
           return null;
         }
         return "Requires ${(length ?? 0).toString()} characters";
