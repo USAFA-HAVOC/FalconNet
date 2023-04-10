@@ -7,8 +7,9 @@ import 'package:falcon_net/Structure/Components/FNPage.dart';
 import 'package:falcon_net/Structure/Components/LoadingShimmer.dart';
 import 'package:falcon_net/Structure/Components/ViewModel.dart';
 import 'package:falcon_net/Structure/Pages/Failure.dart';
+import 'package:falcon_net/Structure/Pages/Profile/Developer.dart';
 import 'package:falcon_net/Structure/Pages/TaskManagement/TaskManagement.dart';
-import 'package:falcon_net/Structure/Pages/TaskManagement/Tasks/Accountability/AccountabilityTask.dart';
+import 'package:falcon_net/Structure/Pages/TaskManagement/Tasks/AccountabilityTask.dart';
 import 'package:falcon_net/Structure/Pages/TaskManagement/Tasks/Assignment/AssignmentTask.dart';
 import 'package:falcon_net/Structure/Pages/TaskManagement/Tasks/Delegation/DelegationTask.dart';
 import 'package:falcon_net/Structure/Pages/TaskManagement/Tasks/StanEval/SEAnalytics.dart';
@@ -230,11 +231,6 @@ GoRouter fnRouter(GlobalKey<NavigatorState> key, SignState sign, bool party) => 
               builder: (context, state) => const FNBackground(child: Dashboard()),
               routes: [
                 GoRoute(
-                  path: "profile",
-                  pageBuilder: fullSlide(const Profile()),
-                ),
-
-                GoRoute(
                   path: "grades",
                   pageBuilder: fullSlide(const Grades()),
                 ),
@@ -247,6 +243,17 @@ GoRouter fnRouter(GlobalKey<NavigatorState> key, SignState sign, bool party) => 
                 GoRoute(
                   path: "pass_management",
                   pageBuilder: fullSlide(const PassManagement()),
+                ),
+
+                GoRoute(
+                    path: "profile",
+                    pageBuilder: fullSlide(const Profile()),
+                    routes: [
+                      GoRoute(
+                          path: "developer",
+                          pageBuilder: fullSlide(const Developer())
+                      )
+                    ]
                 ),
 
                 GoRoute(

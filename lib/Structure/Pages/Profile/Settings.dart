@@ -98,6 +98,27 @@ class Settings extends StatelessWidget {
               NotificationsExtension(beginOpen: model.content.pushNotifications),
 
               ElevatedButton(
+                  onPressed: () => context.push("/profile/developer"),
+                  style: Theme.of(context).extension<NegativeButtonTheme>()!.style,
+                  child: Stack(
+                    children: [
+                      Align(
+                        alignment: AlignmentDirectional.center,
+                        child: Text(
+                            "Developer Settings",
+                            style: Theme.of(context).textTheme.labelLarge
+                        ),
+                      ),
+
+                      const Align(
+                        alignment: AlignmentDirectional.centerEnd,
+                        child: Icon(Icons.developer_board),
+                      )
+                    ],
+                  )
+              ),
+
+              ElevatedButton(
                 onPressed: () => logout().then((_) => context.go("/selection")),
                 style: Theme.of(context).extension<NegativeButtonTheme>()!.style,
                 child: Stack(

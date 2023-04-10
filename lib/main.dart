@@ -15,7 +15,6 @@ import 'package:falcon_net/Services/SchedulingService.dart';
 import 'package:falcon_net/Theme/Dark/DarkTheme.dart';
 import 'package:falcon_net/Theme/Light/LightTheme.dart';
 import 'package:falcon_net/Theme/Random/RandomTheme.dart';
-import 'package:falcon_net/Utility/FNConstants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:go_router/go_router.dart';
@@ -63,7 +62,7 @@ void main() async {
     clientId: clientId,
     scope: "$clientId/FalconNet offline_access",
     // redirectUri is Optional as a default is calculated based on app type/web location
-    redirectUri: "$apiLocation/mobile_redirect",
+    redirectUri: "${APIData().apiLocation}/mobile_redirect",
     navigatorKey: navigatorKey,
     webUseRedirect: true, // default is false - on web only, forces a redirect flow instead of popup auth
     //Optional parameter: Centered CircularProgressIndicator while rendering web page in WebView
@@ -72,7 +71,9 @@ void main() async {
 
   WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
   FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
-  //Must be called first
+
+  //Must be called first and in this order
+  await APIData().init();
   await NotificationService().init();
   AuthService().init(authConfig, null);
   SchedulingService().init();
@@ -120,7 +121,7 @@ class FNAppState extends State<FNApp> {
     });
 
     attemptGetWebToken();
-    if (APIData.authenticated) {
+    if (APIData().authenticated) {
       router = fnRouter(navigatorKey, SignState.signed, false);
       ppRouter = fnRouter(navigatorKey, SignState.signed, true);
     }

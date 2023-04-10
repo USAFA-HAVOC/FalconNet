@@ -8,12 +8,12 @@ import 'package:falcon_net/Model/Database/WingData.dart';
 import 'package:falcon_net/Model/Store/Endpoints.dart';
 import 'package:falcon_net/Structure/Components/LoadingShimmer.dart';
 import 'package:falcon_net/Structure/Components/UnitStatusWidget.dart';
-import 'package:falcon_net/Structure/Pages/TaskManagement/Tasks/Signing/SigningWidget.dart';
 import 'package:flutter/material.dart';
 
 import '../../../../Model/Database/User.dart';
 import '../../../../Utility/ErrorFormatting.dart';
 import '../../../Components/AsyncPage.dart';
+import 'Shared/SigningWidget.dart';
 
 ///Page displaying information for CWOC controllers
 ///Shows statistics for groups as well as individual units

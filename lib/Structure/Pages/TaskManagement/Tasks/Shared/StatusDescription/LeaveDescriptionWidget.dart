@@ -1,7 +1,7 @@
 import 'package:falcon_net/Model/Database/CadetLeave.dart';
 import 'package:flutter/material.dart';
 
-import '../../../../Components/LeaveDescription.dart';
+import '../../../../../Components/LeaveDescription.dart';
 
 class LeaveDescriptionWidget extends StatelessWidget {
   final CadetLeave leave;

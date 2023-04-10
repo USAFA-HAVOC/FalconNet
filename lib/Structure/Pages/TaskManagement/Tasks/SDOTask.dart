@@ -1,7 +1,6 @@
 import 'package:falcon_net/Model/Database/DIRequest.dart';
 import 'package:falcon_net/Model/Store/Endpoints.dart';
 import 'package:falcon_net/Structure/Components/UnitStatusWidget.dart';
-import 'package:falcon_net/Structure/Pages/TaskManagement/Tasks/Signing/SigningWidget.dart';
 import 'package:falcon_net/Utility/ErrorFormatting.dart';
 import 'package:flutter/material.dart';
 
@@ -10,6 +9,7 @@ import '../../../../Model/Database/User.dart';
 import '../../../Components/AsyncPage.dart';
 import '../../../Components/LoadingShimmer.dart';
 import '../../../Components/PageWidget.dart';
+import 'Shared/SigningWidget.dart';
 
 ///Task for completing DI as Squadron SDO
 ///Shows present status and allows SDO to sign individuals' DIs

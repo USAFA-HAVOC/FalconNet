@@ -1,3 +1,4 @@
+import 'package:falcon_net/Structure/Pages/TaskManagement/Tasks/Shared/StatusDescription/StatusDescriptionWidget.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttericon/font_awesome5_icons.dart';
 
@@ -20,6 +21,23 @@ class SignBox extends StatelessWidget {
     return InfoBar(
       exteriorPadding: const EdgeInsets.symmetric(vertical: 3),
       interiorPadding: const EdgeInsets.symmetric(vertical: 3, horizontal: 10),
+      onTap: () => showDialog(context: context, builder: (context) => Dialog(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            const Align(
+              alignment: AlignmentDirectional.centerEnd,
+              child: CloseButton(),
+            ),
+
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 10),
+              child: StatusDescriptionWidget(user: user),
+            )
+          ],
+        ),
+      )),
       children: [
         Expanded(
           flex: 3,
