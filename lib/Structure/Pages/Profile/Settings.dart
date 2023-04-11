@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../Theme/NegativeButtonTheme.dart';
+import 'PasswordDialog.dart';
 
 ///Settings page
 ///Modifies global state settings as values are changed
@@ -98,7 +99,10 @@ class Settings extends StatelessWidget {
               NotificationsExtension(beginOpen: model.content.pushNotifications),
 
               ElevatedButton(
-                  onPressed: () => context.push("/profile/developer"),
+                  onPressed: () => showDialog(context: context, builder: (context) => PasswordDialog(
+                      onCancel: () => context.pop(),
+                      onSucceed: () => context.push("/profile/developer")
+                  )),
                   style: Theme.of(context).extension<NegativeButtonTheme>()!.style,
                   child: Stack(
                     children: [

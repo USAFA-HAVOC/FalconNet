@@ -55,7 +55,7 @@ class CWOCTaskState extends State<CWOCTask> {
       }
     }));
 
-    timer = Timer.periodic(const Duration(minutes: 1), (timer) {
+    timer = Timer.periodic(const Duration(seconds: 10), (timer) {
       setState(() {
         connection = Endpoints.getWing(null)
             .catchError((error, stackTrace) {

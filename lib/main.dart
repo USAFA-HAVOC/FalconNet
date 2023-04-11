@@ -116,7 +116,7 @@ class FNAppState extends State<FNApp> {
 
   @override
   void initState() {
-    Timer.periodic(const Duration(minutes: 5), (timer) {
+    Timer.periodic(const Duration(minutes: 1), (timer) {
       widget.store.dispatch(GlobalAction.initialize());
     });
 

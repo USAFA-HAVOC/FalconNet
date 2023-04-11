@@ -38,7 +38,7 @@ class SDOTaskState extends State<SDOTask> {
           return UnitData();
         });
 
-    timer = Timer.periodic(const Duration(minutes: 1), (timer) {
+    timer = Timer.periodic(const Duration(seconds: 10), (timer) {
       setState(() {
         future = Endpoints.getOwnUnit(null)
             .catchError((error, stackTrace) {

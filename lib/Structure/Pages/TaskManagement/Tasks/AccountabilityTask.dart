@@ -37,7 +37,7 @@ class AccountabilityTaskState extends State<AccountabilityTask> {
         List<bool>.filled(users.length, false)
     ));
 
-    timer = Timer.periodic(const Duration(minutes: 1), (timer) {
+    timer = Timer.periodic(const Duration(seconds: 10), (timer) {
       setState(() {
         connection = Endpoints.getUsers(null).then(
             (list) => list.users.where(
