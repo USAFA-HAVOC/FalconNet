@@ -10,21 +10,26 @@ import 'package:falcon_net/Model/Store/AppStatus.dart';
 import 'package:falcon_net/Model/Store/GlobalState.dart';
 import 'package:falcon_net/Services/NotificationService.dart';
 import 'package:falcon_net/Utility/ErrorFormatting.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../Database/Roles.dart';
+import '../../Database/TimedRole.dart';
 
 class GlobalAction extends ReduxAction<GlobalState> {
   final GlobalState? replacement;
   final bool init;
   final bool reset;
+  final GlobalStateBuilder Function(GlobalStateBuilder)? modification;
   final void Function()? onFail;
   final void Function()? onSucceed;
 
-  GlobalAction.set(this.replacement, {this.onFail, this.onSucceed}) : init = false, reset = false;
+  GlobalAction.set(this.replacement, {this.onFail, this.onSucceed}) : init = false, reset = false, modification = null;
 
-  GlobalAction.initialize({this.onFail, this.onSucceed}) : replacement = null, init = true, reset = false;
+  GlobalAction.modify(this.modification, {this.onFail, this.onSucceed}) : init = false, reset = false, this.replacement = null;
 
-  GlobalAction.reset({this.onFail, this.onSucceed}) : reset = true, init = false, replacement = null;
+  GlobalAction.initialize({this.onFail, this.onSucceed}) : replacement = null, init = true, reset = false, modification = null;
+
+  GlobalAction.reset({this.onFail, this.onSucceed}) : reset = true, init = false, replacement = null, modification = null;
 
   @override
   Future<GlobalState?> reduce() async {
@@ -39,7 +44,11 @@ class GlobalAction extends ReduxAction<GlobalState> {
         return state.rebuild((s) => s..status = AppStatus.loading);
       }
 
-      if (init) {
+      else if (modification != null) {
+        return modification!(state.toBuilder()).build();
+      }
+
+      else if (init) {
         await dispatch(InfoAction.retrieve(onFail: fail));
 
         if (!state.user.roles.any((r) => r.role == Roles.permanent_party.name)) {
@@ -63,7 +72,16 @@ class GlobalAction extends ReduxAction<GlobalState> {
           return state.rebuild((s) => s..status = AppStatus.failed);
         }
 
-        return state.rebuild((s) => s..status = AppStatus.nominal);
+        var nominal = state.rebuild((s) => s..status = AppStatus.nominal);
+
+        var prefs = await SharedPreferences.getInstance();
+        var devPP = prefs.getBool("dev-pp") ?? false;
+
+        if (devPP) {
+          nominal = nominal.rebuild((s) => s..user.roles.add(TimedRole((r) => r..role = Roles.permanent_party.name)));
+        }
+
+        return nominal;
       }
       else {
         onSucceed?.call();

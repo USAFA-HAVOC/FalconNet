@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:core';
 
 import 'package:falcon_net/Model/Database/DIRequest.dart';
@@ -36,12 +37,12 @@ class CWOCTaskState extends State<CWOCTask> {
   //Expansion panel states for each unit
   Map<String, bool> expansions = {};
 
+  late Timer timer;
+
   ///Requests cwoc data from backend
   @override
   void initState() {
     super.initState();
-
-    /// todo: replace with api call for unit summaries
 
     connection = Endpoints.getWing(null).onError((error, stackTrace) {
       displayError(prefix: "CWOC", exception: error!);
@@ -53,6 +54,26 @@ class CWOCTaskState extends State<CWOCTask> {
         expansions[unit.unit.name] = false;
       }
     }));
+
+    timer = Timer.periodic(const Duration(minutes: 1), (timer) {
+      setState(() {
+        connection = Endpoints.getWing(null)
+            .catchError((error, stackTrace) {
+          displayError(prefix: "CWOC", exception: error);
+          return WingData();
+        });
+      });
+
+      for (var unit in expansions.entries.where((e) => e.value).map((e) => e.key)) {
+        loadUnit(unit, null);
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    timer.cancel();
   }
 
   ///Signs for an individual signee in a given unit
@@ -76,20 +97,21 @@ class CWOCTaskState extends State<CWOCTask> {
   }
 
   ///Loads a given unit based on the unit name
-  void loadUnit(String unit, ScaffoldMessengerState messenger) async {
+  void loadUnit(String unit, ScaffoldMessengerState? messenger) async {
     var wing = await connection;
 
     try {
       UnitData actual = await Endpoints.getUnit(UnitDataRequest((b) => b..unit = unit));
       setState(() {
         connection = Future.value(wing.set(actual));
+        loaded.removeWhere((u) => u.unit.name == unit);
         loaded.add(actual);
       });
     }
 
     catch (e) {
       displayError(prefix: "CWOC", exception: e);
-      messenger.showSnackBar(
+      messenger?.showSnackBar(
           SnackBar(content: Text("Failed to load data for $unit"))
       );
     }

@@ -60,6 +60,9 @@ class IndividualStatusWidgetState extends State<IndividualStatusWidget> {
                   ..status = value
                 ));
                 setState(() => status[user.id!] = value);
+                ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                    content: Text("Successfully Modified Individual Pass Status")
+                ));
               }
               catch (error) {
                 displayError(prefix: "Unit Management", exception: error);

@@ -1,13 +1,18 @@
+import 'package:async_redux/async_redux.dart';
 import 'package:falcon_net/Structure/Components/PageWidget.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../../../Model/Store/Actions/GlobalAction.dart';
+import '../../../Model/Store/GlobalState.dart';
 import '../../Components/AsyncPage.dart';
+import '../../Components/ViewModel.dart';
 
 class DeveloperOptions {
   bool server;
+  bool permanentParty;
 
-  DeveloperOptions({this.server = false});
+  DeveloperOptions({this.server = false, this.permanentParty = false});
 }
 
 class Developer extends StatefulWidget {
@@ -29,7 +34,8 @@ class DeveloperState extends State<Developer> {
   Future<DeveloperOptions> buildOptions() async {
     var prefs = await SharedPreferences.getInstance();
     return DeveloperOptions(
-      server: prefs.getBool("dev-server") ?? false
+      server: prefs.getBool("dev-server") ?? false,
+      permanentParty: prefs.getBool("dev-pp") ?? false
     );
   }
 
@@ -76,8 +82,39 @@ class DeveloperState extends State<Developer> {
                 ),
 
                 const Text(
-                    "Must restart app to reflect API changes",
+                    "Must restart app to reflect dev setting changes",
                     textAlign: TextAlign.center,
+                )
+              ]
+          ),
+
+          PageWidget(
+              title: "Local Settings",
+              children: [
+                Row(
+                  children: [
+                    Expanded(
+                      child: Text(
+                        "Permanent Party",
+                        style: Theme.of(context).textTheme.titleSmall,
+                      ),
+                    ),
+
+                    Switch(
+                        value: options.permanentParty,
+                        onChanged: (change) {
+                          setState(() {
+                            optionsFuture = Future.value((options..permanentParty = change));
+                          });
+                          SharedPreferences.getInstance().then((prefs) => prefs.setBool("dev-pp", change));
+                        }
+                    )
+                  ],
+                ),
+
+                const Text(
+                  "Must restart app to reflect dev setting changes",
+                  textAlign: TextAlign.center,
                 )
               ]
           )

@@ -171,7 +171,7 @@ class Endpoints {
   static Endpoint<Unit, bool> editUnit = Endpoint("/unit/modify");
   static Endpoint<Unit, Unit> deleteUnit = Endpoint("/unit/delete");
   static Endpoint<PassStatusRequest, bool> setPassStatus = Endpoint("/unit/set-pass-status");
-  static Endpoint<IndividualStatusRequest, bool> setIndividualPassStatus = Endpoint("unit/set-individual-status");
+  static Endpoint<IndividualStatusRequest, bool> setIndividualPassStatus = Endpoint("/unit/set-individual-status");
 }
 
 Future<void> login(String token) async {

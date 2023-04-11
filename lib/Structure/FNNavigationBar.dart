@@ -36,7 +36,13 @@ class FNNavigationBarState extends State<FNNavigationBar> {
     router = GoRouter.of(context);
     if (first) {
       listener = () => setState(() {
-        global = RegExp(r"\b/\b").allMatches(GoRouter.of(context).location).isEmpty;
+        if (GoRouter.of(context).location.contains("/permanent_party")) {
+          global = RegExp(r"\b/\b").allMatches(GoRouter.of(context).location).length < 2;
+        }
+        else {
+          global = RegExp(r"\b/\b").allMatches(GoRouter.of(context).location).isEmpty;
+        }
+
         profile = GoRouter.of(context).location.contains("/profile");
       });
       first = false;

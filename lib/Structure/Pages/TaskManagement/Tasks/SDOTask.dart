@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:falcon_net/Model/Database/DIRequest.dart';
 import 'package:falcon_net/Model/Store/Endpoints.dart';
 import 'package:falcon_net/Structure/Components/UnitStatusWidget.dart';
@@ -24,6 +26,7 @@ class SDOTask extends StatefulWidget {
 
 class SDOTaskState extends State<SDOTask> {
   late Future<UnitData> future;
+  late Timer timer;
 
   @override
   void initState() {
@@ -34,6 +37,22 @@ class SDOTaskState extends State<SDOTask> {
           displayError(prefix: "SDO", exception: error);
           return UnitData();
         });
+
+    timer = Timer.periodic(const Duration(minutes: 1), (timer) {
+      setState(() {
+        future = Endpoints.getOwnUnit(null)
+            .catchError((error, stackTrace) {
+          displayError(prefix: "SDO", exception: error);
+          return UnitData();
+        });
+      });
+    });
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    timer.cancel();
   }
 
   void sign(User member, ScaffoldMessengerState messenger) async {

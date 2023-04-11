@@ -112,7 +112,7 @@ class Settings extends StatelessWidget {
 
                       const Align(
                         alignment: AlignmentDirectional.centerEnd,
-                        child: Icon(Icons.developer_board),
+                        child: Icon(Icons.developer_mode),
                       )
                     ],
                   )

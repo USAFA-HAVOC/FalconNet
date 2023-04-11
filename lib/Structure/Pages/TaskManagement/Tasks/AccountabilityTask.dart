@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:falcon_net/Structure/Components/AsyncPage.dart';
 import 'package:falcon_net/Structure/Components/PageWidget.dart';
 import 'package:falcon_net/Structure/Components/UnitStatusWidget.dart';
@@ -22,6 +24,7 @@ class AccountabilityTaskState extends State<AccountabilityTask> {
   String query = "";
   late Future<List<User>> connection;
   late Map<String, bool> expansions;
+  late Timer timer;
 
   @override
   void initState() {
@@ -33,6 +36,22 @@ class AccountabilityTaskState extends State<AccountabilityTask> {
         users.map((m) => m.id!),
         List<bool>.filled(users.length, false)
     ));
+
+    timer = Timer.periodic(const Duration(minutes: 1), (timer) {
+      setState(() {
+        connection = Endpoints.getUsers(null).then(
+            (list) => list.users.where(
+              (u) => !u.roles.any((r) => r.role == Roles.permanent_party.name)
+            ).toList()
+        );
+      });
+    });
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    timer.cancel();
   }
 
   List<User> search(List<User> members) {

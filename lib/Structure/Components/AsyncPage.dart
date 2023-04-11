@@ -20,21 +20,21 @@ class AsyncPage<T> extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
-      future: connection,
-      builder: (context, snapshot) {
-        if (snapshot.hasData) {
-          return FNPage(
+        future: connection,
+        builder: (context, snapshot) {
+          if (snapshot.hasData) {
+            return FNPage(
+                title: title,
+                children: builder(context, snapshot.data as T)
+            );
+          }
+          else {
+            return FNPage(
               title: title,
-              children: builder(context, snapshot.data as T)
-          );
+              children: placeholder,
+            );
+          }
         }
-        else {
-          return FNPage(
-            title: title,
-            children: placeholder,
-          );
-        }
-      }
     );
   }
 }

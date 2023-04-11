@@ -110,8 +110,14 @@ GoRouter fnRouter(GlobalKey<NavigatorState> key, SignState sign, bool party) => 
           builder: (context, state) => const FNBackground(child: PPDashboard()),
           routes: [
             GoRoute(
-              path: "profile",
-              pageBuilder: fullSlide(const Profile(party: true))
+                path: "profile",
+                pageBuilder: fullSlide(const Profile(party: true,)),
+                routes: [
+                  GoRoute(
+                      path: "developer",
+                      pageBuilder: fullSlide(const Developer())
+                  )
+                ]
             ),
 
             GoRoute(
@@ -152,15 +158,10 @@ GoRouter fnRouter(GlobalKey<NavigatorState> key, SignState sign, bool party) => 
 
             GoRoute(
               path: "delegation",
-              pageBuilder: fullSlide(DelegationTask(owner: [
-                TimedRole((r) => r
-                    ..role = Roles.permanent_party.name
-                ),
-
-                TimedRole((r) => r
-                  ..role = Roles.wing_admin.name
-                ),
-              ]))
+              pageBuilder: fullSlide(StoreConnector<GlobalState, ViewModel<List<TimedRole>>>(
+                converter: (store) => ViewModel(store: store, content: store.state.user.roles.toList()),
+                builder: (context, model) => DelegationTask(owner: model.content)
+              ))
             ),
 
             GoRoute(
