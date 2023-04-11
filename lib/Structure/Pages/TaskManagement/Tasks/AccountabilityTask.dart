@@ -43,7 +43,14 @@ class AccountabilityTaskState extends State<AccountabilityTask> {
             (list) => list.users.where(
               (u) => !u.roles.any((r) => r.role == Roles.permanent_party.name)
             ).toList()
-        );
+        )
+          ..then((members) {
+            for (var member in members) {
+              if (!expansions.containsKey(member.id!)) {
+                expansions[member.id!] = false;
+              }
+            }
+          });
       });
     });
   }

@@ -61,6 +61,13 @@ class CWOCTaskState extends State<CWOCTask> {
             .catchError((error, stackTrace) {
           displayError(prefix: "CWOC", exception: error);
           return WingData();
+        })
+        ..then((units) {
+          for (var unit in units.units) {
+            if (!expansions.containsKey(unit.unit.name)) {
+              expansions[unit.unit.name] = false;
+            }
+          }
         });
       });
 
