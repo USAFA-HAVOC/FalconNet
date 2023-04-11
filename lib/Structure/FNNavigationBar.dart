@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
+///Written by Jackson Long
 ///Overhead navigation bar
 class FNNavigationBar extends StatefulWidget {
   final String dashboardPath;
@@ -16,6 +17,7 @@ class FNNavigationBarState extends State<FNNavigationBar> {
   bool global = true;
   bool profile = false;
   bool first = true;
+
   void Function() listener = () => {};
   GoRouter? router;
 
@@ -26,13 +28,21 @@ class FNNavigationBarState extends State<FNNavigationBar> {
     router?.removeListener(listener);
   }
 
+
+  //Jackson is a massive bitch, and so is mathew
   @override
   Widget build(BuildContext context) {
 
     router = GoRouter.of(context);
     if (first) {
       listener = () => setState(() {
-        global = !GoRouter.of(context).location.contains("/task_management/");
+        if (GoRouter.of(context).location.contains("/permanent_party")) {
+          global = RegExp(r"\b/\b").allMatches(GoRouter.of(context).location).length < 2;
+        }
+        else {
+          global = RegExp(r"\b/\b").allMatches(GoRouter.of(context).location).isEmpty;
+        }
+
         profile = GoRouter.of(context).location.contains("/profile");
       });
       first = false;
@@ -105,10 +115,10 @@ class FNNavigationBarState extends State<FNNavigationBar> {
                         behavior: HitTestBehavior.opaque,
                         onTap: () {
                           if (profile) {
-                            context.go(widget.dashboardPath);
+                            context.pop();
                           }
                           else {
-                            context.go(widget.profilePath);
+                            context.push(widget.profilePath);
                           }
                         },
                         child: const Padding(

@@ -10,7 +10,6 @@ import 'package:aad_oauth/request_token.dart';
 import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
 import 'package:falcon_net/Model/Store/Endpoints.dart';
-import 'package:falcon_net/Utility/FNConstants.dart';
 import 'package:flutter/foundation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import "package:universal_html/html.dart" as html;
@@ -96,8 +95,7 @@ class AuthService extends CoreOAuth {
             queryParameters: {"refresh_token": token.refreshToken!});
         token = Token.fromJson(json.decode(res.data!));
       } catch (e) {
-        token.accessToken = null;
-        token.refreshToken = null;
+
       }
     }
 
@@ -125,7 +123,7 @@ class AuthService extends CoreOAuth {
         return Right(Token.fromJson(json.decode(_code!)));
       }
       else {
-        html.window.open(authURL, "_self");
+        html.window.open(APIData().authURL, "_self");
         return Left(AadOauthFailure(
           ErrorType.AccessDeniedOrAuthenticationCanceled,
           'Access denied or authentication canceled.',

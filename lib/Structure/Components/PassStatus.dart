@@ -21,13 +21,15 @@ class PassStatus extends StatelessWidget {
           child: StoreConnector<GlobalState, ViewModel<User>>(
               converter: (store) => ViewModel<User>(
                   store: store,
-                  content: store.state.user),
+                  content: store.state.user
+              ),
               builder: (context, model) => ScheduledBuilder(
                   id: "pass",
                   builder: (context, payload) {
                     String status;
                     String tooltip;
                     bool expired = false;
+                    bool closed = false;
 
                     if (!(model.content.accountability?.current_leave?.departure_time.isAfter(DateTime.now()) ?? true)) {
                       status = "On Leave";
@@ -38,6 +40,7 @@ class PassStatus extends StatelessWidget {
                       if (!(model.content.pass_allocation?.effective_pass_status ?? true)) {
                         status = "Here";
                         tooltip = "Passes are Closed";
+                        closed = true;
                       }
                       else {
                         status = "Here";
@@ -75,9 +78,11 @@ class PassStatus extends StatelessWidget {
                     }
                     //Display a gray card with expiration time/date
                     return Card(
-                      color: !expired
-                          ? Theme.of(context).canvasColor
-                          : Theme.of(context).colorScheme.error,
+                      color: expired
+                          ? Theme.of(context).colorScheme.error
+                          : closed
+                              ? Theme.of(context).disabledColor
+                              : Theme.of(context).canvasColor,
                       child: Padding(
                         padding: const EdgeInsets.all(20),
                         child: Column(

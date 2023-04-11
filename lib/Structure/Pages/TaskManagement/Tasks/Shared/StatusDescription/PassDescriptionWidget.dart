@@ -1,7 +1,8 @@
 import 'package:falcon_net/Utility/TemporalFormatting.dart';
 import 'package:flutter/material.dart';
 
-import '../../../../../Model/Database/CadetPass.dart';
+import '../../../../../../Model/Database/CadetPass.dart';
+
 
 class PassDescriptionWidget extends StatelessWidget {
   final CadetPass pass;

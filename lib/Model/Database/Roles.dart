@@ -1,3 +1,5 @@
+import 'package:falcon_net/Model/Database/TimedRole.dart';
+
 enum Roles {
   fn_admin,
   wing_admin,
@@ -38,4 +40,8 @@ extension RoleNames on Roles {
   static Roles parseDirect(String input) {
     return Roles.values.firstWhere((r) => r.name == input);
   }
+
+  TimedRole toIndefinite() => TimedRole((r) => r
+      ..role = name
+  );
 }
