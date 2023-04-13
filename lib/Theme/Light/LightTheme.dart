@@ -13,7 +13,7 @@ ThemeData lightTheme = ThemeData(
     textTheme: lightTextTheme,
     cardTheme: lightCardTheme,
     elevatedButtonTheme: lightButtonTheme,
-    fontFamily: "Proxima Nova",
+    fontFamily: "ProximaNova",
     iconTheme: const IconThemeData(color: Colors.black),
     canvasColor: const Color.fromARGB(255, 232, 232, 232),
     snackBarTheme: const SnackBarThemeData(

@@ -113,6 +113,9 @@ flutter:
         - asset: assets/fonts/roboto_bold.ttf
         - asset: assets/fonts/roboto_italic.ttf
           style: italic
+    - family: ProximaNova
+      fonts:
+        - asset: assets/fonts/Proxima Nova Font.otf
 
 flutter_native_splash:
   # This package generates native code to customize Flutter's default white native splash screen

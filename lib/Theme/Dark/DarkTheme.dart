@@ -13,7 +13,7 @@ ThemeData darkTheme = ThemeData(
   cardTheme: darkCardTheme,
   elevatedButtonTheme: darkButtonTheme, // Button Color
   disabledColor: const Color.fromARGB(255, 60, 60, 60),
-  fontFamily: "Proxima Nova",
+  fontFamily: 'ProximaNova',
   canvasColor: const Color.fromARGB(255, 24, 24, 24), // Darkest
   dialogBackgroundColor: darkCardTheme.color,
   iconTheme: const IconThemeData(color: Colors.white),
