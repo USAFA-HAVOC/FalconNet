@@ -177,61 +177,59 @@ class SEEventState extends State<SEEvent> {
                                     setState(() => gradees.add(member)))),
                         child: const Text("Add Cadet")),
                   ]),
-                  PageWidget(title: "Submission", children: [
-                    TextField(
-                      controller: score,
-                      decoration: InputDecoration(
-                          border: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                  color: Theme.of(context).dividerColor),
-                              borderRadius: BorderRadius.circular(10)),
-                          labelStyle: Theme.of(context).textTheme.bodyLarge,
-                          labelText: "Score",
-                          suffixIcon: const Icon(Icons.numbers),
-                          errorText: scoreError),
-                    ),
-                    TextField(
-                      controller: description,
-                      minLines: 3,
-                      maxLines: 8,
-                      style: Theme.of(context).textTheme.bodyLarge,
-                      decoration: InputDecoration(
-                          border: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                  color: Theme.of(context).dividerColor),
-                              borderRadius: BorderRadius.circular(10)),
-                          labelStyle: Theme.of(context).textTheme.bodyLarge,
-                          labelText: "Description",
-                          suffixIcon: const Icon(Icons.description),
-                          errorText: descriptionError),
-                    ),
-                    ElevatedButton(
-                      onPressed: () {
-                        if (widget.type == GradeType.ami) {
-                          showDialog(
-                            context: context,
-                            builder: (context) => SEInfoDialog(
-                              title: "Room Inspection Scoring Guide",
-                              pairs: room_inspection_deductions,
-                            ),
-                          );
-                        } else if (widget.type == GradeType.pai) {
-                          showDialog(
-                            context: context,
-                            builder: (context) => SEInfoDialog(
-                              title: "PAI Scoring Guide",
-                              pairs: pai_deductions,
-                            ),
-                          );
-                        }
-                      },
-                      child: const Text("Open Scoring Guide"),
-                    ),
-                    ElevatedButton(
-                        onPressed: () =>
-                            submit(ScaffoldMessenger.of(context), id),
-                        child: const Text("Submit")),
-                  ])
-                ]));
+                  PageWidget(
+                    title: "Submission",
+                    children: [
+                        TextField(
+                          controller: score,
+                          decoration: InputDecoration(
+                              border: OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                      color: Theme.of(context).dividerColor),
+                                  borderRadius: BorderRadius.circular(10)),
+                              labelStyle: Theme.of(context).textTheme.bodyLarge,
+                              labelText: "Score",
+                              suffixIcon: const Icon(Icons.numbers),
+                              errorText: scoreError),
+                        ),
+                        TextField(
+                          controller: description,
+                          minLines: 3,
+                          maxLines: 8,
+                          style: Theme.of(context).textTheme.bodyLarge,
+                          decoration: InputDecoration(
+                              border: OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                      color: Theme.of(context).dividerColor),
+                                  borderRadius: BorderRadius.circular(10)),
+                              labelStyle: Theme.of(context).textTheme.bodyLarge,
+                              labelText: "Description",
+                              suffixIcon: const Icon(Icons.description),
+                              errorText: descriptionError),
+                        ),
+                        ElevatedButton(
+                          onPressed: () {
+                            showDialog(
+                              context: context,
+                              builder: (context) => SEInfoDialog(
+                                title: widget.type == GradeType.pai
+                                    ? "PAI Scoring Guide"
+                                    : "Room Scoring Guide",
+                                pairs: (widget.type == GradeType.pai ? paiDeductions : roomDeductions)
+                                    .map((key, value) => MapEntry(key, value.toString())),
+                              ),
+                            );
+                          },
+                          child: const Text("Open Scoring Guide"),
+                        ),
+                        ElevatedButton(
+                            onPressed: () =>
+                                submit(ScaffoldMessenger.of(context), id),
+                            child: const Text("Submit")),
+                    ]
+                  )
+            ]
+        )
+    );
   }
 }

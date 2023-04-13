@@ -13,6 +13,7 @@ class DateFormField extends StatefulWidget {
   final String? value;
   final DateTime? firstDate;
   final DateTime? lastDate;
+  final bool instantValidation;
 
   const DateFormField({
     super.key,
@@ -21,8 +22,9 @@ class DateFormField extends StatefulWidget {
     this.onChanged,
     this.value,
     this.firstDate,
-    this.lastDate
-  });
+    this.lastDate,
+    this.instantValidation = false
+  }) : assert(instantValidation ? (validator != null) : true);
 
   @override
   State<DateFormField> createState() => DateFormFieldState();
@@ -42,6 +44,7 @@ class DateFormFieldState extends State<DateFormField> {
       style: Theme.of(context).textTheme.bodyLarge,
       decoration: InputDecoration(
           suffixIcon: const Icon(Icons.calendar_today),
+          errorText: widget.instantValidation ? widget.validator!(controller.text) : null,
           labelText: widget.label
       ),
       readOnly: true,
