@@ -124,7 +124,7 @@ class DelegationTaskState extends State<DelegationTask> {
         title: "Delegation",
         connection: connection,
         placeholder: const [
-          LoadingShimmer(height: 400,)
+          LoadingShimmer(height: 700,)
         ],
         builder: (context, members) {
           var ordered = search(members, query);

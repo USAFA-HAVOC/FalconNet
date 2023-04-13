@@ -244,10 +244,74 @@ class CWOCTaskState extends State<CWOCTask> {
     return AsyncPage(
       title: widget.label,
       connection: connection,
-      placeholder: const [
-        LoadingShimmer(height: 200,),
+      placeholder: [
+        LayoutBuilder(
+          builder: (context, constraints) {
+            //Displays a group data as grid if screen is wide enough
+            if (constraints.maxWidth > 700) {
+              return Row(
+                children: [
+                  Expanded(
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: const [
+                        LoadingShimmer(height: 200,),
 
-        LoadingShimmer(height: 400,)
+                        SizedBox(height: 20,),
+
+                        LoadingShimmer(height: 200,),
+
+                        SizedBox(height: 20,),
+                      ],
+                    ),
+                  ),
+
+                  const SizedBox(width: 20,),
+
+                  Expanded(
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: const [
+                        LoadingShimmer(height: 200,),
+
+                        SizedBox(height: 20,),
+
+                        LoadingShimmer(height: 200,),
+
+                        SizedBox(height: 20,),
+                      ],
+                    ),
+                  ),
+                ],
+              );
+            }
+
+            //Otherwise, displays in a simple column
+            else {
+              return Column(
+                children: const [
+                  LoadingShimmer(height: 200,),
+
+                  SizedBox(height: 20,),
+
+                  LoadingShimmer(height: 200,),
+
+                  SizedBox(height: 20,),
+
+                  LoadingShimmer(height: 200,),
+
+                  SizedBox(height: 20,),
+
+                  LoadingShimmer(height: 200,),
+
+                  SizedBox(height: 20,),
+                ],
+              );
+            }
+          },
+        )
       ],
       builder: (context, data) {
         var units = data.units.toList();
