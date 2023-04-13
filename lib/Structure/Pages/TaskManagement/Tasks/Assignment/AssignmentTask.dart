@@ -160,7 +160,7 @@ class AssignmentTaskState extends State<AssignmentTask> {
         placeholder: const [
           LoadingShimmer(height: 150,),
 
-          LoadingShimmer(height: 300,)
+          LoadingShimmer(height: 500,)
         ],
         builder: (context, data) {
             var potential = data.summaries.users.toList();

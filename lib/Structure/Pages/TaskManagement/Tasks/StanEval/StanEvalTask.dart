@@ -1,6 +1,7 @@
 import 'package:built_collection/built_collection.dart';
 import 'package:falcon_net/Structure/Components/AsyncPage.dart';
 import 'package:falcon_net/Structure/Components/InfoBar.dart';
+import 'package:falcon_net/Structure/Components/LoadingShimmer.dart';
 import 'package:falcon_net/Structure/Components/PageWidget.dart';
 import 'package:falcon_net/Utility/ErrorFormatting.dart';
 import 'package:flutter/material.dart';
@@ -49,6 +50,11 @@ class StanEvalTaskState extends State<StanEvalTask> {
     return AsyncPage(
         title: "Stan/Eval",
         connection: connection,
+        placeholder: const [
+          LoadingShimmer(height: 200,),
+
+          LoadingShimmer(height: 500,)
+        ],
         builder: (context, units) {
           var ordered = search(units);
           return [

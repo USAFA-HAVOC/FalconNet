@@ -24,9 +24,9 @@ class PassDescriptionWidget extends StatelessWidget {
 
           Text("State: ${pass.state}"),
 
-          Text("Start: ${describeDate(pass.start_time)} ${describeTime(TimeOfDay.fromDateTime(pass.start_time))}"),
+          Text("Start: ${describeDate(pass.start_time.toLocal())} ${describeTime(TimeOfDay.fromDateTime(pass.start_time.toLocal()))}"),
 
-          Text("End: ${describeDate(pass.end_time)} ${describeTime(TimeOfDay.fromDateTime(pass.end_time))}"),
+          Text("End: ${describeDate(pass.end_time.toLocal())} ${describeTime(TimeOfDay.fromDateTime(pass.end_time.toLocal()))}"),
         ],
       ),
     );

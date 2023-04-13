@@ -79,7 +79,7 @@ class SDOTaskState extends State<SDOTask> {
       placeholder: const [
         LoadingShimmer(height: 200,),
 
-        LoadingShimmer(height: 300,)
+        LoadingShimmer(height: 500,)
       ],
       builder: (context, data) => [
         UnitStatusWidget(data: data),

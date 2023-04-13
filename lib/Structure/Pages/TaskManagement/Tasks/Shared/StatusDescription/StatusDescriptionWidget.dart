@@ -33,7 +33,7 @@ class StatusDescriptionWidget extends StatelessWidget {
         return Padding(
           padding: const EdgeInsets.all(10),
           child: Text(
-            "DI signed by ${user.accountability!.di_signed_name} at ${describeTime(TimeOfDay.fromDateTime(user.accountability!.di_last_signed!))}",
+            "DI signed by ${user.accountability!.di_signed_name} at ${describeTime(TimeOfDay.fromDateTime(user.accountability!.di_last_signed!.toLocal()))}",
             textAlign: TextAlign.start,
           ),
         );

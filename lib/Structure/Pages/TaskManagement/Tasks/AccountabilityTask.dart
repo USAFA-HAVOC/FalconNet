@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:falcon_net/Structure/Components/AsyncPage.dart';
+import 'package:falcon_net/Structure/Components/LoadingShimmer.dart';
 import 'package:falcon_net/Structure/Components/PageWidget.dart';
 import 'package:falcon_net/Structure/Components/UnitStatusWidget.dart';
 import 'package:falcon_net/Utility/ListExtensions.dart';
@@ -108,6 +109,11 @@ class AccountabilityTaskState extends State<AccountabilityTask> {
     return AsyncPage(
       title: "Accountability",
       connection: connection,
+      placeholder: const [
+        LoadingShimmer(height: 200,),
+
+        LoadingShimmer(height: 500,)
+      ],
       builder: (context, users) {
         var ordered = search(users.toList());
 

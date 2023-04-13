@@ -20,8 +20,8 @@ class LeaveDescription extends StatelessWidget {
         }
 
       case "airline":
-        var departure = method.airline_flight_departure_time!;
-        var arrival = method.airline_flight_arrival_time!;
+        var departure = method.airline_flight_departure_time!.toLocal();
+        var arrival = method.airline_flight_arrival_time!.toLocal();
         return "Flying with ${method.airline_name} on flight #${method.airline_flight_number}. "
             "Departing at ${describeTime(TimeOfDay.fromDateTime(departure))} on ${describeDate(departure)}. "
             "Arriving at ${describeTime(TimeOfDay.fromDateTime(arrival))} on ${describeDate(arrival)}. ";
@@ -59,12 +59,12 @@ class LeaveDescription extends StatelessWidget {
             ),
 
             Text(
-              "Departure: ${describeDate(leave.departure_time)} ${describeTime(timeOf(leave.departure_time))}",
+              "Departure: ${describeDate(leave.departure_time.toLocal())} ${describeTime(timeOf(leave.departure_time.toLocal()))}",
               style: Theme.of(context).textTheme.bodyMedium,
             ),
 
             Text(
-              "Return: ${describeDate(leave.return_time)} ${describeTime(timeOf(leave.return_time))}",
+              "Return: ${describeDate(leave.return_time.toLocal())} ${describeTime(timeOf(leave.return_time.toLocal()))}",
               style: Theme.of(context).textTheme.bodyMedium,
             ),
           ],

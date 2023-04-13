@@ -183,6 +183,8 @@ class UnitManagementTaskState extends State<UnitManagementTask> {
           LoadingShimmer(height: 200,),
 
           LoadingShimmer(height: 300,),
+
+          LoadingShimmer(height: 500,),
         ],
         builder: (context, data) {
             Widget existing;

@@ -14,7 +14,7 @@ class PasswordDialog extends StatefulWidget {
 }
 
 class PasswordDialogState extends State<PasswordDialog> {
-  TextEditingController controller = TextEditingController(text: "");
+  TextEditingController password = TextEditingController(text: "");
   String? validation;
 
   @override
@@ -43,7 +43,7 @@ class PasswordDialogState extends State<PasswordDialog> {
           ),
 
           TextField(
-            controller: controller,
+            controller: password,
             onChanged: (change) => setState(() => validation = null),
             decoration: InputDecoration(
                 border: OutlineInputBorder(
@@ -74,7 +74,7 @@ class PasswordDialogState extends State<PasswordDialog> {
                 flex: 4,
                 child: ElevatedButton(
                   onPressed: () {
-                    if (controller.text == "dev-fn") {
+                    if (password.text == "dev-fn") {
                       context.pop();
                       widget.onSucceed();
                     }

@@ -1,6 +1,8 @@
 import 'package:built_collection/built_collection.dart';
 import 'package:falcon_net/Model/Database/UnitList.dart';
 import 'package:falcon_net/Model/Database/UnitSummary.dart';
+import 'package:falcon_net/Structure/Components/AsyncPage.dart';
+import 'package:falcon_net/Structure/Components/LoadingShimmer.dart';
 import 'package:falcon_net/Structure/Components/PageWidget.dart';
 import 'package:falcon_net/Structure/Pages/TaskManagement/Tasks/UnitEditor/UnitBar.dart';
 import 'package:falcon_net/Structure/Pages/TaskManagement/Tasks/UnitEditor/UnitForm.dart';
@@ -10,9 +12,7 @@ import 'package:string_similarity/string_similarity.dart';
 
 import '../../../../../Model/Database/Unit.dart';
 import '../../../../../Model/Store/Endpoints.dart';
-import '../../../../Components/AsyncPage.dart';
-import '../../../../Components/LoadingShimmer.dart';
-import '../../../../Components/SearchBar.dart';
+import '../../../../Components/FNPage.dart';
 
 class UnitEditorTask extends StatefulWidget {
   const UnitEditorTask({super.key});
@@ -133,10 +133,10 @@ class UnitEditorTaskState extends State<UnitEditorTask> {
         placeholder: const [
           LoadingShimmer(height: 300,),
 
-          LoadingShimmer(height: 400,)
+          LoadingShimmer(height: 500,),
         ],
-        builder: (context, units) {
-          var list = search(units);
+        builder: (context, data) {
+          var list = search(data);
           return [
             PageWidget(
                 title: "New Unit",
@@ -157,7 +157,15 @@ class UnitEditorTaskState extends State<UnitEditorTask> {
                   primary: false,
                   itemBuilder: (context, index) {
                     if (index == 0) {
-                      return SearchBar(onChanged: (q) => setState(() => query = q));
+                      return TextField(
+                        decoration: InputDecoration(
+                            border: OutlineInputBorder(borderSide: BorderSide(color: Theme.of(context).dividerColor), borderRadius: BorderRadius.circular(10)),
+                            labelStyle: Theme.of(context).textTheme.bodyLarge,
+                            labelText: "Search",
+                            suffixIcon: const Icon(Icons.search)
+                        ),
+                        onChanged: (q) => setState(() => query = q),
+                      );
                     }
 
                     else {
@@ -173,7 +181,7 @@ class UnitEditorTaskState extends State<UnitEditorTask> {
               ],
             ),
           ];
-        },
+        }
     );
   }
 }
