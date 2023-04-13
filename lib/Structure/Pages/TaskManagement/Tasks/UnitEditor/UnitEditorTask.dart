@@ -1,6 +1,7 @@
 import 'package:built_collection/built_collection.dart';
 import 'package:falcon_net/Model/Database/UnitList.dart';
 import 'package:falcon_net/Model/Database/UnitSummary.dart';
+import 'package:falcon_net/Structure/Components/LoadingShimmer.dart';
 import 'package:falcon_net/Structure/Components/PageWidget.dart';
 import 'package:falcon_net/Structure/Pages/TaskManagement/Tasks/UnitEditor/UnitBar.dart';
 import 'package:falcon_net/Structure/Pages/TaskManagement/Tasks/UnitEditor/UnitForm.dart';
@@ -10,9 +11,7 @@ import 'package:string_similarity/string_similarity.dart';
 
 import '../../../../../Model/Database/Unit.dart';
 import '../../../../../Model/Store/Endpoints.dart';
-import '../../../../Components/AsyncPage.dart';
-import '../../../../Components/LoadingShimmer.dart';
-import '../../../../Components/SearchBar.dart';
+import '../../../../Components/FNPage.dart';
 
 class UnitEditorTask extends StatefulWidget {
   const UnitEditorTask({super.key});
@@ -127,53 +126,71 @@ class UnitEditorTaskState extends State<UnitEditorTask> {
 
   @override
   Widget build(BuildContext context) {
-    return AsyncPage(
-        title: "Unit Editor",
-        connection: connection,
-        placeholder: const [
-          LoadingShimmer(height: 300,),
-
-          LoadingShimmer(height: 400,)
-        ],
-        builder: (context, units) {
-          var list = search(units);
-          return [
-            PageWidget(
-                title: "New Unit",
-                children: [
-                  UnitForm(
-                    onSubmit: (unit) => add(ScaffoldMessenger.of(context), unit),
-                    list: list,
-                  )
-                ]
-            ),
-
-            PageWidget(
-              title: "Edit Units",
+    return FutureBuilder(
+        future: connection,
+        builder: (context, snapshot) {
+          if (snapshot.data != null) {
+            var list = search(snapshot.data!);
+            return FNPage(
+              title: "Unit Editor",
               children: [
-                ListView.builder(
-                  itemCount: list.units.length + 1,
-                  shrinkWrap: true,
-                  primary: false,
-                  itemBuilder: (context, index) {
-                    if (index == 0) {
-                      return SearchBar(onChanged: (q) => setState(() => query = q));
-                    }
-
-                    else {
-                      return UnitBar(
-                        unit: list.units[index - 1],
-                        onDelete: (unit) => delete(ScaffoldMessenger.of(context), unit),
-                        onEdit: (unit) => edit(ScaffoldMessenger.of(context), unit),
+                PageWidget(
+                    title: "New Unit",
+                    children: [
+                      UnitForm(
+                        onSubmit: (unit) => add(ScaffoldMessenger.of(context), unit),
                         list: list,
-                      );
-                    }
-                  },
+                      )
+                    ]
+                ),
+
+                PageWidget(
+                  title: "Edit Units",
+                  children: [
+                    ListView.builder(
+                      itemCount: list.units.length + 1,
+                      shrinkWrap: true,
+                      primary: false,
+                      itemBuilder: (context, index) {
+                        if (index == 0) {
+                          return TextField(
+                            decoration: InputDecoration(
+                                border: OutlineInputBorder(borderSide: BorderSide(color: Theme.of(context).dividerColor), borderRadius: BorderRadius.circular(10)),
+                                labelStyle: Theme.of(context).textTheme.bodyLarge,
+                                labelText: "Search",
+                                suffixIcon: const Icon(Icons.search)
+                            ),
+                            onChanged: (q) => setState(() => query = q),
+                          );
+                        }
+
+                        else {
+                          return UnitBar(
+                            unit: list.units[index - 1],
+                            onDelete: (unit) => delete(ScaffoldMessenger.of(context), unit),
+                            onEdit: (unit) => edit(ScaffoldMessenger.of(context), unit),
+                            list: list,
+                          );
+                        }
+                      },
+                    ),
+                  ],
                 ),
               ],
-            ),
-          ];
-        },
+            );
+          }
+
+          else {
+            return const FNPage(
+              title: "Unit Editor",
+              children: [
+                LoadingShimmer(height: 200,),
+
+                LoadingShimmer(height: 200,),
+              ]
+            );
+          }
+        }
     );
   }
 }
