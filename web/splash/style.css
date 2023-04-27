@@ -5,8 +5,8 @@ html {
 body {
   margin: 0;
   min-height: 100%;
-  background-color: #ffffff;
-  background-image: url("assets/splash_screens/icon.png");
+  background-color: #000000;
+  background-image: url("img/10.2__iPad_landscape.png");
   background-size: 100% 100%;
 }
 

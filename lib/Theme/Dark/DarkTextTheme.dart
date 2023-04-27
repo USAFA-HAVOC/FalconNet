@@ -14,7 +14,7 @@ TextTheme darkTextTheme = const TextTheme(
   ),
   titleSmall: TextStyle(
     fontSize: 15,
-    fontWeight: FontWeight.bold,
+    fontWeight: FontWeight.normal,
     color: Color.fromARGB(255, 255, 255, 255),
   ),
 
