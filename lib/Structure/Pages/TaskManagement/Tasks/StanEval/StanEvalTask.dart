@@ -1,6 +1,7 @@
 import 'package:built_collection/built_collection.dart';
 import 'package:falcon_net/Structure/Components/AsyncPage.dart';
 import 'package:falcon_net/Structure/Components/InfoBar.dart';
+import 'package:falcon_net/Structure/Components/LoadingShimmer.dart';
 import 'package:falcon_net/Structure/Components/PageWidget.dart';
 import 'package:falcon_net/Utility/ErrorFormatting.dart';
 import 'package:flutter/material.dart';
@@ -9,6 +10,7 @@ import 'package:string_similarity/string_similarity.dart';
 
 import '../../../../../Model/Database/UnitList.dart';
 import '../../../../../Model/Store/Endpoints.dart';
+import '../../../../Components/SearchBar.dart';
 
 class StanEvalTask extends StatefulWidget {
   const StanEvalTask({super.key});
@@ -48,6 +50,11 @@ class StanEvalTaskState extends State<StanEvalTask> {
     return AsyncPage(
         title: "Stan/Eval",
         connection: connection,
+        placeholder: const [
+          LoadingShimmer(height: 200,),
+
+          LoadingShimmer(height: 500,)
+        ],
         builder: (context, units) {
           var ordered = search(units);
           return [
@@ -60,15 +67,7 @@ class StanEvalTaskState extends State<StanEvalTask> {
                   itemCount: units.units.length + 1,
                   itemBuilder: (context, index) {
                     if (index == 0) {
-                      return TextField(
-                        decoration: InputDecoration(
-                            border: OutlineInputBorder(borderSide: BorderSide(color: Theme.of(context).dividerColor), borderRadius: BorderRadius.circular(10)),
-                            labelStyle: Theme.of(context).textTheme.bodyLarge,
-                            labelText: "Search",
-                            suffixIcon: const Icon(Icons.search)
-                        ),
-                        onChanged: (q) => setState(() => query = q),
-                      );
+                      return SearchBar(onChanged: (q) => setState(() => query = q));
                     }
 
                     else {

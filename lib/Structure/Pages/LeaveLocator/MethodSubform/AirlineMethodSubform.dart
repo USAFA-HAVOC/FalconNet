@@ -35,7 +35,7 @@ class AirlineMethodSubformState extends State<AirlineMethodSubform> {
     super.initState();
 
     //Uses existing values if provided
-    if (widget.controller.value != null && widget.controller.value!.transport_type == "airline") {
+    if (widget.controller.value != null && widget.controller.value!.transport_type == TransportType.airline.name) {
       var method = widget.controller.value!;
       airline = TextEditingController(text: method.airline_name);
       number = TextEditingController(text: method.airline_flight_number);
@@ -70,7 +70,7 @@ class AirlineMethodSubformState extends State<AirlineMethodSubform> {
     var fArrDate = parseDate(arrDate);
     var flightArrivalTime = combineDate(fArrDate, fArrTime);
     return CadetLeaveTransportMethod((b) => b
-        ..transport_type = "airline"
+        ..transport_type = TransportType.airline.name
         ..airline_flight_departure_time = flightDepartureTime
         ..airline_flight_arrival_time = flightArrivalTime
         ..airline_flight_number = number.text
@@ -84,7 +84,7 @@ class AirlineMethodSubformState extends State<AirlineMethodSubform> {
 
   @override
   Widget build(BuildContext context) {
-    bool inactive = LeaveMethodSelection.of(context).type != "airline";
+    bool inactive = LeaveMethodSelection.of(context).type != TransportType.airline.name;
 
     return Column(
       children: [
@@ -93,6 +93,7 @@ class AirlineMethodSubformState extends State<AirlineMethodSubform> {
             Expanded(
               flex: 5,
               child: TextFormField(
+                keyboardType: TextInputType.text,
                 controller: airline,
                 decoration: InputDecoration(
                     labelStyle: Theme.of(context).textTheme.bodyLarge,
@@ -112,13 +113,17 @@ class AirlineMethodSubformState extends State<AirlineMethodSubform> {
               flex: 5,
               child: TextFormField(
                 controller: number,
+                keyboardType: TextInputType.text,
                 decoration: InputDecoration(
                     labelStyle: Theme.of(context).textTheme.bodyLarge,
                     labelText: "Flight Number"
                 ),
                 style: Theme.of(context).textTheme.bodyLarge,
                 validator: InputValidation.override(
-                    InputValidation.stringLength(length: 0, emptyMessage: "Please enter a flight number"),
+                    InputValidation.stringLength(
+                        length: 0,
+                        emptyMessage: "Please enter a flight number"
+                    ),
                     inactive
                 ),
               ),

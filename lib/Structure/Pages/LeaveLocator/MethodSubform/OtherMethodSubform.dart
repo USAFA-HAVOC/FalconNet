@@ -22,7 +22,7 @@ class OtherMethodSubformState extends State<OtherMethodSubform> {
   @override
   void initState() {
     super.initState();
-    if (widget.controller.value != null && widget.controller.value!.transport_type == "other") {
+    if (widget.controller.value != null && widget.controller.value!.transport_type == TransportType.other.name) {
       info = TextEditingController(text: widget.controller.value!.other_info);
     }
     else {
@@ -36,7 +36,7 @@ class OtherMethodSubformState extends State<OtherMethodSubform> {
   ///Build leave method from field data
   CadetLeaveTransportMethod buildLeaveMethod() {
     return CadetLeaveTransportMethod((b) => b
-        ..transport_type = "other"
+        ..transport_type = TransportType.other.name
         ..other_info = info.text
         ..vehicle_driver_name = null
         ..vehicle_travel_time_hours = null
@@ -50,7 +50,7 @@ class OtherMethodSubformState extends State<OtherMethodSubform> {
 
   @override
   Widget build(BuildContext context) {
-    bool inactive = LeaveMethodSelection.of(context).type != "other";
+    bool inactive = LeaveMethodSelection.of(context).type != TransportType.other.name;
 
     //Text field with minimum of four lines to display as textarea
     return TextFormField(

@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:core';
 
 import 'package:falcon_net/Model/Database/DIRequest.dart';
@@ -8,12 +9,12 @@ import 'package:falcon_net/Model/Database/WingData.dart';
 import 'package:falcon_net/Model/Store/Endpoints.dart';
 import 'package:falcon_net/Structure/Components/LoadingShimmer.dart';
 import 'package:falcon_net/Structure/Components/UnitStatusWidget.dart';
-import 'package:falcon_net/Structure/Pages/TaskManagement/Tasks/Signing/SigningWidget.dart';
 import 'package:flutter/material.dart';
 
 import '../../../../Model/Database/User.dart';
 import '../../../../Utility/ErrorFormatting.dart';
 import '../../../Components/AsyncPage.dart';
+import 'Shared/SigningWidget.dart';
 
 ///Page displaying information for CWOC controllers
 ///Shows statistics for groups as well as individual units
@@ -36,12 +37,12 @@ class CWOCTaskState extends State<CWOCTask> {
   //Expansion panel states for each unit
   Map<String, bool> expansions = {};
 
+  late Timer timer;
+
   ///Requests cwoc data from backend
   @override
   void initState() {
     super.initState();
-
-    /// todo: replace with api call for unit summaries
 
     connection = Endpoints.getWing(null).onError((error, stackTrace) {
       displayError(prefix: "CWOC", exception: error!);
@@ -53,6 +54,33 @@ class CWOCTaskState extends State<CWOCTask> {
         expansions[unit.unit.name] = false;
       }
     }));
+
+    timer = Timer.periodic(const Duration(seconds: 10), (timer) {
+      setState(() {
+        connection = Endpoints.getWing(null)
+            .catchError((error, stackTrace) {
+          displayError(prefix: "CWOC", exception: error);
+          return WingData();
+        })
+        ..then((units) {
+          for (var unit in units.units) {
+            if (!expansions.containsKey(unit.unit.name)) {
+              expansions[unit.unit.name] = false;
+            }
+          }
+        });
+      });
+
+      for (var unit in expansions.entries.where((e) => e.value).map((e) => e.key)) {
+        loadUnit(unit, null);
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    timer.cancel();
   }
 
   ///Signs for an individual signee in a given unit
@@ -76,20 +104,21 @@ class CWOCTaskState extends State<CWOCTask> {
   }
 
   ///Loads a given unit based on the unit name
-  void loadUnit(String unit, ScaffoldMessengerState messenger) async {
+  void loadUnit(String unit, ScaffoldMessengerState? messenger) async {
     var wing = await connection;
 
     try {
       UnitData actual = await Endpoints.getUnit(UnitDataRequest((b) => b..unit = unit));
       setState(() {
         connection = Future.value(wing.set(actual));
+        loaded.removeWhere((u) => u.unit.name == unit);
         loaded.add(actual);
       });
     }
 
     catch (e) {
       displayError(prefix: "CWOC", exception: e);
-      messenger.showSnackBar(
+      messenger?.showSnackBar(
           SnackBar(content: Text("Failed to load data for $unit"))
       );
     }
@@ -215,10 +244,74 @@ class CWOCTaskState extends State<CWOCTask> {
     return AsyncPage(
       title: widget.label,
       connection: connection,
-      placeholder: const [
-        LoadingShimmer(height: 200,),
+      placeholder: [
+        LayoutBuilder(
+          builder: (context, constraints) {
+            //Displays a group data as grid if screen is wide enough
+            if (constraints.maxWidth > 700) {
+              return Row(
+                children: [
+                  Expanded(
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: const [
+                        LoadingShimmer(height: 200,),
 
-        LoadingShimmer(height: 400,)
+                        SizedBox(height: 20,),
+
+                        LoadingShimmer(height: 200,),
+
+                        SizedBox(height: 20,),
+                      ],
+                    ),
+                  ),
+
+                  const SizedBox(width: 20,),
+
+                  Expanded(
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: const [
+                        LoadingShimmer(height: 200,),
+
+                        SizedBox(height: 20,),
+
+                        LoadingShimmer(height: 200,),
+
+                        SizedBox(height: 20,),
+                      ],
+                    ),
+                  ),
+                ],
+              );
+            }
+
+            //Otherwise, displays in a simple column
+            else {
+              return Column(
+                children: const [
+                  LoadingShimmer(height: 200,),
+
+                  SizedBox(height: 20,),
+
+                  LoadingShimmer(height: 200,),
+
+                  SizedBox(height: 20,),
+
+                  LoadingShimmer(height: 200,),
+
+                  SizedBox(height: 20,),
+
+                  LoadingShimmer(height: 200,),
+
+                  SizedBox(height: 20,),
+                ],
+              );
+            }
+          },
+        )
       ],
       builder: (context, data) {
         var units = data.units.toList();

@@ -10,7 +10,7 @@ class LeaveDescription extends StatelessWidget {
 
   String describeTransport(CadetLeaveTransportMethod method) {
     switch (method.transport_type) {
-      case "vehicle": {
+      case "vehicle":
         var type = method.vehicle_type;
         if (type == "Uber/Lyft") {
           return "Using rideshare service.";
@@ -18,18 +18,18 @@ class LeaveDescription extends StatelessWidget {
         else {
           return "Driven by ${method.vehicle_driver_name} in ${method.vehicle_type} for ${method.vehicle_travel_time_hours!.toStringAsFixed(1)} hours";
         }
-      }
-      case "airline": {
-        var departure = method.airline_flight_departure_time!;
-        var arrival = method.airline_flight_arrival_time!;
+
+      case "airline":
+        var departure = method.airline_flight_departure_time!.toLocal();
+        var arrival = method.airline_flight_arrival_time!.toLocal();
         return "Flying with ${method.airline_name} on flight #${method.airline_flight_number}. "
             "Departing at ${describeTime(TimeOfDay.fromDateTime(departure))} on ${describeDate(departure)}. "
             "Arriving at ${describeTime(TimeOfDay.fromDateTime(arrival))} on ${describeDate(arrival)}. ";
-      }
-      case "other": {
+
+      case "other":
         return "Other: ${method.other_info!}";
-      }
-      default: return "Error: cannot read transport type";
+
+      default: throw Exception("Unrecognized travel type");
     }
   }
 
@@ -59,12 +59,12 @@ class LeaveDescription extends StatelessWidget {
             ),
 
             Text(
-              "Departure: ${describeDate(leave.departure_time)} ${describeTime(timeOf(leave.departure_time))}",
+              "Departure: ${describeDate(leave.departure_time.toLocal())} ${describeTime(timeOf(leave.departure_time.toLocal()))}",
               style: Theme.of(context).textTheme.bodyMedium,
             ),
 
             Text(
-              "Return: ${describeDate(leave.return_time)} ${describeTime(timeOf(leave.return_time))}",
+              "Return: ${describeDate(leave.return_time.toLocal())} ${describeTime(timeOf(leave.return_time.toLocal()))}",
               style: Theme.of(context).textTheme.bodyMedium,
             ),
           ],

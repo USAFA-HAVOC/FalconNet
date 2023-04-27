@@ -34,6 +34,13 @@ class _$UserSerializer implements StructuredSerializer<User> {
         ..add(serializers.serialize(value,
             specifiedType: const FullType(String)));
     }
+    value = object.ms_oid;
+    if (value != null) {
+      result
+        ..add('ms_oid')
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(String)));
+    }
     value = object.pass_allocation;
     if (value != null) {
       result
@@ -73,6 +80,10 @@ class _$UserSerializer implements StructuredSerializer<User> {
           result.id = serializers.deserialize(value,
               specifiedType: const FullType(String)) as String?;
           break;
+        case 'ms_oid':
+          result.ms_oid = serializers.deserialize(value,
+              specifiedType: const FullType(String)) as String?;
+          break;
         case 'personal_info':
           result.personal_info.replace(serializers.deserialize(value,
                   specifiedType: const FullType(UserPersonalInfo))!
@@ -109,6 +120,8 @@ class _$User extends User {
   @override
   final String? id;
   @override
+  final String? ms_oid;
+  @override
   final UserPersonalInfo personal_info;
   @override
   final CadetPassAllocation? pass_allocation;
@@ -124,6 +137,7 @@ class _$User extends User {
 
   _$User._(
       {this.id,
+      this.ms_oid,
       required this.personal_info,
       this.pass_allocation,
       this.accountability,
@@ -147,6 +161,7 @@ class _$User extends User {
     if (identical(other, this)) return true;
     return other is User &&
         id == other.id &&
+        ms_oid == other.ms_oid &&
         personal_info == other.personal_info &&
         pass_allocation == other.pass_allocation &&
         accountability == other.accountability &&
@@ -158,6 +173,7 @@ class _$User extends User {
   int get hashCode {
     var _$hash = 0;
     _$hash = $jc(_$hash, id.hashCode);
+    _$hash = $jc(_$hash, ms_oid.hashCode);
     _$hash = $jc(_$hash, personal_info.hashCode);
     _$hash = $jc(_$hash, pass_allocation.hashCode);
     _$hash = $jc(_$hash, accountability.hashCode);
@@ -171,6 +187,7 @@ class _$User extends User {
   String toString() {
     return (newBuiltValueToStringHelper(r'User')
           ..add('id', id)
+          ..add('ms_oid', ms_oid)
           ..add('personal_info', personal_info)
           ..add('pass_allocation', pass_allocation)
           ..add('accountability', accountability)
@@ -186,6 +203,10 @@ class UserBuilder implements Builder<User, UserBuilder> {
   String? _id;
   String? get id => _$this._id;
   set id(String? id) => _$this._id = id;
+
+  String? _ms_oid;
+  String? get ms_oid => _$this._ms_oid;
+  set ms_oid(String? ms_oid) => _$this._ms_oid = ms_oid;
 
   UserPersonalInfoBuilder? _personal_info;
   UserPersonalInfoBuilder get personal_info =>
@@ -220,6 +241,7 @@ class UserBuilder implements Builder<User, UserBuilder> {
     final $v = _$v;
     if ($v != null) {
       _id = $v.id;
+      _ms_oid = $v.ms_oid;
       _personal_info = $v.personal_info.toBuilder();
       _pass_allocation = $v.pass_allocation?.toBuilder();
       _accountability = $v.accountability?.toBuilder();
@@ -250,6 +272,7 @@ class UserBuilder implements Builder<User, UserBuilder> {
       _$result = _$v ??
           new _$User._(
               id: id,
+              ms_oid: ms_oid,
               personal_info: personal_info.build(),
               pass_allocation: _pass_allocation?.build(),
               accountability: _accountability?.build(),

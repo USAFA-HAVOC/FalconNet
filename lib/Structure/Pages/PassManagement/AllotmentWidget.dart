@@ -9,7 +9,7 @@ import 'package:flutter/material.dart';
 class AllotmentWidget extends StatelessWidget {
   final String title;
 
-  const AllotmentWidget({super.key, this.title = "Pass Allotment"});
+  const AllotmentWidget({super.key, this.title = "Passes Remaining"});
 
   @override
   Widget build(BuildContext context) {
@@ -24,7 +24,7 @@ class AllotmentWidget extends StatelessWidget {
                     Align(
                       alignment: AlignmentDirectional.centerEnd,
                       child: Text(
-                        model.content?.weekday_day_passes.toString() ?? "Unlimited",
+                        (model.content?.weekday_day_passes == null) ? "Unlimited" : model.content!.weekday_day_passes.toString(),
                         style: Theme.of(context).textTheme.bodyLarge,
                       ),
                     ),
@@ -32,7 +32,7 @@ class AllotmentWidget extends StatelessWidget {
                     Align(
                       alignment: AlignmentDirectional.centerStart,
                       child: Text(
-                        "Weekday Day Passes:",
+                        "Day Passes:",
                         style: Theme.of(context).textTheme.bodyLarge,
                       ),
                     )
@@ -45,7 +45,7 @@ class AllotmentWidget extends StatelessWidget {
                     Align(
                       alignment: AlignmentDirectional.centerEnd,
                       child: Text(
-                        model.content?.weekend_overnight_passes.toString() ?? "Unlimited",
+                        (model.content?.weekend_overnight_passes == null) ? "Unlimited" : model.content!.weekend_overnight_passes.toString(),
                         style: Theme.of(context).textTheme.bodyLarge,
                       ),
                     ),
@@ -53,7 +53,7 @@ class AllotmentWidget extends StatelessWidget {
                     Align(
                       alignment: AlignmentDirectional.centerStart,
                       child: Text(
-                        "Weekend Overnight Passes:",
+                        "Weekend Passes:",
                         style: Theme.of(context).textTheme.bodyLarge,
                       ),
                     )
@@ -65,7 +65,7 @@ class AllotmentWidget extends StatelessWidget {
                     Align(
                       alignment: AlignmentDirectional.centerEnd,
                       child: Text(
-                        model.content?.weekday_overnight_passes.toString() ?? "Unlimited",
+                        (model.content?.weekday_overnight_passes == null) ? "Unlimited" : model.content!.weekday_overnight_passes.toString(),
                         style: Theme.of(context).textTheme.bodyLarge,
                       ),
                     ),

@@ -50,7 +50,6 @@ final defaultHistory = PassHistoryModel((h) => h
       ..cadet_id = "Demo"
       ..state = "Colorado"
       ..city = "Colorado Springs"
-      ..zip_code = "50035"
     )
   ].build().toBuilder()
 );
@@ -101,11 +100,13 @@ final defaultForms = FormList((f) => f
       FormSummary((f) => f
         ..title = "Demo Form"
         ..description = "This is a signable document, which by some accounts, may be signed."
+        ..form_id = "demo1"
         ..signed = false
       ),
       FormSummary((f) => f
         ..title = "Demo Form #2"
         ..description = "I think you get the point."
+        ..form_id = "demo2"
         ..signed = false
       ),
     ].build().toBuilder()
@@ -123,5 +124,6 @@ final demoEndpoints = <String, dynamic Function(dynamic)>{
   "/leave/clear" : (_) => true,
   "/passes/update" : (_) => true,
   "/passes/close" : (_) => true,
-  "/accountability/self-sign" : (_) => true
+  "/accountability/self-sign" : (_) => true,
+  "/forms/sign" : (_) => true,
 };

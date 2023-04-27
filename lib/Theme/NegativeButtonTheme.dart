@@ -9,7 +9,7 @@ class NegativeButtonTheme extends ThemeExtension<NegativeButtonTheme> {
   NegativeButtonTheme copyWith({ButtonStyle? style}) => NegativeButtonTheme(style: style!);
 
   @override
-  NegativeButtonTheme lerp(NegativeButtonTheme? other, double t) {
+  ThemeExtension<NegativeButtonTheme> lerp(ThemeExtension<NegativeButtonTheme>? other, double t) {
     if (other is! NegativeButtonTheme) {
       return this;
     }

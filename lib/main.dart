@@ -3,10 +3,7 @@ import 'dart:async';
 import 'package:aad_oauth/model/config.dart';
 import 'package:async_redux/async_redux.dart';
 import 'package:built_collection/built_collection.dart';
-import 'package:falcon_net/Model/Database/CadetAccountability.dart';
-import 'package:falcon_net/Model/Database/CadetPassAllocation.dart';
 import 'package:falcon_net/Model/Database/User.dart';
-import 'package:falcon_net/Model/Database/UserNotification.dart';
 import 'package:falcon_net/Model/Database/UserPersonalInfo.dart';
 import 'package:falcon_net/Model/Store/Actions/GlobalAction.dart';
 import 'package:falcon_net/Model/Store/Actions/SettingsAction.dart';
@@ -18,7 +15,6 @@ import 'package:falcon_net/Services/SchedulingService.dart';
 import 'package:falcon_net/Theme/Dark/DarkTheme.dart';
 import 'package:falcon_net/Theme/Light/LightTheme.dart';
 import 'package:falcon_net/Theme/Random/RandomTheme.dart';
-import 'package:falcon_net/Utility/FNConstants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:go_router/go_router.dart';
@@ -40,32 +36,24 @@ void main() async {
         ..status = AppStatus.loading
         ..user = User((b2) => b2
           ..id = ""
+          ..roles = ListBuilder()
           ..personal_info = UserPersonalInfo((b3) => b3
-            ..full_name = "Ethan Chapman"
-            ..email = "C26Ethan.Chapman@afacademy.af.edu"
-            ..phone_number = "3037461308"
-            ..room_number = "Vandy 6D6"
-            ..squadron = 18
-            ..group = "CG02"
-            ..unit = "CS18").toBuilder()
-          ..pass_allocation = CadetPassAllocation((b3) => b3
-            ..individual_pass_status = true
-            ..effective_pass_status = true
-            ..class_year_idx = 3
-            ..weekday_day_passes = 0
-            ..weekday_overnight_passes = 0
-            ..weekend_overnight_passes = 0).toBuilder()
-          ..accountability = CadetAccountability((b3) => b3
-            ..di_last_signed = DateTime.now().toUtc()
-            ..di_signed_by = ""
-            ..di_signed_name = "").toBuilder()).toBuilder()
-        ..notifications = ListBuilder<UserNotification>([])
+              ..full_name = ""
+              ..email = ""
+              ..phone_number = ""
+              ..room_number = ""
+              ..squadron = 0
+              ..group = ""
+              ..unit = ""
+            ).toBuilder()
+          ).toBuilder()
         ..settings = UserSettings((b2) => b2
-          ..theme = "light"
-          ..taskPush = true
-          ..diPush = true
-          ..passPush = true
-          ..pushNotifications = true).toBuilder()
+            ..theme = "light"
+            ..taskPush = false
+            ..diPush = false
+            ..passPush = false
+            ..pushNotifications = false
+          ).toBuilder()
       )
   );
 
@@ -74,7 +62,7 @@ void main() async {
     clientId: clientId,
     scope: "$clientId/FalconNet offline_access",
     // redirectUri is Optional as a default is calculated based on app type/web location
-    redirectUri: "$apiLocation/mobile_redirect",
+    redirectUri: "${APIData().apiLocation}/mobile_redirect",
     navigatorKey: navigatorKey,
     webUseRedirect: true, // default is false - on web only, forces a redirect flow instead of popup auth
     //Optional parameter: Centered CircularProgressIndicator while rendering web page in WebView
@@ -83,7 +71,9 @@ void main() async {
 
   WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
   FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
-  //Must be called first
+
+  //Must be called first and in this order
+  await APIData().init();
   await NotificationService().init();
   AuthService().init(authConfig, null);
   SchedulingService().init();
@@ -126,12 +116,12 @@ class FNAppState extends State<FNApp> {
 
   @override
   void initState() {
-    Timer.periodic(const Duration(minutes: 5), (timer) {
+    Timer.periodic(const Duration(minutes: 1), (timer) {
       widget.store.dispatch(GlobalAction.initialize());
     });
 
     attemptGetWebToken();
-    if (APIData.authenticated) {
+    if (APIData().authenticated) {
       router = fnRouter(navigatorKey, SignState.signed, false);
       ppRouter = fnRouter(navigatorKey, SignState.signed, true);
     }

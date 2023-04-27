@@ -86,7 +86,8 @@ class UnitFormState extends State<UnitForm> {
                   borderRadius: BorderRadius.circular(10)),
               labelStyle: Theme.of(context).textTheme.bodyLarge,
               labelText: "Group",
-              suffixIcon: const Icon(Icons.people)),
+              suffixIcon: const Icon(Icons.people)
+          ),
         ),
         ElevatedButton(
           onPressed: () {

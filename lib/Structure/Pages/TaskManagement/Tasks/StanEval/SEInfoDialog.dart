@@ -1,3 +1,4 @@
+import 'package:falcon_net/Structure/Components/SearchBar.dart';
 import 'package:flutter/material.dart';
 import 'package:string_similarity/string_similarity.dart';
 
@@ -52,15 +53,7 @@ class SEInfoDialogState extends State<SEInfoDialog> {
                   );
                 }
                 else if (index == 2) {
-                  return TextField(
-                    decoration: InputDecoration(
-                        border: OutlineInputBorder(borderSide: BorderSide(color: Theme.of(context).dividerColor), borderRadius: BorderRadius.circular(10)),
-                        labelStyle: Theme.of(context).textTheme.bodyLarge,
-                        labelText: "Search",
-                        suffixIcon: const Icon(Icons.search)
-                    ),
-                    onChanged: (q) => setState(() => query = q),
-                  );
+                  return SearchBar(onChanged: (q) => setState(() => query = q));
                 }
                 else {
                   var grade = ordered[index - 3];

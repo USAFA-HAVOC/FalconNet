@@ -3,6 +3,7 @@ import 'package:falcon_net/Model/Database/RoleRequest.dart';
 import 'package:falcon_net/Model/Database/Roles.dart';
 import 'package:falcon_net/Structure/Components/LoadingShimmer.dart';
 import 'package:falcon_net/Structure/Components/PageWidget.dart';
+import 'package:falcon_net/Structure/Components/SearchBar.dart';
 import 'package:falcon_net/Utility/ErrorFormatting.dart';
 import 'package:flutter/material.dart';
 import  'package:string_similarity/string_similarity.dart';
@@ -37,7 +38,11 @@ class DelegationTaskState extends State<DelegationTask> {
 
   Future<List<User>> retrieveData() async {
     try {
-      if (widget.owner.any((role) => role.role == Roles.fn_admin.name || role.role == Roles.wing_admin.name)) {
+      if (widget.owner.any((role) =>
+        role.role == Roles.fn_admin.name ||
+        role.role == Roles.wing_admin.name ||
+        role.role == Roles.group_admin.name
+      )) {
         return (await Endpoints.getUsers(null)).users.toList();
       }
       else {
@@ -52,7 +57,7 @@ class DelegationTaskState extends State<DelegationTask> {
 
   ///Assigns a delegate to a list of roles
   ///Makes api call and displays error message on failure
-  void assign(User delegate, List<TimedRole> roles, ScaffoldMessengerState messenger) async {
+  Future<bool> assign(User delegate, List<TimedRole> roles, {ScaffoldMessengerState? messenger}) async {
     try {
       await Endpoints.setRoles(RoleRequest((r) => r
         ..user_id = delegate.id
@@ -68,7 +73,7 @@ class DelegationTaskState extends State<DelegationTask> {
         connection = Future.value(full);
       });
 
-      messenger.showSnackBar(
+      messenger?.showSnackBar(
         const SnackBar(
           content: Text("Successfully Modified Roles")
         )
@@ -77,12 +82,14 @@ class DelegationTaskState extends State<DelegationTask> {
 
     catch (e) {
       displayError(prefix: "Delegation", exception: e);
-      messenger.showSnackBar(
+      messenger?.showSnackBar(
         const SnackBar(
           content: Text("Failed to Modify Roles")
         )
       );
+      return false;
     }
+    return true;
   }
 
   ///Opens a dialog for the form for editing a delegates roles
@@ -90,15 +97,14 @@ class DelegationTaskState extends State<DelegationTask> {
     showDialog(context: context, builder: (context) => Dialog(
       insetPadding: const EdgeInsets.all(10),
       child: Padding(
-        padding: const EdgeInsets.all(5),
+        padding: const EdgeInsets.all(10),
 
         //Builds a delegation form with applicable roles
         child: DelegationForm(
           delegate: delegate,
           applicable: applicable,
           onSubmit: (role) {
-            assign(delegate, role, ScaffoldMessenger.of(context));
-            Navigator.of(context).pop();
+            assign(delegate, role);
           },
           onCancel: () => Navigator.of(context).pop(),
         ),
@@ -118,7 +124,7 @@ class DelegationTaskState extends State<DelegationTask> {
         title: "Delegation",
         connection: connection,
         placeholder: const [
-          LoadingShimmer(height: 400,)
+          LoadingShimmer(height: 700,)
         ],
         builder: (context, members) {
           var ordered = search(members, query);
@@ -132,15 +138,7 @@ class DelegationTaskState extends State<DelegationTask> {
                     itemCount: ordered.length + 1,
                     itemBuilder: (context, index) {
                       if (index == 0) {
-                        return TextField(
-                          decoration: InputDecoration(
-                              border: OutlineInputBorder(borderSide: BorderSide(color: Theme.of(context).dividerColor), borderRadius: BorderRadius.circular(10)),
-                              labelStyle: Theme.of(context).textTheme.bodyLarge,
-                              labelText: "Search",
-                              suffixIcon: const Icon(Icons.search)
-                          ),
-                          onChanged: (q) => setState(() => query = q),
-                        );
+                        return SearchBar(onChanged: (q) => setState(() => query = q));
                       }
 
                       return DelegateBar(

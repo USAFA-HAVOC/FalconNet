@@ -1,10 +1,13 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.falcon_net">
+    package="com.arkwerx.falcon_net">
    <application
         android:label="falcon_net"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
-        <activity
+       <receiver android:name="com.dexterous.flutterlocalnotifications.ScheduledNotificationBootReceiver"
+               android:exported="false">
+       </receiver>
+       <activity
             android:name=".MainActivity"
             android:exported="true"
             android:launchMode="singleTop"

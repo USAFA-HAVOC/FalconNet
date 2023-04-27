@@ -25,12 +25,29 @@ extension VehicleNames on VehicleType {
     }
   }
 
-  static VehicleType parse(String vehicle) {
-    Map<String, VehicleType> map = {};
-    VehicleType.values.forEach((v) {
-      map[v.description] = v;
-    });
-    return map[vehicle] ?? VehicleType.pov;
+  static VehicleType parse(String data) =>
+      VehicleType.values.firstWhere((v) => v.name == data);
+
+  static VehicleType parseDescription(String data) =>
+      VehicleType.values.firstWhere((v) => v.description == data);
+}
+
+enum TransportType {
+  vehicle,
+  airline,
+  other
+}
+
+extension TransportTypeNames on TransportType {
+  static TransportType parse(String data) => 
+      TransportType.values.firstWhere((v) => v.name == data);
+  
+  String display() {
+    switch (this) {
+      case TransportType.airline: return "Airline";
+      case TransportType.vehicle: return "Vehicle";
+      case TransportType.other: return "Other";
+    }
   }
 }
 

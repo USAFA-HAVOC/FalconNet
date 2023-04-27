@@ -1,4 +1,5 @@
- import 'package:falcon_net/Model/Database/StringRequest.dart';
+ import 'package:falcon_net/Model/Database/GradeType.dart';
+import 'package:falcon_net/Model/Database/StringRequest.dart';
 import 'package:falcon_net/Structure/Components/AsyncPage.dart';
 import 'package:falcon_net/Structure/Components/InfoBar.dart';
 import 'package:falcon_net/Structure/Components/LoadingShimmer.dart';
@@ -33,8 +34,8 @@ class SEUnitState extends State<SEUnit> {
     super.initState();
   }
 
-  List<Widget> buildEvents({required UnitGrades unit, required void Function(String type, int index) onTap}) {
-    Widget buildEventBar(String name, String type, int index) => InfoBar(
+  List<Widget> buildEvents({required UnitGrades unit, required void Function(GradeType type, int index) onTap}) {
+    Widget buildEventBar(String name, GradeType type, int index) => InfoBar(
       onTap: () => onTap(type, index),
       interiorPadding: const EdgeInsets.symmetric(vertical: 20, horizontal: 10),
       children: [
@@ -49,9 +50,9 @@ class SEUnitState extends State<SEUnit> {
 
     List<Widget> bars = [];
 
-    bars.addAll(List<Widget>.generate(7, (index) => buildEventBar("AMI #${index + 1}", "ami", index)));
-    bars.addAll(List<Widget>.generate(2, (index) => buildEventBar("SAMI #${index + 1}", "sami", index)));
-    bars.addAll(List<Widget>.generate(2, (index) => buildEventBar("PAI #${index + 1}", "pai",  index)));
+    bars.addAll(List<Widget>.generate(7, (index) => buildEventBar("AMI #${index + 1}", GradeType.ami, index)));
+    bars.addAll(List<Widget>.generate(2, (index) => buildEventBar("SAMI #${index + 1}", GradeType.sami, index)));
+    bars.addAll(List<Widget>.generate(2, (index) => buildEventBar("PAI #${index + 1}", GradeType.pai,  index)));
 
     return bars;
   }
@@ -67,7 +68,7 @@ class SEUnitState extends State<SEUnit> {
           LoadingShimmer(height: 500,),
         ],
         builder: (context, grades) => [
-          GradeAveragesWidget(
+          GradeAveragesWidget.unit(
             unit: grades,
             onTap: () => context.push(
               "/task_management/stan_eval/unit/analytics",

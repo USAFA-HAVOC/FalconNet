@@ -14,6 +14,7 @@ import '../../../../../Model/Store/Endpoints.dart';
 import '../../../../../Utility/ErrorFormatting.dart';
 import '../../../../Components/AsyncPage.dart';
 import '../../../../Components/PageWidget.dart';
+import '../../../../Components/SearchBar.dart';
 
 enum AssignmentType {
   unit,
@@ -159,7 +160,7 @@ class AssignmentTaskState extends State<AssignmentTask> {
         placeholder: const [
           LoadingShimmer(height: 150,),
 
-          LoadingShimmer(height: 300,)
+          LoadingShimmer(height: 500,)
         ],
         builder: (context, data) {
             var potential = data.summaries.users.toList();
@@ -233,15 +234,7 @@ class AssignmentTaskState extends State<AssignmentTask> {
                 children: addContent
             );
 
-            List<Widget> removeContent = [TextField(
-              decoration: InputDecoration(
-                  border: OutlineInputBorder(borderSide: BorderSide(color: Theme.of(context).dividerColor), borderRadius: BorderRadius.circular(10)),
-                  labelStyle: Theme.of(context).textTheme.bodyLarge,
-                  labelText: "Search",
-                  suffixIcon: const Icon(Icons.search)
-              ),
-              onChanged: (q) => setState(() => query = q),
-            )];
+            List<Widget> removeContent = [SearchBar(onChanged: (q) => setState(() => query = q))];
 
             removeContent.addAll(search(potential, query).map((summary) => AssignmentBar(
                 summary: summary,
