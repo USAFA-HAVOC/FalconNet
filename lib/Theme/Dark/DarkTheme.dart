@@ -5,6 +5,13 @@ import 'DarkCardTheme.dart';
 import 'DarkTextTheme.dart';
 import 'DarkButtonTheme.dart';
 
+/*
+TODO:
+  - Use '///' to document classes
+  - Comment like every line -- probably need to organize these lines
+    - Explain differences between themes etc.
+*/
+
 ThemeData darkTheme = ThemeData(
   primaryColor: const Color.fromARGB(255, 24, 24, 24),
   focusColor: const Color.fromARGB(255, 40, 40, 40),
