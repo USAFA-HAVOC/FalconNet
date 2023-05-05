@@ -144,12 +144,13 @@ class FNAppState extends State<FNApp> {
       store: widget.store,
       child: StoreConnector<GlobalState, ViewModel<RouterComponents>>(
           converter: (store) => ViewModel(
-              store: store,
-              content: RouterComponents(
-                  theme: store.state.settings.theme,
-                  party: store.state.user.roles
-                      .any((r) => r.role == Roles.permanent_party.name),
-                  loaded: store.state.status == AppStatus.nominal)),
+                store: store,
+                content: RouterComponents(
+                    theme: store.state.settings.theme,
+                    party: store.state.user.roles
+                        .any((r) => r.role == Roles.permanent_party.name),
+                    loaded: store.state.status == AppStatus.nominal),
+              ),
           builder: (context, model) {
             if (!model.content.party || !model.content.loaded) {
               return MaterialApp.router(
