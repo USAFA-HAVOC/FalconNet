@@ -153,7 +153,7 @@ class FNAppState extends State<FNApp> {
           builder: (context, model) {
             if (!model.content.party || !model.content.loaded) {
               return MaterialApp.router(
-                  debugShowCheckedModeBanner: false,
+                  debugShowCheckedModeBanner: false, // Removes debug banner
                   theme:
                       model.content.theme == "light" ? lightTheme : randomTheme,
                   darkTheme: darkTheme,
@@ -163,7 +163,7 @@ class FNAppState extends State<FNApp> {
                   routerConfig: router);
             }
             return MaterialApp.router(
-                debugShowCheckedModeBanner: false,
+                debugShowCheckedModeBanner: false, // Removes debug banner
                 theme:
                     model.content.theme == "light" ? lightTheme : randomTheme,
                 darkTheme: darkTheme,
