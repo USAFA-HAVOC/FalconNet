@@ -40,6 +40,7 @@ import '../Structure/Pages/TaskManagement/Tasks/StanEval/StanEvalTask.dart';
 import '../Structure/PermanentParty/PPDashboard.dart';
 import '../Structure/SelectionView.dart';
 
+/// Enum for the sign in state of the app
 enum SignState {
   signed,
   account,
@@ -92,7 +93,7 @@ GoRouter fnRouter(GlobalKey<NavigatorState> key, SignState sign, bool party) => 
                 );
               }
               else if (model.content == AppStatus.loading) {
-                return LoadingShimmer(height: MediaQuery.of(context).size.height);
+                return LoadingShimmer(height: MediaQuery.of(context).size.height);  // Shimmer on app load
               }
               else if (model.content == AppStatus.failed) {
                 return const Failure(type: FailureType.failed);
