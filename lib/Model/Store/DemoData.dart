@@ -21,22 +21,18 @@ final defaultUser = User((u) => u
     ..room_number = "2G40"
     ..squadron = 12
     ..group = "CG02"
-    ..unit = "CS25"
-  ).toBuilder()
+    ..unit = "CS12").toBuilder()
   ..pass_allocation = CadetPassAllocation((a) => a
     ..individual_pass_status = true
     ..effective_pass_status = true
     ..class_year_idx = 3
     ..weekday_day_passes = 2
     ..weekday_overnight_passes = 1
-    ..weekend_overnight_passes = 1
-  ).toBuilder()
+    ..weekend_overnight_passes = 1).toBuilder()
   ..accountability = CadetAccountability((a) => a
     ..di_last_signed = DateTime.now().toUtc()
     ..di_signed_by = "DemoID"
-    ..di_signed_name = "Hugh Mann"
-  ).toBuilder()
-);
+    ..di_signed_name = "John Doe").toBuilder());
 
 final defaultHistory = PassHistoryModel((h) => h
   ..history = <CadetPass>[
@@ -49,81 +45,68 @@ final defaultHistory = PassHistoryModel((h) => h
       ..sca_number = "23423"
       ..cadet_id = "Demo"
       ..state = "Colorado"
-      ..city = "Colorado Springs"
-    )
-  ].build().toBuilder()
-);
+      ..city = "Colorado Springs")
+  ].build().toBuilder());
 
 final defaultGrades = UserGrades((u) => u
   ..amis = <Grade>[
     Grade((g) => g
       ..description = "Demo AMI Grade Description #1"
       ..score = 98
-      ..index = 0
-    ),
+      ..index = 0),
     Grade((g) => g
       ..description = "Demo AMI Grade Description #2"
       ..score = 96
-      ..index = 1
-    )
+      ..index = 1)
   ].build().toBuilder()
-
   ..samis = <Grade>[
     Grade((g) => g
       ..description = "Demo SAMI Grade Description #1"
       ..score = 45
-      ..index = 0
-    ),
+      ..index = 0),
     Grade((g) => g
       ..description = "Demo SAMI Grade Description #2"
       ..score = 97
-      ..index = 1
-    )
+      ..index = 1)
   ].build().toBuilder()
-
   ..pais = <Grade>[
     Grade((g) => g
       ..description = "Demo PAI Grade Description #1"
       ..score = 95
-      ..index = 0
-    ),
+      ..index = 0),
     Grade((g) => g
       ..description = "Demo PAI Grade Description #2"
       ..score = 92
-      ..index = 1
-    )
-  ].build().toBuilder()
-);
+      ..index = 1)
+  ].build().toBuilder());
 
 final defaultForms = FormList((f) => f
-    ..forms = <FormSummary>[
-      FormSummary((f) => f
-        ..title = "Demo Form"
-        ..description = "This is a signable document, which by some accounts, may be signed."
-        ..form_id = "demo1"
-        ..signed = false
-      ),
-      FormSummary((f) => f
-        ..title = "Demo Form #2"
-        ..description = "I think you get the point."
-        ..form_id = "demo2"
-        ..signed = false
-      ),
-    ].build().toBuilder()
-);
+  ..forms = <FormSummary>[
+    FormSummary((f) => f
+      ..title = "Demo Form"
+      ..description =
+          "This is a signable document, which by some accounts, may be signed."
+      ..form_id = "demo1"
+      ..signed = false),
+    FormSummary((f) => f
+      ..title = "Demo Form #2"
+      ..description = "Demo form description #2"
+      ..form_id = "demo2"
+      ..signed = false),
+  ].build().toBuilder());
 
 final demoEndpoints = <String, dynamic Function(dynamic)>{
-  "/profile/info" : (_) => defaultUser,
-  "/passes/history" : (_) => defaultHistory,
-  "/grades/info" : (_) => defaultGrades,
-  "/forms/info" : (_) => defaultForms,
-  "/passes/create" : (pass) => pass,
-  "/leave/create" : (leave) => leave,
-  "/profile/edit" : (_) => true,
-  "/leave/update" : (_) => true,
-  "/leave/clear" : (_) => true,
-  "/passes/update" : (_) => true,
-  "/passes/close" : (_) => true,
-  "/accountability/self-sign" : (_) => true,
-  "/forms/sign" : (_) => true,
+  "/profile/info": (_) => defaultUser,
+  "/passes/history": (_) => defaultHistory,
+  "/grades/info": (_) => defaultGrades,
+  "/forms/info": (_) => defaultForms,
+  "/passes/create": (pass) => pass,
+  "/leave/create": (leave) => leave,
+  "/profile/edit": (_) => true,
+  "/leave/update": (_) => true,
+  "/leave/clear": (_) => true,
+  "/passes/update": (_) => true,
+  "/passes/close": (_) => true,
+  "/accountability/self-sign": (_) => true,
+  "/forms/sign": (_) => true,
 };
