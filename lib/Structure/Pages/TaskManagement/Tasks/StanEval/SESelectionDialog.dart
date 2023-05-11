@@ -3,7 +3,6 @@ import 'package:go_router/go_router.dart';
 import 'package:string_similarity/string_similarity.dart';
 
 import '../../../../Components/InfoBar.dart';
-import '../../../../Components/SearchBar.dart';
 
 class SESelectionDialog<T> extends StatefulWidget {
   final Map<String, T> contents;
@@ -37,9 +36,9 @@ class SESelectionDialogState<T> extends State<SESelectionDialog> {
               itemCount: ordered.length + 2,
               itemBuilder: (context, index) {
                 if (index == 0) {
-                  return Row(
+                  return const Row(
                     mainAxisAlignment: MainAxisAlignment.end,
-                    children: const [
+                    children: [
                       CloseButton()
                     ],
                   );

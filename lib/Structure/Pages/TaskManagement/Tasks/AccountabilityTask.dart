@@ -11,7 +11,6 @@ import 'package:string_similarity/string_similarity.dart';
 import '../../../../Model/Database/Roles.dart';
 import '../../../../Model/Database/User.dart';
 import '../../../../Model/Store/Endpoints.dart';
-import '../../../Components/SearchBar.dart';
 import 'Shared/StatusDescription/StatusDescriptionWidget.dart';
 
 class AccountabilityTask extends StatefulWidget {

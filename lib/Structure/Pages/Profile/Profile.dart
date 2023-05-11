@@ -23,21 +23,21 @@ class ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
 
   //Tabs in tabview
   late List<Tab> tabs = [
-    Tab(
+    const Tab(
         text: "Info"
     ),
-    if (!widget.party) Tab(
+    if (!widget.party) const Tab(
         text: "Pass History"
     ),
-    Tab(
+    const Tab(
         text: "Settings"
     ),
   ];
 
   late List<Widget> pages = [
-    CadetInfo(),
-    if (!widget.party) PassHistory(),
-    Settings(),
+    const CadetInfo(),
+    if (!widget.party) const PassHistory(),
+    const Settings(),
   ];
 
   int index = 0;

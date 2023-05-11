@@ -1,6 +1,5 @@
 
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import 'TemporalFormatting.dart';
@@ -88,5 +87,6 @@ class InputValidation {
         return emptyMessage ?? "Please enter a number";
       }
     }
+    return null;
   };
 }

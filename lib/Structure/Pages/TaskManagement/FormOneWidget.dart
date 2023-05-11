@@ -54,7 +54,7 @@ class FormOneWidget extends StatelessWidget {
               },
 
               child: Padding(
-                padding: EdgeInsets.symmetric(vertical: 10),
+                padding: const EdgeInsets.symmetric(vertical: 10),
                 child: Text(
                   "Sign",
                   style: Theme.of(context).textTheme.labelLarge,
