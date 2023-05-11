@@ -1,4 +1,3 @@
-import 'package:falcon_net/Structure/Components/SearchBar.dart';
 import 'package:flutter/material.dart';
 import 'package:string_similarity/string_similarity.dart';
 
@@ -36,9 +35,9 @@ class SEInfoDialogState extends State<SEInfoDialog> {
               itemCount: widget.pairs.length + 3,
               itemBuilder: (context, index) {
                 if (index == 0) {
-                  return Row(
+                  return const Row(
                     mainAxisAlignment: MainAxisAlignment.end,
-                    children: const [
+                    children: [
                       CloseButton()
                     ],
                   );

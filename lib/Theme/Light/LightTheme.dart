@@ -20,12 +20,16 @@ ThemeData lightTheme = ThemeData(
   textTheme: lightTextTheme,
   cardTheme: lightCardTheme,
   elevatedButtonTheme: lightButtonTheme,
-  fontFamily: "ProximaNova",
-  iconTheme: const IconThemeData(color: Colors.black),
-  canvasColor: const Color.fromARGB(255, 232, 232, 232),
+  fontFamily: "ProximaNova", // Default font
+  iconTheme: const IconThemeData(
+      color: Colors.black), // Default color for icons is black
+  canvasColor: const Color.fromARGB(
+      255, 232, 232, 232), // Default canvas color is light grey
   snackBarTheme: const SnackBarThemeData(
-    backgroundColor: Color.fromARGB(255, 50, 50, 50),
-    contentTextStyle: TextStyle(fontSize: 15, color: Colors.white),
+    // Default snackbar theme
+    backgroundColor: Color.fromARGB(255, 50, 50, 50), // Dark grey
+    contentTextStyle:
+        TextStyle(fontSize: 15, color: Colors.white), // White text
   ),
   switchTheme: SwitchThemeData(
     thumbColor: MaterialStateColor.resolveWith((states) => Colors.blue),

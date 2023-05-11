@@ -1,11 +1,9 @@
 import 'package:async_redux/async_redux.dart';
-import 'package:falcon_net/Model/Database/TimedRole.dart';
 import 'package:falcon_net/Model/Database/User.dart';
 import 'package:falcon_net/Model/Store/Endpoints.dart';
 import 'package:falcon_net/Model/Store/GlobalState.dart';
 
 import '../../../Utility/ErrorFormatting.dart';
-import '../../Database/Roles.dart';
 
 class InfoAction extends ReduxAction<GlobalState> {
   final UserBuilder Function(UserBuilder c)? modify;

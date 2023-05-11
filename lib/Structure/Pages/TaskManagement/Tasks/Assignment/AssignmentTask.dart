@@ -14,7 +14,6 @@ import '../../../../../Model/Store/Endpoints.dart';
 import '../../../../../Utility/ErrorFormatting.dart';
 import '../../../../Components/AsyncPage.dart';
 import '../../../../Components/PageWidget.dart';
-import '../../../../Components/SearchBar.dart';
 
 enum AssignmentType {
   unit,

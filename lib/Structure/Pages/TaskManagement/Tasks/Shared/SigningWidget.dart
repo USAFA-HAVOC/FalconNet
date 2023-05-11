@@ -1,4 +1,3 @@
-import 'package:falcon_net/Structure/Components/SearchBar.dart';
 import 'package:flutter/material.dart';
 import 'package:shimmer/shimmer.dart';
 import  'package:string_similarity/string_similarity.dart';
