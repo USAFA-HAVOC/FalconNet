@@ -32,16 +32,14 @@ class SDOTaskState extends State<SDOTask> {
   void initState() {
     super.initState();
 
-    future = Endpoints.getOwnUnit(null)
-        .catchError((error, stackTrace) {
-          displayError(prefix: "SDO", exception: error);
-          return UnitData();
-        });
+    future = Endpoints.getOwnUnit(null).catchError((error, stackTrace) {
+      displayError(prefix: "SDO", exception: error);
+      return UnitData();
+    });
 
     timer = Timer.periodic(const Duration(seconds: 10), (timer) {
       setState(() {
-        future = Endpoints.getOwnUnit(null)
-            .catchError((error, stackTrace) {
+        future = Endpoints.getOwnUnit(null).catchError((error, stackTrace) {
           displayError(prefix: "SDO", exception: error);
           return UnitData();
         });
@@ -63,35 +61,36 @@ class SDOTaskState extends State<SDOTask> {
       setState(() {
         future = Future<UnitData>.value(unit.sign(member));
       });
-    }
-    catch(e) {
-      messenger.showSnackBar(
-        const SnackBar(content: Text("Failed to sign"))
-      );
+    } catch (e) {
+      messenger.showSnackBar(const SnackBar(content: Text("Failed to sign")));
     }
   }
 
   @override
   Widget build(BuildContext context) {
     return AsyncPage(
-      title: widget.label,
-      connection: future,
-      placeholder: const [
-        LoadingShimmer(height: 200,),
-
-        LoadingShimmer(height: 500,)
-      ],
-      builder: (context, data) => [
-        UnitStatusWidget(data: data),
-
-        PageWidget(
-          title: "Inspections",
-          children: [
-            SigningWidget(di: data, onSign: (member) => sign(member, ScaffoldMessenger.of(context)),),
-          ],
-        )
-      ]
-    );
+        title: widget.label,
+        connection: future,
+        placeholder: const [
+          LoadingShimmer(
+            height: 200,
+          ),
+          LoadingShimmer(
+            height: 500,
+          )
+        ],
+        builder: (context, data) => [
+              UnitStatusWidget(data: data),
+              PageWidget(
+                title: "Inspections",
+                children: [
+                  SigningWidget(
+                    di: data,
+                    onSign: (member) =>
+                        sign(member, ScaffoldMessenger.of(context)),
+                  ),
+                ],
+              )
+            ]);
   }
 }
-

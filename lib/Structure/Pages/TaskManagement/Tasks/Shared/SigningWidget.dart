@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:shimmer/shimmer.dart';
-import  'package:string_similarity/string_similarity.dart';
+import 'package:string_similarity/string_similarity.dart';
 
 import '../../../../../Model/Database/UnitData.dart';
 import '../../../../../Model/Database/User.dart';
@@ -19,7 +19,7 @@ class SigningWidget extends StatefulWidget {
 
 class SigningWidgetState extends State<SigningWidget> {
   String query = "";
-  
+
   List<User> search(List<User> applicable, String q) {
     var mutable = applicable;
     mutable.sort((a, b) {
@@ -30,11 +30,9 @@ class SigningWidgetState extends State<SigningWidget> {
       var secondScore = second.similarityTo(query);
       if (firstScore > secondScore) {
         return -1;
-      }
-      else if (secondScore > firstScore) {
+      } else if (secondScore > firstScore) {
         return 1;
-      }
-      else {
+      } else {
         return first.compareTo(second);
       }
     });
@@ -53,7 +51,10 @@ class SigningWidgetState extends State<SigningWidget> {
             borderRadius: BorderRadius.circular(5),
             color: Colors.white,
           ),
-          child: const SizedBox(width: double.infinity, height: 100,),
+          child: const SizedBox(
+            width: double.infinity,
+            height: 100,
+          ),
         ),
       );
     }
@@ -66,7 +67,11 @@ class SigningWidgetState extends State<SigningWidget> {
       itemCount: ordered.length + 1,
       itemBuilder: (context, index) {
         if (index == 0) {
-          return SearchBar(onChanged: (change) => setState(() => query = change));
+          return SearchBar(
+            leading: const Icon(Icons.search),
+            onChanged: (change) => setState(() => query = change),
+            hintText: "Search for a cadet",
+            );
         }
 
         var member = ordered[index - 1];
