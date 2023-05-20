@@ -20,7 +20,7 @@ import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:go_router/go_router.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import 'Model/Database/Roles.dart';
+import 'Model/Database/Role.dart';
 import 'Model/Database/UserSettings.dart';
 import 'Router/FNRouter.dart';
 import 'Structure/Components/ViewModel.dart';
@@ -36,15 +36,13 @@ void main() async {
         ..status = AppStatus.loading
         ..user = User((b2) => b2
           ..id = ""
+          ..ms_oid = ""
           ..roles = ListBuilder()
           ..personal_info = UserPersonalInfo((b3) => b3
               ..full_name = ""
               ..email = ""
               ..phone_number = ""
               ..room_number = ""
-              ..squadron = 0
-              ..group = ""
-              ..unit = ""
             ).toBuilder()
           ).toBuilder()
         ..settings = UserSettings((b2) => b2

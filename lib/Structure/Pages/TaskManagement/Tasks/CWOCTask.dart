@@ -5,13 +5,13 @@ import 'package:falcon_net/Model/Database/DIRequest.dart';
 import 'package:falcon_net/Model/Database/UnitData.dart';
 import 'package:falcon_net/Model/Database/UnitDataRequest.dart';
 import 'package:falcon_net/Model/Database/UnitSummary.dart';
+import 'package:falcon_net/Model/Database/UserSummary.dart';
 import 'package:falcon_net/Model/Database/WingData.dart';
 import 'package:falcon_net/Model/Store/Endpoints.dart';
 import 'package:falcon_net/Structure/Components/LoadingShimmer.dart';
 import 'package:falcon_net/Structure/Components/UnitStatusWidget.dart';
 import 'package:flutter/material.dart';
 
-import '../../../../Model/Database/User.dart';
 import '../../../../Utility/ErrorFormatting.dart';
 import '../../../Components/AsyncPage.dart';
 import 'Shared/SigningWidget.dart';
@@ -84,10 +84,10 @@ class CWOCTaskState extends State<CWOCTask> {
   }
 
   ///Signs for an individual signee in a given unit
-  void signFor(WingData wing, UnitData unit, User signee, ScaffoldMessengerState messenger) async {
+  void signFor(WingData wing, UnitData unit, UserSummary signee, ScaffoldMessengerState messenger) async {
 
     try {
-      await Endpoints.signOther(DIRequest((b) => b..cadet_id = signee.id));
+      await Endpoints.signOther(DIRequest((b) => b..cadet_id = signee.user_id));
 
       setState(() {
         UnitData signed = unit.sign(signee);
@@ -135,7 +135,7 @@ class CWOCTaskState extends State<CWOCTask> {
       var data = loaded.firstWhere((u) => u.unit.name == unit.unit.name);
       body = SigningWidget(
         di: data,
-        onSign: (signee) => signFor(wing, data, data.members.firstWhere((m) => m.id == signee.id), ScaffoldMessenger.of(context)),
+        onSign: (signee) => signFor(wing, data, data.members.firstWhere((m) => m.user_id == signee.user_id), ScaffoldMessenger.of(context)),
       );
     }
 
@@ -179,7 +179,7 @@ class CWOCTaskState extends State<CWOCTask> {
 
 
   Widget buildStatusGrid(List<UnitSummary> units) {
-    List<String> groups = Set<String>.from(units.where((unit) => unit.unit.group != null).map((u) => u.unit.group!)).toList();
+    List<String> groups = Set<String>.from(units.where((unit) => unit.unit.parent != null).map((u) => u.unit.parent!)).toList();
     groups.sort();
 
     List<Widget> left = [];
@@ -220,14 +220,18 @@ class CWOCTaskState extends State<CWOCTask> {
   }
 
   Widget buildStatusColumn(List<UnitSummary> units) {
-    List<String> groups = Set<String>.from(units.where((unit) => unit.unit.group != null).map((u) => u.unit.group!)).toList();
+    List<String> groups = Set<String>.from(
+        units.where((unit) => unit.unit.sub_units.isEmpty && unit.unit.parent != null)
+            .map((u) => u.unit.parent!)
+    ).toList();
+
     groups.sort();
 
     List<Widget> children = [];
 
     for (var group in groups) {
       children.addAll([
-        UnitStatusWidget.fromList(units: units.where((u) => u.unit.group == group).toList(), label: group),
+        UnitStatusWidget.fromList(units: units.where((u) => u.unit.parent == group).toList(), label: group),
 
         const SizedBox(height: 20,),
       ]);

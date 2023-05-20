@@ -1,5 +1,7 @@
 import 'package:async_redux/async_redux.dart';
-import 'package:falcon_net/Model/Database/Roles.dart';
+import 'package:falcon_net/Model/Database/AccountabilityEvent.dart';
+import 'package:falcon_net/Model/Database/Role.dart';
+import 'package:falcon_net/Model/Database/UserStatus.dart';
 import 'package:falcon_net/Model/Store/GlobalState.dart';
 import 'package:falcon_net/Structure/Components/FNPage.dart';
 import 'package:falcon_net/Structure/Components/ViewModel.dart';
@@ -38,12 +40,6 @@ class TaskManagement extends StatelessWidget {
           path: "/task_management/unit_assignment",
           title: "Unit Assignment",
           description: "Assign cadets to their appropriate unit.",
-        ),
-
-        ExternalTaskWidget(
-          path: "/task_management/squadron_assignment",
-          title: "Squadron Assignment",
-          description: "Assign cadets to their new squadrons.",
         ),
 
         ExternalTaskWidget(
@@ -97,7 +93,12 @@ class TaskManagement extends StatelessWidget {
      */
 
     //Add form one task widgets from state
-    tasks.addAll(state.forms!.where((f) => !f.signed).map((f) => FormOneWidget(form: f)));
+    tasks.addAll(
+        state.events
+            .where((f) => f.accountability_method == AccountabilityMethod.self_signed.name)
+            .where((f) => f.status == UserStatus.unsigned.name)
+            .map((f) => FormOneWidget(form: f))
+    );
 
     //If no relevant tasks, display no tasks message
     if (tasks.isEmpty) {

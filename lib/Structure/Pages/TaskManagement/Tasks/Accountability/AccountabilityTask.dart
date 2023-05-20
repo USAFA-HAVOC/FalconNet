@@ -8,11 +8,11 @@ import 'package:falcon_net/Utility/ListExtensions.dart';
 import 'package:flutter/material.dart';
 import 'package:string_similarity/string_similarity.dart';
 
-import '../../../../Model/Database/Roles.dart';
-import '../../../../Model/Database/User.dart';
-import '../../../../Model/Store/Endpoints.dart';
-import '../../../Components/SearchBar.dart';
-import 'Shared/StatusDescription/StatusDescriptionWidget.dart';
+import '../../../../../Model/Database/Role.dart';
+import '../../../../../Model/Database/User.dart';
+import '../../../../../Model/Store/Endpoints.dart';
+import '../../../../Components/SearchBar.dart';
+import 'StatusDescription/StatusDescriptionWidget.dart';
 
 class AccountabilityTask extends StatefulWidget {
   const AccountabilityTask({super.key});
@@ -93,7 +93,11 @@ class AccountabilityTaskState extends State<AccountabilityTask> {
             Expanded(
                 flex: 3,
                 child: Text(
-                  user.displayStatus(),
+                  user.accountability?.current_leave != null
+                      ? "On Leave"
+                      : user.accountability?.current_pass != null
+                          ? "Signed-Out"
+                          : "Here",
                   style: Theme.of(context).textTheme.titleSmall,
                   textAlign: TextAlign.center,
                 )

@@ -3,7 +3,6 @@ import 'package:falcon_net/Model/Database/FormSummary.dart';
 
 import '../Database/CadetAccountability.dart';
 import '../Database/CadetPass.dart';
-import '../Database/CadetPassAllocation.dart';
 import '../Database/FormList.dart';
 import '../Database/PassHistoryModel.dart';
 import '../Database/TimedRole.dart';
@@ -19,22 +18,11 @@ final defaultUser = User((u) => u
     ..email = "C26Du.Lee@afacademy.af.edu"
     ..phone_number = "2345677876"
     ..room_number = "2G40"
-    ..squadron = 12
-    ..group = "CG02"
-    ..unit = "CS25"
-  ).toBuilder()
-  ..pass_allocation = CadetPassAllocation((a) => a
-    ..individual_pass_status = true
-    ..effective_pass_status = true
-    ..class_year_idx = 3
-    ..weekday_day_passes = 2
-    ..weekday_overnight_passes = 1
-    ..weekend_overnight_passes = 1
   ).toBuilder()
   ..accountability = CadetAccountability((a) => a
-    ..di_last_signed = DateTime.now().toUtc()
-    ..di_signed_by = "DemoID"
-    ..di_signed_name = "Hugh Mann"
+    ..class_year_idx = 3
+    ..effective_pass_status = true
+    ..individual_pass_status = true
   ).toBuilder()
 );
 

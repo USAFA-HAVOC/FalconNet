@@ -22,6 +22,13 @@ class _$TimedRoleSerializer implements StructuredSerializer<TimedRole> {
       serializers.serialize(object.role, specifiedType: const FullType(String)),
     ];
     Object? value;
+    value = object.unit;
+    if (value != null) {
+      result
+        ..add('unit')
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(String)));
+    }
     value = object.start;
     if (value != null) {
       result
@@ -54,6 +61,10 @@ class _$TimedRoleSerializer implements StructuredSerializer<TimedRole> {
           result.role = serializers.deserialize(value,
               specifiedType: const FullType(String))! as String;
           break;
+        case 'unit':
+          result.unit = serializers.deserialize(value,
+              specifiedType: const FullType(String)) as String?;
+          break;
         case 'start':
           result.start = serializers.deserialize(value,
               specifiedType: const FullType(DateTime)) as DateTime?;
@@ -73,6 +84,8 @@ class _$TimedRole extends TimedRole {
   @override
   final String role;
   @override
+  final String? unit;
+  @override
   final DateTime? start;
   @override
   final DateTime? end;
@@ -80,7 +93,8 @@ class _$TimedRole extends TimedRole {
   factory _$TimedRole([void Function(TimedRoleBuilder)? updates]) =>
       (new TimedRoleBuilder()..update(updates))._build();
 
-  _$TimedRole._({required this.role, this.start, this.end}) : super._() {
+  _$TimedRole._({required this.role, this.unit, this.start, this.end})
+      : super._() {
     BuiltValueNullFieldError.checkNotNull(role, r'TimedRole', 'role');
   }
 
@@ -96,6 +110,7 @@ class _$TimedRole extends TimedRole {
     if (identical(other, this)) return true;
     return other is TimedRole &&
         role == other.role &&
+        unit == other.unit &&
         start == other.start &&
         end == other.end;
   }
@@ -104,6 +119,7 @@ class _$TimedRole extends TimedRole {
   int get hashCode {
     var _$hash = 0;
     _$hash = $jc(_$hash, role.hashCode);
+    _$hash = $jc(_$hash, unit.hashCode);
     _$hash = $jc(_$hash, start.hashCode);
     _$hash = $jc(_$hash, end.hashCode);
     _$hash = $jf(_$hash);
@@ -114,6 +130,7 @@ class _$TimedRole extends TimedRole {
   String toString() {
     return (newBuiltValueToStringHelper(r'TimedRole')
           ..add('role', role)
+          ..add('unit', unit)
           ..add('start', start)
           ..add('end', end))
         .toString();
@@ -126,6 +143,10 @@ class TimedRoleBuilder implements Builder<TimedRole, TimedRoleBuilder> {
   String? _role;
   String? get role => _$this._role;
   set role(String? role) => _$this._role = role;
+
+  String? _unit;
+  String? get unit => _$this._unit;
+  set unit(String? unit) => _$this._unit = unit;
 
   DateTime? _start;
   DateTime? get start => _$this._start;
@@ -141,6 +162,7 @@ class TimedRoleBuilder implements Builder<TimedRole, TimedRoleBuilder> {
     final $v = _$v;
     if ($v != null) {
       _role = $v.role;
+      _unit = $v.unit;
       _start = $v.start;
       _end = $v.end;
       _$v = null;
@@ -167,6 +189,7 @@ class TimedRoleBuilder implements Builder<TimedRole, TimedRoleBuilder> {
         new _$TimedRole._(
             role: BuiltValueNullFieldError.checkNotNull(
                 role, r'TimedRole', 'role'),
+            unit: unit,
             start: start,
             end: end);
     replace(_$result);

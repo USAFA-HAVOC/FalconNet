@@ -4,6 +4,7 @@ import 'package:built_value/serializer.dart';
 
 import 'Unit.dart';
 import 'User.dart';
+import 'UserSummary.dart';
 
 part 'UnitData.g.dart';
 
@@ -15,14 +16,15 @@ abstract class UnitData implements Built<UnitData, UnitDataBuilder> {
   int get out;
   int get total;
   Unit get unit;
-  BuiltList<User> get members;
+  BuiltList<UserSummary> get members;
 
-  UnitData sign(User member) {
+
+  UnitData sign(UserSummary member) {
 
     return (toBuilder()
       ..signed = signed + 1
       ..unsigned = unsigned - 1
-      ..members=BuiltList<User>((members.where((u) => u.id != member.id).toList() + [member.sign()])).toBuilder()
+      ..members = BuiltList<UserSummary>((members.where((u) => u.user_id != member.user_id).toList() + [member.sign()])).toBuilder()
     ).build();
   }
 

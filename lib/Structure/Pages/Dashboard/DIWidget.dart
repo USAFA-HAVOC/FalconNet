@@ -1,4 +1,5 @@
 import 'package:async_redux/async_redux.dart';
+import 'package:falcon_net/Model/Database/UserEvent.dart';
 import 'package:falcon_net/Model/Database/UserStatus.dart';
 import 'package:falcon_net/Model/Store/Actions/SignAction.dart';
 import 'package:falcon_net/Model/Store/GlobalState.dart';
@@ -9,8 +10,7 @@ import 'package:falcon_net/Structure/Components/ViewModel.dart';
 import 'package:falcon_net/Utility/TemporalFormatting.dart';
 import 'package:flutter/material.dart';
 
-import '../../../Model/Database/Roles.dart';
-import '../../../Model/Database/User.dart';
+import '../../../Model/Database/Role.dart';
 import '../../../Utility/FNConstants.dart';
 
 ///Page widget for displaying DI information with signing ui
@@ -22,10 +22,10 @@ class DIWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var messenger = ScaffoldMessenger.of(context);
-    return StoreConnector<GlobalState, ViewModel<User>>(
-        converter: (store) => ViewModel<User>(
+    return StoreConnector<GlobalState, ViewModel<GlobalState>>(
+        converter: (store) => ViewModel<GlobalState>(
             store: store,
-            content: store.state.user
+            content: store.state
         ),
         builder: (context, model) => ScheduledBuilder(
           id: "di",
@@ -35,12 +35,21 @@ class DIWidget extends StatelessWidget {
             List<Widget> text;
 
             //Whether cadet is able to sign own di based on roles
-            bool senior = model.content.roles.any((role) => role.role == Roles.signable.name);
+            bool senior = model.content.user.roles.any((role) => role.role == Roles.signable.name);
 
             //Determines whether time is signable
             bool time = !DateTime.now().isBefore(combineDate(DateTime.now(), diOpens));
 
-            UserStatus status = model.content.status();
+            Iterable<UserEvent> di = model.content.events.where((e) => e.event_id == "di");
+
+            UserStatus status;
+
+            if (di.isNotEmpty) {
+              status = UserStatusNames.parse(di.first.status);
+            }
+            else {
+              status = UserStatus.unsigned;
+            }
 
             bool signable = status == UserStatus.unsigned && senior && time;
 
@@ -56,7 +65,7 @@ class DIWidget extends StatelessWidget {
               case UserStatus.signed:
                 text = [
                   Text(
-                    "DI Signed by ${model.content.accountability!.di_signed_name ?? "Loading"}",
+                    "DI Signed",
                     style: Theme.of(context).textTheme.headlineMedium,
                   )
                 ];
@@ -64,11 +73,12 @@ class DIWidget extends StatelessWidget {
               case UserStatus.out:
                 text = [
                   Text(
-                    "Sign In to Sign DI",
+                    "Close Pass to Sign DI",
                     style: Theme.of(context).textTheme.headlineMedium,
                   )
                 ];
                 break;
+              case UserStatus.excused:
               case UserStatus.unsigned:
                 if (!time) {
                   SchedulingService().schedule(id: "di", time: combineDate(DateTime.now(), diOpens), payload: "opened");
@@ -89,7 +99,6 @@ class DIWidget extends StatelessWidget {
                       style: Theme.of(context).textTheme.headlineMedium,
                     )
                   ];
-                  break;
                 }
                 else {
                   text = [
@@ -114,7 +123,8 @@ class DIWidget extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: text,
                     ),
-                  )),
+                  )
+              ),
             ];
 
             //If signable, add button to sign di
@@ -128,7 +138,7 @@ class DIWidget extends StatelessWidget {
                           title: "Sign DI",
                           description: "Confirm that you are at the location of your domicile. "
                               "This action cannot be undone.",
-                          onConfirm: () => model.dispatch(SignAction(
+                          onConfirm: () => model.dispatch(SignAction.di(
                               onSucceed: () => messenger.showSnackBar(
                                   const SnackBar(content: Text("DI Signed Successfully"))
                               ),

@@ -7,12 +7,15 @@ part of 'Serializers.dart';
 // **************************************************************************
 
 Serializers _$serializers = (new Serializers().toBuilder()
+      ..add(AccountabilityEvent.serializer)
+      ..add(Attendee.serializer)
       ..add(CadetAccountability.serializer)
       ..add(CadetLeave.serializer)
       ..add(CadetLeaveTransportMethod.serializer)
       ..add(CadetPass.serializer)
       ..add(CadetPassAllocation.serializer)
       ..add(DIRequest.serializer)
+      ..add(Excusal.serializer)
       ..add(FormDataList.serializer)
       ..add(FormList.serializer)
       ..add(FormOneData.serializer)
@@ -20,10 +23,12 @@ Serializers _$serializers = (new Serializers().toBuilder()
       ..add(Grade.serializer)
       ..add(GradeSubmission.serializer)
       ..add(IndividualStatusRequest.serializer)
+      ..add(InitialData.serializer)
       ..add(PassHistoryModel.serializer)
       ..add(PassStatusRequest.serializer)
       ..add(RoleRequest.serializer)
       ..add(SchedulingEvent.serializer)
+      ..add(SignRequest.serializer)
       ..add(SquadronAssignRequest.serializer)
       ..add(StringRequest.serializer)
       ..add(TimedRole.serializer)
@@ -36,6 +41,7 @@ Serializers _$serializers = (new Serializers().toBuilder()
       ..add(UnitOrder.serializer)
       ..add(UnitSummary.serializer)
       ..add(User.serializer)
+      ..add(UserEvent.serializer)
       ..add(UserGrades.serializer)
       ..add(UserList.serializer)
       ..add(UserNotification.serializer)
@@ -44,6 +50,13 @@ Serializers _$serializers = (new Serializers().toBuilder()
       ..add(UserSummary.serializer)
       ..add(UserSummaryList.serializer)
       ..add(WingData.serializer)
+      ..addBuilderFactory(
+          const FullType(
+              BuiltList, const [const FullType(AccountabilityEvent)]),
+          () => new ListBuilder<AccountabilityEvent>())
+      ..addBuilderFactory(
+          const FullType(BuiltList, const [const FullType(Attendee)]),
+          () => new ListBuilder<Attendee>())
       ..addBuilderFactory(
           const FullType(BuiltList, const [const FullType(CadetPass)]),
           () => new ListBuilder<CadetPass>())
@@ -72,6 +85,9 @@ Serializers _$serializers = (new Serializers().toBuilder()
           const FullType(BuiltList, const [const FullType(String)]),
           () => new ListBuilder<String>())
       ..addBuilderFactory(
+          const FullType(BuiltList, const [const FullType(String)]),
+          () => new ListBuilder<String>())
+      ..addBuilderFactory(
           const FullType(BuiltList, const [const FullType(TimedRole)]),
           () => new ListBuilder<TimedRole>())
       ..addBuilderFactory(
@@ -87,8 +103,11 @@ Serializers _$serializers = (new Serializers().toBuilder()
           const FullType(BuiltList, const [const FullType(User)]),
           () => new ListBuilder<User>())
       ..addBuilderFactory(
-          const FullType(BuiltList, const [const FullType(User)]),
-          () => new ListBuilder<User>())
+          const FullType(BuiltList, const [const FullType(UserEvent)]),
+          () => new ListBuilder<UserEvent>())
+      ..addBuilderFactory(
+          const FullType(BuiltList, const [const FullType(UserSummary)]),
+          () => new ListBuilder<UserSummary>())
       ..addBuilderFactory(
           const FullType(BuiltList, const [const FullType(UserSummary)]),
           () => new ListBuilder<UserSummary>())
@@ -102,6 +121,15 @@ Serializers _$serializers = (new Serializers().toBuilder()
       ..addBuilderFactory(
           const FullType(BuiltList, const [const FullType(bool)]),
           () => new ListBuilder<bool>())
+      ..addBuilderFactory(
+          const FullType(BuiltList, const [const FullType(String)]),
+          () => new ListBuilder<String>())
+      ..addBuilderFactory(
+          const FullType(BuiltList, const [const FullType(bool)]),
+          () => new ListBuilder<bool>())
+      ..addBuilderFactory(
+          const FullType(BuiltList, const [const FullType(String)]),
+          () => new ListBuilder<String>())
       ..addBuilderFactory(
           const FullType(
               BuiltMap, const [const FullType(String), const FullType(bool)]),

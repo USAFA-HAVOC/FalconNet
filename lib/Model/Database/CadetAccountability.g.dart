@@ -23,29 +23,18 @@ class _$CadetAccountabilitySerializer
   Iterable<Object?> serialize(
       Serializers serializers, CadetAccountability object,
       {FullType specifiedType = FullType.unspecified}) {
-    final result = <Object?>[];
+    final result = <Object?>[
+      'individual_pass_status',
+      serializers.serialize(object.individual_pass_status,
+          specifiedType: const FullType(bool)),
+      'effective_pass_status',
+      serializers.serialize(object.effective_pass_status,
+          specifiedType: const FullType(bool)),
+      'class_year_idx',
+      serializers.serialize(object.class_year_idx,
+          specifiedType: const FullType(int)),
+    ];
     Object? value;
-    value = object.di_last_signed;
-    if (value != null) {
-      result
-        ..add('di_last_signed')
-        ..add(serializers.serialize(value,
-            specifiedType: const FullType(DateTime)));
-    }
-    value = object.di_signed_by;
-    if (value != null) {
-      result
-        ..add('di_signed_by')
-        ..add(serializers.serialize(value,
-            specifiedType: const FullType(String)));
-    }
-    value = object.di_signed_name;
-    if (value != null) {
-      result
-        ..add('di_signed_name')
-        ..add(serializers.serialize(value,
-            specifiedType: const FullType(String)));
-    }
     value = object.current_pass;
     if (value != null) {
       result
@@ -59,6 +48,24 @@ class _$CadetAccountabilitySerializer
         ..add('current_leave')
         ..add(serializers.serialize(value,
             specifiedType: const FullType(CadetLeave)));
+    }
+    value = object.weekend_overnight_passes;
+    if (value != null) {
+      result
+        ..add('weekend_overnight_passes')
+        ..add(serializers.serialize(value, specifiedType: const FullType(int)));
+    }
+    value = object.weekday_overnight_passes;
+    if (value != null) {
+      result
+        ..add('weekday_overnight_passes')
+        ..add(serializers.serialize(value, specifiedType: const FullType(int)));
+    }
+    value = object.weekday_day_passes;
+    if (value != null) {
+      result
+        ..add('weekday_day_passes')
+        ..add(serializers.serialize(value, specifiedType: const FullType(int)));
     }
     return result;
   }
@@ -75,18 +82,6 @@ class _$CadetAccountabilitySerializer
       iterator.moveNext();
       final Object? value = iterator.current;
       switch (key) {
-        case 'di_last_signed':
-          result.di_last_signed = serializers.deserialize(value,
-              specifiedType: const FullType(DateTime)) as DateTime?;
-          break;
-        case 'di_signed_by':
-          result.di_signed_by = serializers.deserialize(value,
-              specifiedType: const FullType(String)) as String?;
-          break;
-        case 'di_signed_name':
-          result.di_signed_name = serializers.deserialize(value,
-              specifiedType: const FullType(String)) as String?;
-          break;
         case 'current_pass':
           result.current_pass.replace(serializers.deserialize(value,
               specifiedType: const FullType(CadetPass))! as CadetPass);
@@ -94,6 +89,30 @@ class _$CadetAccountabilitySerializer
         case 'current_leave':
           result.current_leave.replace(serializers.deserialize(value,
               specifiedType: const FullType(CadetLeave))! as CadetLeave);
+          break;
+        case 'weekend_overnight_passes':
+          result.weekend_overnight_passes = serializers.deserialize(value,
+              specifiedType: const FullType(int)) as int?;
+          break;
+        case 'weekday_overnight_passes':
+          result.weekday_overnight_passes = serializers.deserialize(value,
+              specifiedType: const FullType(int)) as int?;
+          break;
+        case 'weekday_day_passes':
+          result.weekday_day_passes = serializers.deserialize(value,
+              specifiedType: const FullType(int)) as int?;
+          break;
+        case 'individual_pass_status':
+          result.individual_pass_status = serializers.deserialize(value,
+              specifiedType: const FullType(bool))! as bool;
+          break;
+        case 'effective_pass_status':
+          result.effective_pass_status = serializers.deserialize(value,
+              specifiedType: const FullType(bool))! as bool;
+          break;
+        case 'class_year_idx':
+          result.class_year_idx = serializers.deserialize(value,
+              specifiedType: const FullType(int))! as int;
           break;
       }
     }
@@ -104,27 +123,43 @@ class _$CadetAccountabilitySerializer
 
 class _$CadetAccountability extends CadetAccountability {
   @override
-  final DateTime? di_last_signed;
-  @override
-  final String? di_signed_by;
-  @override
-  final String? di_signed_name;
-  @override
   final CadetPass? current_pass;
   @override
   final CadetLeave? current_leave;
+  @override
+  final int? weekend_overnight_passes;
+  @override
+  final int? weekday_overnight_passes;
+  @override
+  final int? weekday_day_passes;
+  @override
+  final bool individual_pass_status;
+  @override
+  final bool effective_pass_status;
+  @override
+  final int class_year_idx;
 
   factory _$CadetAccountability(
           [void Function(CadetAccountabilityBuilder)? updates]) =>
       (new CadetAccountabilityBuilder()..update(updates))._build();
 
   _$CadetAccountability._(
-      {this.di_last_signed,
-      this.di_signed_by,
-      this.di_signed_name,
-      this.current_pass,
-      this.current_leave})
-      : super._();
+      {this.current_pass,
+      this.current_leave,
+      this.weekend_overnight_passes,
+      this.weekday_overnight_passes,
+      this.weekday_day_passes,
+      required this.individual_pass_status,
+      required this.effective_pass_status,
+      required this.class_year_idx})
+      : super._() {
+    BuiltValueNullFieldError.checkNotNull(individual_pass_status,
+        r'CadetAccountability', 'individual_pass_status');
+    BuiltValueNullFieldError.checkNotNull(
+        effective_pass_status, r'CadetAccountability', 'effective_pass_status');
+    BuiltValueNullFieldError.checkNotNull(
+        class_year_idx, r'CadetAccountability', 'class_year_idx');
+  }
 
   @override
   CadetAccountability rebuild(
@@ -139,21 +174,27 @@ class _$CadetAccountability extends CadetAccountability {
   bool operator ==(Object other) {
     if (identical(other, this)) return true;
     return other is CadetAccountability &&
-        di_last_signed == other.di_last_signed &&
-        di_signed_by == other.di_signed_by &&
-        di_signed_name == other.di_signed_name &&
         current_pass == other.current_pass &&
-        current_leave == other.current_leave;
+        current_leave == other.current_leave &&
+        weekend_overnight_passes == other.weekend_overnight_passes &&
+        weekday_overnight_passes == other.weekday_overnight_passes &&
+        weekday_day_passes == other.weekday_day_passes &&
+        individual_pass_status == other.individual_pass_status &&
+        effective_pass_status == other.effective_pass_status &&
+        class_year_idx == other.class_year_idx;
   }
 
   @override
   int get hashCode {
     var _$hash = 0;
-    _$hash = $jc(_$hash, di_last_signed.hashCode);
-    _$hash = $jc(_$hash, di_signed_by.hashCode);
-    _$hash = $jc(_$hash, di_signed_name.hashCode);
     _$hash = $jc(_$hash, current_pass.hashCode);
     _$hash = $jc(_$hash, current_leave.hashCode);
+    _$hash = $jc(_$hash, weekend_overnight_passes.hashCode);
+    _$hash = $jc(_$hash, weekday_overnight_passes.hashCode);
+    _$hash = $jc(_$hash, weekday_day_passes.hashCode);
+    _$hash = $jc(_$hash, individual_pass_status.hashCode);
+    _$hash = $jc(_$hash, effective_pass_status.hashCode);
+    _$hash = $jc(_$hash, class_year_idx.hashCode);
     _$hash = $jf(_$hash);
     return _$hash;
   }
@@ -161,11 +202,14 @@ class _$CadetAccountability extends CadetAccountability {
   @override
   String toString() {
     return (newBuiltValueToStringHelper(r'CadetAccountability')
-          ..add('di_last_signed', di_last_signed)
-          ..add('di_signed_by', di_signed_by)
-          ..add('di_signed_name', di_signed_name)
           ..add('current_pass', current_pass)
-          ..add('current_leave', current_leave))
+          ..add('current_leave', current_leave)
+          ..add('weekend_overnight_passes', weekend_overnight_passes)
+          ..add('weekday_overnight_passes', weekday_overnight_passes)
+          ..add('weekday_day_passes', weekday_day_passes)
+          ..add('individual_pass_status', individual_pass_status)
+          ..add('effective_pass_status', effective_pass_status)
+          ..add('class_year_idx', class_year_idx))
         .toString();
   }
 }
@@ -173,20 +217,6 @@ class _$CadetAccountability extends CadetAccountability {
 class CadetAccountabilityBuilder
     implements Builder<CadetAccountability, CadetAccountabilityBuilder> {
   _$CadetAccountability? _$v;
-
-  DateTime? _di_last_signed;
-  DateTime? get di_last_signed => _$this._di_last_signed;
-  set di_last_signed(DateTime? di_last_signed) =>
-      _$this._di_last_signed = di_last_signed;
-
-  String? _di_signed_by;
-  String? get di_signed_by => _$this._di_signed_by;
-  set di_signed_by(String? di_signed_by) => _$this._di_signed_by = di_signed_by;
-
-  String? _di_signed_name;
-  String? get di_signed_name => _$this._di_signed_name;
-  set di_signed_name(String? di_signed_name) =>
-      _$this._di_signed_name = di_signed_name;
 
   CadetPassBuilder? _current_pass;
   CadetPassBuilder get current_pass =>
@@ -200,16 +230,49 @@ class CadetAccountabilityBuilder
   set current_leave(CadetLeaveBuilder? current_leave) =>
       _$this._current_leave = current_leave;
 
+  int? _weekend_overnight_passes;
+  int? get weekend_overnight_passes => _$this._weekend_overnight_passes;
+  set weekend_overnight_passes(int? weekend_overnight_passes) =>
+      _$this._weekend_overnight_passes = weekend_overnight_passes;
+
+  int? _weekday_overnight_passes;
+  int? get weekday_overnight_passes => _$this._weekday_overnight_passes;
+  set weekday_overnight_passes(int? weekday_overnight_passes) =>
+      _$this._weekday_overnight_passes = weekday_overnight_passes;
+
+  int? _weekday_day_passes;
+  int? get weekday_day_passes => _$this._weekday_day_passes;
+  set weekday_day_passes(int? weekday_day_passes) =>
+      _$this._weekday_day_passes = weekday_day_passes;
+
+  bool? _individual_pass_status;
+  bool? get individual_pass_status => _$this._individual_pass_status;
+  set individual_pass_status(bool? individual_pass_status) =>
+      _$this._individual_pass_status = individual_pass_status;
+
+  bool? _effective_pass_status;
+  bool? get effective_pass_status => _$this._effective_pass_status;
+  set effective_pass_status(bool? effective_pass_status) =>
+      _$this._effective_pass_status = effective_pass_status;
+
+  int? _class_year_idx;
+  int? get class_year_idx => _$this._class_year_idx;
+  set class_year_idx(int? class_year_idx) =>
+      _$this._class_year_idx = class_year_idx;
+
   CadetAccountabilityBuilder();
 
   CadetAccountabilityBuilder get _$this {
     final $v = _$v;
     if ($v != null) {
-      _di_last_signed = $v.di_last_signed;
-      _di_signed_by = $v.di_signed_by;
-      _di_signed_name = $v.di_signed_name;
       _current_pass = $v.current_pass?.toBuilder();
       _current_leave = $v.current_leave?.toBuilder();
+      _weekend_overnight_passes = $v.weekend_overnight_passes;
+      _weekday_overnight_passes = $v.weekday_overnight_passes;
+      _weekday_day_passes = $v.weekday_day_passes;
+      _individual_pass_status = $v.individual_pass_status;
+      _effective_pass_status = $v.effective_pass_status;
+      _class_year_idx = $v.class_year_idx;
       _$v = null;
     }
     return this;
@@ -234,11 +297,21 @@ class CadetAccountabilityBuilder
     try {
       _$result = _$v ??
           new _$CadetAccountability._(
-              di_last_signed: di_last_signed,
-              di_signed_by: di_signed_by,
-              di_signed_name: di_signed_name,
               current_pass: _current_pass?.build(),
-              current_leave: _current_leave?.build());
+              current_leave: _current_leave?.build(),
+              weekend_overnight_passes: weekend_overnight_passes,
+              weekday_overnight_passes: weekday_overnight_passes,
+              weekday_day_passes: weekday_day_passes,
+              individual_pass_status: BuiltValueNullFieldError.checkNotNull(
+                  individual_pass_status,
+                  r'CadetAccountability',
+                  'individual_pass_status'),
+              effective_pass_status: BuiltValueNullFieldError.checkNotNull(
+                  effective_pass_status,
+                  r'CadetAccountability',
+                  'effective_pass_status'),
+              class_year_idx: BuiltValueNullFieldError.checkNotNull(
+                  class_year_idx, r'CadetAccountability', 'class_year_idx'));
     } catch (_) {
       late String _$failedField;
       try {

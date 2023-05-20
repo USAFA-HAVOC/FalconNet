@@ -1,8 +1,8 @@
 import 'dart:core';
 
 import 'package:async_redux/async_redux.dart';
+import 'package:falcon_net/Model/Database/CadetAccountability.dart';
 import 'package:falcon_net/Model/Database/CadetPass.dart';
-import 'package:falcon_net/Model/Database/CadetPassAllocation.dart';
 import 'package:falcon_net/Model/Store/GlobalState.dart';
 import 'package:falcon_net/Structure/Components/DateFormField.dart';
 import 'package:falcon_net/Structure/Components/ViewModel.dart';
@@ -27,7 +27,7 @@ class PassForm extends StatefulWidget {
   final void Function(CadetPass pass) onSubmit;
   final void Function() onCancel;
 
-  final CadetPassAllocation allocation;
+  final CadetAccountability accountability;
 
   //Existing pass to be edited
   final CadetPass? existing;
@@ -36,7 +36,7 @@ class PassForm extends StatefulWidget {
       super.key,
       required this.onSubmit,
       required this.onCancel,
-      required this.allocation,
+      required this.accountability,
       CadetPass? editing
   }) : existing = editing?.toLocal();
 
@@ -102,7 +102,7 @@ class PassFormState extends State<PassForm> with SingleTickerProviderStateMixin 
   ///Maximizes pass duration based on pass type and current time
   void maximizePass() {
     //Implement a model call to determine latest possible time
-    var last = PassTypeNames.parse(type).duration(widget.allocation.class_year_idx);
+    var last = PassTypeNames.parse(type).duration(widget.accountability.class_year_idx);
 
     if (last != null) {
       setState(() {
@@ -140,7 +140,7 @@ class PassFormState extends State<PassForm> with SingleTickerProviderStateMixin 
   }
 
   ///Builds type options based on current date
-  List<DropdownMenuItem<String>> buildTypeOptions(CadetPassAllocation allocation) {
+  List<DropdownMenuItem<String>> buildTypeOptions(CadetAccountability accountability) {
     Map<String, String> options = <String, String>{
       PassType.discretionary.description() : PassType.discretionary.name,
       PassType.sca.description() : PassType.sca.name,
@@ -151,19 +151,19 @@ class PassFormState extends State<PassForm> with SingleTickerProviderStateMixin 
       options.addAll({
         PassType.day.description(): PassType.day.name
       });
-      if ((allocation.weekday_overnight_passes ?? 1) > 0 && allocation.class_year_idx != 0) {
+      if ((accountability.weekday_overnight_passes ?? 1) > 0 && accountability.class_year_idx != 0) {
         options.addAll({
           PassType.weekday_overnight.description() : PassType.weekday_overnight.name
         });
       }
     }
     else {
-      if (allocation.class_year_idx == 0 && DateTime.now().weekday == DateTime.sunday) {
+      if (accountability.class_year_idx == 0 && DateTime.now().weekday == DateTime.sunday) {
         options.addAll({
           PassType.sunday.description() : PassType.sunday.name
         });
       }
-      if ((allocation.weekend_overnight_passes ?? 1) > 0) {
+      if ((accountability.weekend_overnight_passes ?? 1) > 0) {
         options.addAll({
           PassType.weekend.description() : PassType.weekend.name
         });
@@ -218,7 +218,7 @@ class PassFormState extends State<PassForm> with SingleTickerProviderStateMixin 
             store: store,
             content: PassParameters(
               user: store.state.user,
-              history: store.state.history!.history.toList()
+              history: store.state.history.history.toList()
             )
         ),
         builder: (context, model) => Form(
@@ -254,7 +254,7 @@ class PassFormState extends State<PassForm> with SingleTickerProviderStateMixin 
                         //Set value
                         type = value!;
                       },
-                      items: buildTypeOptions(widget.allocation),
+                      items: buildTypeOptions(widget.accountability),
                     ),
 
                     const SizedBox(
@@ -356,7 +356,7 @@ class PassFormState extends State<PassForm> with SingleTickerProviderStateMixin 
                             value: dateValue,
                             label: "Return Date",
                             validator: (date) {
-                              var max = PassTypeNames.parse(type).duration(widget.allocation.class_year_idx);
+                              var max = PassTypeNames.parse(type).duration(widget.accountability.class_year_idx);
                               if (max != null && date != null) {
                                 if (combineDate(parseDate(date), parseTime(timeValue)).isAfter(max)) {
                                   return "Exceeds pass limits";
@@ -380,7 +380,7 @@ class PassFormState extends State<PassForm> with SingleTickerProviderStateMixin 
                             value: timeValue,
                             label: "Return Time",
                             validator: (time) {
-                              var max = PassTypeNames.parse(type).duration(widget.allocation.class_year_idx);
+                              var max = PassTypeNames.parse(type).duration(widget.accountability.class_year_idx);
                               if (max != null && time != null) {
                                 if (combineDate(parseDate(dateValue), parseTime(time)).isAfter(max)) {
                                   return "Exceeds pass limits";

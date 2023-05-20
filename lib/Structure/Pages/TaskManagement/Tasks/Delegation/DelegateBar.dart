@@ -2,7 +2,7 @@ import 'package:falcon_net/Structure/Components/InfoBar.dart';
 import 'package:falcon_net/Utility/TemporalFormatting.dart';
 import 'package:flutter/material.dart';
 
-import '../../../../../Model/Database/Roles.dart';
+import '../../../../../Model/Database/Role.dart';
 import '../../../../../Model/Database/User.dart';
 
 ///Displays a bar showing delegate name, current roles, and an assignment button

@@ -1,6 +1,5 @@
 import 'package:built_collection/built_collection.dart';
 import 'package:falcon_net/Model/Database/RoleRequest.dart';
-import 'package:falcon_net/Model/Database/Roles.dart';
 import 'package:falcon_net/Structure/Components/LoadingShimmer.dart';
 import 'package:falcon_net/Structure/Components/PageWidget.dart';
 import 'package:falcon_net/Structure/Components/SearchBar.dart';
@@ -38,16 +37,7 @@ class DelegationTaskState extends State<DelegationTask> {
 
   Future<List<User>> retrieveData() async {
     try {
-      if (widget.owner.any((role) =>
-        role.role == Roles.fn_admin.name ||
-        role.role == Roles.wing_admin.name ||
-        role.role == Roles.group_admin.name
-      )) {
-        return (await Endpoints.getUsers(null)).users.toList();
-      }
-      else {
-        return (await Endpoints.getOwnUnit(null)).members.toList();
-      }
+      return (await Endpoints.getUsers(null)).users.toList();
     }
     catch (e) {
       displayError(prefix: "Delegation", exception: e);

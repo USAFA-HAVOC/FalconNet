@@ -29,7 +29,7 @@ class PassWidget extends StatelessWidget {
           List<Widget> children;
 
           if (
-            !(model.content.pass_allocation?.effective_pass_status ?? true) ||
+            !(model.content.accountability?.effective_pass_status ?? true) ||
             !(model.content.accountability?.current_leave?.departure_time.isAfter(DateTime.now()) ?? true)
           ) {
             children = const [
@@ -53,7 +53,7 @@ class PassWidget extends StatelessWidget {
                       child: Padding(
                         padding: const EdgeInsets.all(20),
                         child: PassForm(
-                          allocation: model.content.pass_allocation!,
+                          accountability: model.content.accountability!,
 
                           //Closes dialog and dispatches open pass action
                           onSubmit: (pass) {
@@ -112,7 +112,7 @@ class PassWidget extends StatelessWidget {
                               child: Padding(
                                 padding: const EdgeInsets.all(10),
                                 child: PassForm(
-                                  allocation: model.content.pass_allocation!,
+                                  accountability: model.content.accountability!,
 
                                   //Passes existing data
                                   editing: model.content.accountability!.current_pass,

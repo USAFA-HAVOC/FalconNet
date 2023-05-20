@@ -32,7 +32,7 @@ class _$UnitDataSerializer implements StructuredSerializer<UnitData> {
       'members',
       serializers.serialize(object.members,
           specifiedType:
-              const FullType(BuiltList, const [const FullType(User)])),
+              const FullType(BuiltList, const [const FullType(UserSummary)])),
     ];
 
     return result;
@@ -71,8 +71,8 @@ class _$UnitDataSerializer implements StructuredSerializer<UnitData> {
           break;
         case 'members':
           result.members.replace(serializers.deserialize(value,
-                  specifiedType:
-                      const FullType(BuiltList, const [const FullType(User)]))!
+                  specifiedType: const FullType(
+                      BuiltList, const [const FullType(UserSummary)]))!
               as BuiltList<Object?>);
           break;
       }
@@ -94,7 +94,7 @@ class _$UnitData extends UnitData {
   @override
   final Unit unit;
   @override
-  final BuiltList<User> members;
+  final BuiltList<UserSummary> members;
 
   factory _$UnitData([void Function(UnitDataBuilder)? updates]) =>
       (new UnitDataBuilder()..update(updates))._build();
@@ -183,9 +183,10 @@ class UnitDataBuilder implements Builder<UnitData, UnitDataBuilder> {
   UnitBuilder get unit => _$this._unit ??= new UnitBuilder();
   set unit(UnitBuilder? unit) => _$this._unit = unit;
 
-  ListBuilder<User>? _members;
-  ListBuilder<User> get members => _$this._members ??= new ListBuilder<User>();
-  set members(ListBuilder<User>? members) => _$this._members = members;
+  ListBuilder<UserSummary>? _members;
+  ListBuilder<UserSummary> get members =>
+      _$this._members ??= new ListBuilder<UserSummary>();
+  set members(ListBuilder<UserSummary>? members) => _$this._members = members;
 
   UnitDataBuilder();
 

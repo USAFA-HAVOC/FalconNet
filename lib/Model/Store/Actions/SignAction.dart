@@ -1,4 +1,5 @@
 import 'package:async_redux/async_redux.dart';
+import 'package:built_collection/built_collection.dart';
 import 'package:falcon_net/Model/Store/Endpoints.dart';
 import 'package:falcon_net/Model/Store/GlobalState.dart';
 
@@ -6,27 +7,30 @@ import '../../../Utility/ErrorFormatting.dart';
 import '../../../Services/NotificationService.dart';
 
 class SignAction extends ReduxAction<GlobalState> {
+  final String event;
+
   final void Function()? onFail;
   final void Function()? onSucceed;
 
-  SignAction({this.onFail, this.onSucceed});
+  SignAction({required this.event, this.onFail, this.onSucceed});
+
+  SignAction.di({this.onFail, this.onSucceed}) : event = "di";
 
   @override
   Future<GlobalState?> reduce() async {
     try {
       await Endpoints.signSelf(null);
       onSucceed?.call();
-      if (state.settings.diPush) {
+      if (event == "di" && state.settings.diPush) {
         NotificationService().scheduleDINotification();
       }
+
       return (state.toBuilder()
-        ..user.accountability.di_signed_by = state.user.id
-        ..user.accountability.di_signed_name = state.user.personal_info.full_name
-        ..user.accountability.di_last_signed = DateTime.now().toUtc()
+          ///TODO: Update events
       ).build();
     }
     catch (e) {
-      displayError(prefix: "Form", exception: e);
+      displayError(prefix: "Signing", exception: e);
       onFail?.call();
       return null;
     }

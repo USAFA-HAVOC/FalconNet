@@ -2,8 +2,10 @@ import 'dart:io';
 
 import 'package:built_value/serializer.dart';
 import 'package:dio/dio.dart';
+import 'package:falcon_net/Model/Database/AccountabilityEvent.dart';
 import 'package:falcon_net/Model/Database/FormDataList.dart';
 import 'package:falcon_net/Model/Database/FormSummary.dart';
+import 'package:falcon_net/Model/Database/InitialData.dart';
 import 'package:falcon_net/Model/Database/PassHistoryModel.dart';
 import 'package:falcon_net/Model/Database/PassStatusRequest.dart';
 import 'package:falcon_net/Model/Database/RoleRequest.dart';
@@ -139,39 +141,59 @@ class Endpoint<Req, Res> {
 }
 
 class Endpoints {
+  static Endpoint<void, InitialData> initial = Endpoint("/pages/home", get: true);
+
   static Endpoint<void, User> getProfile = Endpoint("/profile/info", get: true);
   static Endpoint<User, bool> editProfile = Endpoint("/profile/edit");
+
   static Endpoint<CadetLeave, CadetLeave> createLeave = Endpoint("/leave/create");
   static Endpoint<CadetLeave, bool> updateLeave = Endpoint("/leave/create");
   static Endpoint<void, bool> clearLeave = Endpoint("/leave/clear");
+
   static Endpoint<CadetPass, CadetPass> createPass = Endpoint("/passes/create");
   static Endpoint<void, bool> closePass = Endpoint("/passes/close");
   static Endpoint<CadetPass, bool> updatePass = Endpoint("/passes/update");
+
   static Endpoint<void, PassHistoryModel> getPassHistory = Endpoint("/passes/history");
+
   static Endpoint<void, bool> signSelf = Endpoint("/accountability/self-sign");
   static Endpoint<DIRequest, bool> signOther = Endpoint("/accountability/sdo-sign");
-  static Endpoint<void, WingData> getWing = Endpoint("/pages/cwoc", get: true);
-  static Endpoint<void, UnitData> getOwnUnit = Endpoint("/pages/sdo", get: true);
-  static Endpoint<UnitDataRequest, UnitData> getUnit = Endpoint("/pages/sdo", get: true);
+
   static Endpoint<void, UserGrades> getGrades = Endpoint("/grades/info", get: true);
   static Endpoint<GradeSubmission, bool> setGrades = Endpoint("/grades/set");
   static Endpoint<StringRequest, UnitGrades> unitGrades = Endpoint("/grades/unit");
+
   static Endpoint<void, FormList> getForms = Endpoint("/forms/info");
   static Endpoint<FormSummary, FormOneData> addForm = Endpoint("/forms/add");
   static Endpoint<void, FormDataList> getFormData = Endpoint("/forms/data");
   static Endpoint<StringRequest, bool> removeForm = Endpoint("/forms/remove");
   static Endpoint<StringRequest, bool> signForm = Endpoint("/forms/sign");
+
   static Endpoint<RoleRequest, bool> setRoles = Endpoint("/roles/set");
+
   static Endpoint<SquadronAssignRequest, bool> assignSquad = Endpoint("squadron/assign");
   static Endpoint<UnitAssignRequest, bool> assignUnit = Endpoint("/unit/assign");
-  static Endpoint<void, UserSummaryList> getUserSummaries = Endpoint("/unit/assignment-get");
+
+  static Endpoint<void, UserSummaryList> getUserSummaries = Endpoint("/users/summaries");
   static Endpoint<void, UserList> getUsers = Endpoint("/users/get", get: true);
+
   static Endpoint<void, UnitList> listUnits = Endpoint("/unit/list");
   static Endpoint<Unit, Unit> createUnit = Endpoint("/unit/create");
   static Endpoint<Unit, bool> editUnit = Endpoint("/unit/modify");
   static Endpoint<Unit, Unit> deleteUnit = Endpoint("/unit/delete");
+
+  static Endpoint<void, WingData> getWing = Endpoint("/unit/summaries", get: true);
+  static Endpoint<void, UnitData> getOwnUnit = Endpoint("/unit/data", get: true);
+  static Endpoint<UnitDataRequest, UnitData> getUnit = Endpoint("/unit/data", get: true);
+
   static Endpoint<PassStatusRequest, bool> setPassStatus = Endpoint("/unit/set-pass-status");
-  static Endpoint<IndividualStatusRequest, bool> setIndividualPassStatus = Endpoint("/unit/set-individual-status");
+  static Endpoint<IndividualStatusRequest, bool> setIndividualPassStatus = Endpoint("/unit/set-individual-pass-status");
+
+  static Endpoint<AccountabilityEvent, AccountabilityEvent> createEvent = Endpoint("/events/create");
+  static Endpoint<String, bool> deleteEvent = Endpoint("/events/delete");
+
+  static Endpoint<String, AccountabilityEventStatus> getEventStatus = Endpoint("/events/status", get: true);
+  static Endpoint<void, EventList> getEvents = Endpoint("/events/unit", get: true);
 }
 
 Future<void> login(String token) async {

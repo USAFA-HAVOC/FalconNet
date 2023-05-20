@@ -1,4 +1,8 @@
 import 'package:falcon_net/Model/Database/TimedRole.dart';
+import 'package:built_value/built_value.dart';
+import 'package:built_value/serializer.dart';
+
+part 'Role.g.dart';
 
 enum Roles {
   fn_admin,
@@ -44,4 +48,14 @@ extension RoleNames on Roles {
   TimedRole toIndefinite() => TimedRole((r) => r
       ..role = name
   );
+}
+
+abstract class Role implements Built<Role, RoleBuilder> {
+  static Serializer<Role> get serializer => _$roleSerializer;
+
+  String get type;
+  String? get unit;
+
+  Role._();
+  factory Role([void Function(RoleBuilder) updates]) = _$Role;
 }

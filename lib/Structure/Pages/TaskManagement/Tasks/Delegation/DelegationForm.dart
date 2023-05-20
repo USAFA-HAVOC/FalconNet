@@ -1,7 +1,7 @@
 import 'package:falcon_net/Structure/Pages/TaskManagement/Tasks/Delegation/RoleBar.dart';
 import 'package:flutter/material.dart';
 
-import '../../../../../Model/Database/Roles.dart';
+import '../../../../../Model/Database/Role.dart';
 import '../../../../../Model/Database/TimedRole.dart';
 import '../../../../../Model/Database/User.dart';
 import '../../../../../Theme/NegativeButtonTheme.dart';

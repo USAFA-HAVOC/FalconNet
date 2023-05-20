@@ -4,13 +4,13 @@ import 'package:shimmer/shimmer.dart';
 import  'package:string_similarity/string_similarity.dart';
 
 import '../../../../../Model/Database/UnitData.dart';
-import '../../../../../Model/Database/User.dart';
+import '../../../../../Model/Database/UserSummary.dart';
 import 'SignBox.dart';
 
 ///List displaying all squadron names and allowing SDO to sign di
 class SigningWidget extends StatefulWidget {
   final UnitData? di;
-  final void Function(User) onSign;
+  final void Function(UserSummary) onSign;
 
   const SigningWidget({super.key, required this.di, required this.onSign});
 
@@ -21,11 +21,11 @@ class SigningWidget extends StatefulWidget {
 class SigningWidgetState extends State<SigningWidget> {
   String query = "";
   
-  List<User> search(List<User> applicable, String q) {
+  List<UserSummary> search(List<UserSummary> applicable, String q) {
     var mutable = applicable;
     mutable.sort((a, b) {
-      var first = a.personal_info.full_name.toLowerCase();
-      var second = b.personal_info.full_name.toLowerCase();
+      var first = a.name.toLowerCase();
+      var second = b.name.toLowerCase();
       var query = q.toLowerCase();
       var firstScore = first.similarityTo(query);
       var secondScore = second.similarityTo(query);

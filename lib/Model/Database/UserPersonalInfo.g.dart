@@ -42,26 +42,6 @@ class _$UserPersonalInfoSerializer
         ..add(serializers.serialize(value,
             specifiedType: const FullType(String)));
     }
-    value = object.squadron;
-    if (value != null) {
-      result
-        ..add('squadron')
-        ..add(serializers.serialize(value, specifiedType: const FullType(int)));
-    }
-    value = object.group;
-    if (value != null) {
-      result
-        ..add('group')
-        ..add(serializers.serialize(value,
-            specifiedType: const FullType(String)));
-    }
-    value = object.unit;
-    if (value != null) {
-      result
-        ..add('unit')
-        ..add(serializers.serialize(value,
-            specifiedType: const FullType(String)));
-    }
     return result;
   }
 
@@ -93,18 +73,6 @@ class _$UserPersonalInfoSerializer
           result.room_number = serializers.deserialize(value,
               specifiedType: const FullType(String)) as String?;
           break;
-        case 'squadron':
-          result.squadron = serializers.deserialize(value,
-              specifiedType: const FullType(int)) as int?;
-          break;
-        case 'group':
-          result.group = serializers.deserialize(value,
-              specifiedType: const FullType(String)) as String?;
-          break;
-        case 'unit':
-          result.unit = serializers.deserialize(value,
-              specifiedType: const FullType(String)) as String?;
-          break;
       }
     }
 
@@ -121,12 +89,6 @@ class _$UserPersonalInfo extends UserPersonalInfo {
   final String? phone_number;
   @override
   final String? room_number;
-  @override
-  final int? squadron;
-  @override
-  final String? group;
-  @override
-  final String? unit;
 
   factory _$UserPersonalInfo(
           [void Function(UserPersonalInfoBuilder)? updates]) =>
@@ -136,10 +98,7 @@ class _$UserPersonalInfo extends UserPersonalInfo {
       {required this.email,
       required this.full_name,
       this.phone_number,
-      this.room_number,
-      this.squadron,
-      this.group,
-      this.unit})
+      this.room_number})
       : super._() {
     BuiltValueNullFieldError.checkNotNull(email, r'UserPersonalInfo', 'email');
     BuiltValueNullFieldError.checkNotNull(
@@ -161,10 +120,7 @@ class _$UserPersonalInfo extends UserPersonalInfo {
         email == other.email &&
         full_name == other.full_name &&
         phone_number == other.phone_number &&
-        room_number == other.room_number &&
-        squadron == other.squadron &&
-        group == other.group &&
-        unit == other.unit;
+        room_number == other.room_number;
   }
 
   @override
@@ -174,9 +130,6 @@ class _$UserPersonalInfo extends UserPersonalInfo {
     _$hash = $jc(_$hash, full_name.hashCode);
     _$hash = $jc(_$hash, phone_number.hashCode);
     _$hash = $jc(_$hash, room_number.hashCode);
-    _$hash = $jc(_$hash, squadron.hashCode);
-    _$hash = $jc(_$hash, group.hashCode);
-    _$hash = $jc(_$hash, unit.hashCode);
     _$hash = $jf(_$hash);
     return _$hash;
   }
@@ -187,10 +140,7 @@ class _$UserPersonalInfo extends UserPersonalInfo {
           ..add('email', email)
           ..add('full_name', full_name)
           ..add('phone_number', phone_number)
-          ..add('room_number', room_number)
-          ..add('squadron', squadron)
-          ..add('group', group)
-          ..add('unit', unit))
+          ..add('room_number', room_number))
         .toString();
   }
 }
@@ -215,18 +165,6 @@ class UserPersonalInfoBuilder
   String? get room_number => _$this._room_number;
   set room_number(String? room_number) => _$this._room_number = room_number;
 
-  int? _squadron;
-  int? get squadron => _$this._squadron;
-  set squadron(int? squadron) => _$this._squadron = squadron;
-
-  String? _group;
-  String? get group => _$this._group;
-  set group(String? group) => _$this._group = group;
-
-  String? _unit;
-  String? get unit => _$this._unit;
-  set unit(String? unit) => _$this._unit = unit;
-
   UserPersonalInfoBuilder();
 
   UserPersonalInfoBuilder get _$this {
@@ -236,9 +174,6 @@ class UserPersonalInfoBuilder
       _full_name = $v.full_name;
       _phone_number = $v.phone_number;
       _room_number = $v.room_number;
-      _squadron = $v.squadron;
-      _group = $v.group;
-      _unit = $v.unit;
       _$v = null;
     }
     return this;
@@ -266,10 +201,7 @@ class UserPersonalInfoBuilder
             full_name: BuiltValueNullFieldError.checkNotNull(
                 full_name, r'UserPersonalInfo', 'full_name'),
             phone_number: phone_number,
-            room_number: room_number,
-            squadron: squadron,
-            group: group,
-            unit: unit);
+            room_number: room_number);
     replace(_$result);
     return _$result;
   }

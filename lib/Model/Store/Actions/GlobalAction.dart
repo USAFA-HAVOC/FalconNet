@@ -1,10 +1,6 @@
 import 'dart:async';
 
 import 'package:async_redux/async_redux.dart';
-import 'package:falcon_net/Model/Store/Actions/FormAction.dart';
-import 'package:falcon_net/Model/Store/Actions/GradeAction.dart';
-import 'package:falcon_net/Model/Store/Actions/HistoryAction.dart';
-import 'package:falcon_net/Model/Store/Actions/InfoAction.dart';
 import 'package:falcon_net/Model/Store/Actions/SettingsAction.dart';
 import 'package:falcon_net/Model/Store/AppStatus.dart';
 import 'package:falcon_net/Model/Store/GlobalState.dart';
@@ -12,8 +8,9 @@ import 'package:falcon_net/Services/NotificationService.dart';
 import 'package:falcon_net/Utility/ErrorFormatting.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../../Database/Roles.dart';
+import '../../Database/Role.dart';
 import '../../Database/TimedRole.dart';
+import '../Endpoints.dart';
 
 class GlobalAction extends ReduxAction<GlobalState> {
   final GlobalState? replacement;
@@ -49,19 +46,20 @@ class GlobalAction extends ReduxAction<GlobalState> {
       }
 
       else if (init) {
-        await dispatch(InfoAction.retrieve(onFail: fail));
+        var data = await Endpoints.initial(null);
+        var sb = state.toBuilder();
+        sb.user = data.user.toBuilder();
 
         if (!state.user.roles.any((r) => r.role == Roles.permanent_party.name)) {
-          await dispatch(GradeAction.retrieve(onFail: fail));
-          await dispatch(HistoryAction.retrieve(onFail: fail));
-          await dispatch(FormAction.retrieve(onFail: fail));
+          sb.grades = data.grades!.toBuilder();
+          sb.history = data.pass_history!.toBuilder();
         }
 
         await dispatch(SettingsAction.retrieve(onFail: fail));
 
         if (
-            !(state.leave?.departure_time.isAfter(DateTime.now()) ?? false)
-            && state.pass == null
+            !(state.user.accountability?.current_leave?.departure_time.isAfter(DateTime.now()) ?? false)
+            && state.user.accountability?.current_pass == null
             && state.settings.diPush
         ) {
           NotificationService().scheduleDINotification();
@@ -89,6 +87,7 @@ class GlobalAction extends ReduxAction<GlobalState> {
       }
     }
     catch (error) {
+      onFail?.call();
       displayError(prefix: "Global Action", exception: error);
       return state.rebuild((s) => s..status = AppStatus.error);
     }

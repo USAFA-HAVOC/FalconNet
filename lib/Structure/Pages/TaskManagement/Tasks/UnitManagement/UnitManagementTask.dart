@@ -12,12 +12,13 @@ import 'package:flutter/material.dart';
 import '../../../../../Model/Database/FormOneData.dart';
 import '../../../../../Model/Database/FormSummary.dart';
 import '../../../../../Model/Database/User.dart';
+import '../../../../../Model/Database/UserSummary.dart';
 import '../../../../../Model/Store/Endpoints.dart';
 import '../../../../Components/AsyncPage.dart';
 
 class UnitManagementData {
   final List<bool> status;
-  final List<User> users;
+  final List<UserSummary> users;
   final List<FormOneData> forms;
 
   const UnitManagementData({required this.status, required this.users, required this.forms});

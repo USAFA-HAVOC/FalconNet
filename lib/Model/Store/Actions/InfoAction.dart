@@ -1,11 +1,9 @@
 import 'package:async_redux/async_redux.dart';
-import 'package:falcon_net/Model/Database/TimedRole.dart';
 import 'package:falcon_net/Model/Database/User.dart';
 import 'package:falcon_net/Model/Store/Endpoints.dart';
 import 'package:falcon_net/Model/Store/GlobalState.dart';
 
 import '../../../Utility/ErrorFormatting.dart';
-import '../../Database/Roles.dart';
 
 class InfoAction extends ReduxAction<GlobalState> {
   final UserBuilder Function(UserBuilder c)? modify;
@@ -22,7 +20,6 @@ class InfoAction extends ReduxAction<GlobalState> {
     try {
       if (retrieval) {
         User c = await Endpoints.getProfile(null);
-        //c = c.rebuild((b) => b.roles.add(TimedRole((t) => t..role = Roles.permanent_party.name)));
         onSucceed?.call();
         return (state.toBuilder()..user=c.toBuilder()).build();
       }

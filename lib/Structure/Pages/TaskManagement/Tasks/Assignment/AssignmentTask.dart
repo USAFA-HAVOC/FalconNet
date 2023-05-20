@@ -34,11 +34,10 @@ class AssignmentTaskData {
 }
 
 class AssignmentTask extends StatefulWidget {
-  final AssignmentType type;
   final AssignmentScope scope;
-  final UserPersonalInfo info;
+  final List<String> units;
 
-  const AssignmentTask({super.key, required this.type, required this.info, required this.scope});
+  const AssignmentTask({super.key, required this.units, required this.scope});
 
   @override
   State<AssignmentTask> createState() => AssignmentTaskState();
@@ -55,13 +54,7 @@ class AssignmentTaskState extends State<AssignmentTask> {
   void initState() {
     connection = retrieveData();
 
-    if (widget.type == AssignmentType.unit) {
-      selected = widget.info.unit!;
-    }
-
-    else {
-      selected = widget.info.squadron!.toString();
-    }
+    selected = widget.units.first;
 
     super.initState();
   }
@@ -70,9 +63,8 @@ class AssignmentTaskState extends State<AssignmentTask> {
     try {
       var summaries = await Endpoints.getUserSummaries(null);
       UnitList? units;
-      if (widget.scope == AssignmentScope.all && widget.type == AssignmentType.unit) {
+      if (widget.scope == AssignmentScope.all) {
         units = await Endpoints.listUnits(null);
-        //units.rebuild((u) => u..units.add("CS00"));
       }
 
       return AssignmentTaskData(summaries: summaries, units: units);
@@ -98,33 +90,12 @@ class AssignmentTaskState extends State<AssignmentTask> {
 
   void submit(ScaffoldMessengerState messenger) async {
     try {
-      if (widget.type == AssignmentType.squadron) {
-        int? present = int.tryParse(selected);
-        var valid = present != null ? present <= 40 && present > 0 : false;
+      var unit = UnitAssignRequest((u) => u
+        ..unit = selected
+        ..users = additions.map((e) => e.user_id).toBuiltList().toBuilder()
+      );
 
-        if (valid) {
-          var squad = SquadronAssignRequest((s) => s
-            ..squadron = present
-            ..users = additions.map((e) => e.user_id).toBuiltList().toBuilder()
-          );
-          await Endpoints.assignSquad(squad);
-        }
-
-        else {
-          messenger.showSnackBar(const SnackBar(
-              content: Text("Invalid squadron")
-          ));
-        }
-      }
-
-      else {
-        var unit = UnitAssignRequest((u) => u
-          ..unit = selected
-          ..users = additions.map((e) => e.user_id).toBuiltList().toBuilder()
-        );
-
-        await Endpoints.assignUnit(unit);
-      }
+      await Endpoints.assignUnit(unit);
 
       setState(() {
         ignore.addAll(additions);
@@ -155,7 +126,7 @@ class AssignmentTaskState extends State<AssignmentTask> {
   @override
   Widget build(BuildContext context) {
     return AsyncPage(
-        title: "${widget.type == AssignmentType.unit ? "Unit" : "Squadron"} Assignment",
+        title: "Unit Assignment",
         connection: connection,
         placeholder: const [
           LoadingShimmer(height: 150,),
@@ -168,35 +139,15 @@ class AssignmentTaskState extends State<AssignmentTask> {
             List<Widget> selection = [];
 
             if (widget.scope == AssignmentScope.all) {
-              if (widget.type == AssignmentType.unit) {
-                var units = data.units!.units.toList();
-                selection = [DropdownButton<String>(
-                  items: units.map((u) => DropdownMenuItem<String>(
-                    value: u.unit.name,
-                    child: Text(u.unit.name),
-                  )).toList(),
-                  value: selected,
-                  onChanged: (change) => setState(() => selected = change!),
-                )];
-              }
-
-              else {
-                int? present = int.tryParse(selected);
-                var valid = present != null ? present <= 40 && present > 0 : false;
-                selection = [
-                  TextField(
-                    keyboardType: TextInputType.number,
-                    decoration: InputDecoration(
-                        border: OutlineInputBorder(borderSide: BorderSide(color: Theme.of(context).dividerColor), borderRadius: BorderRadius.circular(10)),
-                        labelStyle: Theme.of(context).textTheme.bodyLarge,
-                        labelText: "Squadron",
-                        suffixIcon: const Icon(Icons.numbers),
-                        errorText: valid ? null: "Please enter a valid squadron"
-                    ),
-                    onChanged: (q) => setState(() => selected = q),
-                  )
-                ];
-              }
+              var units = data.units!.units.toList();
+              selection = [DropdownButton<String>(
+                items: units.map((u) => DropdownMenuItem<String>(
+                  value: u.unit.name,
+                  child: Text(u.unit.name),
+                )).toList(),
+                value: selected,
+                onChanged: (change) => setState(() => selected = change!),
+              )];
             }
 
             List<Widget> addContent;

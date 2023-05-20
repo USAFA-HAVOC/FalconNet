@@ -27,10 +27,6 @@ List<User> generateMembers(int count, UserStatus status, String unit) {
   List<User> members = [];
 
   for (int i = 0; i < count; i++) {
-    DateTime di = DateTime(2000);
-    if (status == UserStatus.signed) {
-      di = DateTime.now().subtract(const Duration(hours: 1));
-    }
     CadetPass? pass;
     if (status == UserStatus.out) {
       pass = CadetPass((p) => p
@@ -48,15 +44,10 @@ List<User> generateMembers(int count, UserStatus status, String unit) {
       ..personal_info = UserPersonalInfo((p) => p
           ..full_name = "${randString(5)}, ${randString(5)}"
           ..phone_number = randString(15)
-          ..squadron = 25
-          ..unit = unit
           ..email = "ajskdfasdfajs@usafa.edu"
           ..room_number = "2534"
-          ..group = "Gra"
       ).toBuilder()
       ..accountability = CadetAccountability((a) => a
-          ..di_last_signed = di
-          ..di_signed_by = status == UserStatus.signed ? "narp" : null
           ..current_pass = pass?.toBuilder()
       ).toBuilder()
       ..id = randString(15)
@@ -72,16 +63,15 @@ UnitData generateUnit(UnitSummary info) {
   var members = generateMembers(info.signed!, UserStatus.signed, info.unit.name) +
       generateMembers(info.unsigned!, UserStatus.unsigned, info.unit.name) +
       generateMembers(info.out!, UserStatus.out, info.unit.name);
+
   return UnitData((b) => b
-      ..members = BuiltList<User>(members).toBuilder()
+      ..members = BuiltList<UserSummary>(members).toBuilder()
       ..unsigned = info.unsigned
       ..signed = info.signed
       ..out = info.out
       ..total = info.total
       ..unit = (UnitBuilder()
           ..name = info.unit.name
-          ..group = info.unit.group
-          ..is_squadron = info.unit.is_squadron
           ..pass_status = info.unit.pass_status.toBuilder()
       )
   );
@@ -101,9 +91,7 @@ UnitSummary generateInfo(String name, int group, [int? count]) {
       ..unsigned = unsigned
       ..unit = (UnitBuilder()
           ..pass_status = [true, true, true, true].build().toBuilder()
-          ..is_squadron = false
           ..name = name
-          ..group = "CG${group.toString()}"
       )
   );
 }

@@ -32,7 +32,7 @@ class UnitFormState extends State<UnitForm> {
   @override
   void initState() {
     name = TextEditingController(text: widget.existing?.unit.name ?? "");
-    group = TextEditingController(text: widget.existing?.unit.group ?? "");
+    group = TextEditingController(text: widget.existing?.unit.parent ?? "");
     super.initState();
   }
 
@@ -109,8 +109,7 @@ class UnitFormState extends State<UnitForm> {
                 ..total = widget.existing?.total ?? 0
                 ..unit = Unit((u) => u
                   ..name = name.text
-                  ..group = group.text.isEmpty ? null : group.text
-                  ..is_squadron = widget.existing?.unit.is_squadron ?? false
+                  ..parent = group.text.isEmpty ? null : group.text
                   ..pass_status = (widget.existing?.unit.pass_status ?? [true, true, true, true].build()).toBuilder()
                   ..id = widget.existing?.unit.id).toBuilder()));
 

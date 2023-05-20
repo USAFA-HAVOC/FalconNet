@@ -2,7 +2,8 @@ enum UserStatus {
   unsigned,
   signed,
   out,
-  leave
+  leave,
+  excused
 }
 
 extension UserStatusNames on UserStatus {
@@ -12,6 +13,7 @@ extension UserStatusNames on UserStatus {
       case UserStatus.unsigned: return "Unsigned";
       case UserStatus.out: return "Signed-Out";
       case UserStatus.leave: return "On Leave";
+      case UserStatus.excused: return "Excused";
     }
   }
 

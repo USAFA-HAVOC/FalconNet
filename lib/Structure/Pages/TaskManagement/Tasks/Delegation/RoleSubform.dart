@@ -4,7 +4,7 @@ import 'package:falcon_net/Utility/TemporalFormatting.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
-import '../../../../../Model/Database/Roles.dart';
+import '../../../../../Model/Database/Role.dart';
 import '../../../../../Model/Database/TimedRole.dart';
 import "../../../../../Utility/InputValidation.dart";
 
