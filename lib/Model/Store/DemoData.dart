@@ -4,7 +4,6 @@ import 'package:falcon_net/Model/Database/FormSummary.dart';
 import '../Database/CadetAccountability.dart';
 import '../Database/CadetPass.dart';
 import '../Database/FormList.dart';
-import '../Database/PassHistoryModel.dart';
 import '../Database/TimedRole.dart';
 import '../Database/User.dart';
 import '../Database/UserGrades.dart';
@@ -26,21 +25,19 @@ final defaultUser = User((u) => u
   ).toBuilder()
 );
 
-final defaultHistory = PassHistoryModel((h) => h
-  ..history = <CadetPass>[
-    CadetPass((p) => p
-      ..description = "This is a demo pass log"
-      ..id = "Demo"
-      ..start_time = DateTime.now().subtract(const Duration(days: 1))
-      ..end_time = DateTime.now()
-      ..pass_type = "SCA"
-      ..sca_number = "23423"
-      ..cadet_id = "Demo"
-      ..state = "Colorado"
-      ..city = "Colorado Springs"
-    )
-  ].build().toBuilder()
-);
+final defaultHistory = <CadetPass>[
+  CadetPass((p) => p
+    ..description = "This is a demo pass log"
+    ..id = "Demo"
+    ..start_time = DateTime.now().subtract(const Duration(days: 1))
+    ..end_time = DateTime.now()
+    ..pass_type = "SCA"
+    ..sca_number = "23423"
+    ..cadet_id = "Demo"
+    ..state = "Colorado"
+    ..city = "Colorado Springs"
+  )
+].build().toBuilder();
 
 final defaultGrades = UserGrades((u) => u
   ..amis = <Grade>[

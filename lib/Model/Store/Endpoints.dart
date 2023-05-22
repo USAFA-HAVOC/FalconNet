@@ -9,6 +9,7 @@ import 'package:falcon_net/Model/Database/InitialData.dart';
 import 'package:falcon_net/Model/Database/PassHistoryModel.dart';
 import 'package:falcon_net/Model/Database/PassStatusRequest.dart';
 import 'package:falcon_net/Model/Database/RoleRequest.dart';
+import 'package:falcon_net/Model/Database/SignRequest.dart';
 import 'package:falcon_net/Model/Database/StringRequest.dart';
 import 'package:falcon_net/Model/Database/UnitData.dart';
 import 'package:falcon_net/Model/Database/User.dart';
@@ -22,7 +23,6 @@ import "package:universal_html/html.dart" as html;
 
 import '../Database/CadetLeave.dart';
 import '../Database/CadetPass.dart';
-import '../Database/DIRequest.dart';
 import '../Database/FormList.dart';
 import '../Database/FormOneData.dart';
 import '../Database/GradeSubmission.dart';
@@ -40,10 +40,10 @@ import 'DemoData.dart';
 class APIData {
   bool authenticated = false;
   bool demo = false;
-  bool devServer = false;
+  bool devServer = true;
   User? userData;
 
-  static const _devApiLocation = "https://api.ethanchapman.dev";
+  static const _devApiLocation = "https://test.api.ethanchapman.dev";
   static const _prodApiLocation = "https://api.ethanchapman.dev";
 
   String get apiLocation => devServer ? _devApiLocation : _prodApiLocation;
@@ -72,6 +72,7 @@ class APIData {
     else {
       devServer = server;
     }
+    devServer = true;
   }
 }
 
@@ -128,6 +129,7 @@ class Endpoint<Req, Res> {
 
     Response res;
 
+    print(dio.options.baseUrl);
     if (get) {
       res = await dio.get(path, queryParameters: data);
     } else {
@@ -155,10 +157,6 @@ class Endpoints {
   static Endpoint<CadetPass, bool> updatePass = Endpoint("/passes/update");
 
   static Endpoint<void, PassHistoryModel> getPassHistory = Endpoint("/passes/history");
-
-  static Endpoint<void, bool> signSelf = Endpoint("/accountability/self-sign");
-  static Endpoint<DIRequest, bool> signOther = Endpoint("/accountability/sdo-sign");
-
   static Endpoint<void, UserGrades> getGrades = Endpoint("/grades/info", get: true);
   static Endpoint<GradeSubmission, bool> setGrades = Endpoint("/grades/set");
   static Endpoint<StringRequest, UnitGrades> unitGrades = Endpoint("/grades/unit");
@@ -191,6 +189,7 @@ class Endpoints {
 
   static Endpoint<AccountabilityEvent, AccountabilityEvent> createEvent = Endpoint("/events/create");
   static Endpoint<String, bool> deleteEvent = Endpoint("/events/delete");
+  static Endpoint<SignRequest, bool> signEvent = Endpoint("/events/sign");
 
   static Endpoint<String, AccountabilityEventStatus> getEventStatus = Endpoint("/events/status", get: true);
   static Endpoint<void, EventList> getEvents = Endpoint("/events/unit", get: true);

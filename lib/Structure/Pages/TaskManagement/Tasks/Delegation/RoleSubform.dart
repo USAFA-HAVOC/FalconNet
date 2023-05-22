@@ -78,7 +78,7 @@ class RoleSubformState extends State<RoleSubform> {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               DropdownButtonFormField<String>(
-                value: value.role,
+                value: value.role.name,
 
                 decoration: InputDecoration(
                     labelStyle: Theme.of(context).textTheme.bodyLarge,
@@ -99,7 +99,9 @@ class RoleSubformState extends State<RoleSubform> {
                 onChanged: !(!(earliest == null && latest == null) && (value.start == null || value.end == null)) ? (selection) {
                   setState(() {
                     value = TimedRole((b) => b
-                      ..role = selection!
+                      ..role = Role((r) => r
+                          ..name = selection!
+                      ).toBuilder()
                       ..start = value.start
                       ..end = value.end
                     ).toUtc();
@@ -122,7 +124,7 @@ class RoleSubformState extends State<RoleSubform> {
                     if (change) {
                       setState(() {
                         value = TimedRole((b) => b
-                          ..role = value.role
+                          ..role = value.role.toBuilder()
                           ..start = DateTime.now().subtract(const Duration(days: 1))
                           ..end = DateTime.now().add(const Duration(days: 7))
                         ).toUtc();
@@ -130,7 +132,7 @@ class RoleSubformState extends State<RoleSubform> {
                     } else {
                       setState(() {
                         value = TimedRole((b) => b
-                          ..role = value.role
+                          ..role = value.role.toBuilder()
                           ..start = null
                           ..end = null
                         ).toUtc();
@@ -161,7 +163,7 @@ class RoleSubformState extends State<RoleSubform> {
                         value: (value.start ?? earliest) == null ? null : describeDate(value.start ?? earliest!),
                         onChanged: (change) => setState(() {
                           value = TimedRole((b) => b
-                            ..role = value.role
+                            ..role = value.role.toBuilder()
                             ..start = parseDate(change)
                             ..end = value.end
                           ).toUtc();
@@ -179,7 +181,7 @@ class RoleSubformState extends State<RoleSubform> {
                         value: (value.end ?? latest) == null ? null : describeDate(value.end ?? latest!),
                         onChanged: (change) => setState(() {
                           value = TimedRole((b) => b
-                            ..role = value.role
+                            ..role = value.role.toBuilder()
                             ..start = value.start
                             ..end = parseDate(change)
                           ).toUtc();

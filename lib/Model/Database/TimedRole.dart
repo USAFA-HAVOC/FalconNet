@@ -8,8 +8,7 @@ part 'TimedRole.g.dart';
 abstract class TimedRole implements Built<TimedRole, TimedRoleBuilder> {
   static Serializer<TimedRole> get serializer => _$timedRoleSerializer;
 
-  String get role;
-  String? get unit;
+  Role get role;
 
   DateTime? get start;
   DateTime? get end;

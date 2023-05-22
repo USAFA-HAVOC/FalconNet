@@ -15,7 +15,7 @@ class HistoryAction extends ReduxAction<GlobalState> {
     try {
       var history = await Endpoints.getPassHistory(null);
       var sb = state.toBuilder();
-      sb.history = history.toBuilder();
+      sb.history = history.history.toBuilder();
       onSucceed?.call();
       return sb.build();
     }

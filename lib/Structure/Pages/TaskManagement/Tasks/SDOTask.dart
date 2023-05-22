@@ -1,11 +1,11 @@
 import 'dart:async';
 
-import 'package:falcon_net/Model/Database/DIRequest.dart';
 import 'package:falcon_net/Model/Store/Endpoints.dart';
 import 'package:falcon_net/Structure/Components/UnitStatusWidget.dart';
 import 'package:falcon_net/Utility/ErrorFormatting.dart';
 import 'package:flutter/material.dart';
 
+import '../../../../Model/Database/SignRequest.dart';
 import '../../../../Model/Database/UnitData.dart';
 import '../../../../Model/Database/UserSummary.dart';
 import '../../../Components/AsyncPage.dart';
@@ -58,7 +58,10 @@ class SDOTaskState extends State<SDOTask> {
   void sign(UserSummary member, ScaffoldMessengerState messenger) async {
     var unit = await future;
     try {
-      await Endpoints.signOther(DIRequest((b) => b..cadet_id = member.user_id));
+      await Endpoints.signEvent(SignRequest((s) => s
+        ..event_id = null
+        ..user_id = member.user_id
+      ));
 
       setState(() {
         future = Future<UnitData>.value(unit.sign(member));

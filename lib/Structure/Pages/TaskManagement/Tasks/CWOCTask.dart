@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:core';
 
 import 'package:falcon_net/Model/Database/DIRequest.dart';
+import 'package:falcon_net/Model/Database/SignRequest.dart';
 import 'package:falcon_net/Model/Database/UnitData.dart';
 import 'package:falcon_net/Model/Database/UnitDataRequest.dart';
 import 'package:falcon_net/Model/Database/UnitSummary.dart';
@@ -87,7 +88,10 @@ class CWOCTaskState extends State<CWOCTask> {
   void signFor(WingData wing, UnitData unit, UserSummary signee, ScaffoldMessengerState messenger) async {
 
     try {
-      await Endpoints.signOther(DIRequest((b) => b..cadet_id = signee.user_id));
+      await Endpoints.signEvent(SignRequest((s) => s
+          ..event_id = null
+          ..user_id = signee.user_id
+      ));
 
       setState(() {
         UnitData signed = unit.sign(signee);

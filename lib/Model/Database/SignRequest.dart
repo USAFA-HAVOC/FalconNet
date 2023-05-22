@@ -6,7 +6,7 @@ part 'SignRequest.g.dart';
 abstract class SignRequest implements Built<SignRequest, SignRequestBuilder> {
   static Serializer<SignRequest> get serializer => _$signRequestSerializer;
 
-  String get event_id;
+  String? get event_id;
   String? get user_id;
 
   SignRequest._();

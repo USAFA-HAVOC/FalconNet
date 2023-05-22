@@ -3,7 +3,7 @@ import 'package:built_value/built_value.dart';
 import 'package:built_value/serializer.dart';
 
 import 'AccountabilityEvent.dart';
-import 'PassHistoryModel.dart';
+import 'CadetPass.dart';
 import 'User.dart';
 import 'UserGrades.dart';
 
@@ -14,7 +14,7 @@ abstract class InitialData implements Built<InitialData, InitialDataBuilder> {
 
   User get user;
   UserGrades? get grades;
-  PassHistoryModel? get pass_history;
+  BuiltList<CadetPass>? get pass_history;
   BuiltList<AccountabilityEvent>? get events;
 
   InitialData._();

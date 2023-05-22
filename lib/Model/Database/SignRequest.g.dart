@@ -17,12 +17,15 @@ class _$SignRequestSerializer implements StructuredSerializer<SignRequest> {
   @override
   Iterable<Object?> serialize(Serializers serializers, SignRequest object,
       {FullType specifiedType = FullType.unspecified}) {
-    final result = <Object?>[
-      'event_id',
-      serializers.serialize(object.event_id,
-          specifiedType: const FullType(String)),
-    ];
+    final result = <Object?>[];
     Object? value;
+    value = object.event_id;
+    if (value != null) {
+      result
+        ..add('event_id')
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(String)));
+    }
     value = object.user_id;
     if (value != null) {
       result
@@ -46,7 +49,7 @@ class _$SignRequestSerializer implements StructuredSerializer<SignRequest> {
       switch (key) {
         case 'event_id':
           result.event_id = serializers.deserialize(value,
-              specifiedType: const FullType(String))! as String;
+              specifiedType: const FullType(String)) as String?;
           break;
         case 'user_id':
           result.user_id = serializers.deserialize(value,
@@ -61,16 +64,14 @@ class _$SignRequestSerializer implements StructuredSerializer<SignRequest> {
 
 class _$SignRequest extends SignRequest {
   @override
-  final String event_id;
+  final String? event_id;
   @override
   final String? user_id;
 
   factory _$SignRequest([void Function(SignRequestBuilder)? updates]) =>
       (new SignRequestBuilder()..update(updates))._build();
 
-  _$SignRequest._({required this.event_id, this.user_id}) : super._() {
-    BuiltValueNullFieldError.checkNotNull(event_id, r'SignRequest', 'event_id');
-  }
+  _$SignRequest._({this.event_id, this.user_id}) : super._();
 
   @override
   SignRequest rebuild(void Function(SignRequestBuilder) updates) =>
@@ -143,11 +144,8 @@ class SignRequestBuilder implements Builder<SignRequest, SignRequestBuilder> {
   SignRequest build() => _build();
 
   _$SignRequest _build() {
-    final _$result = _$v ??
-        new _$SignRequest._(
-            event_id: BuiltValueNullFieldError.checkNotNull(
-                event_id, r'SignRequest', 'event_id'),
-            user_id: user_id);
+    final _$result =
+        _$v ?? new _$SignRequest._(event_id: event_id, user_id: user_id);
     replace(_$result);
     return _$result;
   }

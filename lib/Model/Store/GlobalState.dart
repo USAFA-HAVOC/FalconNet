@@ -18,7 +18,7 @@ part 'GlobalState.g.dart';
 abstract class GlobalState implements Built<GlobalState, GlobalStateBuilder> {
   AppStatus get status;
   User get user;
-  PassHistoryModel get history;
+  BuiltList<CadetPass> get history;
   UserSettings get settings;
   UserGrades get grades;
   BuiltList<UserEvent> get events;

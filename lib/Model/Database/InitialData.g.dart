@@ -34,7 +34,8 @@ class _$InitialDataSerializer implements StructuredSerializer<InitialData> {
       result
         ..add('pass_history')
         ..add(serializers.serialize(value,
-            specifiedType: const FullType(PassHistoryModel)));
+            specifiedType:
+                const FullType(BuiltList, const [const FullType(CadetPass)])));
     }
     value = object.events;
     if (value != null) {
@@ -68,8 +69,9 @@ class _$InitialDataSerializer implements StructuredSerializer<InitialData> {
           break;
         case 'pass_history':
           result.pass_history.replace(serializers.deserialize(value,
-                  specifiedType: const FullType(PassHistoryModel))!
-              as PassHistoryModel);
+                  specifiedType: const FullType(
+                      BuiltList, const [const FullType(CadetPass)]))!
+              as BuiltList<Object?>);
           break;
         case 'events':
           result.events.replace(serializers.deserialize(value,
@@ -90,7 +92,7 @@ class _$InitialData extends InitialData {
   @override
   final UserGrades? grades;
   @override
-  final PassHistoryModel? pass_history;
+  final BuiltList<CadetPass>? pass_history;
   @override
   final BuiltList<AccountabilityEvent>? events;
 
@@ -153,10 +155,10 @@ class InitialDataBuilder implements Builder<InitialData, InitialDataBuilder> {
   UserGradesBuilder get grades => _$this._grades ??= new UserGradesBuilder();
   set grades(UserGradesBuilder? grades) => _$this._grades = grades;
 
-  PassHistoryModelBuilder? _pass_history;
-  PassHistoryModelBuilder get pass_history =>
-      _$this._pass_history ??= new PassHistoryModelBuilder();
-  set pass_history(PassHistoryModelBuilder? pass_history) =>
+  ListBuilder<CadetPass>? _pass_history;
+  ListBuilder<CadetPass> get pass_history =>
+      _$this._pass_history ??= new ListBuilder<CadetPass>();
+  set pass_history(ListBuilder<CadetPass>? pass_history) =>
       _$this._pass_history = pass_history;
 
   ListBuilder<AccountabilityEvent>? _events;

@@ -23,7 +23,8 @@ class PassWidget extends StatelessWidget {
     return StoreConnector<GlobalState, ViewModel<User>>(
         converter: (store) => ViewModel<User>(
             store: store,
-            content: store.state.user),
+            content: store.state.user
+        ),
         builder: (context, model) {
           //List of children to filled
           List<Widget> children;

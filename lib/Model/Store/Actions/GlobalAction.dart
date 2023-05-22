@@ -49,10 +49,11 @@ class GlobalAction extends ReduxAction<GlobalState> {
         var data = await Endpoints.initial(null);
         var sb = state.toBuilder();
         sb.user = data.user.toBuilder();
+        print(data.user);
 
-        if (!state.user.roles.any((r) => r.role == Roles.permanent_party.name)) {
-          sb.grades = data.grades!.toBuilder();
-          sb.history = data.pass_history!.toBuilder();
+        if (!state.user.roles.any((r) => r.role.name == Roles.permanent_party.name)) {
+          sb.grades = data.grades?.toBuilder();
+          sb.history = data.pass_history?.toBuilder();
         }
 
         await dispatch(SettingsAction.retrieve(onFail: fail));
@@ -67,19 +68,22 @@ class GlobalAction extends ReduxAction<GlobalState> {
 
         if (failed) {
           onFail?.call();
-          return state.rebuild((s) => s..status = AppStatus.failed);
+          sb.status = AppStatus.failed;
+          return sb.build();
         }
 
-        var nominal = state.rebuild((s) => s..status = AppStatus.nominal);
+        sb.status = AppStatus.nominal;
 
         var prefs = await SharedPreferences.getInstance();
         var devPP = prefs.getBool("dev-pp") ?? false;
 
         if (devPP) {
-          nominal = nominal.rebuild((s) => s..user.roles.add(TimedRole((r) => r..role = Roles.permanent_party.name)));
+          sb..user.roles.add(TimedRole((r) => r..role = Role((r) => r
+            ..name = Roles.permanent_party.name
+          ).toBuilder()));
         }
 
-        return nominal;
+        return sb.build();
       }
       else {
         onSucceed?.call();

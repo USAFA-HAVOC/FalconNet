@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import '../../../../../Model/Database/Role.dart';
 import '../../../../../Model/Database/TimedRole.dart';
 import '../../../../../Model/Database/User.dart';
-import '../../../../../Theme/NegativeButtonTheme.dart';
 import 'RoleSubform.dart';
 
 class DelegationForm extends StatefulWidget {
@@ -67,7 +66,10 @@ class DelegationFormState extends State<DelegationForm> {
                     context: context,
                     builder: (context) => RoleSubform(
                       existing: TimedRole((b) => b
-                        ..role = Roles.sdo.name
+                        ..role = Role((r) => r
+                          ..name = Roles.sdo.name
+                          ..unit = widget.delegate.assigned_unit
+                        ).toBuilder()
                         ..start = DateTime.now()
                         ..end = DateTime.now()
                       ),

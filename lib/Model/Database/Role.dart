@@ -45,15 +45,18 @@ extension RoleNames on Roles {
     return Roles.values.firstWhere((r) => r.name == input);
   }
 
-  TimedRole toIndefinite() => TimedRole((r) => r
-      ..role = name
+  TimedRole toIndefinite({String? unit}) => TimedRole((r) => r
+      ..role = Role((r) => r
+          ..name = name
+          ..unit = unit
+      ).toBuilder()
   );
 }
 
 abstract class Role implements Built<Role, RoleBuilder> {
   static Serializer<Role> get serializer => _$roleSerializer;
 
-  String get type;
+  String get name;
   String? get unit;
 
   Role._();

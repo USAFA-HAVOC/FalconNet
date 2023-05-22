@@ -32,7 +32,7 @@ class RoleBar extends StatelessWidget {
             Expanded(
               flex: 3,
               child: Text(
-                existing.role,
+                existing.role.name,
                 style: Theme.of(context).textTheme.titleSmall,
               ),
             ),

@@ -12,7 +12,7 @@ class _$GlobalState extends GlobalState {
   @override
   final User user;
   @override
-  final PassHistoryModel history;
+  final BuiltList<CadetPass> history;
   @override
   final UserSettings settings;
   @override
@@ -95,10 +95,10 @@ class GlobalStateBuilder implements Builder<GlobalState, GlobalStateBuilder> {
   UserBuilder get user => _$this._user ??= new UserBuilder();
   set user(UserBuilder? user) => _$this._user = user;
 
-  PassHistoryModelBuilder? _history;
-  PassHistoryModelBuilder get history =>
-      _$this._history ??= new PassHistoryModelBuilder();
-  set history(PassHistoryModelBuilder? history) => _$this._history = history;
+  ListBuilder<CadetPass>? _history;
+  ListBuilder<CadetPass> get history =>
+      _$this._history ??= new ListBuilder<CadetPass>();
+  set history(ListBuilder<CadetPass>? history) => _$this._history = history;
 
   UserSettingsBuilder? _settings;
   UserSettingsBuilder get settings =>

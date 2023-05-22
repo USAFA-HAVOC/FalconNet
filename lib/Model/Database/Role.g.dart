@@ -18,8 +18,8 @@ class _$RoleSerializer implements StructuredSerializer<Role> {
   Iterable<Object?> serialize(Serializers serializers, Role object,
       {FullType specifiedType = FullType.unspecified}) {
     final result = <Object?>[
-      'type',
-      serializers.serialize(object.type, specifiedType: const FullType(String)),
+      'name',
+      serializers.serialize(object.name, specifiedType: const FullType(String)),
     ];
     Object? value;
     value = object.unit;
@@ -43,8 +43,8 @@ class _$RoleSerializer implements StructuredSerializer<Role> {
       iterator.moveNext();
       final Object? value = iterator.current;
       switch (key) {
-        case 'type':
-          result.type = serializers.deserialize(value,
+        case 'name':
+          result.name = serializers.deserialize(value,
               specifiedType: const FullType(String))! as String;
           break;
         case 'unit':
@@ -60,15 +60,15 @@ class _$RoleSerializer implements StructuredSerializer<Role> {
 
 class _$Role extends Role {
   @override
-  final String type;
+  final String name;
   @override
   final String? unit;
 
   factory _$Role([void Function(RoleBuilder)? updates]) =>
       (new RoleBuilder()..update(updates))._build();
 
-  _$Role._({required this.type, this.unit}) : super._() {
-    BuiltValueNullFieldError.checkNotNull(type, r'Role', 'type');
+  _$Role._({required this.name, this.unit}) : super._() {
+    BuiltValueNullFieldError.checkNotNull(name, r'Role', 'name');
   }
 
   @override
@@ -81,13 +81,13 @@ class _$Role extends Role {
   @override
   bool operator ==(Object other) {
     if (identical(other, this)) return true;
-    return other is Role && type == other.type && unit == other.unit;
+    return other is Role && name == other.name && unit == other.unit;
   }
 
   @override
   int get hashCode {
     var _$hash = 0;
-    _$hash = $jc(_$hash, type.hashCode);
+    _$hash = $jc(_$hash, name.hashCode);
     _$hash = $jc(_$hash, unit.hashCode);
     _$hash = $jf(_$hash);
     return _$hash;
@@ -96,7 +96,7 @@ class _$Role extends Role {
   @override
   String toString() {
     return (newBuiltValueToStringHelper(r'Role')
-          ..add('type', type)
+          ..add('name', name)
           ..add('unit', unit))
         .toString();
   }
@@ -105,9 +105,9 @@ class _$Role extends Role {
 class RoleBuilder implements Builder<Role, RoleBuilder> {
   _$Role? _$v;
 
-  String? _type;
-  String? get type => _$this._type;
-  set type(String? type) => _$this._type = type;
+  String? _name;
+  String? get name => _$this._name;
+  set name(String? name) => _$this._name = name;
 
   String? _unit;
   String? get unit => _$this._unit;
@@ -118,7 +118,7 @@ class RoleBuilder implements Builder<Role, RoleBuilder> {
   RoleBuilder get _$this {
     final $v = _$v;
     if ($v != null) {
-      _type = $v.type;
+      _name = $v.name;
       _unit = $v.unit;
       _$v = null;
     }
@@ -142,7 +142,7 @@ class RoleBuilder implements Builder<Role, RoleBuilder> {
   _$Role _build() {
     final _$result = _$v ??
         new _$Role._(
-            type: BuiltValueNullFieldError.checkNotNull(type, r'Role', 'type'),
+            name: BuiltValueNullFieldError.checkNotNull(name, r'Role', 'name'),
             unit: unit);
     replace(_$result);
     return _$result;

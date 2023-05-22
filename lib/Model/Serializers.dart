@@ -30,6 +30,7 @@ import 'Database/FormList.dart';
 import 'Database/IndividualStatusRequest.dart';
 import 'Database/InitialData.dart';
 import 'Database/PassHistoryModel.dart';
+import 'Database/Role.dart';
 import 'Database/RoleRequest.dart';
 import 'Database/SignRequest.dart';
 import 'Database/StringRequest.dart';
@@ -92,6 +93,7 @@ part 'Serializers.g.dart';
   InitialData,
   SignRequest,
   UserEvent,
+  Role
 ])
 
 

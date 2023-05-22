@@ -218,7 +218,7 @@ class PassFormState extends State<PassForm> with SingleTickerProviderStateMixin 
             store: store,
             content: PassParameters(
               user: store.state.user,
-              history: store.state.history.history.toList()
+              history: store.state.history.toList()
             )
         ),
         builder: (context, model) => Form(
