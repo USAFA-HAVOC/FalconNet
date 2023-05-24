@@ -21,25 +21,53 @@ class _$UserEventSerializer implements StructuredSerializer<UserEvent> {
       'event_id',
       serializers.serialize(object.event_id,
           specifiedType: const FullType(String)),
-      'name',
-      serializers.serialize(object.name, specifiedType: const FullType(String)),
       'time',
       serializers.serialize(object.time,
           specifiedType: const FullType(DateTime)),
       'accountability_method',
       serializers.serialize(object.accountability_method,
           specifiedType: const FullType(String)),
+      'type',
+      serializers.serialize(object.type, specifiedType: const FullType(String)),
       'status',
       serializers.serialize(object.status,
           specifiedType: const FullType(String)),
     ];
     Object? value;
+    value = object.name;
+    if (value != null) {
+      result
+        ..add('name')
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(String)));
+    }
     value = object.description;
     if (value != null) {
       result
         ..add('description')
         ..add(serializers.serialize(value,
             specifiedType: const FullType(String)));
+    }
+    value = object.signature_name;
+    if (value != null) {
+      result
+        ..add('signature_name')
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(String)));
+    }
+    value = object.signature_user_id;
+    if (value != null) {
+      result
+        ..add('signature_user_id')
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(String)));
+    }
+    value = object.signature_time;
+    if (value != null) {
+      result
+        ..add('signature_time')
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(DateTime)));
     }
     return result;
   }
@@ -61,7 +89,7 @@ class _$UserEventSerializer implements StructuredSerializer<UserEvent> {
           break;
         case 'name':
           result.name = serializers.deserialize(value,
-              specifiedType: const FullType(String))! as String;
+              specifiedType: const FullType(String)) as String?;
           break;
         case 'description':
           result.description = serializers.deserialize(value,
@@ -75,9 +103,25 @@ class _$UserEventSerializer implements StructuredSerializer<UserEvent> {
           result.accountability_method = serializers.deserialize(value,
               specifiedType: const FullType(String))! as String;
           break;
+        case 'type':
+          result.type = serializers.deserialize(value,
+              specifiedType: const FullType(String))! as String;
+          break;
         case 'status':
           result.status = serializers.deserialize(value,
               specifiedType: const FullType(String))! as String;
+          break;
+        case 'signature_name':
+          result.signature_name = serializers.deserialize(value,
+              specifiedType: const FullType(String)) as String?;
+          break;
+        case 'signature_user_id':
+          result.signature_user_id = serializers.deserialize(value,
+              specifiedType: const FullType(String)) as String?;
+          break;
+        case 'signature_time':
+          result.signature_time = serializers.deserialize(value,
+              specifiedType: const FullType(DateTime)) as DateTime?;
           break;
       }
     }
@@ -90,7 +134,7 @@ class _$UserEvent extends UserEvent {
   @override
   final String event_id;
   @override
-  final String name;
+  final String? name;
   @override
   final String? description;
   @override
@@ -98,24 +142,36 @@ class _$UserEvent extends UserEvent {
   @override
   final String accountability_method;
   @override
+  final String type;
+  @override
   final String status;
+  @override
+  final String? signature_name;
+  @override
+  final String? signature_user_id;
+  @override
+  final DateTime? signature_time;
 
   factory _$UserEvent([void Function(UserEventBuilder)? updates]) =>
       (new UserEventBuilder()..update(updates))._build();
 
   _$UserEvent._(
       {required this.event_id,
-      required this.name,
+      this.name,
       this.description,
       required this.time,
       required this.accountability_method,
-      required this.status})
+      required this.type,
+      required this.status,
+      this.signature_name,
+      this.signature_user_id,
+      this.signature_time})
       : super._() {
     BuiltValueNullFieldError.checkNotNull(event_id, r'UserEvent', 'event_id');
-    BuiltValueNullFieldError.checkNotNull(name, r'UserEvent', 'name');
     BuiltValueNullFieldError.checkNotNull(time, r'UserEvent', 'time');
     BuiltValueNullFieldError.checkNotNull(
         accountability_method, r'UserEvent', 'accountability_method');
+    BuiltValueNullFieldError.checkNotNull(type, r'UserEvent', 'type');
     BuiltValueNullFieldError.checkNotNull(status, r'UserEvent', 'status');
   }
 
@@ -135,7 +191,11 @@ class _$UserEvent extends UserEvent {
         description == other.description &&
         time == other.time &&
         accountability_method == other.accountability_method &&
-        status == other.status;
+        type == other.type &&
+        status == other.status &&
+        signature_name == other.signature_name &&
+        signature_user_id == other.signature_user_id &&
+        signature_time == other.signature_time;
   }
 
   @override
@@ -146,7 +206,11 @@ class _$UserEvent extends UserEvent {
     _$hash = $jc(_$hash, description.hashCode);
     _$hash = $jc(_$hash, time.hashCode);
     _$hash = $jc(_$hash, accountability_method.hashCode);
+    _$hash = $jc(_$hash, type.hashCode);
     _$hash = $jc(_$hash, status.hashCode);
+    _$hash = $jc(_$hash, signature_name.hashCode);
+    _$hash = $jc(_$hash, signature_user_id.hashCode);
+    _$hash = $jc(_$hash, signature_time.hashCode);
     _$hash = $jf(_$hash);
     return _$hash;
   }
@@ -159,7 +223,11 @@ class _$UserEvent extends UserEvent {
           ..add('description', description)
           ..add('time', time)
           ..add('accountability_method', accountability_method)
-          ..add('status', status))
+          ..add('type', type)
+          ..add('status', status)
+          ..add('signature_name', signature_name)
+          ..add('signature_user_id', signature_user_id)
+          ..add('signature_time', signature_time))
         .toString();
   }
 }
@@ -188,9 +256,28 @@ class UserEventBuilder implements Builder<UserEvent, UserEventBuilder> {
   set accountability_method(String? accountability_method) =>
       _$this._accountability_method = accountability_method;
 
+  String? _type;
+  String? get type => _$this._type;
+  set type(String? type) => _$this._type = type;
+
   String? _status;
   String? get status => _$this._status;
   set status(String? status) => _$this._status = status;
+
+  String? _signature_name;
+  String? get signature_name => _$this._signature_name;
+  set signature_name(String? signature_name) =>
+      _$this._signature_name = signature_name;
+
+  String? _signature_user_id;
+  String? get signature_user_id => _$this._signature_user_id;
+  set signature_user_id(String? signature_user_id) =>
+      _$this._signature_user_id = signature_user_id;
+
+  DateTime? _signature_time;
+  DateTime? get signature_time => _$this._signature_time;
+  set signature_time(DateTime? signature_time) =>
+      _$this._signature_time = signature_time;
 
   UserEventBuilder();
 
@@ -202,7 +289,11 @@ class UserEventBuilder implements Builder<UserEvent, UserEventBuilder> {
       _description = $v.description;
       _time = $v.time;
       _accountability_method = $v.accountability_method;
+      _type = $v.type;
       _status = $v.status;
+      _signature_name = $v.signature_name;
+      _signature_user_id = $v.signature_user_id;
+      _signature_time = $v.signature_time;
       _$v = null;
     }
     return this;
@@ -227,15 +318,19 @@ class UserEventBuilder implements Builder<UserEvent, UserEventBuilder> {
         new _$UserEvent._(
             event_id: BuiltValueNullFieldError.checkNotNull(
                 event_id, r'UserEvent', 'event_id'),
-            name: BuiltValueNullFieldError.checkNotNull(
-                name, r'UserEvent', 'name'),
+            name: name,
             description: description,
             time: BuiltValueNullFieldError.checkNotNull(
                 time, r'UserEvent', 'time'),
             accountability_method: BuiltValueNullFieldError.checkNotNull(
                 accountability_method, r'UserEvent', 'accountability_method'),
+            type: BuiltValueNullFieldError.checkNotNull(
+                type, r'UserEvent', 'type'),
             status: BuiltValueNullFieldError.checkNotNull(
-                status, r'UserEvent', 'status'));
+                status, r'UserEvent', 'status'),
+            signature_name: signature_name,
+            signature_user_id: signature_user_id,
+            signature_time: signature_time);
     replace(_$result);
     return _$result;
   }

@@ -84,7 +84,7 @@ class UnitBar extends StatelessWidget {
               ),
 
               Text(
-                unit.unit.parent ?? "None",
+                unit.unit.parent_units.isNotEmpty ? unit.unit.parent_units.last : "None",
                 style: Theme.of(context).textTheme.bodyMedium,
                 textAlign: TextAlign.start,
               ),

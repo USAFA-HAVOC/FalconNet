@@ -42,8 +42,8 @@ class _$InitialDataSerializer implements StructuredSerializer<InitialData> {
       result
         ..add('events')
         ..add(serializers.serialize(value,
-            specifiedType: const FullType(
-                BuiltList, const [const FullType(AccountabilityEvent)])));
+            specifiedType:
+                const FullType(BuiltList, const [const FullType(UserEvent)])));
     }
     return result;
   }
@@ -76,7 +76,7 @@ class _$InitialDataSerializer implements StructuredSerializer<InitialData> {
         case 'events':
           result.events.replace(serializers.deserialize(value,
                   specifiedType: const FullType(
-                      BuiltList, const [const FullType(AccountabilityEvent)]))!
+                      BuiltList, const [const FullType(UserEvent)]))!
               as BuiltList<Object?>);
           break;
       }
@@ -94,7 +94,7 @@ class _$InitialData extends InitialData {
   @override
   final BuiltList<CadetPass>? pass_history;
   @override
-  final BuiltList<AccountabilityEvent>? events;
+  final BuiltList<UserEvent>? events;
 
   factory _$InitialData([void Function(InitialDataBuilder)? updates]) =>
       (new InitialDataBuilder()..update(updates))._build();
@@ -161,11 +161,10 @@ class InitialDataBuilder implements Builder<InitialData, InitialDataBuilder> {
   set pass_history(ListBuilder<CadetPass>? pass_history) =>
       _$this._pass_history = pass_history;
 
-  ListBuilder<AccountabilityEvent>? _events;
-  ListBuilder<AccountabilityEvent> get events =>
-      _$this._events ??= new ListBuilder<AccountabilityEvent>();
-  set events(ListBuilder<AccountabilityEvent>? events) =>
-      _$this._events = events;
+  ListBuilder<UserEvent>? _events;
+  ListBuilder<UserEvent> get events =>
+      _$this._events ??= new ListBuilder<UserEvent>();
+  set events(ListBuilder<UserEvent>? events) => _$this._events = events;
 
   InitialDataBuilder();
 

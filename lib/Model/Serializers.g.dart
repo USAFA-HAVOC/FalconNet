@@ -61,9 +61,8 @@ Serializers _$serializers = (new Serializers().toBuilder()
           const FullType(BuiltList, const [const FullType(CadetPass)]),
           () => new ListBuilder<CadetPass>())
       ..addBuilderFactory(
-          const FullType(
-              BuiltList, const [const FullType(AccountabilityEvent)]),
-          () => new ListBuilder<AccountabilityEvent>())
+          const FullType(BuiltList, const [const FullType(UserEvent)]),
+          () => new ListBuilder<UserEvent>())
       ..addBuilderFactory(
           const FullType(BuiltList, const [const FullType(FormOneData)]),
           () => new ListBuilder<FormOneData>())
@@ -131,6 +130,9 @@ Serializers _$serializers = (new Serializers().toBuilder()
       ..addBuilderFactory(
           const FullType(BuiltList, const [const FullType(bool)]),
           () => new ListBuilder<bool>())
+      ..addBuilderFactory(
+          const FullType(BuiltList, const [const FullType(String)]),
+          () => new ListBuilder<String>())
       ..addBuilderFactory(
           const FullType(BuiltList, const [const FullType(String)]),
           () => new ListBuilder<String>())

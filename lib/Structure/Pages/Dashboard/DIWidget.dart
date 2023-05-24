@@ -10,6 +10,7 @@ import 'package:falcon_net/Structure/Components/ViewModel.dart';
 import 'package:falcon_net/Utility/TemporalFormatting.dart';
 import 'package:flutter/material.dart';
 
+import '../../../Model/Database/AccountabilityEvent.dart';
 import '../../../Model/Database/Role.dart';
 import '../../../Utility/FNConstants.dart';
 
@@ -40,13 +41,23 @@ class DIWidget extends StatelessWidget {
             //Determines whether time is signable
             bool time = !DateTime.now().isBefore(combineDate(DateTime.now(), diOpens));
 
-            Iterable<UserEvent> di = model.content.events.where((e) => e.event_id == "di");
+            DateTime now = DateTime.now().toUtc();
+
+            UserEvent? di;
+
+            Iterable<UserEvent> options = model.content.events
+                .where((e) => e.type == EventType.di.name)
+                .where((e) =>
+                  e.time.toUtc().difference(now).inHours.abs() < 12
+                );
 
             UserStatus status;
 
-            if (di.isNotEmpty) {
-              status = UserStatusNames.parse(di.first.status);
+            if (options.isNotEmpty) {
+              di = options.first;
+              status = UserStatusNames.parse(di.status);
             }
+
             else {
               status = UserStatus.unsigned;
             }
@@ -65,7 +76,7 @@ class DIWidget extends StatelessWidget {
               case UserStatus.signed:
                 text = [
                   Text(
-                    "DI Signed",
+                    "DI Signed by ${di?.signature_name ?? "Unknown"}",
                     style: Theme.of(context).textTheme.headlineMedium,
                   )
                 ];
@@ -138,7 +149,8 @@ class DIWidget extends StatelessWidget {
                           title: "Sign DI",
                           description: "Confirm that you are at the location of your domicile. "
                               "This action cannot be undone.",
-                          onConfirm: () => model.dispatch(SignAction.di(
+                          onConfirm: () => model.dispatch(SignAction(
+                              event: di!.event_id,
                               onSucceed: () => messenger.showSnackBar(
                                   const SnackBar(content: Text("DI Signed Successfully"))
                               ),

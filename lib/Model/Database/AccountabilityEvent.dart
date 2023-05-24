@@ -26,7 +26,7 @@ enum AccountabilityMethod {
 abstract class AccountabilityEvent implements Built<AccountabilityEvent, AccountabilityEventBuilder> {
   static Serializer<AccountabilityEvent> get serializer => _$accountabilityEventSerializer;
 
-  String get id;
+  String? get id;
   String get event_type;
   String? get name;
   DateTime get time;

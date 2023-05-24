@@ -27,8 +27,6 @@ class _$AccountabilityEventSerializer
       Serializers serializers, AccountabilityEvent object,
       {FullType specifiedType = FullType.unspecified}) {
     final result = <Object?>[
-      'id',
-      serializers.serialize(object.id, specifiedType: const FullType(String)),
       'event_type',
       serializers.serialize(object.event_type,
           specifiedType: const FullType(String)),
@@ -50,6 +48,13 @@ class _$AccountabilityEventSerializer
           specifiedType: const FullType(String)),
     ];
     Object? value;
+    value = object.id;
+    if (value != null) {
+      result
+        ..add('id')
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(String)));
+    }
     value = object.name;
     if (value != null) {
       result
@@ -74,7 +79,7 @@ class _$AccountabilityEventSerializer
       switch (key) {
         case 'id':
           result.id = serializers.deserialize(value,
-              specifiedType: const FullType(String))! as String;
+              specifiedType: const FullType(String)) as String?;
           break;
         case 'event_type':
           result.event_type = serializers.deserialize(value,
@@ -235,7 +240,7 @@ class _$EventListSerializer implements StructuredSerializer<EventList> {
 
 class _$AccountabilityEvent extends AccountabilityEvent {
   @override
-  final String id;
+  final String? id;
   @override
   final String event_type;
   @override
@@ -256,7 +261,7 @@ class _$AccountabilityEvent extends AccountabilityEvent {
       (new AccountabilityEventBuilder()..update(updates))._build();
 
   _$AccountabilityEvent._(
-      {required this.id,
+      {this.id,
       required this.event_type,
       this.name,
       required this.time,
@@ -265,7 +270,6 @@ class _$AccountabilityEvent extends AccountabilityEvent {
       required this.attendees,
       required this.accountability_method})
       : super._() {
-    BuiltValueNullFieldError.checkNotNull(id, r'AccountabilityEvent', 'id');
     BuiltValueNullFieldError.checkNotNull(
         event_type, r'AccountabilityEvent', 'event_type');
     BuiltValueNullFieldError.checkNotNull(time, r'AccountabilityEvent', 'time');
@@ -410,8 +414,7 @@ class AccountabilityEventBuilder
     try {
       _$result = _$v ??
           new _$AccountabilityEvent._(
-              id: BuiltValueNullFieldError.checkNotNull(
-                  id, r'AccountabilityEvent', 'id'),
+              id: id,
               event_type: BuiltValueNullFieldError.checkNotNull(
                   event_type, r'AccountabilityEvent', 'event_type'),
               name: name,

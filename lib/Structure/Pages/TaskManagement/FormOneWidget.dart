@@ -20,7 +20,7 @@ class FormOneWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return PageWidget(
-      title: form.name,
+      title: form.name ?? "No Title Given",
       children: [
         Text(
           form.description ?? "No description given",

@@ -54,6 +54,7 @@ class GlobalAction extends ReduxAction<GlobalState> {
         if (!state.user.roles.any((r) => r.role.name == Roles.permanent_party.name)) {
           sb.grades = data.grades?.toBuilder();
           sb.history = data.pass_history?.toBuilder();
+          sb.events = data.events?.toBuilder();
         }
 
         await dispatch(SettingsAction.retrieve(onFail: fail));

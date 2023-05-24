@@ -15,9 +15,9 @@ abstract class UserSummary implements Built<UserSummary, UserSummaryBuilder> {
   String? get room;
   BuiltList<UserEvent> get events;
 
-  UserStatus status({String event = "di"}) => UserStatusNames.parse(events.firstWhere((e) => e.event_id == event).status);
+  UserStatus status({String? event}) => UserStatusNames.parse(events.firstWhere((e) => e.event_id == event).status);
 
-  UserSummary sign({String event = "di"}) =>
+  UserSummary sign({String? event}) =>
       rebuild((u) => u
           ..events = (
               events.where((e) => e.event_id != event).toList() +

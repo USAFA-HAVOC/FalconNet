@@ -32,8 +32,21 @@ class UnitFormState extends State<UnitForm> {
   @override
   void initState() {
     name = TextEditingController(text: widget.existing?.unit.name ?? "");
-    group = TextEditingController(text: widget.existing?.unit.parent ?? "");
+    group = TextEditingController(text: widget.existing?.unit.parent_units.isNotEmpty ?? false ? widget.existing!.unit.parent_units.last : "");
     super.initState();
+  }
+
+  List<String> buildParents(String parent) {
+    if (parent.isEmpty) {
+      return [];
+    }
+    else {
+      return [
+        ...widget.list.units
+          .firstWhere((u) => u.unit.name == parent).unit.parent_units,
+        parent
+      ];
+    }
   }
 
   @override
@@ -85,7 +98,7 @@ class UnitFormState extends State<UnitForm> {
                   borderSide: BorderSide(color: Theme.of(context).dividerColor),
                   borderRadius: BorderRadius.circular(10)),
               labelStyle: Theme.of(context).textTheme.bodyLarge,
-              labelText: "Group",
+              labelText: "Parent",
               suffixIcon: const Icon(Icons.people)
           ),
         ),
@@ -101,7 +114,7 @@ class UnitFormState extends State<UnitForm> {
               setState(() {
                 nameError = "Unit name cannot be blank";
               });
-            } else {
+            } else if (group.text.isEmpty || widget.list.units.any((u) => u.unit.name == group.text)) {
               widget.onSubmit(UnitSummary((s) => s
                 ..out = widget.existing?.out ?? 0
                 ..signed = widget.existing?.signed ?? 0
@@ -109,7 +122,7 @@ class UnitFormState extends State<UnitForm> {
                 ..total = widget.existing?.total ?? 0
                 ..unit = Unit((u) => u
                   ..name = name.text
-                  ..parent = group.text.isEmpty ? null : group.text
+                  ..parent_units = buildParents(group.text).build().toBuilder()
                   ..pass_status = (widget.existing?.unit.pass_status ?? [true, true, true, true].build()).toBuilder()
                   ..id = widget.existing?.unit.id).toBuilder()));
 
@@ -122,6 +135,12 @@ class UnitFormState extends State<UnitForm> {
               if (widget.existing != null) {
                 Navigator.of(context).pop();
               }
+            }
+
+            else {
+              ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text(
+                "Provided parent unit doesn't exist"
+              )));
             }
           },
           child: Padding(
