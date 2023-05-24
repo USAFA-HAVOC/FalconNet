@@ -264,13 +264,13 @@ class CWOCTaskState extends State<CWOCTask> {
           builder: (context, constraints) {
             //Displays a group data as grid if screen is wide enough
             if (constraints.maxWidth > 700) {
-              return Row(
+              return const Row(
                 children: [
                   Expanded(
                     child: Column(
                       mainAxisSize: MainAxisSize.min,
                       crossAxisAlignment: CrossAxisAlignment.stretch,
-                      children: const [
+                      children: [
                         LoadingShimmer(height: 200,),
 
                         SizedBox(height: 20,),
@@ -282,13 +282,13 @@ class CWOCTaskState extends State<CWOCTask> {
                     ),
                   ),
 
-                  const SizedBox(width: 20,),
+                  SizedBox(width: 20,),
 
                   Expanded(
                     child: Column(
                       mainAxisSize: MainAxisSize.min,
                       crossAxisAlignment: CrossAxisAlignment.stretch,
-                      children: const [
+                      children: [
                         LoadingShimmer(height: 200,),
 
                         SizedBox(height: 20,),
@@ -305,8 +305,8 @@ class CWOCTaskState extends State<CWOCTask> {
 
             //Otherwise, displays in a simple column
             else {
-              return Column(
-                children: const [
+              return const Column(
+                children: [
                   LoadingShimmer(height: 200,),
 
                   SizedBox(height: 20,),

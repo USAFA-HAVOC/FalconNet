@@ -12,7 +12,7 @@ TextTheme lightTextTheme = const TextTheme(
   ),
   titleSmall: TextStyle(
     fontSize: 15,
-    fontWeight: FontWeight.bold,
+    fontWeight: FontWeight.normal,
   ),
 
   //Label is used for contrast against dark colors
@@ -46,6 +46,7 @@ TextTheme lightTextTheme = const TextTheme(
   //Used for textual information other than titles
   bodyLarge: TextStyle(
     fontSize: 15,
+    fontWeight: FontWeight.bold,
   ),
   bodyMedium: TextStyle(
     fontSize: 13,

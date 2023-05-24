@@ -4,6 +4,13 @@ import 'package:falcon_net/Theme/NegativeButtonTheme.dart';
 import 'package:flutter/material.dart';
 import 'package:falcon_net/Theme/Light/LightElevatedTheme.dart';
 
+/*
+TODO:
+  - Use '///' to document classes
+  - Comment like every line -- probably need to organize these lines
+    - Explain differences between themes etc.
+*/
+
 ThemeData lightTheme = ThemeData(
   primaryColor: Colors.white,
   focusColor: Colors.grey[200],
@@ -13,15 +20,16 @@ ThemeData lightTheme = ThemeData(
   textTheme: lightTextTheme,
   cardTheme: lightCardTheme,
   elevatedButtonTheme: lightButtonTheme,
-  fontFamily: "Inter",
-  iconTheme: const IconThemeData(color: Colors.black),
-  canvasColor: const Color.fromARGB(255, 232, 232, 232),
+  fontFamily: "ProximaNova", // Default font
+  iconTheme: const IconThemeData(
+      color: Colors.black), // Default color for icons is black
+  canvasColor: const Color.fromARGB(
+      255, 232, 232, 232), // Default canvas color is light grey
   snackBarTheme: const SnackBarThemeData(
-      backgroundColor: Color.fromARGB(255, 50, 50, 50),
-      contentTextStyle: TextStyle(
-          fontSize: 15,
-          color: Colors.white
-      )
+    // Default snackbar theme
+    backgroundColor: Color.fromARGB(255, 50, 50, 50), // Dark grey
+    contentTextStyle:
+        TextStyle(fontSize: 15, color: Colors.white), // White text
   ),
   switchTheme: SwitchThemeData(
     thumbColor: MaterialStateColor.resolveWith((states) => Colors.blue),
@@ -33,19 +41,21 @@ ThemeData lightTheme = ThemeData(
     }),
   ),
   extensions: [
-    NegativeButtonTheme(style: ElevatedButton.styleFrom(
-      backgroundColor: Colors.grey,
-      textStyle: lightTextTheme.labelLarge,
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.all(
-          Radius.circular(15),
+    NegativeButtonTheme(
+      style: ElevatedButton.styleFrom(
+        backgroundColor: Colors.grey,
+        textStyle: lightTextTheme.labelLarge,
+        shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.all(
+            Radius.circular(15),
+          ),
         ),
       ),
-    ))
+    )
   ],
   colorScheme: const ColorScheme.light(
     primary: Colors.blue,
     secondary: Colors.black,
-    error: Color.fromARGB(255, 230, 88, 78)
-  )
+    error: Color.fromARGB(255, 230, 88, 78),
+  ),
 );

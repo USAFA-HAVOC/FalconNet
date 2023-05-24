@@ -22,7 +22,7 @@ class GlobalAction extends ReduxAction<GlobalState> {
 
   GlobalAction.set(this.replacement, {this.onFail, this.onSucceed}) : init = false, reset = false, modification = null;
 
-  GlobalAction.modify(this.modification, {this.onFail, this.onSucceed}) : init = false, reset = false, this.replacement = null;
+  GlobalAction.modify(this.modification, {this.onFail, this.onSucceed}) : init = false, reset = false, replacement = null;
 
   GlobalAction.initialize({this.onFail, this.onSucceed}) : replacement = null, init = true, reset = false, modification = null;
 

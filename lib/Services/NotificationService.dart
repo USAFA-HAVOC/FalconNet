@@ -117,8 +117,8 @@ class NotificationService {
   void scheduleDINotification() {
     _notificationService.cancel(id: "di");
     _notificationService.schedule(
-        title: "DI is Open",
-        body: "Please sign DI as soon as practical",
+        title: "Sign DI",
+        body: "DI is now open - please sign!",
         time: DateTime.now().isBefore(combineDate(DateTime.now(), diOpens))
             ? combineDate(DateTime.now(), diOpens)
             : combineDate(DateTime.now(), diOpens).add(const Duration(days: 1)),
