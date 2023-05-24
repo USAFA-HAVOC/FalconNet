@@ -3,8 +3,6 @@ import 'dart:io';
 import 'package:built_value/serializer.dart';
 import 'package:dio/dio.dart';
 import 'package:falcon_net/Model/Database/AccountabilityEvent.dart';
-import 'package:falcon_net/Model/Database/FormDataList.dart';
-import 'package:falcon_net/Model/Database/FormSummary.dart';
 import 'package:falcon_net/Model/Database/InitialData.dart';
 import 'package:falcon_net/Model/Database/PassHistoryModel.dart';
 import 'package:falcon_net/Model/Database/PassStatusRequest.dart';
@@ -23,8 +21,6 @@ import "package:universal_html/html.dart" as html;
 
 import '../Database/CadetLeave.dart';
 import '../Database/CadetPass.dart';
-import '../Database/FormList.dart';
-import '../Database/FormOneData.dart';
 import '../Database/GradeSubmission.dart';
 import '../Database/IndividualStatusRequest.dart';
 import '../Database/SquadronAssignRequest.dart';
@@ -128,7 +124,6 @@ class Endpoint<Req, Res> {
 
     Response res;
 
-    print(dio.options.baseUrl);
     if (get) {
       res = await dio.get(path, queryParameters: data);
     } else {
@@ -176,6 +171,8 @@ class Endpoints {
   static Endpoint<void, WingData> getWing = Endpoint("/unit/summaries", get: true);
   static Endpoint<void, UnitData> getOwnUnit = Endpoint("/unit/data");
   static Endpoint<StringRequest, UnitData> getUnit = Endpoint("/unit/data");
+
+  static Endpoint<UnitAssignRequest, bool> setUnit = Endpoint("/unit/set-user");
 
   static Endpoint<PassStatusRequest, bool> setPassStatus = Endpoint("/unit/set-pass-status");
   static Endpoint<IndividualStatusRequest, bool> setIndividualPassStatus = Endpoint("/unit/set-individual-pass-status");

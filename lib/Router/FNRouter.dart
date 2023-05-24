@@ -1,5 +1,4 @@
 import 'package:async_redux/async_redux.dart';
-import 'package:falcon_net/Model/Database/Role.dart';
 import 'package:falcon_net/Model/Database/StringRequest.dart';
 import 'package:falcon_net/Model/Store/AppStatus.dart';
 import 'package:falcon_net/Router/FNTransitions.dart';
@@ -19,7 +18,6 @@ import 'package:falcon_net/Structure/Pages/TaskManagement/Tasks/UnitManagement/U
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import '../Model/Database/TimedRole.dart';
-import '../Model/Database/User.dart';
 import '../Model/Store/Actions/GlobalAction.dart';
 import '../Model/Store/Endpoints.dart';
 import '../Model/Store/GlobalState.dart';
@@ -172,11 +170,10 @@ GoRouter fnRouter(GlobalKey<NavigatorState> key, SignState sign, bool party) => 
             GoRoute(
               path: "unit_assignment",
               pageBuilder: fullSlide(
-                  StoreConnector<GlobalState, ViewModel<User>>(
-                    converter: (store) => ViewModel(store: store, content: store.state.user),
+                  StoreConnector<GlobalState, ViewModel<List<String>>>(
+                    converter: (store) => ViewModel(store: store, content: store.state.user.units.toList()),
                     builder: (context, model) => AssignmentTask(
-                      units: model.content.units.toList(),
-                      scope: AssignmentScope.all,
+                      owner: model.content,
                     ),
                   )
               ),
@@ -264,12 +261,10 @@ GoRouter fnRouter(GlobalKey<NavigatorState> key, SignState sign, bool party) => 
                       GoRoute(
                         path: "unit_assignment",
                         pageBuilder: fullSlide(
-                          StoreConnector<GlobalState, ViewModel<User>>(
-                            converter: (store) => ViewModel(store: store, content: store.state.user),
+                          StoreConnector<GlobalState, ViewModel<List<String>>>(
+                            converter: (store) => ViewModel(store: store, content: store.state.user.units.toList()),
                             builder: (context, model) => AssignmentTask(
-                              units: model.content.units.toList(),
-                              scope: model.content.roles.any((r) => r.name == Roles.fn_admin.name || r.name == Roles.wing_admin.name) ?
-                              AssignmentScope.all : AssignmentScope.own,
+                              owner: model.content,
                             ),
                           ),
                         ),

@@ -21,8 +21,8 @@ class _$RoleRequestSerializer implements StructuredSerializer<RoleRequest> {
       'user_id',
       serializers.serialize(object.user_id,
           specifiedType: const FullType(String)),
-      'roles_to_add',
-      serializers.serialize(object.roles_to_add,
+      'new_roles',
+      serializers.serialize(object.new_roles,
           specifiedType:
               const FullType(BuiltList, const [const FullType(TimedRole)])),
     ];
@@ -45,8 +45,8 @@ class _$RoleRequestSerializer implements StructuredSerializer<RoleRequest> {
           result.user_id = serializers.deserialize(value,
               specifiedType: const FullType(String))! as String;
           break;
-        case 'roles_to_add':
-          result.roles_to_add.replace(serializers.deserialize(value,
+        case 'new_roles':
+          result.new_roles.replace(serializers.deserialize(value,
                   specifiedType: const FullType(
                       BuiltList, const [const FullType(TimedRole)]))!
               as BuiltList<Object?>);
@@ -62,16 +62,16 @@ class _$RoleRequest extends RoleRequest {
   @override
   final String user_id;
   @override
-  final BuiltList<TimedRole> roles_to_add;
+  final BuiltList<TimedRole> new_roles;
 
   factory _$RoleRequest([void Function(RoleRequestBuilder)? updates]) =>
       (new RoleRequestBuilder()..update(updates))._build();
 
-  _$RoleRequest._({required this.user_id, required this.roles_to_add})
+  _$RoleRequest._({required this.user_id, required this.new_roles})
       : super._() {
     BuiltValueNullFieldError.checkNotNull(user_id, r'RoleRequest', 'user_id');
     BuiltValueNullFieldError.checkNotNull(
-        roles_to_add, r'RoleRequest', 'roles_to_add');
+        new_roles, r'RoleRequest', 'new_roles');
   }
 
   @override
@@ -86,14 +86,14 @@ class _$RoleRequest extends RoleRequest {
     if (identical(other, this)) return true;
     return other is RoleRequest &&
         user_id == other.user_id &&
-        roles_to_add == other.roles_to_add;
+        new_roles == other.new_roles;
   }
 
   @override
   int get hashCode {
     var _$hash = 0;
     _$hash = $jc(_$hash, user_id.hashCode);
-    _$hash = $jc(_$hash, roles_to_add.hashCode);
+    _$hash = $jc(_$hash, new_roles.hashCode);
     _$hash = $jf(_$hash);
     return _$hash;
   }
@@ -102,7 +102,7 @@ class _$RoleRequest extends RoleRequest {
   String toString() {
     return (newBuiltValueToStringHelper(r'RoleRequest')
           ..add('user_id', user_id)
-          ..add('roles_to_add', roles_to_add))
+          ..add('new_roles', new_roles))
         .toString();
   }
 }
@@ -114,11 +114,11 @@ class RoleRequestBuilder implements Builder<RoleRequest, RoleRequestBuilder> {
   String? get user_id => _$this._user_id;
   set user_id(String? user_id) => _$this._user_id = user_id;
 
-  ListBuilder<TimedRole>? _roles_to_add;
-  ListBuilder<TimedRole> get roles_to_add =>
-      _$this._roles_to_add ??= new ListBuilder<TimedRole>();
-  set roles_to_add(ListBuilder<TimedRole>? roles_to_add) =>
-      _$this._roles_to_add = roles_to_add;
+  ListBuilder<TimedRole>? _new_roles;
+  ListBuilder<TimedRole> get new_roles =>
+      _$this._new_roles ??= new ListBuilder<TimedRole>();
+  set new_roles(ListBuilder<TimedRole>? new_roles) =>
+      _$this._new_roles = new_roles;
 
   RoleRequestBuilder();
 
@@ -126,7 +126,7 @@ class RoleRequestBuilder implements Builder<RoleRequest, RoleRequestBuilder> {
     final $v = _$v;
     if ($v != null) {
       _user_id = $v.user_id;
-      _roles_to_add = $v.roles_to_add.toBuilder();
+      _new_roles = $v.new_roles.toBuilder();
       _$v = null;
     }
     return this;
@@ -153,12 +153,12 @@ class RoleRequestBuilder implements Builder<RoleRequest, RoleRequestBuilder> {
           new _$RoleRequest._(
               user_id: BuiltValueNullFieldError.checkNotNull(
                   user_id, r'RoleRequest', 'user_id'),
-              roles_to_add: roles_to_add.build());
+              new_roles: new_roles.build());
     } catch (_) {
       late String _$failedField;
       try {
-        _$failedField = 'roles_to_add';
-        roles_to_add.build();
+        _$failedField = 'new_roles';
+        new_roles.build();
       } catch (e) {
         throw new BuiltValueNestedFieldError(
             r'RoleRequest', _$failedField, e.toString());

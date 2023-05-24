@@ -61,7 +61,7 @@ class DelegationTaskState extends State<DelegationTask> {
     try {
       await Endpoints.setRoles(RoleRequest((r) => r
         ..user_id = delegate.id
-        ..roles_to_add = roles.toBuiltList().toBuilder()
+        ..new_roles = roles.toBuiltList().toBuilder()
       ));
 
       var data = await connection;
@@ -104,8 +104,8 @@ class DelegationTaskState extends State<DelegationTask> {
           units: units,
           delegate: delegate,
           applicable: applicable,
-          onSubmit: (role) {
-            assign(delegate, role);
+          onSubmit: (roles) {
+            assign(delegate, roles, messenger: ScaffoldMessenger.of(context));
           },
           onCancel: () => Navigator.of(context).pop(),
         ),
@@ -155,4 +155,3 @@ class DelegationTaskState extends State<DelegationTask> {
     );
   }
 }
-

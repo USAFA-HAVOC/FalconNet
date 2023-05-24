@@ -3,6 +3,7 @@ import 'package:falcon_net/Structure/Pages/TaskManagement/Tasks/Delegation/RoleS
 import 'package:falcon_net/Utility/TemporalFormatting.dart';
 import 'package:flutter/material.dart';
 
+import '../../../../../Model/Database/Role.dart';
 import '../../../../../Model/Database/Unit.dart';
 
 class RoleBar extends StatelessWidget {
@@ -34,9 +35,9 @@ class RoleBar extends StatelessWidget {
         child: Row(
           children: [
             Expanded(
-              flex: 3,
+              flex: 5,
               child: Text(
-                existing.name,
+                existing.description(),
                 style: Theme.of(context).textTheme.titleSmall,
               ),
             ),
@@ -46,7 +47,7 @@ class RoleBar extends StatelessWidget {
               child: Text(
                 existing.start != null || existing.end != null
                     ? "${describeDate(existing.start!)} - ${describeDate(existing.end!)}"
-                    : "Indefinite",
+                    : "",
                 style: Theme.of(context).textTheme.bodyMedium,
               )
             ),

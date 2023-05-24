@@ -49,7 +49,6 @@ class GlobalAction extends ReduxAction<GlobalState> {
         var data = await Endpoints.initial(null);
         var sb = state.toBuilder();
         sb.user = data.user.toBuilder();
-        print(data.user);
 
         if (!state.user.roles.any((r) => r.name == Roles.permanent_party.name)) {
           sb.grades = data.grades?.toBuilder();

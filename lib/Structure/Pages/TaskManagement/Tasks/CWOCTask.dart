@@ -114,7 +114,7 @@ class CWOCTaskState extends State<CWOCTask> {
       UnitData actual = await Endpoints.getUnit(StringRequest((b) => b..string = unit));
       setState(() {
         connection = Future.value(wing.set(actual));
-        loaded.removeWhere((u) => u.unit.name == unit);
+        loaded.removeWhere((u) => u.unit.name == unit || u.total == 0);
         loaded.add(actual);
       });
     }

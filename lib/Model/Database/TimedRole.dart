@@ -1,6 +1,7 @@
 import 'package:built_value/built_value.dart';
 import 'package:built_value/serializer.dart';
 
+import '../../Utility/TemporalFormatting.dart';
 import 'Role.dart';
 
 part 'TimedRole.g.dart';
@@ -90,6 +91,17 @@ abstract class TimedRole implements Built<TimedRole, TimedRoleBuilder> {
     }
 
     return false;
+  }
+
+  String description([bool expanded = false]) {
+    if (start == null || end == null || !expanded) {
+      return "${RoleNames.parseDirect(name).description()} ${unit == null ? "" : "($unit)"}";
+    }
+    else {
+      return "${RoleNames.parseDirect(name).description()} ${unit == null ? "" : "($unit) "}(${describeDate(
+          start ?? DateTime.now(), true)} - ${describeDate(
+          end ?? DateTime.now(), true)})";
+    }
   }
 
   TimedRole._();
