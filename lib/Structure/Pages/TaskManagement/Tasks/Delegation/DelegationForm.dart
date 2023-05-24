@@ -3,12 +3,14 @@ import 'package:flutter/material.dart';
 
 import '../../../../../Model/Database/Role.dart';
 import '../../../../../Model/Database/TimedRole.dart';
+import '../../../../../Model/Database/Unit.dart';
 import '../../../../../Model/Database/User.dart';
 import 'RoleSubform.dart';
 
 class DelegationForm extends StatefulWidget {
   final User delegate;
   final List<TimedRole> applicable;
+  final List<Unit> units;
   final void Function(List<TimedRole>)? onSubmit;
   final void Function()? onCancel;
 
@@ -16,6 +18,7 @@ class DelegationForm extends StatefulWidget {
     super.key,
     required this.delegate,
     required this.applicable,
+    required this.units,
     this.onSubmit,
     this.onCancel
   }) : assert(applicable.isNotEmpty);
@@ -45,6 +48,7 @@ class DelegationFormState extends State<DelegationForm> {
           children: [
             ...roles.map(
                 (role) => RoleBar(
+                  units: widget.units,
                   existing: role,
                   applicable: widget.applicable,
                   onRemove: () => setState(() {
@@ -65,11 +69,10 @@ class DelegationFormState extends State<DelegationForm> {
                 onPressed: () => showDialog(
                     context: context,
                     builder: (context) => RoleSubform(
+                      units: widget.units,
                       existing: TimedRole((b) => b
-                        ..role = Role((r) => r
-                          ..name = Roles.sdo.name
-                          ..unit = widget.delegate.assigned_unit
-                        ).toBuilder()
+                        ..name = Roles.sdo.name
+                        ..unit = widget.delegate.assigned_unit
                         ..start = DateTime.now()
                         ..end = DateTime.now()
                       ),

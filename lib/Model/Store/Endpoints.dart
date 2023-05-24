@@ -30,7 +30,6 @@ import '../Database/IndividualStatusRequest.dart';
 import '../Database/SquadronAssignRequest.dart';
 import '../Database/Unit.dart';
 import '../Database/UnitAssignRequest.dart';
-import '../Database/UnitDataRequest.dart';
 import '../Database/UnitGrades.dart';
 import '../Database/UnitList.dart';
 import '../Database/UserList.dart';
@@ -161,12 +160,6 @@ class Endpoints {
   static Endpoint<GradeSubmission, bool> setGrades = Endpoint("/grades/set");
   static Endpoint<StringRequest, UnitGrades> unitGrades = Endpoint("/grades/unit");
 
-  static Endpoint<void, FormList> getForms = Endpoint("/forms/info");
-  static Endpoint<FormSummary, FormOneData> addForm = Endpoint("/forms/add");
-  static Endpoint<void, FormDataList> getFormData = Endpoint("/forms/data");
-  static Endpoint<StringRequest, bool> removeForm = Endpoint("/forms/remove");
-  static Endpoint<StringRequest, bool> signForm = Endpoint("/forms/sign");
-
   static Endpoint<RoleRequest, bool> setRoles = Endpoint("/roles/set");
 
   static Endpoint<SquadronAssignRequest, bool> assignSquad = Endpoint("squadron/assign");
@@ -181,8 +174,8 @@ class Endpoints {
   static Endpoint<Unit, Unit> deleteUnit = Endpoint("/unit/delete");
 
   static Endpoint<void, WingData> getWing = Endpoint("/unit/summaries", get: true);
-  static Endpoint<void, UnitData> getOwnUnit = Endpoint("/unit/data", get: true);
-  static Endpoint<UnitDataRequest, UnitData> getUnit = Endpoint("/unit/data", get: true);
+  static Endpoint<void, UnitData> getOwnUnit = Endpoint("/unit/data");
+  static Endpoint<StringRequest, UnitData> getUnit = Endpoint("/unit/data");
 
   static Endpoint<PassStatusRequest, bool> setPassStatus = Endpoint("/unit/set-pass-status");
   static Endpoint<IndividualStatusRequest, bool> setIndividualPassStatus = Endpoint("/unit/set-individual-pass-status");

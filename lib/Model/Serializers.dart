@@ -93,7 +93,6 @@ part 'Serializers.g.dart';
   InitialData,
   SignRequest,
   UserEvent,
-  Role
 ])
 
 

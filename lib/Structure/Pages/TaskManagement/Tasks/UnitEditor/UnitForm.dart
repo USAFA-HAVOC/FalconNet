@@ -1,6 +1,5 @@
 import 'package:built_collection/built_collection.dart';
 import 'package:falcon_net/Model/Database/UnitList.dart';
-import 'package:falcon_net/Model/Database/UnitSummary.dart';
 import 'package:falcon_net/Structure/Components/PaddedColumn.dart';
 import 'package:flutter/material.dart';
 
@@ -8,8 +7,8 @@ import '../../../../../Model/Database/Unit.dart';
 
 class UnitForm extends StatefulWidget {
   final void Function()? onCancel;
-  final void Function(UnitSummary) onSubmit;
-  final UnitSummary? existing;
+  final void Function(Unit) onSubmit;
+  final Unit? existing;
   final UnitList list;
 
   const UnitForm({
@@ -31,8 +30,8 @@ class UnitFormState extends State<UnitForm> {
 
   @override
   void initState() {
-    name = TextEditingController(text: widget.existing?.unit.name ?? "");
-    group = TextEditingController(text: widget.existing?.unit.parent_units.isNotEmpty ?? false ? widget.existing!.unit.parent_units.last : "");
+    name = TextEditingController(text: widget.existing?.name ?? "");
+    group = TextEditingController(text: widget.existing?.parent_units.isNotEmpty ?? false ? widget.existing!.parent_units.last : "");
     super.initState();
   }
 
@@ -43,7 +42,7 @@ class UnitFormState extends State<UnitForm> {
     else {
       return [
         ...widget.list.units
-          .firstWhere((u) => u.unit.name == parent).unit.parent_units,
+          .firstWhere((u) => u.name == parent).parent_units,
         parent
       ];
     }
@@ -105,7 +104,7 @@ class UnitFormState extends State<UnitForm> {
         ElevatedButton(
           onPressed: () {
             if (widget.list.units.any((u) =>
-                    u.unit.name.toLowerCase() == name.text.toLowerCase()) &&
+                    u.name.toLowerCase() == name.text.toLowerCase()) &&
                 widget.existing == null) {
               setState(() {
                 nameError = "Duplicate unit name";
@@ -114,17 +113,13 @@ class UnitFormState extends State<UnitForm> {
               setState(() {
                 nameError = "Unit name cannot be blank";
               });
-            } else if (group.text.isEmpty || widget.list.units.any((u) => u.unit.name == group.text)) {
-              widget.onSubmit(UnitSummary((s) => s
-                ..out = widget.existing?.out ?? 0
-                ..signed = widget.existing?.signed ?? 0
-                ..unsigned = widget.existing?.unsigned ?? 0
-                ..total = widget.existing?.total ?? 0
-                ..unit = Unit((u) => u
-                  ..name = name.text
-                  ..parent_units = buildParents(group.text).build().toBuilder()
-                  ..pass_status = (widget.existing?.unit.pass_status ?? [true, true, true, true].build()).toBuilder()
-                  ..id = widget.existing?.unit.id).toBuilder()));
+            } else if (group.text.isEmpty || widget.list.units.any((u) => u.name == group.text)) {
+              widget.onSubmit(Unit((u) => u
+                ..name = name.text
+                ..parent_units = buildParents(group.text).build().toBuilder()
+                ..pass_status = (widget.existing?.pass_status ?? [true, true, true, true].build()).toBuilder()
+                ..id = widget.existing?.id
+              ));
 
               setState(() {
                 name.text = "";

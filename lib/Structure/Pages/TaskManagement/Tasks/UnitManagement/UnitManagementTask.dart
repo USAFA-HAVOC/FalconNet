@@ -48,11 +48,11 @@ class UnitManagementTaskState extends State<UnitManagementTask> {
   Future<UnitManagementData> requestData() async {
     try {
       var data = await Endpoints.getOwnUnit(null);
-      var forms = await Endpoints.getFormData(null);
+      //var forms = await Endpoints.getFormData(null);
       return UnitManagementData(
           status: data.unit.pass_status.toList(),
           users: data.members.toList(),
-          forms: forms.forms.toList()
+          forms: []//forms.forms.toList()
       );
     }
 
@@ -111,13 +111,13 @@ class UnitManagementTaskState extends State<UnitManagementTask> {
       }
       var data = await connection;
 
-      var assigned = await Endpoints.addForm(form);
+      //var assigned = await Endpoints.addForm(form);
 
       setState(() {
         connection = Future.value(UnitManagementData(
             status: data.status,
             users: data.users,
-            forms: [assigned] + data.forms
+            forms: []//[assigned] + data.forms
         ));
       });
 
@@ -143,7 +143,7 @@ class UnitManagementTaskState extends State<UnitManagementTask> {
     try {
       var data = await connection;
 
-      await Endpoints.removeForm(StringRequest((s) => s..string = form.form_id));
+      //await Endpoints.removeForm(StringRequest((s) => s..string = form.form_id));
 
       var mutable = data.forms.toList();
       mutable.remove(form);

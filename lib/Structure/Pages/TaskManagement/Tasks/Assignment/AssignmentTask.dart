@@ -142,8 +142,8 @@ class AssignmentTaskState extends State<AssignmentTask> {
               var units = data.units!.units.toList();
               selection = [DropdownButton<String>(
                 items: units.map((u) => DropdownMenuItem<String>(
-                  value: u.unit.name,
-                  child: Text(u.unit.name),
+                  value: u.name,
+                  child: Text(u.name),
                 )).toList(),
                 value: selected,
                 onChanged: (change) => setState(() => selected = change!),

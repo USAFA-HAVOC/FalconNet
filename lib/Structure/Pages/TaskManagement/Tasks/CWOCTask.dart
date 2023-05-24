@@ -2,8 +2,8 @@ import 'dart:async';
 import 'dart:core';
 
 import 'package:falcon_net/Model/Database/SignRequest.dart';
+import 'package:falcon_net/Model/Database/StringRequest.dart';
 import 'package:falcon_net/Model/Database/UnitData.dart';
-import 'package:falcon_net/Model/Database/UnitDataRequest.dart';
 import 'package:falcon_net/Model/Database/UnitSummary.dart';
 import 'package:falcon_net/Model/Database/UserSummary.dart';
 import 'package:falcon_net/Model/Database/WingData.dart';
@@ -111,7 +111,7 @@ class CWOCTaskState extends State<CWOCTask> {
     var wing = await connection;
 
     try {
-      UnitData actual = await Endpoints.getUnit(UnitDataRequest((b) => b..unit = unit));
+      UnitData actual = await Endpoints.getUnit(StringRequest((b) => b..string = unit));
       setState(() {
         connection = Future.value(wing.set(actual));
         loaded.removeWhere((u) => u.unit.name == unit);
@@ -182,7 +182,10 @@ class CWOCTaskState extends State<CWOCTask> {
 
 
   Widget buildStatusGrid(List<UnitSummary> units) {
-    List<String> groups = Set<String>.from(units.where((unit) => unit.unit.parent_units.isNotEmpty).map((u) => u.unit.parent_units.last)).toList();
+    List<String> groups = Set<String>.from(
+        units.where((unit) => unit.unit.parent_units.length >= 2 && (unit.total ?? 0) > 0)
+            .map((u) => u.unit.parent_units[1])
+    ).toList();
     groups.sort();
 
     List<Widget> left = [];
@@ -224,8 +227,8 @@ class CWOCTaskState extends State<CWOCTask> {
 
   Widget buildStatusColumn(List<UnitSummary> units) {
     List<String> groups = Set<String>.from(
-        units.where((unit) => unit.unit.sub_units.isEmpty && unit.unit.parent_units.isNotEmpty)
-            .map((u) => u.unit.parent_units.last)
+        units.where((unit) => unit.unit.parent_units.length >= 2 && (unit.total ?? 0) > 0)
+            .map((u) => u.unit.parent_units[1])
     ).toList();
 
     groups.sort();

@@ -6,11 +6,13 @@ import 'package:go_router/go_router.dart';
 
 import '../../../../../Model/Database/Role.dart';
 import '../../../../../Model/Database/TimedRole.dart';
+import '../../../../../Model/Database/Unit.dart';
 import "../../../../../Utility/InputValidation.dart";
 
 class RoleSubform extends StatefulWidget {
   final TimedRole initialValue;
   final List<TimedRole> applicable;
+  final List<Unit> units;
   final void Function(TimedRole) onSubmit;
   final void Function()? onCancel;
 
@@ -19,6 +21,7 @@ class RoleSubform extends StatefulWidget {
     required TimedRole existing,
     required this.onSubmit,
     required this.applicable,
+    required this.units,
     this.onCancel
   }) :  assert(applicable.isNotEmpty),
         initialValue = existing.toLocal();
@@ -43,23 +46,28 @@ class RoleSubformState extends State<RoleSubform> {
     var highest = widget.applicable.reduce((value, role) => value.isGreaterThan(role) ? value : role);
 
     //If role permissions extend beyond owners, role is uneditable
-    var editable = highest.delegable().any((r) => r == value.role);
+    var editable = highest.delegable().any((r) => r == value.name);
 
     if (!editable) {
-      return DecoratedBox(
-          decoration: BoxDecoration(
-            border: Border.all(color: Theme.of(context).dividerColor, width: 5),
-            borderRadius: BorderRadius.circular(10),
-          ),
+      return Dialog(
+        child: Padding(
+          padding: const EdgeInsets.all(10),
+          child: DecoratedBox(
+              decoration: BoxDecoration(
+                border: Border.all(color: Theme.of(context).dividerColor, width: 5),
+                borderRadius: BorderRadius.circular(10),
+              ),
 
-          child: Padding(
-            padding: const EdgeInsets.all(10),
-            child: Text(
-              "${value.role} Role Uneditable",
-              style: Theme.of(context).textTheme.titleSmall,
-              textAlign: TextAlign.center,
-            ),
-          )
+              child: Padding(
+                padding: const EdgeInsets.all(10),
+                child: Text(
+                  "${value.name} Role Uneditable",
+                  style: Theme.of(context).textTheme.titleSmall,
+                  textAlign: TextAlign.center,
+                ),
+              )
+          ),
+        ),
       );
     }
 
@@ -67,6 +75,17 @@ class RoleSubformState extends State<RoleSubform> {
 
     var earliest = scope.key;
     var latest = scope.value;
+
+    List<String> grandchildren(List<String> children) =>
+        children.map((e) => widget.units.firstWhere((u) => u.name == e))
+            .expand((u) => [...grandchildren(u.sub_units.toList()), u.name])
+            .toList();
+
+    var assignable = grandchildren(
+        widget.applicable.where((r) => r.isAdmin())
+            .map((r) => r.unit ?? widget.units.firstWhere((u) => u.parent_units.isEmpty).name)
+            .toList()
+    );
 
     return Dialog(
       child: Form(
@@ -78,7 +97,7 @@ class RoleSubformState extends State<RoleSubform> {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               DropdownButtonFormField<String>(
-                value: value.role.name,
+                value: value.name,
 
                 decoration: InputDecoration(
                     labelStyle: Theme.of(context).textTheme.bodyLarge,
@@ -99,9 +118,10 @@ class RoleSubformState extends State<RoleSubform> {
                 onChanged: !(!(earliest == null && latest == null) && (value.start == null || value.end == null)) ? (selection) {
                   setState(() {
                     value = TimedRole((b) => b
-                      ..role = Role((r) => r
-                          ..name = selection!
-                      ).toBuilder()
+                      ..name = selection
+                      ..unit = selection == Roles.unit_admin.name
+                          ? assignable.first
+                          : null
                       ..start = value.start
                       ..end = value.end
                     ).toUtc();
@@ -110,6 +130,24 @@ class RoleSubformState extends State<RoleSubform> {
               ),
 
               const SizedBox(height: 20,),
+
+              (value.name == Roles.unit_admin.name)
+                  ? DropdownButtonFormField<String>(
+                  value: value.unit!,
+                  items: assignable.map((u) => DropdownMenuItem<String>(
+                      value: u,
+                      child: Text(u)
+                  )).toList(),
+                  onChanged: (change) => setState(() {
+                    value = TimedRole((b) => b
+                      ..name = value.name
+                      ..unit = change
+                      ..start = value.start
+                      ..end = value.end
+                    ).toUtc();
+                  })
+              )
+                  : const SizedBox(),
 
               !(!(earliest == null && latest == null) && (value.start == null || value.end == null))
                   ? Row(
@@ -124,7 +162,8 @@ class RoleSubformState extends State<RoleSubform> {
                     if (change) {
                       setState(() {
                         value = TimedRole((b) => b
-                          ..role = value.role.toBuilder()
+                          ..name = value.name
+                          ..unit = value.unit
                           ..start = DateTime.now().subtract(const Duration(days: 1))
                           ..end = DateTime.now().add(const Duration(days: 7))
                         ).toUtc();
@@ -132,7 +171,8 @@ class RoleSubformState extends State<RoleSubform> {
                     } else {
                       setState(() {
                         value = TimedRole((b) => b
-                          ..role = value.role.toBuilder()
+                          ..name = value.name
+                          ..unit = value.unit
                           ..start = null
                           ..end = null
                         ).toUtc();
@@ -163,7 +203,8 @@ class RoleSubformState extends State<RoleSubform> {
                         value: (value.start ?? earliest) == null ? null : describeDate(value.start ?? earliest!),
                         onChanged: (change) => setState(() {
                           value = TimedRole((b) => b
-                            ..role = value.role.toBuilder()
+                            ..name = value.name
+                            ..unit = value.unit
                             ..start = parseDate(change)
                             ..end = value.end
                           ).toUtc();
@@ -181,7 +222,8 @@ class RoleSubformState extends State<RoleSubform> {
                         value: (value.end ?? latest) == null ? null : describeDate(value.end ?? latest!),
                         onChanged: (change) => setState(() {
                           value = TimedRole((b) => b
-                            ..role = value.role.toBuilder()
+                            ..name = value.name
+                            ..unit = value.unit
                             ..start = value.start
                             ..end = parseDate(change)
                           ).toUtc();

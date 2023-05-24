@@ -26,7 +26,6 @@ Serializers _$serializers = (new Serializers().toBuilder()
       ..add(InitialData.serializer)
       ..add(PassHistoryModel.serializer)
       ..add(PassStatusRequest.serializer)
-      ..add(Role.serializer)
       ..add(RoleRequest.serializer)
       ..add(SchedulingEvent.serializer)
       ..add(SignRequest.serializer)
@@ -97,8 +96,8 @@ Serializers _$serializers = (new Serializers().toBuilder()
           const FullType(BuiltList, const [const FullType(TimedRole)]),
           () => new ListBuilder<TimedRole>())
       ..addBuilderFactory(
-          const FullType(BuiltList, const [const FullType(UnitSummary)]),
-          () => new ListBuilder<UnitSummary>())
+          const FullType(BuiltList, const [const FullType(Unit)]),
+          () => new ListBuilder<Unit>())
       ..addBuilderFactory(
           const FullType(BuiltList, const [const FullType(UnitSummary)]),
           () => new ListBuilder<UnitSummary>())

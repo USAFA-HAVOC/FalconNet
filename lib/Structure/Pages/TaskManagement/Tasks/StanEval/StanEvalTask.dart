@@ -34,11 +34,11 @@ class StanEvalTaskState extends State<StanEvalTask> {
   }
 
   UnitList search(UnitList list) {
-    var scores = list.units.toList().map((u) => MapEntry(u, u.unit.name.similarityTo(query))).toList();
+    var scores = list.units.toList().map((u) => MapEntry(u, u.name.similarityTo(query))).toList();
     scores.sort((a, b) {
       var value = -a.value.compareTo(b.value);
       if (value == 0) {
-        return a.key.unit.name.compareTo(b.key.unit.name);
+        return a.key.name.compareTo(b.key.name);
       }
       return value;
     });
@@ -75,12 +75,12 @@ class StanEvalTaskState extends State<StanEvalTask> {
                         interiorPadding: const EdgeInsets.all(20),
                         onTap: () => context.go(
                             "/task_management/stan_eval/unit",
-                            extra: ordered.units[index - 1].unit.name
+                            extra: ordered.units[index - 1].name
                         ),
                         children: [
                           Expanded(
                             child: Text(
-                              ordered.units[index - 1].unit.name,
+                              ordered.units[index - 1].name,
                               style: Theme.of(context).textTheme.titleSmall,
                             ),
                           )

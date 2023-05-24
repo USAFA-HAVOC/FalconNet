@@ -3,9 +3,12 @@ import 'package:falcon_net/Structure/Pages/TaskManagement/Tasks/Delegation/RoleS
 import 'package:falcon_net/Utility/TemporalFormatting.dart';
 import 'package:flutter/material.dart';
 
+import '../../../../../Model/Database/Unit.dart';
+
 class RoleBar extends StatelessWidget {
   final TimedRole existing;
   final List<TimedRole> applicable;
+  final List<Unit> units;
   final void Function() onRemove;
   final void Function(TimedRole) onSubmit;
 
@@ -14,7 +17,8 @@ class RoleBar extends StatelessWidget {
     required this.existing,
     required this.applicable,
     required this.onSubmit,
-    required this.onRemove
+    required this.onRemove,
+    required this.units,
   });
 
   @override
@@ -32,7 +36,7 @@ class RoleBar extends StatelessWidget {
             Expanded(
               flex: 3,
               child: Text(
-                existing.role.name,
+                existing.name,
                 style: Theme.of(context).textTheme.titleSmall,
               ),
             ),
@@ -52,6 +56,7 @@ class RoleBar extends StatelessWidget {
                 child: IconButton(
                   icon: const Icon(Icons.edit),
                   onPressed: () => showDialog(context: context, builder: (context) => RoleSubform(
+                      units: units,
                       existing: existing,
                       onSubmit: onSubmit,
                       applicable: applicable

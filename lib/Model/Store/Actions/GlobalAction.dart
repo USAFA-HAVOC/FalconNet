@@ -51,7 +51,7 @@ class GlobalAction extends ReduxAction<GlobalState> {
         sb.user = data.user.toBuilder();
         print(data.user);
 
-        if (!state.user.roles.any((r) => r.role.name == Roles.permanent_party.name)) {
+        if (!state.user.roles.any((r) => r.name == Roles.permanent_party.name)) {
           sb.grades = data.grades?.toBuilder();
           sb.history = data.pass_history?.toBuilder();
           sb.events = data.events?.toBuilder();
@@ -79,9 +79,7 @@ class GlobalAction extends ReduxAction<GlobalState> {
         var devPP = prefs.getBool("dev-pp") ?? false;
 
         if (devPP) {
-          sb..user.roles.add(TimedRole((r) => r..role = Role((r) => r
-            ..name = Roles.permanent_party.name
-          ).toBuilder()));
+          sb.user.roles.add(TimedRole((r) => r..name = Roles.permanent_party.name));
         }
 
         return sb.build();

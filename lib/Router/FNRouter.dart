@@ -268,7 +268,7 @@ GoRouter fnRouter(GlobalKey<NavigatorState> key, SignState sign, bool party) => 
                             converter: (store) => ViewModel(store: store, content: store.state.user),
                             builder: (context, model) => AssignmentTask(
                               units: model.content.units.toList(),
-                              scope: model.content.roles.any((r) => r.role == Roles.fn_admin.name || r.role == Roles.wing_admin.name) ?
+                              scope: model.content.roles.any((r) => r.name == Roles.fn_admin.name || r.name == Roles.wing_admin.name) ?
                               AssignmentScope.all : AssignmentScope.own,
                             ),
                           ),

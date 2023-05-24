@@ -35,20 +35,17 @@ class UnitEditorTaskState extends State<UnitEditorTask> {
     super.initState();
   }
 
-  void add(ScaffoldMessengerState messenger, UnitSummary unit) async {
+  void add(ScaffoldMessengerState messenger, Unit unit) async {
     var units = (await connection).units.toList();
     try {
-      Unit complete = await Endpoints.createUnit(unit.unit);
+      Unit complete = await Endpoints.createUnit(unit);
 
       setState(() {
         connection = Future<UnitList>.value(UnitList((w) => w
-          ..units = ListBuilder(units + [UnitSummary((s) => s
-              ..total = unit.total
-              ..unsigned = unit.unsigned
-              ..out = unit.out
-              ..signed = unit.signed
-              ..unit = complete.toBuilder()
-          )])
+          ..units = ListBuilder([
+            ...units,
+            unit.toBuilder()
+          ])
         ));
       });
 
@@ -64,15 +61,15 @@ class UnitEditorTaskState extends State<UnitEditorTask> {
     }
   }
 
-  void delete(ScaffoldMessengerState messenger, UnitSummary unit) async {
+  void delete(ScaffoldMessengerState messenger, Unit unit) async {
     var units = (await connection).units.toList();
 
     try {
-      await Endpoints.deleteUnit(unit.unit);
+      await Endpoints.deleteUnit(unit);
 
       setState(() {
         connection = Future<UnitList>.value(UnitList((w) => w
-          ..units = ListBuilder(units.where((u) => u.unit.name != unit.unit.name))
+          ..units = ListBuilder(units.where((u) => u.name != unit.name))
         ));
       });
 
@@ -89,15 +86,15 @@ class UnitEditorTaskState extends State<UnitEditorTask> {
     }
   }
 
-  void edit(ScaffoldMessengerState messenger, UnitSummary unit) async {
+  void edit(ScaffoldMessengerState messenger, Unit unit) async {
     var units = (await connection).units.toList();
 
     try {
-      await Endpoints.editUnit(unit.unit);
+      await Endpoints.editUnit(unit);
 
       setState(() {
         connection = Future<UnitList>.value(UnitList((w) => w
-          ..units = ListBuilder([units.firstWhere((u) => u.unit.name == unit.unit.name)] + units.where((u) => u.unit.name != unit.unit.name).toList())
+          ..units = ListBuilder([units.firstWhere((u) => u.name == unit.name)] + units.where((u) => u.name != unit.name).toList())
         ));
       });
 
@@ -114,11 +111,11 @@ class UnitEditorTaskState extends State<UnitEditorTask> {
   }
 
   UnitList search(UnitList list) {
-    var scores = list.units.toList().map((u) => MapEntry(u, u.unit.name.similarityTo(query))).toList();
+    var scores = list.units.toList().map((u) => MapEntry(u, u.name.similarityTo(query))).toList();
     scores.sort((a, b) {
       var value = -a.value.compareTo(b.value);
       if (value == 0) {
-        return a.key.unit.name.compareTo(b.key.unit.name);
+        return a.key.name.compareTo(b.key.name);
       }
       return value;
     });

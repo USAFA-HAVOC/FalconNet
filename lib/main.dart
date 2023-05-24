@@ -115,7 +115,9 @@ class FNAppState extends State<FNApp> {
   @override
   void initState() {
     Timer.periodic(const Duration(minutes: 1), (timer) {
-      widget.store.dispatch(GlobalAction.initialize());
+      if (APIData().authenticated) {
+        widget.store.dispatch(GlobalAction.initialize());
+      }
     });
 
     attemptGetWebToken();
@@ -147,7 +149,7 @@ class FNAppState extends State<FNApp> {
           store: store,
           content: RouterComponents(
             theme: store.state.settings.theme,
-            party: store.state.user.roles.any((r) => r.role == Roles.permanent_party.name),
+            party: store.state.user.roles.any((r) => r.name == Roles.permanent_party.name),
             loaded: store.state.status == AppStatus.nominal
           )
         ),

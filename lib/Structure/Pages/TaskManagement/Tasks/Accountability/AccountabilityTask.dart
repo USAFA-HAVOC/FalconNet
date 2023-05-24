@@ -31,7 +31,7 @@ class AccountabilityTaskState extends State<AccountabilityTask> {
   void initState() {
     super.initState();
     connection = Endpoints.getUsers(null).then(
-      (list) => list.users.where((u) => !u.roles.any((r) => r.role == Roles.permanent_party.name)).toList()
+      (list) => list.users.where((u) => !u.roles.any((r) => r.name == Roles.permanent_party.name)).toList()
     );
     connection.then((users) => expansions = Map<String, bool>.fromIterables(
         users.map((m) => m.id!),
@@ -42,7 +42,7 @@ class AccountabilityTaskState extends State<AccountabilityTask> {
       setState(() {
         connection = Endpoints.getUsers(null).then(
             (list) => list.users.where(
-              (u) => !u.roles.any((r) => r.role == Roles.permanent_party.name)
+              (u) => !u.roles.any((r) => r.name == Roles.permanent_party.name)
             ).toList()
         )
           ..then((members) {
