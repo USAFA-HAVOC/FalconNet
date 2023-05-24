@@ -7,6 +7,7 @@ import 'package:falcon_net/Services/SchedulingService.dart';
 import 'package:falcon_net/Structure/Components/ConfirmationDialog.dart';
 import 'package:falcon_net/Structure/Components/PageWidget.dart';
 import 'package:falcon_net/Structure/Components/ViewModel.dart';
+import 'package:falcon_net/Utility/ListExtensions.dart';
 import 'package:falcon_net/Utility/TemporalFormatting.dart';
 import 'package:flutter/material.dart';
 
@@ -47,9 +48,9 @@ class DIWidget extends StatelessWidget {
 
             Iterable<UserEvent> options = model.content.events
                 .where((e) => e.type == EventType.di.name)
-                .where((e) =>
-                  e.time.toUtc().difference(now).inHours.abs() < 12
-                );
+                .where((e) => e.time.toUtc().difference(now).inHours.abs() < 24)
+                .toList()
+                .sortedKey((e) => e.time.difference(DateTime.now()).inSeconds.abs());
 
             UserStatus status;
 

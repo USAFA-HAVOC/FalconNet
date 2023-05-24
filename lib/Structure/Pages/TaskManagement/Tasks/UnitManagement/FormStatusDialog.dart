@@ -46,7 +46,7 @@ class FormStatusDialogState extends State<FormStatusDialog> {
               itemCount: widget.form.signatures.length + 2,
               itemBuilder: (context, index) {
                 if (index == 0) {
-                  return const Row(
+                  return Row(
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
                       CloseButton()

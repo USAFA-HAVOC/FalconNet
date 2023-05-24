@@ -66,10 +66,14 @@ class SDOTaskState extends State<SDOTask> {
       setState(() {
         future = Future<UnitData>.value(unit.sign(member));
       });
+
+      messenger.showSnackBar(
+          const SnackBar(content: Text("Successfully Signed"))
+      );
     }
     catch(e) {
       messenger.showSnackBar(
-        const SnackBar(content: Text("Failed to sign"))
+        const SnackBar(content: Text("Failed to Sign"))
       );
     }
   }

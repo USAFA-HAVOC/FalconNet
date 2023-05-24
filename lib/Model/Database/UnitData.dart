@@ -3,7 +3,6 @@ import 'package:built_value/built_value.dart';
 import 'package:built_value/serializer.dart';
 
 import 'Unit.dart';
-import 'User.dart';
 import 'UserSummary.dart';
 
 part 'UnitData.g.dart';

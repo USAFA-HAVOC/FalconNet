@@ -11,6 +11,7 @@ import '../../../../../Model/Database/Unit.dart';
 import '../../../../../Model/Database/User.dart';
 import '../../../../../Model/Store/Endpoints.dart';
 import '../../../../Components/AsyncPage.dart';
+import '../../../../Components/SearchBar.dart';
 import 'DelegateBar.dart';
 import 'DelegationForm.dart';
 
