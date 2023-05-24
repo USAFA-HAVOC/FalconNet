@@ -62,9 +62,9 @@ class CadetInfo extends StatelessWidget {
               const SizedBox(height: 20,),
 
               InputBlock(
-                label: "Squadron",
+                label: "Unit",
                 disabled: true,
-                initial: model.content.personal_info.squadron.toString(),
+                initial: model.content.assigned_unit,
                 onSubmit: (input) {  },
               ),
             ],

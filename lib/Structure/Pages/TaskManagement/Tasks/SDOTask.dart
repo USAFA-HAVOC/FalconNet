@@ -1,13 +1,13 @@
 import 'dart:async';
 
-import 'package:falcon_net/Model/Database/DIRequest.dart';
 import 'package:falcon_net/Model/Store/Endpoints.dart';
 import 'package:falcon_net/Structure/Components/UnitStatusWidget.dart';
 import 'package:falcon_net/Utility/ErrorFormatting.dart';
 import 'package:flutter/material.dart';
 
+import '../../../../Model/Database/SignRequest.dart';
 import '../../../../Model/Database/UnitData.dart';
-import '../../../../Model/Database/User.dart';
+import '../../../../Model/Database/UserSummary.dart';
 import '../../../Components/AsyncPage.dart';
 import '../../../Components/LoadingShimmer.dart';
 import '../../../Components/PageWidget.dart';
@@ -55,18 +55,25 @@ class SDOTaskState extends State<SDOTask> {
     timer.cancel();
   }
 
-  void sign(User member, ScaffoldMessengerState messenger) async {
+  void sign(UserSummary member, ScaffoldMessengerState messenger) async {
     var unit = await future;
     try {
-      await Endpoints.signOther(DIRequest((b) => b..cadet_id = member.id));
+      await Endpoints.signEvent(SignRequest((s) => s
+        ..event_id = null
+        ..user_id = member.user_id
+      ));
 
       setState(() {
         future = Future<UnitData>.value(unit.sign(member));
       });
+
+      messenger.showSnackBar(
+          const SnackBar(content: Text("Successfully Signed"))
+      );
     }
     catch(e) {
       messenger.showSnackBar(
-        const SnackBar(content: Text("Failed to sign"))
+        const SnackBar(content: Text("Failed to Sign"))
       );
     }
   }

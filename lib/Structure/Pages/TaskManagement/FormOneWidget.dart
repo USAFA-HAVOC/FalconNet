@@ -1,6 +1,7 @@
 import 'package:async_redux/async_redux.dart';
 import 'package:falcon_net/Model/Database/FormSummary.dart';
-import 'package:falcon_net/Model/Store/Actions/FormAction.dart';
+import 'package:falcon_net/Model/Database/UserEvent.dart';
+import 'package:falcon_net/Model/Store/Actions/SignAction.dart';
 import 'package:falcon_net/Model/Store/GlobalState.dart';
 import 'package:falcon_net/Structure/Components/ConfirmationDialog.dart';
 import 'package:falcon_net/Structure/Components/PageWidget.dart';
@@ -12,17 +13,17 @@ import 'package:flutter/material.dart';
 ///Displays form one title, description, and a signing button
 ///Will display a confirmation dialog on attempted signing
 class FormOneWidget extends StatelessWidget {
-  final FormSummary form;
+  final UserEvent form;
 
   const FormOneWidget({super.key, required this.form});
 
   @override
   Widget build(BuildContext context) {
     return PageWidget(
-      title: form.title,
+      title: form.name ?? "No Title Given",
       children: [
         Text(
-          form.description,
+          form.description ?? "No description given",
           style: Theme.of(context).textTheme.bodyLarge,
         ),
 
@@ -39,8 +40,8 @@ class FormOneWidget extends StatelessWidget {
 
                     //Dispatches signing action with own form one
                     onConfirm: () {
-                      model.dispatch(FormAction(
-                        form,
+                      model.dispatch(SignAction(
+                        event: form.event_id,
                         onSucceed: () => ScaffoldMessenger.of(context).showSnackBar(
                             const SnackBar(content: Text("Successfully Signed Form"))
                         ),

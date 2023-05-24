@@ -12,12 +12,13 @@ import 'package:flutter/material.dart';
 import '../../../../../Model/Database/FormOneData.dart';
 import '../../../../../Model/Database/FormSummary.dart';
 import '../../../../../Model/Database/User.dart';
+import '../../../../../Model/Database/UserSummary.dart';
 import '../../../../../Model/Store/Endpoints.dart';
 import '../../../../Components/AsyncPage.dart';
 
 class UnitManagementData {
   final List<bool> status;
-  final List<User> users;
+  final List<UserSummary> users;
   final List<FormOneData> forms;
 
   const UnitManagementData({required this.status, required this.users, required this.forms});
@@ -47,11 +48,11 @@ class UnitManagementTaskState extends State<UnitManagementTask> {
   Future<UnitManagementData> requestData() async {
     try {
       var data = await Endpoints.getOwnUnit(null);
-      var forms = await Endpoints.getFormData(null);
+      //var forms = await Endpoints.getFormData(null);
       return UnitManagementData(
           status: data.unit.pass_status.toList(),
           users: data.members.toList(),
-          forms: forms.forms.toList()
+          forms: []//forms.forms.toList()
       );
     }
 
@@ -110,13 +111,13 @@ class UnitManagementTaskState extends State<UnitManagementTask> {
       }
       var data = await connection;
 
-      var assigned = await Endpoints.addForm(form);
+      //var assigned = await Endpoints.addForm(form);
 
       setState(() {
         connection = Future.value(UnitManagementData(
             status: data.status,
             users: data.users,
-            forms: [assigned] + data.forms
+            forms: []//[assigned] + data.forms
         ));
       });
 
@@ -142,7 +143,7 @@ class UnitManagementTaskState extends State<UnitManagementTask> {
     try {
       var data = await connection;
 
-      await Endpoints.removeForm(StringRequest((s) => s..string = form.form_id));
+      //await Endpoints.removeForm(StringRequest((s) => s..string = form.form_id));
 
       var mutable = data.forms.toList();
       mutable.remove(form);

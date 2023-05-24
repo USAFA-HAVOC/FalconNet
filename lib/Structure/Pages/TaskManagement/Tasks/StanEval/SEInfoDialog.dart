@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:string_similarity/string_similarity.dart';
 
 import '../../../../Components/InfoBar.dart';
+import '../../../../Components/SearchBar.dart';
 
 class SEInfoDialog extends StatefulWidget {
   final Map<String, String> pairs;
@@ -35,9 +36,9 @@ class SEInfoDialogState extends State<SEInfoDialog> {
               itemCount: widget.pairs.length + 3,
               itemBuilder: (context, index) {
                 if (index == 0) {
-                  return const Row(
+                  return Row(
                     mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
+                    children: const [
                       CloseButton()
                     ],
                   );

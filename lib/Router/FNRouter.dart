@@ -1,5 +1,4 @@
 import 'package:async_redux/async_redux.dart';
-import 'package:falcon_net/Model/Database/Roles.dart';
 import 'package:falcon_net/Model/Database/StringRequest.dart';
 import 'package:falcon_net/Model/Store/AppStatus.dart';
 import 'package:falcon_net/Router/FNTransitions.dart';
@@ -9,7 +8,7 @@ import 'package:falcon_net/Structure/Components/ViewModel.dart';
 import 'package:falcon_net/Structure/Pages/Failure.dart';
 import 'package:falcon_net/Structure/Pages/Profile/Developer.dart';
 import 'package:falcon_net/Structure/Pages/TaskManagement/TaskManagement.dart';
-import 'package:falcon_net/Structure/Pages/TaskManagement/Tasks/AccountabilityTask.dart';
+import 'package:falcon_net/Structure/Pages/TaskManagement/Tasks/Accountability/AccountabilityTask.dart';
 import 'package:falcon_net/Structure/Pages/TaskManagement/Tasks/Assignment/AssignmentTask.dart';
 import 'package:falcon_net/Structure/Pages/TaskManagement/Tasks/Delegation/DelegationTask.dart';
 import 'package:falcon_net/Structure/Pages/TaskManagement/Tasks/StanEval/SEAnalytics.dart';
@@ -19,7 +18,6 @@ import 'package:falcon_net/Structure/Pages/TaskManagement/Tasks/UnitManagement/U
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import '../Model/Database/TimedRole.dart';
-import '../Model/Database/User.dart';
 import '../Model/Store/Actions/GlobalAction.dart';
 import '../Model/Store/Endpoints.dart';
 import '../Model/Store/GlobalState.dart';
@@ -124,7 +122,7 @@ GoRouter fnRouter(GlobalKey<NavigatorState> key, SignState sign, bool party) => 
             GoRoute(
                 path: "stan_eval",
                 pageBuilder: fullSlide(StoreConnector<GlobalState, ViewModel<String>>(
-                  converter: (store) => ViewModel(store: store, content: store.state.user.personal_info.unit!),
+                  converter: (store) => ViewModel(store: store, content: store.state.user.assigned_unit!),
                   builder: (context, model) => FutureBuilder(
                       future: Endpoints.unitGrades(StringRequest((r) => r..string = model.content)),
                       builder: (context, snapshot) {
@@ -173,26 +171,10 @@ GoRouter fnRouter(GlobalKey<NavigatorState> key, SignState sign, bool party) => 
             GoRoute(
               path: "unit_assignment",
               pageBuilder: fullSlide(
-                  StoreConnector<GlobalState, ViewModel<User>>(
-                    converter: (store) => ViewModel(store: store, content: store.state.user),
+                  StoreConnector<GlobalState, ViewModel<List<String>>>(
+                    converter: (store) => ViewModel(store: store, content: store.state.user.units.toList()),
                     builder: (context, model) => AssignmentTask(
-                      info: model.content.personal_info,
-                      type: AssignmentType.unit,
-                      scope: AssignmentScope.all,
-                    ),
-                  )
-              ),
-            ),
-
-            GoRoute(
-              path: "squadron_assignment",
-              pageBuilder: fullSlide(
-                  StoreConnector<GlobalState, ViewModel<User>>(
-                    converter: (store) => ViewModel(store: store, content: store.state.user),
-                    builder: (context, model) => AssignmentTask(
-                      info: model.content.personal_info,
-                      type: AssignmentType.squadron,
-                      scope: AssignmentScope.all,
+                      owner: model.content,
                     ),
                   )
               ),
@@ -280,30 +262,12 @@ GoRouter fnRouter(GlobalKey<NavigatorState> key, SignState sign, bool party) => 
                       GoRoute(
                         path: "unit_assignment",
                         pageBuilder: fullSlide(
-                          StoreConnector<GlobalState, ViewModel<User>>(
-                            converter: (store) => ViewModel(store: store, content: store.state.user),
+                          StoreConnector<GlobalState, ViewModel<List<String>>>(
+                            converter: (store) => ViewModel(store: store, content: store.state.user.units.toList()),
                             builder: (context, model) => AssignmentTask(
-                              info: model.content.personal_info,
-                              type: AssignmentType.unit,
-                              scope: model.content.roles.any((r) => r.role == Roles.fn_admin.name || r.role == Roles.wing_admin.name) ?
-                              AssignmentScope.all : AssignmentScope.own,
+                              owner: model.content,
                             ),
                           ),
-                        ),
-                      ),
-
-                      GoRoute(
-                        path: "squadron_assignment",
-                        pageBuilder: fullSlide(
-                          StoreConnector<GlobalState, ViewModel<User>>(
-                            converter: (store) => ViewModel(store: store, content: store.state.user),
-                            builder: (context, model) => AssignmentTask(
-                              info: model.content.personal_info,
-                              type: AssignmentType.squadron,
-                              scope: model.content.roles.any((r) => r.role == Roles.fn_admin.name || r.role == Roles.wing_admin.name) ?
-                              AssignmentScope.all : AssignmentScope.own,
-                            ),
-                          )
                         ),
                       ),
 

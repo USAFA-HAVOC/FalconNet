@@ -1,6 +1,5 @@
 import 'package:built_collection/built_collection.dart';
 import 'package:falcon_net/Model/Database/RoleRequest.dart';
-import 'package:falcon_net/Model/Database/Roles.dart';
 import 'package:falcon_net/Structure/Components/LoadingShimmer.dart';
 import 'package:falcon_net/Structure/Components/PageWidget.dart';
 import 'package:falcon_net/Utility/ErrorFormatting.dart';
@@ -8,11 +7,20 @@ import 'package:flutter/material.dart';
 import  'package:string_similarity/string_similarity.dart';
 
 import '../../../../../Model/Database/TimedRole.dart';
+import '../../../../../Model/Database/Unit.dart';
 import '../../../../../Model/Database/User.dart';
 import '../../../../../Model/Store/Endpoints.dart';
 import '../../../../Components/AsyncPage.dart';
+import '../../../../Components/SearchBar.dart';
 import 'DelegateBar.dart';
 import 'DelegationForm.dart';
+
+class DelegationData {
+  final List<User> users;
+  final List<Unit> units;
+
+  const DelegationData({required this.units, required this.users});
+}
 
 ///Applet for supervisors to assign time based roles to subordinates
 ///Allows for both adding, removing, and editing of roles of subordinates
@@ -26,7 +34,7 @@ class DelegationTask extends StatefulWidget {
 }
 
 class DelegationTaskState extends State<DelegationTask> {
-  late Future<List<User>> connection;
+  late Future<DelegationData> connection;
   String query = "";
 
   @override
@@ -35,22 +43,15 @@ class DelegationTaskState extends State<DelegationTask> {
     connection = retrieveData();
   }
 
-  Future<List<User>> retrieveData() async {
+  Future<DelegationData> retrieveData() async {
     try {
-      if (widget.owner.any((role) =>
-        role.role == Roles.fn_admin.name ||
-        role.role == Roles.wing_admin.name ||
-        role.role == Roles.group_admin.name
-      )) {
-        return (await Endpoints.getUsers(null)).users.toList();
-      }
-      else {
-        return (await Endpoints.getOwnUnit(null)).members.toList();
-      }
+      var users = (await Endpoints.getUsers(null)).users.toList();
+      var units = (await Endpoints.listUnits(null)).units.toList();
+      return DelegationData(units: units, users: users);
     }
     catch (e) {
       displayError(prefix: "Delegation", exception: e);
-      return <User>[];
+      return DelegationData(units: [], users: []);
     }
   }
 
@@ -60,16 +61,16 @@ class DelegationTaskState extends State<DelegationTask> {
     try {
       await Endpoints.setRoles(RoleRequest((r) => r
         ..user_id = delegate.id
-        ..roles_to_add = roles.toBuiltList().toBuilder()
+        ..new_roles = roles.toBuiltList().toBuilder()
       ));
 
-      var current = await connection;
+      var data = await connection;
 
       setState(() {
-        var others = current.where((d) => d.id != delegate.id).toList();
+        var others = data.users.where((d) => d.id != delegate.id).toList();
         var modified = delegate.rebuild((d) => d..roles = roles.toBuiltList().toBuilder());
         var full = others + [modified];
-        connection = Future.value(full);
+        connection = Future.value(DelegationData(units: data.units, users: full));
       });
 
       messenger?.showSnackBar(
@@ -92,7 +93,7 @@ class DelegationTaskState extends State<DelegationTask> {
   }
 
   ///Opens a dialog for the form for editing a delegates roles
-  void openDelegationForm(BuildContext context, User delegate, List<TimedRole> applicable) {
+  void openDelegationForm(BuildContext context, User delegate, List<TimedRole> applicable, List<Unit> units) {
     showDialog(context: context, builder: (context) => Dialog(
       insetPadding: const EdgeInsets.all(10),
       child: Padding(
@@ -100,10 +101,11 @@ class DelegationTaskState extends State<DelegationTask> {
 
         //Builds a delegation form with applicable roles
         child: DelegationForm(
+          units: units,
           delegate: delegate,
           applicable: applicable,
-          onSubmit: (role) {
-            assign(delegate, role);
+          onSubmit: (roles) {
+            assign(delegate, roles, messenger: ScaffoldMessenger.of(context));
           },
           onCancel: () => Navigator.of(context).pop(),
         ),
@@ -125,8 +127,8 @@ class DelegationTaskState extends State<DelegationTask> {
         placeholder: const [
           LoadingShimmer(height: 700,)
         ],
-        builder: (context, members) {
-          var ordered = search(members, query);
+        builder: (context, data) {
+          var ordered = search(data.users, query);
           return [
             PageWidget(
               title: "Members",
@@ -142,7 +144,7 @@ class DelegationTaskState extends State<DelegationTask> {
 
                       return DelegateBar(
                           delegate: ordered[index - 1],
-                          onAssign: (delegate) => openDelegationForm(context, delegate, widget.owner)
+                          onAssign: (delegate) => openDelegationForm(context, delegate, widget.owner, data.units)
                       );
                     }
                 ),
@@ -153,4 +155,3 @@ class DelegationTaskState extends State<DelegationTask> {
     );
   }
 }
-

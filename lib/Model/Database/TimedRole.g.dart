@@ -18,10 +18,17 @@ class _$TimedRoleSerializer implements StructuredSerializer<TimedRole> {
   Iterable<Object?> serialize(Serializers serializers, TimedRole object,
       {FullType specifiedType = FullType.unspecified}) {
     final result = <Object?>[
-      'role',
-      serializers.serialize(object.role, specifiedType: const FullType(String)),
+      'name',
+      serializers.serialize(object.name, specifiedType: const FullType(String)),
     ];
     Object? value;
+    value = object.unit;
+    if (value != null) {
+      result
+        ..add('unit')
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(String)));
+    }
     value = object.start;
     if (value != null) {
       result
@@ -50,9 +57,13 @@ class _$TimedRoleSerializer implements StructuredSerializer<TimedRole> {
       iterator.moveNext();
       final Object? value = iterator.current;
       switch (key) {
-        case 'role':
-          result.role = serializers.deserialize(value,
+        case 'name':
+          result.name = serializers.deserialize(value,
               specifiedType: const FullType(String))! as String;
+          break;
+        case 'unit':
+          result.unit = serializers.deserialize(value,
+              specifiedType: const FullType(String)) as String?;
           break;
         case 'start':
           result.start = serializers.deserialize(value,
@@ -71,7 +82,9 @@ class _$TimedRoleSerializer implements StructuredSerializer<TimedRole> {
 
 class _$TimedRole extends TimedRole {
   @override
-  final String role;
+  final String name;
+  @override
+  final String? unit;
   @override
   final DateTime? start;
   @override
@@ -80,8 +93,9 @@ class _$TimedRole extends TimedRole {
   factory _$TimedRole([void Function(TimedRoleBuilder)? updates]) =>
       (new TimedRoleBuilder()..update(updates))._build();
 
-  _$TimedRole._({required this.role, this.start, this.end}) : super._() {
-    BuiltValueNullFieldError.checkNotNull(role, r'TimedRole', 'role');
+  _$TimedRole._({required this.name, this.unit, this.start, this.end})
+      : super._() {
+    BuiltValueNullFieldError.checkNotNull(name, r'TimedRole', 'name');
   }
 
   @override
@@ -95,7 +109,8 @@ class _$TimedRole extends TimedRole {
   bool operator ==(Object other) {
     if (identical(other, this)) return true;
     return other is TimedRole &&
-        role == other.role &&
+        name == other.name &&
+        unit == other.unit &&
         start == other.start &&
         end == other.end;
   }
@@ -103,7 +118,8 @@ class _$TimedRole extends TimedRole {
   @override
   int get hashCode {
     var _$hash = 0;
-    _$hash = $jc(_$hash, role.hashCode);
+    _$hash = $jc(_$hash, name.hashCode);
+    _$hash = $jc(_$hash, unit.hashCode);
     _$hash = $jc(_$hash, start.hashCode);
     _$hash = $jc(_$hash, end.hashCode);
     _$hash = $jf(_$hash);
@@ -113,7 +129,8 @@ class _$TimedRole extends TimedRole {
   @override
   String toString() {
     return (newBuiltValueToStringHelper(r'TimedRole')
-          ..add('role', role)
+          ..add('name', name)
+          ..add('unit', unit)
           ..add('start', start)
           ..add('end', end))
         .toString();
@@ -123,9 +140,13 @@ class _$TimedRole extends TimedRole {
 class TimedRoleBuilder implements Builder<TimedRole, TimedRoleBuilder> {
   _$TimedRole? _$v;
 
-  String? _role;
-  String? get role => _$this._role;
-  set role(String? role) => _$this._role = role;
+  String? _name;
+  String? get name => _$this._name;
+  set name(String? name) => _$this._name = name;
+
+  String? _unit;
+  String? get unit => _$this._unit;
+  set unit(String? unit) => _$this._unit = unit;
 
   DateTime? _start;
   DateTime? get start => _$this._start;
@@ -140,7 +161,8 @@ class TimedRoleBuilder implements Builder<TimedRole, TimedRoleBuilder> {
   TimedRoleBuilder get _$this {
     final $v = _$v;
     if ($v != null) {
-      _role = $v.role;
+      _name = $v.name;
+      _unit = $v.unit;
       _start = $v.start;
       _end = $v.end;
       _$v = null;
@@ -165,8 +187,9 @@ class TimedRoleBuilder implements Builder<TimedRole, TimedRoleBuilder> {
   _$TimedRole _build() {
     final _$result = _$v ??
         new _$TimedRole._(
-            role: BuiltValueNullFieldError.checkNotNull(
-                role, r'TimedRole', 'role'),
+            name: BuiltValueNullFieldError.checkNotNull(
+                name, r'TimedRole', 'name'),
+            unit: unit,
             start: start,
             end: end);
     replace(_$result);

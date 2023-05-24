@@ -23,6 +23,10 @@ class _$UserSummarySerializer implements StructuredSerializer<UserSummary> {
           specifiedType: const FullType(String)),
       'name',
       serializers.serialize(object.name, specifiedType: const FullType(String)),
+      'events',
+      serializers.serialize(object.events,
+          specifiedType:
+              const FullType(BuiltList, const [const FullType(UserEvent)])),
     ];
     Object? value;
     value = object.room;
@@ -58,6 +62,12 @@ class _$UserSummarySerializer implements StructuredSerializer<UserSummary> {
           result.room = serializers.deserialize(value,
               specifiedType: const FullType(String)) as String?;
           break;
+        case 'events':
+          result.events.replace(serializers.deserialize(value,
+                  specifiedType: const FullType(
+                      BuiltList, const [const FullType(UserEvent)]))!
+              as BuiltList<Object?>);
+          break;
       }
     }
 
@@ -72,14 +82,21 @@ class _$UserSummary extends UserSummary {
   final String name;
   @override
   final String? room;
+  @override
+  final BuiltList<UserEvent> events;
 
   factory _$UserSummary([void Function(UserSummaryBuilder)? updates]) =>
       (new UserSummaryBuilder()..update(updates))._build();
 
-  _$UserSummary._({required this.user_id, required this.name, this.room})
+  _$UserSummary._(
+      {required this.user_id,
+      required this.name,
+      this.room,
+      required this.events})
       : super._() {
     BuiltValueNullFieldError.checkNotNull(user_id, r'UserSummary', 'user_id');
     BuiltValueNullFieldError.checkNotNull(name, r'UserSummary', 'name');
+    BuiltValueNullFieldError.checkNotNull(events, r'UserSummary', 'events');
   }
 
   @override
@@ -95,7 +112,8 @@ class _$UserSummary extends UserSummary {
     return other is UserSummary &&
         user_id == other.user_id &&
         name == other.name &&
-        room == other.room;
+        room == other.room &&
+        events == other.events;
   }
 
   @override
@@ -104,6 +122,7 @@ class _$UserSummary extends UserSummary {
     _$hash = $jc(_$hash, user_id.hashCode);
     _$hash = $jc(_$hash, name.hashCode);
     _$hash = $jc(_$hash, room.hashCode);
+    _$hash = $jc(_$hash, events.hashCode);
     _$hash = $jf(_$hash);
     return _$hash;
   }
@@ -113,7 +132,8 @@ class _$UserSummary extends UserSummary {
     return (newBuiltValueToStringHelper(r'UserSummary')
           ..add('user_id', user_id)
           ..add('name', name)
-          ..add('room', room))
+          ..add('room', room)
+          ..add('events', events))
         .toString();
   }
 }
@@ -133,6 +153,11 @@ class UserSummaryBuilder implements Builder<UserSummary, UserSummaryBuilder> {
   String? get room => _$this._room;
   set room(String? room) => _$this._room = room;
 
+  ListBuilder<UserEvent>? _events;
+  ListBuilder<UserEvent> get events =>
+      _$this._events ??= new ListBuilder<UserEvent>();
+  set events(ListBuilder<UserEvent>? events) => _$this._events = events;
+
   UserSummaryBuilder();
 
   UserSummaryBuilder get _$this {
@@ -141,6 +166,7 @@ class UserSummaryBuilder implements Builder<UserSummary, UserSummaryBuilder> {
       _user_id = $v.user_id;
       _name = $v.name;
       _room = $v.room;
+      _events = $v.events.toBuilder();
       _$v = null;
     }
     return this;
@@ -161,13 +187,27 @@ class UserSummaryBuilder implements Builder<UserSummary, UserSummaryBuilder> {
   UserSummary build() => _build();
 
   _$UserSummary _build() {
-    final _$result = _$v ??
-        new _$UserSummary._(
-            user_id: BuiltValueNullFieldError.checkNotNull(
-                user_id, r'UserSummary', 'user_id'),
-            name: BuiltValueNullFieldError.checkNotNull(
-                name, r'UserSummary', 'name'),
-            room: room);
+    _$UserSummary _$result;
+    try {
+      _$result = _$v ??
+          new _$UserSummary._(
+              user_id: BuiltValueNullFieldError.checkNotNull(
+                  user_id, r'UserSummary', 'user_id'),
+              name: BuiltValueNullFieldError.checkNotNull(
+                  name, r'UserSummary', 'name'),
+              room: room,
+              events: events.build());
+    } catch (_) {
+      late String _$failedField;
+      try {
+        _$failedField = 'events';
+        events.build();
+      } catch (e) {
+        throw new BuiltValueNestedFieldError(
+            r'UserSummary', _$failedField, e.toString());
+      }
+      rethrow;
+    }
     replace(_$result);
     return _$result;
   }
