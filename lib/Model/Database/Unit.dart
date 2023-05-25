@@ -7,11 +7,11 @@ part 'Unit.g.dart';
 abstract class Unit implements Built<Unit, UnitBuilder> {
   static Serializer<Unit> get serializer => _$unitSerializer;
 
-  String get name;
-  String? get group;
-  bool get is_squadron;
-  BuiltList<bool> get pass_status;
   String? get id;
+  String get name;
+  BuiltList<bool> get pass_status;
+  BuiltList<String> get parent_units;
+  BuiltList<String> get sub_units;
 
   Unit._();
   factory Unit([void Function(UnitBuilder) updates]) = _$Unit;

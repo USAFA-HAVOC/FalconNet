@@ -18,6 +18,13 @@ class _$UserSerializer implements StructuredSerializer<User> {
   Iterable<Object?> serialize(Serializers serializers, User object,
       {FullType specifiedType = FullType.unspecified}) {
     final result = <Object?>[
+      'ms_oid',
+      serializers.serialize(object.ms_oid,
+          specifiedType: const FullType(String)),
+      'units',
+      serializers.serialize(object.units,
+          specifiedType:
+              const FullType(BuiltList, const [const FullType(String)])),
       'personal_info',
       serializers.serialize(object.personal_info,
           specifiedType: const FullType(UserPersonalInfo)),
@@ -34,19 +41,12 @@ class _$UserSerializer implements StructuredSerializer<User> {
         ..add(serializers.serialize(value,
             specifiedType: const FullType(String)));
     }
-    value = object.ms_oid;
+    value = object.assigned_unit;
     if (value != null) {
       result
-        ..add('ms_oid')
+        ..add('assigned_unit')
         ..add(serializers.serialize(value,
             specifiedType: const FullType(String)));
-    }
-    value = object.pass_allocation;
-    if (value != null) {
-      result
-        ..add('pass_allocation')
-        ..add(serializers.serialize(value,
-            specifiedType: const FullType(CadetPassAllocation)));
     }
     value = object.accountability;
     if (value != null) {
@@ -82,17 +82,22 @@ class _$UserSerializer implements StructuredSerializer<User> {
           break;
         case 'ms_oid':
           result.ms_oid = serializers.deserialize(value,
+              specifiedType: const FullType(String))! as String;
+          break;
+        case 'units':
+          result.units.replace(serializers.deserialize(value,
+                  specifiedType: const FullType(
+                      BuiltList, const [const FullType(String)]))!
+              as BuiltList<Object?>);
+          break;
+        case 'assigned_unit':
+          result.assigned_unit = serializers.deserialize(value,
               specifiedType: const FullType(String)) as String?;
           break;
         case 'personal_info':
           result.personal_info.replace(serializers.deserialize(value,
                   specifiedType: const FullType(UserPersonalInfo))!
               as UserPersonalInfo);
-          break;
-        case 'pass_allocation':
-          result.pass_allocation.replace(serializers.deserialize(value,
-                  specifiedType: const FullType(CadetPassAllocation))!
-              as CadetPassAllocation);
           break;
         case 'accountability':
           result.accountability.replace(serializers.deserialize(value,
@@ -120,11 +125,13 @@ class _$User extends User {
   @override
   final String? id;
   @override
-  final String? ms_oid;
+  final String ms_oid;
+  @override
+  final BuiltList<String> units;
+  @override
+  final String? assigned_unit;
   @override
   final UserPersonalInfo personal_info;
-  @override
-  final CadetPassAllocation? pass_allocation;
   @override
   final CadetAccountability? accountability;
   @override
@@ -137,13 +144,16 @@ class _$User extends User {
 
   _$User._(
       {this.id,
-      this.ms_oid,
+      required this.ms_oid,
+      required this.units,
+      this.assigned_unit,
       required this.personal_info,
-      this.pass_allocation,
       this.accountability,
       this.last_login,
       required this.roles})
       : super._() {
+    BuiltValueNullFieldError.checkNotNull(ms_oid, r'User', 'ms_oid');
+    BuiltValueNullFieldError.checkNotNull(units, r'User', 'units');
     BuiltValueNullFieldError.checkNotNull(
         personal_info, r'User', 'personal_info');
     BuiltValueNullFieldError.checkNotNull(roles, r'User', 'roles');
@@ -162,8 +172,9 @@ class _$User extends User {
     return other is User &&
         id == other.id &&
         ms_oid == other.ms_oid &&
+        units == other.units &&
+        assigned_unit == other.assigned_unit &&
         personal_info == other.personal_info &&
-        pass_allocation == other.pass_allocation &&
         accountability == other.accountability &&
         last_login == other.last_login &&
         roles == other.roles;
@@ -174,8 +185,9 @@ class _$User extends User {
     var _$hash = 0;
     _$hash = $jc(_$hash, id.hashCode);
     _$hash = $jc(_$hash, ms_oid.hashCode);
+    _$hash = $jc(_$hash, units.hashCode);
+    _$hash = $jc(_$hash, assigned_unit.hashCode);
     _$hash = $jc(_$hash, personal_info.hashCode);
-    _$hash = $jc(_$hash, pass_allocation.hashCode);
     _$hash = $jc(_$hash, accountability.hashCode);
     _$hash = $jc(_$hash, last_login.hashCode);
     _$hash = $jc(_$hash, roles.hashCode);
@@ -188,8 +200,9 @@ class _$User extends User {
     return (newBuiltValueToStringHelper(r'User')
           ..add('id', id)
           ..add('ms_oid', ms_oid)
+          ..add('units', units)
+          ..add('assigned_unit', assigned_unit)
           ..add('personal_info', personal_info)
-          ..add('pass_allocation', pass_allocation)
           ..add('accountability', accountability)
           ..add('last_login', last_login)
           ..add('roles', roles))
@@ -208,17 +221,20 @@ class UserBuilder implements Builder<User, UserBuilder> {
   String? get ms_oid => _$this._ms_oid;
   set ms_oid(String? ms_oid) => _$this._ms_oid = ms_oid;
 
+  ListBuilder<String>? _units;
+  ListBuilder<String> get units => _$this._units ??= new ListBuilder<String>();
+  set units(ListBuilder<String>? units) => _$this._units = units;
+
+  String? _assigned_unit;
+  String? get assigned_unit => _$this._assigned_unit;
+  set assigned_unit(String? assigned_unit) =>
+      _$this._assigned_unit = assigned_unit;
+
   UserPersonalInfoBuilder? _personal_info;
   UserPersonalInfoBuilder get personal_info =>
       _$this._personal_info ??= new UserPersonalInfoBuilder();
   set personal_info(UserPersonalInfoBuilder? personal_info) =>
       _$this._personal_info = personal_info;
-
-  CadetPassAllocationBuilder? _pass_allocation;
-  CadetPassAllocationBuilder get pass_allocation =>
-      _$this._pass_allocation ??= new CadetPassAllocationBuilder();
-  set pass_allocation(CadetPassAllocationBuilder? pass_allocation) =>
-      _$this._pass_allocation = pass_allocation;
 
   CadetAccountabilityBuilder? _accountability;
   CadetAccountabilityBuilder get accountability =>
@@ -242,8 +258,9 @@ class UserBuilder implements Builder<User, UserBuilder> {
     if ($v != null) {
       _id = $v.id;
       _ms_oid = $v.ms_oid;
+      _units = $v.units.toBuilder();
+      _assigned_unit = $v.assigned_unit;
       _personal_info = $v.personal_info.toBuilder();
-      _pass_allocation = $v.pass_allocation?.toBuilder();
       _accountability = $v.accountability?.toBuilder();
       _last_login = $v.last_login;
       _roles = $v.roles.toBuilder();
@@ -272,19 +289,22 @@ class UserBuilder implements Builder<User, UserBuilder> {
       _$result = _$v ??
           new _$User._(
               id: id,
-              ms_oid: ms_oid,
+              ms_oid: BuiltValueNullFieldError.checkNotNull(
+                  ms_oid, r'User', 'ms_oid'),
+              units: units.build(),
+              assigned_unit: assigned_unit,
               personal_info: personal_info.build(),
-              pass_allocation: _pass_allocation?.build(),
               accountability: _accountability?.build(),
               last_login: last_login,
               roles: roles.build());
     } catch (_) {
       late String _$failedField;
       try {
+        _$failedField = 'units';
+        units.build();
+
         _$failedField = 'personal_info';
         personal_info.build();
-        _$failedField = 'pass_allocation';
-        _pass_allocation?.build();
         _$failedField = 'accountability';
         _accountability?.build();
 

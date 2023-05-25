@@ -21,7 +21,7 @@ class _$UnitListSerializer implements StructuredSerializer<UnitList> {
       'units',
       serializers.serialize(object.units,
           specifiedType:
-              const FullType(BuiltList, const [const FullType(UnitSummary)])),
+              const FullType(BuiltList, const [const FullType(Unit)])),
     ];
 
     return result;
@@ -40,8 +40,8 @@ class _$UnitListSerializer implements StructuredSerializer<UnitList> {
       switch (key) {
         case 'units':
           result.units.replace(serializers.deserialize(value,
-                  specifiedType: const FullType(
-                      BuiltList, const [const FullType(UnitSummary)]))!
+                  specifiedType:
+                      const FullType(BuiltList, const [const FullType(Unit)]))!
               as BuiltList<Object?>);
           break;
       }
@@ -53,7 +53,7 @@ class _$UnitListSerializer implements StructuredSerializer<UnitList> {
 
 class _$UnitList extends UnitList {
   @override
-  final BuiltList<UnitSummary> units;
+  final BuiltList<Unit> units;
 
   factory _$UnitList([void Function(UnitListBuilder)? updates]) =>
       (new UnitListBuilder()..update(updates))._build();
@@ -93,10 +93,9 @@ class _$UnitList extends UnitList {
 class UnitListBuilder implements Builder<UnitList, UnitListBuilder> {
   _$UnitList? _$v;
 
-  ListBuilder<UnitSummary>? _units;
-  ListBuilder<UnitSummary> get units =>
-      _$this._units ??= new ListBuilder<UnitSummary>();
-  set units(ListBuilder<UnitSummary>? units) => _$this._units = units;
+  ListBuilder<Unit>? _units;
+  ListBuilder<Unit> get units => _$this._units ??= new ListBuilder<Unit>();
+  set units(ListBuilder<Unit>? units) => _$this._units = units;
 
   UnitListBuilder();
 

@@ -37,7 +37,7 @@ class PassStatus extends StatelessWidget {
                     }
 
                     else if (model.content.accountability?.current_pass == null) {
-                      if (!(model.content.pass_allocation?.effective_pass_status ?? true)) {
+                      if (!(model.content.accountability?.effective_pass_status ?? true)) {
                         status = "Here";
                         tooltip = "Passes are Closed";
                         closed = true;

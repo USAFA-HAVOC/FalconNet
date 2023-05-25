@@ -1,14 +1,16 @@
 import 'package:built_value/built_value.dart';
 import 'package:built_value/serializer.dart';
 
-import 'Roles.dart';
+import '../../Utility/TemporalFormatting.dart';
+import 'Role.dart';
 
 part 'TimedRole.g.dart';
 
 abstract class TimedRole implements Built<TimedRole, TimedRoleBuilder> {
   static Serializer<TimedRole> get serializer => _$timedRoleSerializer;
 
-  String get role;
+  String get name;
+  String? get unit;
 
   DateTime? get start;
   DateTime? get end;
@@ -54,53 +56,52 @@ abstract class TimedRole implements Built<TimedRole, TimedRoleBuilder> {
       Roles.cadet.name
     ];
 
-    if (role == Roles.fn_admin.name) {
+    if (name == Roles.fn_admin.name) {
       return [Roles.fn_admin.name, Roles.wing_admin.name, Roles.group_admin.name, Roles.unit_admin.name, Roles.cwoc.name, Roles.permanent_party.name] + delegates;
     }
 
-    else if (role == Roles.wing_admin.name) {
-      return [Roles.unit_admin.name, Roles.group_admin.name, Roles.cwoc.name] + delegates;
-    }
-
-    else if (role == Roles.group_admin.name) {
+    else if (name == Roles.permanent_party.name || name == Roles.unit_admin.name) {
       return [Roles.unit_admin.name] + delegates;
-    }
-
-    else if (role == Roles.permanent_party.name) {
-      return [Roles.unit_admin.name] + delegates;
-    }
-
-    else if (role == Roles.unit_admin.name) {
-      return delegates;
     }
 
     return [];
   }
 
   bool isAdmin() {
-    return role == Roles.fn_admin.name
-        || role == Roles.wing_admin.name
-        || role == Roles.unit_admin.name
-        || role == Roles.permanent_party.name;
+    return name == Roles.fn_admin.name
+        || name == Roles.wing_admin.name
+        || name == Roles.unit_admin.name
+        || name == Roles.permanent_party.name;
   }
 
   bool isGreaterThan(TimedRole other) {
-    if (role == Roles.fn_admin.name) {
+    if (name == Roles.fn_admin.name) {
       return true;
     }
-    if (role == Roles.permanent_party.name) {
-      return other.role != Roles.fn_admin.name && other.role != Roles.permanent_party.name;
+    if (name == Roles.permanent_party.name) {
+      return other.name != Roles.fn_admin.name && other.name != Roles.permanent_party.name;
     }
 
-    if (role == Roles.wing_admin.name) {
-      return other.role != Roles.fn_admin.name && other.role != Roles.wing_admin.name && other.role != Roles.permanent_party.name;
+    if (name == Roles.wing_admin.name) {
+      return other.name != Roles.fn_admin.name && other.name != Roles.wing_admin.name && other.name != Roles.permanent_party.name;
     }
 
-    if (role == Roles.unit_admin.name) {
+    if (name == Roles.unit_admin.name) {
       return !other.isAdmin();
     }
 
     return false;
+  }
+
+  String description([bool expanded = false]) {
+    if (start == null || end == null || !expanded) {
+      return "${RoleNames.parseDirect(name).description()} ${unit == null ? "" : "($unit)"}";
+    }
+    else {
+      return "${RoleNames.parseDirect(name).description()} ${unit == null ? "" : "($unit) "}(${describeDate(
+          start ?? DateTime.now(), true)} - ${describeDate(
+          end ?? DateTime.now(), true)})";
+    }
   }
 
   TimedRole._();

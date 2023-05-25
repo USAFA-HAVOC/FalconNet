@@ -1,5 +1,7 @@
 import 'package:async_redux/async_redux.dart';
-import 'package:falcon_net/Model/Database/Roles.dart';
+import 'package:falcon_net/Model/Database/AccountabilityEvent.dart';
+import 'package:falcon_net/Model/Database/Role.dart';
+import 'package:falcon_net/Model/Database/UserStatus.dart';
 import 'package:falcon_net/Model/Store/GlobalState.dart';
 import 'package:falcon_net/Structure/Components/FNPage.dart';
 import 'package:falcon_net/Structure/Components/ViewModel.dart';
@@ -17,8 +19,10 @@ class TaskManagement extends StatelessWidget {
   List<Widget> buildTasks(GlobalState state, BuildContext context) {
     var tasks = <Widget>[];
 
+    bool admin = state.user.roles.any((role) => role.isAdmin());
+
     //Add role-based tasks in order of precedent based on roles and available forms
-    if (state.user.roles.any((r) => r.role == Roles.fn_admin.name || r.role == Roles.wing_admin.name)) {
+    if (state.user.roles.any((r) => r.name == Roles.fn_admin.name)) {
       tasks.add(const ExternalTaskWidget(
           path: "/task_management/unit_editor",
           title: "Unit Editor",
@@ -26,7 +30,7 @@ class TaskManagement extends StatelessWidget {
       ));
     }
 
-    if (state.user.roles.any((role) => role.isAdmin())) {
+    if (admin) {
       tasks.addAll(const [
         ExternalTaskWidget(
             path: "/task_management/delegation",
@@ -41,12 +45,6 @@ class TaskManagement extends StatelessWidget {
         ),
 
         ExternalTaskWidget(
-          path: "/task_management/squadron_assignment",
-          title: "Squadron Assignment",
-          description: "Assign cadets to their new squadrons.",
-        ),
-
-        ExternalTaskWidget(
             path: "/task_management/accountability",
             title: "Accountability",
             description: "Locate unit members whether they are on pass, leave, or on base."
@@ -54,7 +52,7 @@ class TaskManagement extends StatelessWidget {
       ]);
     }
 
-    if (state.user.roles.any((role) => role.role == Roles.unit_admin.name)) {
+    if (state.user.roles.any((role) => role.name == Roles.unit_admin.name)) {
       tasks.add(const ExternalTaskWidget(
           path: "/task_management/unit_management",
           title: "Unit Management",
@@ -62,7 +60,7 @@ class TaskManagement extends StatelessWidget {
       ));
     }
 
-    if (state.user.roles.any((role) => role.role == Roles.cwoc.name)) {
+    if (state.user.roles.any((role) => role.name == Roles.cwoc.name)) {
       tasks.add(const ExternalTaskWidget(
           path: "/task_management/cwoc",
           title: "CWOC",
@@ -70,7 +68,7 @@ class TaskManagement extends StatelessWidget {
       ));
     }
 
-    if (state.user.roles.any((role) => role.role == Roles.stan_eval.name)) {
+    if (state.user.roles.any((role) => role.name == Roles.stan_eval.name)) {
       tasks.add(const ExternalTaskWidget(
           path: "/task_management/stan_eval",
           title: "Stan/Eval",
@@ -78,7 +76,7 @@ class TaskManagement extends StatelessWidget {
       ));
     }
 
-    if (state.user.roles.any((role) => role.role == Roles.sdo.name)) {
+    if (state.user.roles.any((role) => role.name == Roles.sdo.name) || admin) {
       tasks.add(const ExternalTaskWidget(
           path: "/task_management/sdo",
           title: "SDO",
@@ -97,7 +95,12 @@ class TaskManagement extends StatelessWidget {
      */
 
     //Add form one task widgets from state
-    tasks.addAll(state.forms!.where((f) => !f.signed).map((f) => FormOneWidget(form: f)));
+    tasks.addAll(
+        state.events
+            .where((f) => f.accountability_method == AccountabilityMethod.self_signed.name)
+            .where((f) => f.status == UserStatus.unsigned.name)
+            .map((f) => FormOneWidget(form: f))
+    );
 
     //If no relevant tasks, display no tasks message
     if (tasks.isEmpty) {

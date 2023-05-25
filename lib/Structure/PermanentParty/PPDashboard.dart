@@ -44,7 +44,7 @@ class PPDashboardState extends State<PPDashboard> {
         title: "Dashboard",
         connection: connection,
         builder: (context, data) => [
-          UnitStatusWidget(data: data.accountability, label: "Current Accountability",),
+          UnitStatusWidget(data: data.accountability, label: "Current Accountability"),
           
           GradeAveragesWidget.unit(unit: data.grades, label: "Unit Grades",)
         ]

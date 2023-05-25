@@ -10,7 +10,7 @@ abstract class RoleRequest implements Built<RoleRequest, RoleRequestBuilder> {
   static Serializer<RoleRequest> get serializer => _$roleRequestSerializer;
 
   String get user_id;
-  BuiltList<TimedRole> get roles_to_add;
+  BuiltList<TimedRole> get new_roles;
 
   RoleRequest._();
   factory RoleRequest([void Function(RoleRequestBuilder) updates]) = _$RoleRequest;

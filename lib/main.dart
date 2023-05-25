@@ -20,15 +20,11 @@ import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:go_router/go_router.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import 'Model/Database/Roles.dart';
+import 'Model/Database/Role.dart';
 import 'Model/Database/UserSettings.dart';
 import 'Router/FNRouter.dart';
 import 'Structure/Components/ViewModel.dart';
 import 'Services/NotificationService.dart';
-
-/*
-  - Use '///' to document classes
-*/
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -40,21 +36,24 @@ void main() async {
         ..status = AppStatus.loading
         ..user = User((b2) => b2
           ..id = ""
+          ..ms_oid = ""
           ..roles = ListBuilder()
           ..personal_info = UserPersonalInfo((b3) => b3
-            ..full_name = ""
-            ..email = ""
-            ..phone_number = ""
-            ..room_number = ""
-            ..squadron = 0
-            ..group = ""
-            ..unit = "").toBuilder()).toBuilder()
+              ..full_name = ""
+              ..email = ""
+              ..phone_number = ""
+              ..room_number = ""
+            ).toBuilder()
+          ).toBuilder()
         ..settings = UserSettings((b2) => b2
-          ..theme = "light"
-          ..taskPush = false
-          ..diPush = false
-          ..passPush = false
-          ..pushNotifications = false).toBuilder()));
+            ..theme = "light"
+            ..taskPush = false
+            ..diPush = false
+            ..passPush = false
+            ..pushNotifications = false
+          ).toBuilder()
+      )
+  );
 
   final Config authConfig = Config(
     tenant: tenant,
@@ -63,8 +62,7 @@ void main() async {
     // redirectUri is Optional as a default is calculated based on app type/web location
     redirectUri: "${APIData().apiLocation}/mobile_redirect",
     navigatorKey: navigatorKey,
-    webUseRedirect:
-        true, // default is false - on web only, forces a redirect flow instead of popup auth
+    webUseRedirect: true, // default is false - on web only, forces a redirect flow instead of popup auth
     //Optional parameter: Centered CircularProgressIndicator while rendering web page in WebView
     loader: const Center(child: CircularProgressIndicator()),
   );
@@ -78,12 +76,16 @@ void main() async {
   AuthService().init(authConfig, null);
   SchedulingService().init();
   await store.dispatch(SettingsAction.retrieve());
-  var account =
-      (await SharedPreferences.getInstance()).getBool("account") ?? false;
+  var account = (await SharedPreferences.getInstance()).getBool("account") ?? false;
 
   FlutterNativeSplash.remove();
 
-  runApp(FNApp(store: store, account: account));
+  runApp(
+    FNApp(
+      store: store,
+      account: account
+    )
+  );
 }
 
 class RouterComponents {
@@ -91,8 +93,7 @@ class RouterComponents {
   final bool party;
   final bool loaded;
 
-  const RouterComponents(
-      {required this.theme, required this.party, required this.loaded});
+  const RouterComponents({required this.theme, required this.party, required this.loaded});
 }
 
 class FNApp extends StatefulWidget {
@@ -114,18 +115,19 @@ class FNAppState extends State<FNApp> {
   @override
   void initState() {
     Timer.periodic(const Duration(minutes: 1), (timer) {
-      widget.store.dispatch(GlobalAction.initialize());
+      if (APIData().authenticated) {
+        widget.store.dispatch(GlobalAction.initialize());
+      }
     });
 
     attemptGetWebToken();
     if (APIData().authenticated) {
       router = fnRouter(navigatorKey, SignState.signed, false);
       ppRouter = fnRouter(navigatorKey, SignState.signed, true);
-    } else {
-      router = fnRouter(navigatorKey,
-          widget.account ? SignState.account : SignState.none, false);
-      ppRouter = fnRouter(navigatorKey,
-          widget.account ? SignState.account : SignState.none, true);
+    }
+    else {
+      router = fnRouter(navigatorKey, widget.account ? SignState.account : SignState.none, false);
+      ppRouter = fnRouter(navigatorKey, widget.account ? SignState.account : SignState.none, true);
     }
 
     super.initState();
@@ -143,36 +145,31 @@ class FNAppState extends State<FNApp> {
     return StoreProvider(
       store: widget.store,
       child: StoreConnector<GlobalState, ViewModel<RouterComponents>>(
-          converter: (store) => ViewModel(
-                store: store,
-                content: RouterComponents(
-                    theme: store.state.settings.theme,
-                    party: store.state.user.roles
-                        .any((r) => r.role == Roles.permanent_party.name),
-                    loaded: store.state.status == AppStatus.nominal),
-              ),
-          builder: (context, model) {
-            if (!model.content.party || !model.content.loaded) {
-              return MaterialApp.router(
-                  debugShowCheckedModeBanner: false, // Removes debug banner
-                  theme:
-                      model.content.theme == "light" ? lightTheme : randomTheme,
-                  darkTheme: darkTheme,
-                  themeMode: model.content.theme == "dark"
-                      ? ThemeMode.dark
-                      : ThemeMode.light,
-                  routerConfig: router);
-            }
+        converter: (store) => ViewModel(
+          store: store,
+          content: RouterComponents(
+            theme: store.state.settings.theme,
+            party: store.state.user.roles.any((r) => r.name == Roles.permanent_party.name),
+            loaded: store.state.status == AppStatus.nominal
+          )
+        ),
+        builder: (context, model) {
+          if (!model.content.party || !model.content.loaded) {
             return MaterialApp.router(
-                debugShowCheckedModeBanner: false, // Removes debug banner
-                theme:
-                    model.content.theme == "light" ? lightTheme : randomTheme,
+                theme: model.content.theme == "light" ? lightTheme : randomTheme,
                 darkTheme: darkTheme,
-                themeMode: model.content.theme == "dark"
-                    ? ThemeMode.dark
-                    : ThemeMode.light,
-                routerConfig: ppRouter);
-          }),
+                themeMode: model.content.theme == "dark" ? ThemeMode.dark : ThemeMode.light,
+                routerConfig: router
+            );
+          }
+          return MaterialApp.router(
+              theme: model.content.theme == "light" ? lightTheme : randomTheme,
+              darkTheme: darkTheme,
+              themeMode: model.content.theme == "dark" ? ThemeMode.dark : ThemeMode.light,
+              routerConfig: ppRouter
+          );
+        }
+      ),
     );
   }
 }

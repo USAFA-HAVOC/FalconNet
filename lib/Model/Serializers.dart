@@ -1,5 +1,6 @@
 import 'package:built_value/serializer.dart';
 import 'package:built_value/standard_json_plugin.dart';
+import 'package:falcon_net/Model/Database/Attendee.dart';
 import 'package:falcon_net/Model/Database/CadetAccountability.dart';
 import 'package:built_collection/built_collection.dart';
 
@@ -21,12 +22,17 @@ import 'package:falcon_net/Model/Database/UserSettings.dart';
 import 'package:falcon_net/Model/Database/UserSummary.dart';
 import 'package:falcon_net/Model/Database/WingData.dart';
 
+import 'Database/AccountabilityEvent.dart';
 import 'Database/DIRequest.dart';
+import 'Database/Excusal.dart';
 import 'Database/FormDataList.dart';
 import 'Database/FormList.dart';
 import 'Database/IndividualStatusRequest.dart';
+import 'Database/InitialData.dart';
 import 'Database/PassHistoryModel.dart';
+import 'Database/Role.dart';
 import 'Database/RoleRequest.dart';
+import 'Database/SignRequest.dart';
 import 'Database/StringRequest.dart';
 import 'Database/TimedRole.dart';
 import 'Database/Unit.dart';
@@ -35,6 +41,7 @@ import 'Database/UnitData.dart';
 import 'Database/UnitGrades.dart';
 import 'Database/UnitList.dart';
 import 'Database/UnitSummary.dart';
+import 'Database/UserEvent.dart';
 import 'Database/UserList.dart';
 import 'Database/UserSummaryList.dart';
 import 'Database/FormOneData.dart';
@@ -79,7 +86,13 @@ part 'Serializers.g.dart';
   SchedulingEvent,
   FormList,
   FormDataList,
-  IndividualStatusRequest
+  IndividualStatusRequest,
+  AccountabilityEvent,
+  Attendee,
+  Excusal,
+  InitialData,
+  SignRequest,
+  UserEvent,
 ])
 
 

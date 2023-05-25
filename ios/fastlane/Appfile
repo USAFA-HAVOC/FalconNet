@@ -1,9 +1,0 @@
-app_identifier("com.arkwerx.falconnet") # The bundle identifier of your app
-apple_id("enriqueoti@havocdev.com") # Your Apple Developer Portal username
-
-itc_team_id("126091291") # App Store Connect Team ID
-team_id("7W6LLR2DK7") # Developer Portal Team ID
-
-# For more information about the Appfile, see:
-#     https://docs.fastlane.tools/advanced/#appfile
-

@@ -423,9 +423,9 @@
     },
     {
       "name": "lints",
-      "rootUri": "file:///Users/davepetzold/.pub-cache/hosted/pub.dev/lints-2.1.0",
+      "rootUri": "file:///Users/davepetzold/.pub-cache/hosted/pub.dev/lints-2.0.1",
       "packageUri": "lib/",
-      "languageVersion": "3.0"
+      "languageVersion": "2.17"
     },
     {
       "name": "logging",
@@ -513,9 +513,9 @@
     },
     {
       "name": "petitparser",
-      "rootUri": "file:///Users/davepetzold/.pub-cache/hosted/pub.dev/petitparser-5.4.0",
+      "rootUri": "file:///Users/davepetzold/.pub-cache/hosted/pub.dev/petitparser-5.1.0",
       "packageUri": "lib/",
-      "languageVersion": "2.19"
+      "languageVersion": "2.18"
     },
     {
       "name": "platform",
@@ -777,9 +777,9 @@
     },
     {
       "name": "xml",
-      "rootUri": "file:///Users/davepetzold/.pub-cache/hosted/pub.dev/xml-6.3.0",
+      "rootUri": "file:///Users/davepetzold/.pub-cache/hosted/pub.dev/xml-6.2.2",
       "packageUri": "lib/",
-      "languageVersion": "2.19"
+      "languageVersion": "2.18"
     },
     {
       "name": "yaml",
@@ -794,7 +794,7 @@
       "languageVersion": "2.18"
     }
   ],
-  "generated": "2023-05-14T01:20:08.316928Z",
+  "generated": "2023-05-25T00:17:02.883477Z",
   "generator": "pub",
   "generatorVersion": "3.0.0"
 }
