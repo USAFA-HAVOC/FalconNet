@@ -25,10 +25,54 @@ class SelectionView extends StatelessWidget {
             child: SignInButton(
               Buttons.Microsoft,
               text: "Sign in with USAFA",
-              onPressed: () async {
-                await attemptLogin();
-                onSigned();
-              },
+              onPressed: () => showDialog(
+                context: context,
+                builder: (context) => Dialog(
+                  child: Padding(
+                    padding: const EdgeInsets.all(10),
+                    child: ListView(
+                      shrinkWrap: true,
+                      primary: false,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.all(10),
+                          child: Text(
+                            "FalcontNet Data Consent",
+                            style: Theme.of(context).textTheme.titleMedium,
+                          ),
+                        ),
+
+                        const Padding(
+                          padding: EdgeInsets.all(10),
+                          child: Text(
+                              "You are accessing an Information System (IS) that is provided for United States"
+                              " Air Force Academy-authorized use only. To learn"
+                              " more about how FalconNet uses permissions and connections granted by the user, "
+                              "please read FalconNet's Privacy Policy and Transparency Guide. "
+                              "When you select 'Accept' or access FalconNet affiliated data sources "
+                              "you are agreeing to FalconNet's Terms of Use."
+                          ),
+                        ),
+
+                        Padding(
+                          padding: const EdgeInsets.all(10),
+                          child: ElevatedButton(
+                              onPressed: () async {
+                                Navigator.of(context).pop();
+                                await attemptLogin();
+                                onSigned();
+                              },
+                              child: const Text(
+                                "Accept",
+                                style: TextStyle(color: Colors.white),
+                              )
+                          ),
+                        )
+                      ],
+                    ),
+                  ),
+                )
+              ),
             ),
           ),
           const SizedBox(height: 20.0),

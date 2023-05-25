@@ -76,7 +76,8 @@ void main() async {
   AuthService().init(authConfig, null);
   SchedulingService().init();
   await store.dispatch(SettingsAction.retrieve());
-  var account = (await SharedPreferences.getInstance()).getBool("account") ?? false;
+  var prefs = (await SharedPreferences.getInstance());
+  var account = prefs.getBool("account") ?? false;
 
   FlutterNativeSplash.remove();
 
