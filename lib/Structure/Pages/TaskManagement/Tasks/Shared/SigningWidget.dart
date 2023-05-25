@@ -4,7 +4,7 @@ import  'package:string_similarity/string_similarity.dart';
 
 import '../../../../../Model/Database/UnitData.dart';
 import '../../../../../Model/Database/UserSummary.dart';
-import '../../../../Components/SearchBar.dart';
+//import '../../../../Components/SearchBar.dart';
 import 'SignBox.dart';
 
 ///List displaying all squadron names and allowing SDO to sign di
