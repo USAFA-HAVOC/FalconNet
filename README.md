@@ -138,7 +138,7 @@ Project Link: [https://github.com/USAFA-HAVOC/FalconNet](https://github.com/USAF
 [CMake.dev]: https://img.shields.io/badge/CMake-4A4A55?style=for-the-badge&logo=cmake&logoColor=FF3E00
 [CMake-url]: https://cmake.org
 [Swift.com]: https://img.shields.io/badge/Swift-563D7C?style=for-the-badge&logo=swift&logoColor=white
-[Swift-url]: https://www.swift.com
+[Swift-url]: https://developer.apple.com/swift/
 [Ruby.com]: https://img.shields.io/badge/Ruby-0769AD?style=for-the-badge&logo=ruby&logoColor=red
 [Ruby-url]: https://www.ruby-lang.org/en/
 [Apple]: https://img.shields.io/badge/App%20Store-0769AD?style=plastic&logo=appstore&logoColor=white
