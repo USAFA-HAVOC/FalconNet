@@ -41,9 +41,10 @@
 ## About The Project
 <div align="center">
 
-[Apple Link](https://apps.apple.com/us/app/falconnet/id6445867869)
+[![Apple][Apple]][Apple-url]
 
-[Google Play Link](https://apps.apple.com/us/app/falconnet/id6445867869)
+[![Play][Play]][Play-url]
+
 
 The HAVOC team has implemented a variety of different resources and frameworks for the completion of this project. 🥇
 
@@ -140,4 +141,7 @@ Project Link: [https://github.com/USAFA-HAVOC/FalconNet](https://github.com/USAF
 [Swift-url]: https://www.swift.com
 [Ruby.com]: https://img.shields.io/badge/Ruby-0769AD?style=for-the-badge&logo=ruby&logoColor=red
 [Ruby-url]: https://www.ruby-lang.org/en/
-
+[Apple]: https://img.shields.io/badge/App%20Store-0769AD?style=plastic&logo=appstore&logoColor=white
+[Apple-url]: https://apps.apple.com/us/app/falconnet/id6445867869
+[Play]: https://img.shields.io/badge/Play%20Store-0769AD?style=plastic&logo=googleplay&logoColor=white
+[Play-url]: https://apps.apple.com/us/app/falconnet/id6445867869
