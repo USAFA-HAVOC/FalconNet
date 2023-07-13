@@ -109,7 +109,7 @@ Project Link: [https://github.com/USAFA-HAVOC/FalconNet](https://github.com/USAF
 
 * Team Lead - Enrique Oti - [![Linkedin][linkedin-shield-oti]][linkedin-url-oti]
 * Operations Director - David Petzold - [![Linkedin][linkedin-shield-petzold]][linkedin-url-petzold]
-* Front-End Developer - Riley Anderson - [![Linkedin][linkedin-shield-anderson]][linkedin-url-anderson]
+* Front-End Developer - Rylie Anderson - [![Linkedin][linkedin-shield-anderson]][linkedin-url-anderson]
 * Back-End Developer - Ethan Chapman - [![Linkedin][linkedin-shield-chapman]][linkedin-url-chapman]
 * Project Manager - Raj Raghulan - [![Linkedin][linkedin-shield-raghulan]][linkedin-url-raghulan]
 
@@ -121,7 +121,7 @@ Project Link: [https://github.com/USAFA-HAVOC/FalconNet](https://github.com/USAF
 [linkedin-url-oti]: https://www.linkedin.com/in/eaoti/
 [linkedin-shield-petzold]: https://img.shields.io/badge/-David_Petzold-black.svg?style=for-the-badge&logo=linkedin&colorB=555
 [linkedin-url-petzold]: https://www.linkedin.com/in/david-petzold/
-[linkedin-shield-anderson]: https://img.shields.io/badge/-Riley_Anderson-black.svg?style=for-the-badge&logo=linkedin&colorB=555
+[linkedin-shield-anderson]: https://img.shields.io/badge/-Rylie_Anderson-black.svg?style=for-the-badge&logo=linkedin&colorB=555
 [linkedin-url-anderson]: https://www.linkedin.com/in/eaoti/
 [linkedin-shield-chapman]: https://img.shields.io/badge/-Ethan_Chapman-black.svg?style=for-the-badge&logo=linkedin&colorB=555
 [linkedin-url-chapman]: https://www.linkedin.com/in/ethan-chapman-9267101b0/
