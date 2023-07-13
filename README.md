@@ -108,7 +108,7 @@ Project Link: [https://github.com/USAFA-HAVOC/FalconNet](https://github.com/USAF
 ## Acknowledgments
 
 * Team Lead - Enrique Oti 👔 - [![Linkedin][linkedin-shield-oti]][linkedin-url-oti] 
-* Operations Director - David Petzold 🏛️:smile- [![Linkedin][linkedin-shield-petzold]][linkedin-url-petzold]
+* Operations Director - David Petzold 🏛️ - [![Linkedin][linkedin-shield-petzold]][linkedin-url-petzold]
 * Front-End Developer - Rylie Anderson 🛩️- [![Linkedin][linkedin-shield-anderson]][linkedin-url-anderson]
 * Back-End Developer - Ethan Chapman 😈 - [![Linkedin][linkedin-shield-chapman]][linkedin-url-chapman]
 * Project Manager - Raj Raghulan 💬 - [![Linkedin][linkedin-shield-raghulan]][linkedin-url-raghulan]
