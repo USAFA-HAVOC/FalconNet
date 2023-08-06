@@ -4,7 +4,7 @@ import  'package:string_similarity/string_similarity.dart';
 
 import '../../../../../Model/Database/UnitData.dart';
 import '../../../../../Model/Database/UserSummary.dart';
-import '../../../../Components/SearchBar.dart';
+import '../../../../Components/FNSearchBar.dart';
 import 'SignBox.dart';
 
 ///List displaying all squadron names and allowing SDO to sign di
@@ -67,7 +67,7 @@ class SigningWidgetState extends State<SigningWidget> {
       itemCount: ordered.length + 1,
       itemBuilder: (context, index) {
         if (index == 0) {
-          return SearchBar(onChanged: (change) => setState(() => query = change));
+          return FNSearchBar(onChanged: (change) => setState(() => query = change));
         }
 
         var member = ordered[index - 1];

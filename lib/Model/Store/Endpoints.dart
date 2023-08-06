@@ -35,7 +35,7 @@ import 'DemoData.dart';
 class APIData {
   bool authenticated = false;
   bool demo = false;
-  bool devServer = true;
+  bool devServer = false;
   User? userData;
 
   static const _devApiLocation = "https://test.api.ethanchapman.dev";
@@ -67,7 +67,6 @@ class APIData {
     else {
       devServer = server;
     }
-    devServer = true;
   }
 }
 

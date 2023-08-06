@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:string_similarity/string_similarity.dart';
 
 import '../../../../Components/InfoBar.dart';
-import '../../../../Components/SearchBar.dart';
+import '../../../../Components/FNSearchBar.dart';
 
 class SEInfoDialog extends StatefulWidget {
   final Map<String, String> pairs;
@@ -53,7 +53,7 @@ class SEInfoDialogState extends State<SEInfoDialog> {
                   );
                 }
                 else if (index == 2) {
-                  return SearchBar(onChanged: (q) => setState(() => query = q));
+                  return FNSearchBar(onChanged: (q) => setState(() => query = q));
                 }
                 else {
                   var grade = ordered[index - 3];

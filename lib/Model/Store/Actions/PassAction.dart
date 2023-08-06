@@ -25,7 +25,11 @@ class PassAction extends ReduxAction<GlobalState> {
       if (pass == null) {
         await Endpoints.closePass(null);
         onSucceed?.call();
-        NotificationService().cancel(id: state.user.accountability!.current_pass!.id!);
+        
+        if (state.user.accountability?.current_pass?.id !=  null) {
+          NotificationService().cancel(id: state.user.accountability!.current_pass!.id!);
+        }
+
         if (state.settings.diPush) {
           NotificationService().scheduleDINotification();
         }
