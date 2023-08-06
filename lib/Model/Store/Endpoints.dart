@@ -38,7 +38,7 @@ class APIData {
   bool devServer = false;
   User? userData;
 
-  static const _devApiLocation = "https://test.api.ethanchapman.dev";
+  static const _devApiLocation = "https://api.ethanchapman.dev";
   static const _prodApiLocation = "https://api.ethanchapman.dev";
 
   String get apiLocation => devServer ? _devApiLocation : _prodApiLocation;

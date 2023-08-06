@@ -3,7 +3,7 @@ import 'package:falcon_net/Model/Database/RoleRequest.dart';
 import 'package:falcon_net/Model/Database/UnitAssignRequest.dart';
 import 'package:falcon_net/Structure/Components/LoadingShimmer.dart';
 import 'package:falcon_net/Structure/Components/PageWidget.dart';
-import 'package:falcon_net/Structure/Components/FNSearchBar.dart';
+import 'package:falcon_net/Structure/Components/SearchBar.dart';
 import 'package:falcon_net/Utility/ErrorFormatting.dart';
 import 'package:flutter/material.dart';
 import  'package:string_similarity/string_similarity.dart';
@@ -141,7 +141,7 @@ class AssignmentTaskState extends State<AssignmentTask> {
                       itemCount: ordered.length + 1,
                       itemBuilder: (context, index) {
                         if (index == 0) {
-                          return FNSearchBar(onChanged: (q) => setState(() => query = q));
+                          return SearchBar(onChanged: (q) => setState(() => query = q));
                         }
 
                         return AssigneeBar(

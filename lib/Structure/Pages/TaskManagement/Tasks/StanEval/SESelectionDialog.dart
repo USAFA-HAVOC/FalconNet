@@ -3,7 +3,7 @@ import 'package:go_router/go_router.dart';
 import 'package:string_similarity/string_similarity.dart';
 
 import '../../../../Components/InfoBar.dart';
-import '../../../../Components/FNSearchBar.dart';
+import '../../../../Components/SearchBar.dart';
 
 class SESelectionDialog<T> extends StatefulWidget {
   final Map<String, T> contents;
@@ -45,7 +45,7 @@ class SESelectionDialogState<T> extends State<SESelectionDialog> {
                   );
                 }
                 else if (index == 1) {
-                  return FNSearchBar(onChanged: (q) => setState(() => query = q));
+                  return SearchBar(onChanged: (q) => setState(() => query = q));
                 }
                 else {
                   var member = ordered[index - 2];

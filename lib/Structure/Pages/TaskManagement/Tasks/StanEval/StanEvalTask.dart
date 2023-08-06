@@ -10,7 +10,7 @@ import 'package:string_similarity/string_similarity.dart';
 
 import '../../../../../Model/Database/UnitList.dart';
 import '../../../../../Model/Store/Endpoints.dart';
-import '../../../../Components/FNSearchBar.dart';
+import '../../../../Components/SearchBar.dart';
 
 class StanEvalTask extends StatefulWidget {
   const StanEvalTask({super.key});
@@ -67,7 +67,7 @@ class StanEvalTaskState extends State<StanEvalTask> {
                   itemCount: units.units.length + 1,
                   itemBuilder: (context, index) {
                     if (index == 0) {
-                      return FNSearchBar(onChanged: (q) => setState(() => query = q));
+                      return SearchBar(onChanged: (q) => setState(() => query = q));
                     }
 
                     else {

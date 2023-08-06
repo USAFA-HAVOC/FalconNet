@@ -11,7 +11,7 @@ import '../../../../../Model/Database/Unit.dart';
 import '../../../../../Model/Database/User.dart';
 import '../../../../../Model/Store/Endpoints.dart';
 import '../../../../Components/AsyncPage.dart';
-import '../../../../Components/FNSearchBar.dart';
+import '../../../../Components/SearchBar.dart';
 import 'DelegateBar.dart';
 import 'DelegationForm.dart';
 
@@ -139,7 +139,7 @@ class DelegationTaskState extends State<DelegationTask> {
                     itemCount: ordered.length + 1,
                     itemBuilder: (context, index) {
                       if (index == 0) {
-                        return FNSearchBar(onChanged: (q) => setState(() => query = q));
+                        return SearchBar(onChanged: (q) => setState(() => query = q));
                       }
 
                       return DelegateBar(
