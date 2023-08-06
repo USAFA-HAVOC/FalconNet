@@ -7,7 +7,6 @@ import 'package:string_similarity/string_similarity.dart';
 
 import '../../../../../Model/Database/UserSummary.dart';
 import '../../../../../Model/Store/Endpoints.dart';
-import '../../../../Components/SearchBar.dart';
 
 class IndividualStatusWidget extends StatefulWidget {
   final List<UserSummary> users;
