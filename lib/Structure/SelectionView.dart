@@ -1,3 +1,4 @@
+import 'package:falcon_net/Structure/Components/FNPrivacy.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_signin_button/button_list.dart';
 import 'package:flutter_signin_button/button_view.dart';
@@ -51,6 +52,22 @@ class SelectionView extends StatelessWidget {
                               "please read FalconNet's Privacy Policy and Transparency Guide. "
                               "When you select 'Accept' or access FalconNet affiliated data sources "
                               "you are agreeing to FalconNet's Terms of Use."
+                          ),
+                        ),
+
+                        Padding(
+                          padding: const EdgeInsets.all(10),
+                          child: ElevatedButton(
+                              onPressed: () async => showDialog(
+                                  context: context,
+                                  builder: (context) => const FNPrivacy()
+                              ),
+                              child: const Text(
+                                  "View Privacy Policy",
+                                  style: TextStyle(
+                                    color: Colors.white
+                                  ),
+                              )
                           ),
                         ),
 

@@ -1,5 +1,9 @@
 import 'package:built_collection/built_collection.dart';
+import 'package:falcon_net/Model/Database/AccountabilityEvent.dart';
 import 'package:falcon_net/Model/Database/FormSummary.dart';
+import 'package:falcon_net/Model/Database/InitialData.dart';
+import 'package:falcon_net/Model/Database/UserEvent.dart';
+import 'package:falcon_net/Model/Database/UserStatus.dart';
 
 import '../Database/CadetAccountability.dart';
 import '../Database/CadetPass.dart';
@@ -10,6 +14,7 @@ import '../Database/UserGrades.dart';
 import '../Database/UserPersonalInfo.dart';
 
 final defaultUser = User((u) => u
+  ..ms_oid = ""
   ..id = ""
   ..roles = (<TimedRole>[]).build().toBuilder()
   ..personal_info = UserPersonalInfo((p) => p
@@ -97,7 +102,25 @@ final defaultForms = FormList((f) => f
     ].build().toBuilder()
 );
 
+final defaultEvents = ListBuilder<UserEvent>([
+  UserEvent((e) => e
+      ..event_id = "demo_di_id"
+      ..type = EventType.di.name
+      ..accountability_method = AccountabilityMethod.di.name
+      ..time = DateTime.now().add(Duration(hours: 3))
+      ..status = UserStatus.unsigned.name
+  )
+]).build();
+
+final InitialData initial = InitialData((i) => i
+    ..user = defaultUser.toBuilder()
+    ..pass_history = defaultHistory
+    ..grades = defaultGrades.toBuilder()
+    ..events = defaultEvents.toBuilder()
+);
+
 final demoEndpoints = <String, dynamic Function(dynamic)>{
+  "/pages/home" : (_) => initial,
   "/profile/info" : (_) => defaultUser,
   "/passes/history" : (_) => defaultHistory,
   "/grades/info" : (_) => defaultGrades,
@@ -109,6 +132,5 @@ final demoEndpoints = <String, dynamic Function(dynamic)>{
   "/leave/clear" : (_) => true,
   "/passes/update" : (_) => true,
   "/passes/close" : (_) => true,
-  "/accountability/self-sign" : (_) => true,
-  "/forms/sign" : (_) => true,
+  "/events/sign" : (_) => true,
 };

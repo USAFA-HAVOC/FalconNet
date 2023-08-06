@@ -47,6 +47,7 @@ class GlobalAction extends ReduxAction<GlobalState> {
 
       else if (init) {
         var data = await Endpoints.initial(null);
+
         var sb = state.toBuilder();
         sb.user = data.user.toBuilder();
 
