@@ -40,6 +40,11 @@ class FNDrawer extends StatelessWidget {
                 path: "/profile",
               ),
               DrawerItem(
+                icon: Icons.punch_clock,
+                title: "Pass Management",
+                path: "/pass_management",
+              ),
+              DrawerItem(
                 icon: Icons.grade,
                 title: "Grades",
                 path: "/grades",
@@ -48,11 +53,6 @@ class FNDrawer extends StatelessWidget {
                 icon: Icons.flight_takeoff,
                 title: "Leave Locator",
                 path: "/leave_locator",
-              ),
-              DrawerItem(
-                icon: Icons.punch_clock,
-                title: "Pass Management",
-                path: "/pass_management",
               ),
               DrawerItem(
                 icon: Icons.task_rounded,

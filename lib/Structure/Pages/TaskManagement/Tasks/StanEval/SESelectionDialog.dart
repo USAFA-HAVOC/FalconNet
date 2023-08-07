@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:string_similarity/string_similarity.dart';
 
+import '../../../../Components/FNSearchBar.dart';
 import '../../../../Components/InfoBar.dart';
 
 class SESelectionDialog<T> extends StatefulWidget {
@@ -44,7 +45,7 @@ class SESelectionDialogState<T> extends State<SESelectionDialog> {
                   );
                 }
                 else if (index == 1) {
-                  return SearchBar(onChanged: (q) => setState(() => query = q));
+                  return FNSearchBar(onChanged: (q) => setState(() => query = q));
                 }
                 else {
                   var member = ordered[index - 2];

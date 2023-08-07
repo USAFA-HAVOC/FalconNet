@@ -1,3 +1,4 @@
+import 'package:dio/dio.dart';
 import 'package:falcon_net/Structure/Components/LoadingShimmer.dart';
 import 'package:flutter/material.dart';
 
@@ -28,6 +29,45 @@ class AsyncPage<T> extends StatelessWidget {
                 children: builder(context, snapshot.data as T)
             );
           }
+          
+          else if (snapshot.hasError) {
+            if (snapshot.error! is DioError) {
+              if ((snapshot.error! as DioError).type == DioErrorType.response) {
+                return FNPage(
+                    title: title,
+                    children: [
+                      Icon(
+                        Icons.lock,
+                        size: MediaQuery.of(context).size.width * 0.5,
+                      ),
+
+                      Text(
+                        "Request Refused",
+                        textAlign: TextAlign.center,
+                        style: Theme.of(context).textTheme.titleSmall,
+                      )
+                    ]
+                );
+              }
+            }
+
+            return FNPage(
+                title: title,
+                children: [
+                  const Icon(
+                    Icons.wifi_off,
+                    size: 100,
+                  ),
+
+                  Text(
+                    "No Connection",
+                    textAlign: TextAlign.center,
+                    style: Theme.of(context).textTheme.titleSmall,
+                  )
+                ]
+            );
+          }
+          
           else {
             return FNPage(
               title: title,

@@ -10,6 +10,7 @@ import '../../../../../Model/Database/Unit.dart';
 import '../../../../../Model/Database/User.dart';
 import '../../../../../Model/Store/Endpoints.dart';
 import '../../../../Components/AsyncPage.dart';
+import '../../../../Components/FNSearchBar.dart';
 import 'AssigneeBar.dart';
 import 'AssignmentForm.dart';
 
@@ -138,7 +139,7 @@ class AssignmentTaskState extends State<AssignmentTask> {
                       itemCount: ordered.length + 1,
                       itemBuilder: (context, index) {
                         if (index == 0) {
-                          return SearchBar(onChanged: (q) => setState(() => query = q));
+                          return FNSearchBar(onChanged: (q) => setState(() => query = q));
                         }
 
                         return AssigneeBar(

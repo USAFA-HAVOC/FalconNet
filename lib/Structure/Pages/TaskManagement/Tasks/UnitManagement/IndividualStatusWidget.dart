@@ -7,6 +7,7 @@ import 'package:string_similarity/string_similarity.dart';
 
 import '../../../../../Model/Database/UserSummary.dart';
 import '../../../../../Model/Store/Endpoints.dart';
+import '../../../../Components/FNSearchBar.dart';
 
 class IndividualStatusWidget extends StatefulWidget {
   final List<UserSummary> users;
@@ -103,7 +104,7 @@ class IndividualStatusWidgetState extends State<IndividualStatusWidget> {
     return PageWidget(
       title: "Individual Status",
       children: [
-        SearchBar(onChanged: (change) => setState(() => query = change)),
+        FNSearchBar(onChanged: (change) => setState(() => query = change)),
 
         ...buildAll(context)
       ]

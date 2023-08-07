@@ -38,7 +38,7 @@ class SelectionView extends StatelessWidget {
                         Padding(
                           padding: const EdgeInsets.all(10),
                           child: Text(
-                            "FalcontNet Data Consent",
+                            "FalconNet Data Consent",
                             style: Theme.of(context).textTheme.titleMedium,
                           ),
                         ),
