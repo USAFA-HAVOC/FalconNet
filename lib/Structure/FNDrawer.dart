@@ -14,7 +14,7 @@ class FNDrawer extends StatelessWidget {
       //Sets height as exactly three quarters of screen in both dimensions
       //Change to loose to shrink to size of content
       constraints: BoxConstraints.tight(
-          Size(viewport.width * 0.75, viewport.height * 0.75)),
+          Size(viewport.width * 0.75, viewport.height)),
       child: DecoratedBox(
         decoration: BoxDecoration(
           color: Theme.of(context).primaryColor,
@@ -35,9 +35,9 @@ class FNDrawer extends StatelessWidget {
                 path: "/",
               ),
               DrawerItem(
-                icon: Icons.person,
-                title: "Profile",
-                path: "/profile",
+                icon: Icons.event,
+                title: "Events",
+                path: "/events",
               ),
               DrawerItem(
                 icon: Icons.punch_clock,

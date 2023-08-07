@@ -43,7 +43,8 @@ class RoleSubformState extends State<RoleSubform> {
   @override
   Widget build(BuildContext context) {
 
-    var highest = widget.applicable.reduce((value, role) => value.isGreaterThan(role) ? value : role);
+    var highest = widget.applicable
+        .reduce((value, role) => value.isGreaterThan(role) ? value : role);
 
     //If role permissions extend beyond owners, role is uneditable
     var editable = highest.delegable().any((r) => r == value.name);

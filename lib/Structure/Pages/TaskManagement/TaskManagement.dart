@@ -84,6 +84,14 @@ class TaskManagement extends StatelessWidget {
       ));
     }
 
+    if (state.user.roles.any((role) => role.name == Roles.accountability_rep.name) || admin) {
+      tasks.add(const ExternalTaskWidget(
+          path: "/task_management/event_signing",
+          title: "Event Signing",
+          description: "Take accountability for your squadron."
+      ));
+    }
+
     /*
     if (state.user.roles.any((role) => role.role == Roles.jdo.name)) {
       tasks.add(const ExternalTaskWidget(

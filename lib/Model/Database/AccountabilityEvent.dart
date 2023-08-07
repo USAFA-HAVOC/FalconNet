@@ -17,6 +17,22 @@ enum EventType {
   other
 }
 
+extension EventTypeNames on EventType {
+  String describe() {
+    switch (this) {
+      case EventType.di: return "DI";
+      case EventType.maf: return "MAF";
+      case EventType.mcq: return "MCQ";
+      case EventType.m5: return "M5";
+      case EventType.ddt: return "DDT";
+      case EventType.other: return "Other";
+      case EventType.nmf: return "NMF";
+    }
+  }
+
+  static EventType parse(String s) => EventType.values.firstWhere((v) => v.name == s);
+}
+
 enum AccountabilityMethod {
   squadron_based,
   self_signed,

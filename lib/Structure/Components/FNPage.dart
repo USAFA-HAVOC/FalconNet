@@ -3,14 +3,20 @@ import 'package:flutter/material.dart';
 class FNPage extends StatelessWidget {
   final String title;
   final List<Widget> children;
+  final EdgeInsets padding;
 
-  const FNPage({super.key, required this.title, required this.children});
+  const FNPage({
+    super.key,
+    required this.title,
+    required this.children,
+    this.padding = const EdgeInsets.all(20)
+  });
 
   @override
   Widget build(BuildContext context) {
     return ListView(
       shrinkWrap: true,
-      padding: const EdgeInsets.all(20),
+      padding: padding,
       children: [
         Padding(
           padding: const EdgeInsets.only(bottom: 20),

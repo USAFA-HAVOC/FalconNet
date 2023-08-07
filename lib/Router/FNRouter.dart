@@ -5,12 +5,15 @@ import 'package:falcon_net/Router/FNTransitions.dart';
 import 'package:falcon_net/Structure/Components/FNPage.dart';
 import 'package:falcon_net/Structure/Components/LoadingShimmer.dart';
 import 'package:falcon_net/Structure/Components/ViewModel.dart';
-import 'package:falcon_net/Structure/Pages/Failure.dart';
+import 'package:falcon_net/Structure/FailureView.dart';
+import 'package:falcon_net/Structure/Pages/Events/Events.dart';
 import 'package:falcon_net/Structure/Pages/Profile/Developer.dart';
 import 'package:falcon_net/Structure/Pages/TaskManagement/TaskManagement.dart';
 import 'package:falcon_net/Structure/Pages/TaskManagement/Tasks/Accountability/AccountabilityTask.dart';
 import 'package:falcon_net/Structure/Pages/TaskManagement/Tasks/Assignment/AssignmentTask.dart';
 import 'package:falcon_net/Structure/Pages/TaskManagement/Tasks/Delegation/DelegationTask.dart';
+import 'package:falcon_net/Structure/Pages/TaskManagement/Tasks/Signing/SDOTask.dart';
+import 'package:falcon_net/Structure/Pages/TaskManagement/Tasks/Signing/UnitSigningTask.dart';
 import 'package:falcon_net/Structure/Pages/TaskManagement/Tasks/StanEval/SEAnalytics.dart';
 import 'package:falcon_net/Structure/Pages/TaskManagement/Tasks/StanEval/SEEvent.dart';
 import 'package:falcon_net/Structure/Pages/TaskManagement/Tasks/UnitEditor/UnitEditorTask.dart';
@@ -29,9 +32,8 @@ import '../Structure/Pages/Grades/Grades.dart';
 import '../Structure/Pages/LeaveLocator/LeaveLocator.dart';
 import '../Structure/Pages/PassManagement/PassManagement.dart';
 import '../Structure/Pages/Profile/Profile.dart';
-import '../Structure/Pages/TaskManagement/Tasks/CWOCTask.dart';
+import '../Structure/Pages/TaskManagement/Tasks/Signing/CWOCTask.dart';
 import '../Structure/Pages/TaskManagement/Tasks/Ordering/OrderingTask.dart';
-import '../Structure/Pages/TaskManagement/Tasks/SDOTask.dart';
 import '../Structure/Pages/TaskManagement/Tasks/StanEval/SEParameters.dart';
 import '../Structure/Pages/TaskManagement/Tasks/StanEval/SEUnit.dart';
 import '../Structure/Pages/TaskManagement/Tasks/StanEval/StanEvalTask.dart';
@@ -94,10 +96,10 @@ GoRouter fnRouter(GlobalKey<NavigatorState> key, SignState sign, bool party) => 
                 return LoadingShimmer(height: MediaQuery.of(context).size.height);  // Shimmer on app load
               }
               else if (model.content == AppStatus.failed) {
-                return const Failure(type: FailureType.failed);
+                return const FailureView(type: FailureType.failed);
               }
               else {
-                return const Failure(type: FailureType.error);
+                return const FailureView(type: FailureType.error);
               }
             }
         );
@@ -199,10 +201,10 @@ GoRouter fnRouter(GlobalKey<NavigatorState> key, SignState sign, bool party) => 
                 return LoadingShimmer(height: MediaQuery.of(context).size.height);
               }
               else if (model.content == AppStatus.failed) {
-                return const Failure(type: FailureType.failed);
+                return const FailureView(type: FailureType.failed);
               }
               else {
-                return const Failure(type: FailureType.error);
+                return const FailureView(type: FailureType.error);
               }
             }
           );
@@ -217,6 +219,11 @@ GoRouter fnRouter(GlobalKey<NavigatorState> key, SignState sign, bool party) => 
                 GoRoute(
                   path: "grades",
                   pageBuilder: fullSlide(const Grades()),
+                ),
+
+                GoRoute(
+                  path: "events",
+                  pageBuilder: fullSlide(const Events()),
                 ),
 
                 GoRoute(
@@ -269,6 +276,11 @@ GoRouter fnRouter(GlobalKey<NavigatorState> key, SignState sign, bool party) => 
                             ),
                           ),
                         ),
+                      ),
+
+                      GoRoute(
+                        path: "event_signing",
+                        pageBuilder: fullSlide(const UnitSigningTask()),
                       ),
 
                       GoRoute(
