@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:async_redux/async_redux.dart';
+import 'package:dio/dio.dart';
 import 'package:falcon_net/Model/Store/Actions/SettingsAction.dart';
 import 'package:falcon_net/Model/Store/AppStatus.dart';
 import 'package:falcon_net/Model/Store/GlobalState.dart';
@@ -15,33 +16,20 @@ import '../Endpoints.dart';
 class GlobalAction extends ReduxAction<GlobalState> {
   final GlobalState? replacement;
   final bool init;
-  final bool reset;
   final GlobalStateBuilder Function(GlobalStateBuilder)? modification;
   final void Function()? onFail;
   final void Function()? onSucceed;
 
-  GlobalAction.set(this.replacement, {this.onFail, this.onSucceed}) : init = false, reset = false, modification = null;
+  GlobalAction.set(this.replacement, {this.onFail, this.onSucceed}) : init = false, modification = null;
 
-  GlobalAction.modify(this.modification, {this.onFail, this.onSucceed}) : init = false, reset = false, replacement = null;
+  GlobalAction.modify(this.modification, {this.onFail, this.onSucceed}) : init = false, replacement = null;
 
-  GlobalAction.initialize({this.onFail, this.onSucceed}) : replacement = null, init = true, reset = false, modification = null;
-
-  GlobalAction.reset({this.onFail, this.onSucceed}) : reset = true, init = false, replacement = null, modification = null;
+  GlobalAction.initialize({this.onFail, this.onSucceed}) : replacement = null, init = true, modification = null;
 
   @override
   Future<GlobalState?> reduce() async {
-    bool failed = false;
-
-    void fail() {
-      failed = true;
-    }
-
     try {
-      if (reset) {
-        return state.rebuild((s) => s..status = AppStatus.loading);
-      }
-
-      else if (modification != null) {
+      if (modification != null) {
         return modification!(state.toBuilder()).build();
       }
 
@@ -57,7 +45,9 @@ class GlobalAction extends ReduxAction<GlobalState> {
           sb.events = data.events?.toBuilder();
         }
 
-        await dispatch(SettingsAction.retrieve(onFail: fail));
+        var unset = false;
+
+        await dispatch(SettingsAction.retrieve(onFail: () => unset = true));
 
         if (
             !(state.user.accountability?.current_leave?.departure_time.isAfter(DateTime.now()) ?? false)
@@ -67,9 +57,9 @@ class GlobalAction extends ReduxAction<GlobalState> {
           NotificationService().scheduleDINotification();
         }
 
-        if (failed) {
+        if (unset) {
           onFail?.call();
-          sb.status = AppStatus.failed;
+          sb.status = AppStatus.error;
           return sb.build();
         }
 
@@ -92,6 +82,20 @@ class GlobalAction extends ReduxAction<GlobalState> {
     catch (error) {
       onFail?.call();
       displayError(prefix: "Global Action", exception: error);
+
+      if (error is DioError) {
+        if (
+            [
+              DioErrorType.other,
+              DioErrorType.connectTimeout,
+              DioErrorType.receiveTimeout,
+              DioErrorType.sendTimeout
+            ].contains(error.type)
+        ) {
+          return state.rebuild((s) => s..status = AppStatus.failed);
+        }
+      }
+
       return state.rebuild((s) => s..status = AppStatus.error);
     }
   }

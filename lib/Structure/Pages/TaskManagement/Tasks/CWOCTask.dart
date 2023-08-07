@@ -39,50 +39,51 @@ class CWOCTaskState extends State<CWOCTask> {
   //Expansion panel states for each unit
   Map<String, bool> expansions = {};
 
-  late Timer timer;
+  Timer? timer;
 
   ///Requests cwoc data from backend
   @override
   void initState() {
     super.initState();
 
-    connection = Endpoints.getWing(null).onError((error, stackTrace) {
-      displayError(prefix: "CWOC", exception: error!);
-      return WingData();
-    });
-
-    connection.then((value) => setState(() {
-      for (var unit in value.units.toList()) {
-        expansions[unit.unit.name] = false;
-      }
-    }));
-
-    timer = Timer.periodic(const Duration(seconds: 10), (timer) {
-      setState(() {
-        connection = Endpoints.getWing(null)
-            .catchError((error, stackTrace) {
-          displayError(prefix: "CWOC", exception: error);
-          return WingData();
+    connection = Endpoints.getWing(null)
+        ..onError((error, stackTrace) {
+          displayError(prefix: "CWOC", exception: error!);
+          return Future<WingData>.error(error);
         })
-        ..then((units) {
-          for (var unit in units.units) {
-            if (!expansions.containsKey(unit.unit.name)) {
-              expansions[unit.unit.name] = false;
-            }
+      
+        ..then((value) => setState(() {
+          for (var unit in value.units.toList()) {
+            expansions[unit.unit.name] = false;
           }
-        });
-      });
-
-      for (var unit in expansions.entries.where((e) => e.value).map((e) => e.key)) {
-        loadUnit(unit, null);
-      }
-    });
+    
+          timer = Timer.periodic(const Duration(seconds: 10), (timer) {
+            setState(() {
+              connection = Endpoints.getWing(null)
+                  .catchError((error, stackTrace) {
+                displayError(prefix: "CWOC", exception: error);
+                return value;
+              })
+                ..then((units) {
+                  for (var unit in units.units) {
+                    if (!expansions.containsKey(unit.unit.name)) {
+                      expansions[unit.unit.name] = false;
+                    }
+                  }
+                });
+            });
+    
+            for (var unit in expansions.entries.where((e) => e.value).map((e) => e.key)) {
+              loadUnit(unit, null);
+            }
+          });
+        }));
   }
 
   @override
   void dispose() {
     super.dispose();
-    timer.cancel();
+    if (timer != null) timer!.cancel();
   }
 
   ///Signs for an individual signee in a given unit
@@ -274,13 +275,13 @@ class CWOCTaskState extends State<CWOCTask> {
           builder: (context, constraints) {
             //Displays a group data as grid if screen is wide enough
             if (constraints.maxWidth > 700) {
-              return Row(
+              return const Row(
                 children: [
                   Expanded(
                     child: Column(
                       mainAxisSize: MainAxisSize.min,
                       crossAxisAlignment: CrossAxisAlignment.stretch,
-                      children: const [
+                      children: [
                         LoadingShimmer(height: 200,),
 
                         SizedBox(height: 20,),
@@ -315,8 +316,8 @@ class CWOCTaskState extends State<CWOCTask> {
 
             //Otherwise, displays in a simple column
             else {
-              return Column(
-                children: const [
+              return const Column(
+                children: [
                   LoadingShimmer(height: 200,),
 
                   SizedBox(height: 20,),

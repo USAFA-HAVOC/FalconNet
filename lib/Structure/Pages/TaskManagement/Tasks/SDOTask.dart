@@ -26,33 +26,39 @@ class SDOTask extends StatefulWidget {
 
 class SDOTaskState extends State<SDOTask> {
   late Future<UnitData> future;
-  late Timer timer;
+  Timer? timer;
 
   @override
   void initState() {
     super.initState();
 
     future = Endpoints.getOwnUnit(null)
+        .then((value) {
+          timer = Timer.periodic(const Duration(seconds: 10), (timer) {
+            setState(() {
+              future = Endpoints.getOwnUnit(null)
+                  .catchError((error, stackTrace) {
+                displayError(prefix: "SDO", exception: error);
+                return value;
+              });
+            });
+          });
+
+          return value;
+        })
+
         .catchError((error, stackTrace) {
           displayError(prefix: "SDO", exception: error);
-          return UnitData();
+          return Future<UnitData>.error(error);
         });
-
-    timer = Timer.periodic(const Duration(seconds: 10), (timer) {
-      setState(() {
-        future = Endpoints.getOwnUnit(null)
-            .catchError((error, stackTrace) {
-          displayError(prefix: "SDO", exception: error);
-          return UnitData();
-        });
-      });
-    });
   }
 
   @override
   void dispose() {
     super.dispose();
-    timer.cancel();
+    if (timer != null) {
+      timer!.cancel();
+    }
   }
 
   void sign(UserSummary member, ScaffoldMessengerState messenger) async {

@@ -11,6 +11,7 @@ import 'package:string_similarity/string_similarity.dart';
 import '../../../../../Model/Database/Role.dart';
 import '../../../../../Model/Database/User.dart';
 import '../../../../../Model/Store/Endpoints.dart';
+import '../../../../Components/FNSearchBar.dart';
 import 'StatusDescription/StatusDescriptionWidget.dart';
 
 class AccountabilityTask extends StatefulWidget {
@@ -126,7 +127,7 @@ class AccountabilityTaskState extends State<AccountabilityTask> {
           PageWidget(
             title: "Members",
             children: [
-              SearchBar(onChanged: (q) => setState(() => query = q)),
+              FNSearchBar(onChanged: (q) => setState(() => query = q)),
 
               ExpansionPanelList(
                 expansionCallback: (index, state) => setState(() => expansions[ordered[index].id!] = !state),
