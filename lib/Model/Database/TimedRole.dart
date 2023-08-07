@@ -53,6 +53,7 @@ abstract class TimedRole implements Built<TimedRole, TimedRoleBuilder> {
       Roles.recognized.name,
       Roles.signable.name,
       Roles.stan_eval.name,
+      Roles.accountability_rep.name,
       Roles.cadet.name
     ];
 

@@ -12,6 +12,7 @@ enum Roles {
   cwoc,
   signable,
   jdo,
+  accountability_rep,
   permanent_party
 }
 
@@ -27,6 +28,7 @@ extension RoleNames on Roles {
       case Roles.signable: return "Signable";
       case Roles.cwoc: return "CWOC";
       case Roles.jdo: return "JDO";
+      case Roles.accountability_rep: return "Accountability Rep";
       case Roles.cadet: return "Cadet";
       case Roles.stan_eval: return "Stan/Eval";
       case Roles.permanent_party: return "Permanent Party";

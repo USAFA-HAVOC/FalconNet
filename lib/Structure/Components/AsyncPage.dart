@@ -9,6 +9,7 @@ class AsyncPage<T> extends StatelessWidget {
   final Future<T> connection;
   final List<Widget> Function(BuildContext, T) builder;
   final List<Widget> placeholder;
+  final EdgeInsets padding;
 
   const AsyncPage({
     super.key,
@@ -16,6 +17,7 @@ class AsyncPage<T> extends StatelessWidget {
     required this.connection,
     required this.builder,
     this.placeholder = const [LoadingShimmer(height: 200,)],
+    this.padding = const EdgeInsets.all(20)
   });
 
   @override
@@ -26,6 +28,7 @@ class AsyncPage<T> extends StatelessWidget {
           if (snapshot.hasData) {
             return FNPage(
                 title: title,
+                padding: padding,
                 children: builder(context, snapshot.data as T)
             );
           }
@@ -35,6 +38,7 @@ class AsyncPage<T> extends StatelessWidget {
               if ((snapshot.error! as DioError).type == DioErrorType.response) {
                 return FNPage(
                     title: title,
+                    padding: padding,
                     children: [
                       Icon(
                         Icons.lock,
@@ -53,6 +57,7 @@ class AsyncPage<T> extends StatelessWidget {
 
             return FNPage(
                 title: title,
+                padding: padding,
                 children: [
                   const Icon(
                     Icons.wifi_off,
@@ -71,6 +76,7 @@ class AsyncPage<T> extends StatelessWidget {
           else {
             return FNPage(
               title: title,
+              padding: padding,
               children: placeholder,
             );
           }

@@ -58,4 +58,7 @@ ThemeData lightTheme = ThemeData(
     secondary: Colors.black,
     error: Color.fromARGB(255, 230, 88, 78),
   ),
+  bottomSheetTheme: const BottomSheetThemeData(
+    dragHandleSize: Size(50, 5)
+  )
 );

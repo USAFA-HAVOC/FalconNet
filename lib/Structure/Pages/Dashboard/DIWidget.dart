@@ -66,6 +66,14 @@ class DIWidget extends StatelessWidget {
             bool signable = status == UserStatus.unsigned && senior && time;
 
             switch (status) {
+              case UserStatus.unassigned:
+                text = [
+                  Text(
+                    "User not assigned to DI Event",
+                    style: Theme.of(context).textTheme.headlineMedium,
+                  )
+                ];
+                break;
               case UserStatus.leave:
                 text = [
                   Text(

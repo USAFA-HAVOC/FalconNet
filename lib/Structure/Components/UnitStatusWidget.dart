@@ -18,12 +18,12 @@ class UnitStatusWidget extends StatelessWidget {
   final String label;
   final bool here;
 
-  UnitStatusWidget({super.key, required UnitData data, this.label = "Current Status"}) :
+  UnitStatusWidget({super.key, required UnitData data, this.label = "Current Status", String? event}) :
         here = false,
-        unsigned = data.members.where((signee) => signee.status() == UserStatus.unsigned).length,
-        signed = data.members.where((signee) => signee.status() == UserStatus.signed).length,
-        out = data.members.where((signee) => signee.status() == UserStatus.out).length,
-        leave = data.members.where((signee) => signee.status() == UserStatus.leave).length;
+        unsigned = data.members.where((signee) => signee.status(event: event) == UserStatus.unsigned).length,
+        signed = data.members.where((signee) => signee.status(event: event) == UserStatus.signed).length,
+        out = data.members.where((signee) => signee.status(event: event) == UserStatus.out).length,
+        leave = data.members.where((signee) => signee.status(event: event) == UserStatus.leave).length;
 
   UnitStatusWidget.fromList({super.key, required List<UnitSummary> units, this.label = "Current Status"}) :
         here = false,
