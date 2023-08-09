@@ -12,8 +12,15 @@ import 'package:flutter/material.dart';
 ///Page acting as general hub for all cadet tasks
 ///This includes both general, role specific, and unit specific tasks
 ///These tasks may route to other pages
-class TaskManagement extends StatelessWidget {
+class TaskManagement extends StatefulWidget {
   const TaskManagement({super.key});
+
+  @override
+  State<StatefulWidget> createState() => TaskManagementState();
+}
+
+class TaskManagementState extends State<TaskManagement> {
+  String query = "";
 
   ///Builds all task types based on current state
   List<Widget> buildTasks(GlobalState state, BuildContext context) {

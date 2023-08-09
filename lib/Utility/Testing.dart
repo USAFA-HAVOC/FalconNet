@@ -7,10 +7,12 @@ import 'package:falcon_net/Model/Database/TimedRole.dart';
 import 'package:falcon_net/Model/Database/UnitData.dart';
 import 'package:falcon_net/Model/Database/UnitGrades.dart';
 import 'package:falcon_net/Model/Database/UnitSummary.dart';
+import 'package:falcon_net/Model/Database/UserEvent.dart';
 import 'package:falcon_net/Model/Database/UserPersonalInfo.dart';
 import 'package:falcon_net/Model/Database/UserStatus.dart';
 import 'package:falcon_net/Model/Database/UserSummary.dart';
 
+import '../Model/Database/AccountabilityEvent.dart';
 import '../Model/Database/User.dart';
 import '../Model/Database/Unit.dart';
 import '../Model/Database/UserGrades.dart';
@@ -41,6 +43,7 @@ List<User> generateMembers(int count, UserStatus status, String unit) {
       );
     }
     members.add(User((b) => b
+      ..ms_oid = ""
       ..personal_info = UserPersonalInfo((p) => p
           ..full_name = "${randString(5)}, ${randString(5)}"
           ..phone_number = randString(15)
@@ -49,6 +52,9 @@ List<User> generateMembers(int count, UserStatus status, String unit) {
       ).toBuilder()
       ..accountability = CadetAccountability((a) => a
           ..current_pass = pass?.toBuilder()
+          ..individual_pass_status = true
+          ..effective_pass_status = true
+          ..class_year_idx = 0
       ).toBuilder()
       ..id = randString(15)
       ..roles = BuiltList<TimedRole>().toBuilder()
@@ -60,9 +66,7 @@ List<User> generateMembers(int count, UserStatus status, String unit) {
 
 ///For local testing purposes only
 UnitData generateUnit(UnitSummary info) {
-  var members = generateMembers(info.signed!, UserStatus.signed, info.unit.name) +
-      generateMembers(info.unsigned!, UserStatus.unsigned, info.unit.name) +
-      generateMembers(info.out!, UserStatus.out, info.unit.name);
+  var members = generateUserSummaries(info.total!);
 
   return UnitData((b) => b
       ..members = BuiltList<UserSummary>(members).toBuilder()
@@ -122,6 +126,26 @@ List<UserSummary> generateUserSummaries(int count) {
     ..name = "${randString(5)} ${randString(10)}"
     ..user_id = "user_${randString(10)}"
     ..room = pullRoom()
+    ..events = <UserEvent>[].toBuiltList().toBuilder()
+    ..events = ListBuilder([
+      (
+          UserEventBuilder()
+            ..status = "unsigned"
+            ..event_id = 'test1'
+            ..type = EventType.di.name
+            ..time = DateTime.now()
+            ..accountability_method = AccountabilityMethod.di.name
+      ).build(),
+
+      (
+          UserEventBuilder()
+            ..status = "unsigned"
+            ..event_id = 'test2'
+            ..type = EventType.di.name
+            ..time = DateTime.now()
+            ..accountability_method = AccountabilityMethod.di.name
+      ).build()
+    ])
   ));
 }
 
@@ -135,4 +159,10 @@ UnitGrades generateGrades([int count = 20]) {
       ..grades = map.map((summary, grade) => MapEntry(summary.user_id, grade)).build().toBuilder()
       ..members = map.keys.toList().build().toBuilder()
   );
+}
+
+void testSigning() {
+  var unit = generateUnit(generateInfo("test", 1, 10));
+  var member = unit.members.last;
+  print(unit.sign(member, event: "test1").members.firstWhere((m) => m.user_id == member.user_id).status(event: "test1"));
 }

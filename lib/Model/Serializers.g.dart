@@ -15,6 +15,7 @@ Serializers _$serializers = (new Serializers().toBuilder()
       ..add(CadetPass.serializer)
       ..add(CadetPassAllocation.serializer)
       ..add(DIRequest.serializer)
+      ..add(EventList.serializer)
       ..add(Excusal.serializer)
       ..add(FormDataList.serializer)
       ..add(FormList.serializer)
@@ -51,8 +52,9 @@ Serializers _$serializers = (new Serializers().toBuilder()
       ..add(UserSummaryList.serializer)
       ..add(WingData.serializer)
       ..addBuilderFactory(
-          const FullType(BuiltList, const [const FullType(Attendee)]),
-          () => new ListBuilder<Attendee>())
+          const FullType(
+              BuiltList, const [const FullType(AccountabilityEvent)]),
+          () => new ListBuilder<AccountabilityEvent>())
       ..addBuilderFactory(
           const FullType(BuiltList, const [const FullType(CadetPass)]),
           () => new ListBuilder<CadetPass>())
@@ -92,6 +94,15 @@ Serializers _$serializers = (new Serializers().toBuilder()
       ..addBuilderFactory(
           const FullType(BuiltList, const [const FullType(TimedRole)]),
           () => new ListBuilder<TimedRole>())
+      ..addBuilderFactory(
+          const FullType(BuiltList, const [const FullType(String)]),
+          () => new ListBuilder<String>())
+      ..addBuilderFactory(
+          const FullType(BuiltList, const [const FullType(bool)]),
+          () => new ListBuilder<bool>())
+      ..addBuilderFactory(
+          const FullType(BuiltList, const [const FullType(String)]),
+          () => new ListBuilder<String>())
       ..addBuilderFactory(
           const FullType(BuiltList, const [const FullType(TimedRole)]),
           () => new ListBuilder<TimedRole>())

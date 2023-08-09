@@ -81,9 +81,11 @@ class AssignmentFormState extends State<AssignmentForm> {
     )).toList();
 
     List<String> grandchildren(List<String> children) =>
-        children.map((e) => widget.units.firstWhere((u) => u.name == e))
-            .expand((u) => [...grandchildren(u.sub_units.toList()), u.name])
-            .toList();
+        children.map((e) => widget.units.where((u) => u.name == e))
+            .expand((s) => s
+                .expand((u) => [...grandchildren(u.sub_units.toList()), u.name])
+                .toList()
+            ).toList();
 
     var assignable = grandchildren(widget.owner.toList()).toSet().toList();
 
