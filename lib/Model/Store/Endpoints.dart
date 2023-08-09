@@ -131,6 +131,7 @@ class Endpoint<Req, Res> {
       }));
     }
 
+
     return serializers.deserialize(res.data, specifiedType: FullType(Res)) as Res;
   }
 }
@@ -164,10 +165,10 @@ class Endpoints {
 
   static Endpoint<void, UnitList> listUnits = Endpoint("/unit/list");
   static Endpoint<Unit, Unit> createUnit = Endpoint("/unit/create");
-  static Endpoint<Unit, bool> editUnit = Endpoint("/unit/modify");
+  static Endpoint<Unit, Unit> editUnit = Endpoint("/unit/modify");
   static Endpoint<Unit, Unit> deleteUnit = Endpoint("/unit/delete");
 
-  static Endpoint<void, WingData> getWing = Endpoint("/unit/summaries", get: true);
+  static Endpoint<StringRequest, WingData> getWing = Endpoint("/unit/summaries");
   static Endpoint<void, UnitData> getOwnUnit = Endpoint("/unit/data");
   static Endpoint<StringRequest, UnitData> getUnit = Endpoint("/unit/data");
 
@@ -177,11 +178,9 @@ class Endpoints {
   static Endpoint<IndividualStatusRequest, bool> setIndividualPassStatus = Endpoint("/unit/set-individual-pass-status");
 
   static Endpoint<AccountabilityEvent, AccountabilityEvent> createEvent = Endpoint("/events/create");
-  static Endpoint<String, bool> deleteEvent = Endpoint("/events/delete");
+  static Endpoint<StringRequest, bool> deleteEvent = Endpoint("/events/delete");
   static Endpoint<SignRequest, bool> signEvent = Endpoint("/events/sign");
-
-  static Endpoint<String, AccountabilityEventStatus> getEventStatus = Endpoint("/events/status", get: true);
-  static Endpoint<void, EventList> getEvents = Endpoint("/events/unit", get: true);
+  static Endpoint<void, EventList> getEvents = Endpoint("/events/all", get: true);
 }
 
 Future<void> login(String token) async {

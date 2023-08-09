@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:falcon_net/Model/Database/UserEvent.dart';
+import 'package:falcon_net/Model/Database/AccountabilityEvent.dart';
 import 'package:falcon_net/Structure/Components/AsyncPage.dart';
 import 'package:falcon_net/Structure/Components/PageWidget.dart';
 import 'package:falcon_net/Structure/Pages/TaskManagement/Tasks/Signing/UnitSigningEvent.dart';
@@ -20,54 +20,56 @@ class UnitSigningTask extends StatefulWidget {
 
 
 class UnitSigningTaskState extends State<UnitSigningTask> {
-  late Future<UnitData> future;
-  late List<UserEvent> events;
-  Timer? timer;
+  late Future<List<AccountabilityEvent>> future;
 
   @override
   void initState() {
     super.initState();
-    future = Endpoints.getOwnUnit(null)
-        .catchError((error, stackTrace) {
-          displayError(prefix: "Signing", exception: error);
-          return Future<UnitData>.error(error);
-        })
-
-        ..then((unit) {
-          setState(() {
-            events = unit.members
-                .map((m) => m.events.toList())
-                .reduce(
-                    (carry, value) =>
-                carry + value.where((e) => !carry.any((o) => o.event_id == e.event_id)).toList()
-            );
-          });
-        });
+    future = Endpoints.getEvents(null)
+      .then((list) => list.events.toList())
+      .catchError((error, stackTrace) {
+        print(stackTrace);
+        displayError(prefix: "Signing", exception: error);
+        return Future<List<AccountabilityEvent>>.error(error);
+      });
   }
 
-  @override
-  void dispose() {
-    super.dispose();
-    if (timer != null) timer!.cancel();
-  }
+  FutureOr<UnitData> retrieve(String event) => Endpoints.getOwnUnit(event)
+      .catchError((error, stackTrace) {
+        displayError(prefix: "Signing", exception: error);
+        return Future<UnitData>.error(error);
+      });
 
   @override
   Widget build(BuildContext context) => AsyncPage(
       title: "Event Signing",
       connection: future,
-      builder: (context, data) => events
-          .where((e) => e.time.isAfter(DateTime.now()))
-          /*.where((e) => e.type != EventType.di.name)*/
-          .map((event) =>
+      builder: (context, data) {
+        var applicable = data
+            .where((e) => e.submission_deadline.isAfter(DateTime.now()))
+            .where((e) =>
+                e.accountability_method == AccountabilityMethod.squadron_based.name ||
+                e.accountability_method == AccountabilityMethod.self_signed.name
+            );
+
+        if (applicable.isEmpty) {
+          return [const Padding(
+            padding: EdgeInsets.all(20),
+            child: Center(child: Text("No Signable Events"),),
+          )];
+        }
+
+        return applicable
+            .map((event) =>
               PageWidget(
                   title: event.name ?? "Unnamed",
                   children: [
                     Text(
-                      "Time: ${describeDate(event.time)}, ${describeTime(TimeOfDay.fromDateTime(event.time))}"
+                        "Due: ${describeDate(event.submission_deadline)}, ${describeTime(TimeOfDay.fromDateTime(event.submission_deadline))}"
                     ),
 
                     if (event.description != null) Text(
-                      "Description: ${event.description!}"
+                        "Description: ${event.description!}"
                     ),
 
                     ElevatedButton(
@@ -77,13 +79,13 @@ class UnitSigningTaskState extends State<UnitSigningTask> {
                             isScrollControlled: true,
                             showDragHandle: true,
                             builder: (context) => FractionallySizedBox(
-                              heightFactor: 0.95,
+                              heightFactor: 1.0,
                               child: UnitSigningEvent(
-                                  retrieve: () => data,
-                                  label: event.name ?? "Unnamed",
-                                  statusLabel: "Individuals",
-                                  event: event.event_id,
-                                  padding: const EdgeInsets.only(left: 20, bottom: 20, right: 20),
+                                retrieve: () => retrieve(event.id!),
+                                label: event.name ?? "Unnamed",
+                                statusLabel: "Individuals",
+                                event: event.id,
+                                padding: const EdgeInsets.only(left: 20, bottom: 20, right: 20),
                               ),
                             )
                         ),
@@ -91,6 +93,7 @@ class UnitSigningTaskState extends State<UnitSigningTask> {
                     )
                   ]
               )
-          ).toList()
+        ).toList();
+      }
   );
 }

@@ -27,9 +27,8 @@ class _$AccountabilityEventSerializer
       Serializers serializers, AccountabilityEvent object,
       {FullType specifiedType = FullType.unspecified}) {
     final result = <Object?>[
-      'event_type',
-      serializers.serialize(object.event_type,
-          specifiedType: const FullType(String)),
+      'type',
+      serializers.serialize(object.type, specifiedType: const FullType(String)),
       'time',
       serializers.serialize(object.time,
           specifiedType: const FullType(DateTime)),
@@ -39,10 +38,18 @@ class _$AccountabilityEventSerializer
       'submission_start',
       serializers.serialize(object.submission_start,
           specifiedType: const FullType(DateTime)),
-      'attendees',
-      serializers.serialize(object.attendees,
+      'attending_units',
+      serializers.serialize(object.attending_units,
           specifiedType:
-              const FullType(BuiltList, const [const FullType(Attendee)])),
+              const FullType(BuiltList, const [const FullType(String)])),
+      'attending_class_years',
+      serializers.serialize(object.attending_class_years,
+          specifiedType:
+              const FullType(BuiltList, const [const FullType(bool)])),
+      'attending_users',
+      serializers.serialize(object.attending_users,
+          specifiedType:
+              const FullType(BuiltList, const [const FullType(String)])),
       'accountability_method',
       serializers.serialize(object.accountability_method,
           specifiedType: const FullType(String)),
@@ -59,6 +66,13 @@ class _$AccountabilityEventSerializer
     if (value != null) {
       result
         ..add('name')
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(String)));
+    }
+    value = object.description;
+    if (value != null) {
+      result
+        ..add('description')
         ..add(serializers.serialize(value,
             specifiedType: const FullType(String)));
     }
@@ -81,12 +95,16 @@ class _$AccountabilityEventSerializer
           result.id = serializers.deserialize(value,
               specifiedType: const FullType(String)) as String?;
           break;
-        case 'event_type':
-          result.event_type = serializers.deserialize(value,
+        case 'type':
+          result.type = serializers.deserialize(value,
               specifiedType: const FullType(String))! as String;
           break;
         case 'name':
           result.name = serializers.deserialize(value,
+              specifiedType: const FullType(String)) as String?;
+          break;
+        case 'description':
+          result.description = serializers.deserialize(value,
               specifiedType: const FullType(String)) as String?;
           break;
         case 'time':
@@ -101,10 +119,22 @@ class _$AccountabilityEventSerializer
           result.submission_start = serializers.deserialize(value,
               specifiedType: const FullType(DateTime))! as DateTime;
           break;
-        case 'attendees':
-          result.attendees.replace(serializers.deserialize(value,
+        case 'attending_units':
+          result.attending_units.replace(serializers.deserialize(value,
                   specifiedType: const FullType(
-                      BuiltList, const [const FullType(Attendee)]))!
+                      BuiltList, const [const FullType(String)]))!
+              as BuiltList<Object?>);
+          break;
+        case 'attending_class_years':
+          result.attending_class_years.replace(serializers.deserialize(value,
+                  specifiedType:
+                      const FullType(BuiltList, const [const FullType(bool)]))!
+              as BuiltList<Object?>);
+          break;
+        case 'attending_users':
+          result.attending_users.replace(serializers.deserialize(value,
+                  specifiedType: const FullType(
+                      BuiltList, const [const FullType(String)]))!
               as BuiltList<Object?>);
           break;
         case 'accountability_method':
@@ -242,9 +272,11 @@ class _$AccountabilityEvent extends AccountabilityEvent {
   @override
   final String? id;
   @override
-  final String event_type;
+  final String type;
   @override
   final String? name;
+  @override
+  final String? description;
   @override
   final DateTime time;
   @override
@@ -252,7 +284,11 @@ class _$AccountabilityEvent extends AccountabilityEvent {
   @override
   final DateTime submission_start;
   @override
-  final BuiltList<Attendee> attendees;
+  final BuiltList<String> attending_units;
+  @override
+  final BuiltList<bool> attending_class_years;
+  @override
+  final BuiltList<String> attending_users;
   @override
   final String accountability_method;
 
@@ -262,23 +298,29 @@ class _$AccountabilityEvent extends AccountabilityEvent {
 
   _$AccountabilityEvent._(
       {this.id,
-      required this.event_type,
+      required this.type,
       this.name,
+      this.description,
       required this.time,
       required this.submission_deadline,
       required this.submission_start,
-      required this.attendees,
+      required this.attending_units,
+      required this.attending_class_years,
+      required this.attending_users,
       required this.accountability_method})
       : super._() {
-    BuiltValueNullFieldError.checkNotNull(
-        event_type, r'AccountabilityEvent', 'event_type');
+    BuiltValueNullFieldError.checkNotNull(type, r'AccountabilityEvent', 'type');
     BuiltValueNullFieldError.checkNotNull(time, r'AccountabilityEvent', 'time');
     BuiltValueNullFieldError.checkNotNull(
         submission_deadline, r'AccountabilityEvent', 'submission_deadline');
     BuiltValueNullFieldError.checkNotNull(
         submission_start, r'AccountabilityEvent', 'submission_start');
     BuiltValueNullFieldError.checkNotNull(
-        attendees, r'AccountabilityEvent', 'attendees');
+        attending_units, r'AccountabilityEvent', 'attending_units');
+    BuiltValueNullFieldError.checkNotNull(
+        attending_class_years, r'AccountabilityEvent', 'attending_class_years');
+    BuiltValueNullFieldError.checkNotNull(
+        attending_users, r'AccountabilityEvent', 'attending_users');
     BuiltValueNullFieldError.checkNotNull(
         accountability_method, r'AccountabilityEvent', 'accountability_method');
   }
@@ -297,12 +339,15 @@ class _$AccountabilityEvent extends AccountabilityEvent {
     if (identical(other, this)) return true;
     return other is AccountabilityEvent &&
         id == other.id &&
-        event_type == other.event_type &&
+        type == other.type &&
         name == other.name &&
+        description == other.description &&
         time == other.time &&
         submission_deadline == other.submission_deadline &&
         submission_start == other.submission_start &&
-        attendees == other.attendees &&
+        attending_units == other.attending_units &&
+        attending_class_years == other.attending_class_years &&
+        attending_users == other.attending_users &&
         accountability_method == other.accountability_method;
   }
 
@@ -310,12 +355,15 @@ class _$AccountabilityEvent extends AccountabilityEvent {
   int get hashCode {
     var _$hash = 0;
     _$hash = $jc(_$hash, id.hashCode);
-    _$hash = $jc(_$hash, event_type.hashCode);
+    _$hash = $jc(_$hash, type.hashCode);
     _$hash = $jc(_$hash, name.hashCode);
+    _$hash = $jc(_$hash, description.hashCode);
     _$hash = $jc(_$hash, time.hashCode);
     _$hash = $jc(_$hash, submission_deadline.hashCode);
     _$hash = $jc(_$hash, submission_start.hashCode);
-    _$hash = $jc(_$hash, attendees.hashCode);
+    _$hash = $jc(_$hash, attending_units.hashCode);
+    _$hash = $jc(_$hash, attending_class_years.hashCode);
+    _$hash = $jc(_$hash, attending_users.hashCode);
     _$hash = $jc(_$hash, accountability_method.hashCode);
     _$hash = $jf(_$hash);
     return _$hash;
@@ -325,12 +373,15 @@ class _$AccountabilityEvent extends AccountabilityEvent {
   String toString() {
     return (newBuiltValueToStringHelper(r'AccountabilityEvent')
           ..add('id', id)
-          ..add('event_type', event_type)
+          ..add('type', type)
           ..add('name', name)
+          ..add('description', description)
           ..add('time', time)
           ..add('submission_deadline', submission_deadline)
           ..add('submission_start', submission_start)
-          ..add('attendees', attendees)
+          ..add('attending_units', attending_units)
+          ..add('attending_class_years', attending_class_years)
+          ..add('attending_users', attending_users)
           ..add('accountability_method', accountability_method))
         .toString();
   }
@@ -344,13 +395,17 @@ class AccountabilityEventBuilder
   String? get id => _$this._id;
   set id(String? id) => _$this._id = id;
 
-  String? _event_type;
-  String? get event_type => _$this._event_type;
-  set event_type(String? event_type) => _$this._event_type = event_type;
+  String? _type;
+  String? get type => _$this._type;
+  set type(String? type) => _$this._type = type;
 
   String? _name;
   String? get name => _$this._name;
   set name(String? name) => _$this._name = name;
+
+  String? _description;
+  String? get description => _$this._description;
+  set description(String? description) => _$this._description = description;
 
   DateTime? _time;
   DateTime? get time => _$this._time;
@@ -366,11 +421,23 @@ class AccountabilityEventBuilder
   set submission_start(DateTime? submission_start) =>
       _$this._submission_start = submission_start;
 
-  ListBuilder<Attendee>? _attendees;
-  ListBuilder<Attendee> get attendees =>
-      _$this._attendees ??= new ListBuilder<Attendee>();
-  set attendees(ListBuilder<Attendee>? attendees) =>
-      _$this._attendees = attendees;
+  ListBuilder<String>? _attending_units;
+  ListBuilder<String> get attending_units =>
+      _$this._attending_units ??= new ListBuilder<String>();
+  set attending_units(ListBuilder<String>? attending_units) =>
+      _$this._attending_units = attending_units;
+
+  ListBuilder<bool>? _attending_class_years;
+  ListBuilder<bool> get attending_class_years =>
+      _$this._attending_class_years ??= new ListBuilder<bool>();
+  set attending_class_years(ListBuilder<bool>? attending_class_years) =>
+      _$this._attending_class_years = attending_class_years;
+
+  ListBuilder<String>? _attending_users;
+  ListBuilder<String> get attending_users =>
+      _$this._attending_users ??= new ListBuilder<String>();
+  set attending_users(ListBuilder<String>? attending_users) =>
+      _$this._attending_users = attending_users;
 
   String? _accountability_method;
   String? get accountability_method => _$this._accountability_method;
@@ -383,12 +450,15 @@ class AccountabilityEventBuilder
     final $v = _$v;
     if ($v != null) {
       _id = $v.id;
-      _event_type = $v.event_type;
+      _type = $v.type;
       _name = $v.name;
+      _description = $v.description;
       _time = $v.time;
       _submission_deadline = $v.submission_deadline;
       _submission_start = $v.submission_start;
-      _attendees = $v.attendees.toBuilder();
+      _attending_units = $v.attending_units.toBuilder();
+      _attending_class_years = $v.attending_class_years.toBuilder();
+      _attending_users = $v.attending_users.toBuilder();
       _accountability_method = $v.accountability_method;
       _$v = null;
     }
@@ -415,9 +485,10 @@ class AccountabilityEventBuilder
       _$result = _$v ??
           new _$AccountabilityEvent._(
               id: id,
-              event_type: BuiltValueNullFieldError.checkNotNull(
-                  event_type, r'AccountabilityEvent', 'event_type'),
+              type: BuiltValueNullFieldError.checkNotNull(
+                  type, r'AccountabilityEvent', 'type'),
               name: name,
+              description: description,
               time: BuiltValueNullFieldError.checkNotNull(
                   time, r'AccountabilityEvent', 'time'),
               submission_deadline: BuiltValueNullFieldError.checkNotNull(
@@ -426,7 +497,9 @@ class AccountabilityEventBuilder
                   'submission_deadline'),
               submission_start: BuiltValueNullFieldError.checkNotNull(
                   submission_start, r'AccountabilityEvent', 'submission_start'),
-              attendees: attendees.build(),
+              attending_units: attending_units.build(),
+              attending_class_years: attending_class_years.build(),
+              attending_users: attending_users.build(),
               accountability_method: BuiltValueNullFieldError.checkNotNull(
                   accountability_method,
                   r'AccountabilityEvent',
@@ -434,8 +507,12 @@ class AccountabilityEventBuilder
     } catch (_) {
       late String _$failedField;
       try {
-        _$failedField = 'attendees';
-        attendees.build();
+        _$failedField = 'attending_units';
+        attending_units.build();
+        _$failedField = 'attending_class_years';
+        attending_class_years.build();
+        _$failedField = 'attending_users';
+        attending_users.build();
       } catch (e) {
         throw new BuiltValueNestedFieldError(
             r'AccountabilityEvent', _$failedField, e.toString());

@@ -1,6 +1,5 @@
 import 'dart:core';
 import 'package:falcon_net/Model/Database/PassStatusRequest.dart';
-import 'package:falcon_net/Model/Database/StringRequest.dart';
 import 'package:falcon_net/Structure/Components/LoadingShimmer.dart';
 import 'package:falcon_net/Structure/Components/PageWidget.dart';
 import 'package:falcon_net/Structure/Pages/TaskManagement/Tasks/UnitManagement/FormBar.dart';
@@ -11,7 +10,6 @@ import 'package:flutter/material.dart';
 
 import '../../../../../Model/Database/FormOneData.dart';
 import '../../../../../Model/Database/FormSummary.dart';
-import '../../../../../Model/Database/User.dart';
 import '../../../../../Model/Database/UserSummary.dart';
 import '../../../../../Model/Store/Endpoints.dart';
 import '../../../../Components/AsyncPage.dart';

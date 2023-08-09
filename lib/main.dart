@@ -15,6 +15,7 @@ import 'package:falcon_net/Services/SchedulingService.dart';
 import 'package:falcon_net/Theme/Dark/DarkTheme.dart';
 import 'package:falcon_net/Theme/Light/LightTheme.dart';
 import 'package:falcon_net/Theme/Random/RandomTheme.dart';
+import 'package:falcon_net/Utility/Testing.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:go_router/go_router.dart';
@@ -80,6 +81,8 @@ void main() async {
   var account = prefs.getBool("account") ?? false;
 
   FlutterNativeSplash.remove();
+
+  testSigning();
 
   runApp(
     FNApp(

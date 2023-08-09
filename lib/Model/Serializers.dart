@@ -88,6 +88,7 @@ part 'Serializers.g.dart';
   FormDataList,
   IndividualStatusRequest,
   AccountabilityEvent,
+  EventList,
   Attendee,
   Excusal,
   InitialData,

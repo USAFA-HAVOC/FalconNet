@@ -93,7 +93,7 @@ class UnitEditorTaskState extends State<UnitEditorTask> {
 
       setState(() {
         connection = Future<UnitList>.value(UnitList((w) => w
-          ..units = ListBuilder([units.firstWhere((u) => u.name == unit.name)] + units.where((u) => u.name != unit.name).toList())
+          ..units = ListBuilder([unit] + units.where((u) => u.name != unit.name).toList())
         ));
       });
 

@@ -43,12 +43,15 @@ abstract class AccountabilityEvent implements Built<AccountabilityEvent, Account
   static Serializer<AccountabilityEvent> get serializer => _$accountabilityEventSerializer;
 
   String? get id;
-  String get event_type;
+  String get type;
   String? get name;
+  String? get description;
   DateTime get time;
   DateTime get submission_deadline;
   DateTime get submission_start;
-  BuiltList<Attendee> get attendees;
+  BuiltList<String> get attending_units;
+  BuiltList<bool> get attending_class_years;
+  BuiltList<String> get attending_users;
   String get accountability_method;
 
   AccountabilityEvent._();

@@ -75,18 +75,29 @@ class UnitSigningEventState extends State<UnitSigningEvent> {
     }
   }
 
-  void sign(UserSummary member, ScaffoldMessengerState messenger) async {
-    var unit = await future;
-
+  void sign(UserSummary member, UnitData data, ScaffoldMessengerState messenger) async {
     try {
       await Endpoints.signEvent(SignRequest((s) => s
-        ..event_id = null
+        ..event_id = widget.event
         ..user_id = member.user_id
       ));
 
       setState(() {
-        future = Future<UnitData>.value(unit.sign(member, event: widget.event));
-        print(unit.sign(member, event: widget.event).members.firstWhere((m) => member.user_id == m.user_id).status(event: widget.event));
+        future = Future<UnitData>.value(data.sign(member, event: widget.event));
+        /*
+        future = Future<UnitData>.value(
+            data.rebuild((u) => u.members.map((m) =>
+              m.user_id != member.user_id
+                ? m
+                : member.rebuild((m) =>
+                    m.events.map((e) =>
+                    e.event_id != widget.event
+                        ? e
+                        : e.rebuild((b) => b.status = UserStatus.signed.name)
+                    )
+                  )
+            ))
+        );*/
       });
 
       messenger.showSnackBar(
@@ -94,6 +105,7 @@ class UnitSigningEventState extends State<UnitSigningEvent> {
       );
     }
     catch(e) {
+      displayError(prefix: "Signing", exception: e);
       messenger.showSnackBar(
         const SnackBar(content: Text("Failed to Sign"))
       );
@@ -120,7 +132,7 @@ class UnitSigningEventState extends State<UnitSigningEvent> {
             SigningWidget(
               status: data,
               event: widget.event,
-              onSign: (member) => sign(member, ScaffoldMessenger.of(context)),
+              onSign: (member) => sign(member, data, ScaffoldMessenger.of(context)),
             ),
           ],
         )
