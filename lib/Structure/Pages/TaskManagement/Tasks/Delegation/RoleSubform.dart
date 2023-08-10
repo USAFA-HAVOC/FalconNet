@@ -1,5 +1,6 @@
 import 'package:falcon_net/Structure/Components/DateFormField.dart';
 import 'package:falcon_net/Theme/NegativeButtonTheme.dart';
+import 'package:falcon_net/Utility/ListExtensions.dart';
 import 'package:falcon_net/Utility/TemporalFormatting.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -39,6 +40,13 @@ class RoleSubformState extends State<RoleSubform> {
     super.initState();
     value = widget.initialValue;
   }
+
+  bool requiresUnit(String? role) =>
+      <String>[
+        Roles.unit_admin.name,
+        Roles.accountability_rep.name,
+        Roles.sdo.name
+      ].contains(role ?? "");
 
   @override
   Widget build(BuildContext context) {
@@ -86,9 +94,15 @@ class RoleSubformState extends State<RoleSubform> {
 
     var assignable = grandchildren(
         widget.applicable.where((r) => r.isAdmin())
-            .map((r) => r.unit ?? widget.units.firstWhere((u) => u.parent_units.isEmpty).name)
+            .map((r) => r.name == Roles.unit_admin.name
+                ? r.unit!
+                : widget.units.firstWhere((u) => u.parent_units.isEmpty).name
+            )
             .toList()
-    );
+    )
+        .toSet()
+        .toList()
+        .sorted((a, b) => a.compareTo(b));
 
     return Dialog(
       child: Form(
@@ -122,7 +136,7 @@ class RoleSubformState extends State<RoleSubform> {
                   setState(() {
                     value = TimedRole((b) => b
                       ..name = selection
-                      ..unit = selection == Roles.unit_admin.name
+                      ..unit = requiresUnit(selection)
                           ? assignable.first
                           : null
                       ..start = value.start
@@ -134,109 +148,109 @@ class RoleSubformState extends State<RoleSubform> {
 
               const SizedBox(height: 20,),
 
-              (value.name == Roles.unit_admin.name)
+              (requiresUnit(value.name))
                   ? DropdownButtonFormField<String>(
-                  value: value.unit!,
-                  items: assignable.map((u) => DropdownMenuItem<String>(
-                      value: u,
-                      child: Text(u)
-                  )).toList(),
-                  onChanged: (change) => setState(() {
-                    value = TimedRole((b) => b
-                      ..name = value.name
-                      ..unit = change
-                      ..start = value.start
-                      ..end = value.end
-                    ).toUtc();
-                  })
-              )
+                        value: value.unit!,
+                        items: assignable.map((u) => DropdownMenuItem<String>(
+                            value: u,
+                            child: Text(u)
+                        )).toList(),
+                        onChanged: (change) => setState(() {
+                          value = TimedRole((b) => b
+                            ..name = value.name
+                            ..unit = change
+                            ..start = value.start
+                            ..end = value.end
+                          ).toUtc();
+                        })
+                    )
                   : const SizedBox(),
 
               !(!(earliest == null && latest == null) && (value.start == null || value.end == null))
                   ? Row(
-                children: [
-                  Text(
-                    "Timed",
-                    style: Theme.of(context).textTheme.bodyLarge,
-                    textAlign: TextAlign.left,
-                  ),
-                  Checkbox(value: value.start != null || !(earliest == null && latest == null), onChanged: (earliest == null && latest == null) ? (change) {
-                    change ??= false;
-                    if (change) {
-                      setState(() {
-                        value = TimedRole((b) => b
-                          ..name = value.name
-                          ..unit = value.unit
-                          ..start = DateTime.now().subtract(const Duration(days: 1))
-                          ..end = DateTime.now().add(const Duration(days: 7))
-                        ).toUtc();
-                      });
-                    } else {
-                      setState(() {
-                        value = TimedRole((b) => b
-                          ..name = value.name
-                          ..unit = value.unit
-                          ..start = null
-                          ..end = null
-                        ).toUtc();
-                      });
-                    }
-                  } : null)
-                ],
-              )
+                      children: [
+                        Text(
+                          "Timed",
+                          style: Theme.of(context).textTheme.bodyLarge,
+                          textAlign: TextAlign.left,
+                        ),
+                        Checkbox(value: value.start != null || !(earliest == null && latest == null), onChanged: (earliest == null && latest == null) ? (change) {
+                          change ??= false;
+                          if (change) {
+                            setState(() {
+                              value = TimedRole((b) => b
+                                ..name = value.name
+                                ..unit = value.unit
+                                ..start = DateTime.now().subtract(const Duration(days: 1))
+                                ..end = DateTime.now().add(const Duration(days: 7))
+                              ).toUtc();
+                            });
+                          } else {
+                            setState(() {
+                              value = TimedRole((b) => b
+                                ..name = value.name
+                                ..unit = value.unit
+                                ..start = null
+                                ..end = null
+                              ).toUtc();
+                            });
+                          }
+                        } : null)
+                      ],
+                    )
                   : const SizedBox(),
 
               ((value.start != null && value.end != null) || !(earliest == null && latest == null)) && !(!(earliest == null && latest == null) && (value.start == null || value.end == null))
-                  ?   Row(
-                children: [
-                  Expanded(
-                      flex: 5,
-                      child: DateFormField(
-                        label: "Start",
-                        validator: (content) {
-                          var error = InputValidation.date()(content);
-                          if (error == null) {
-                            var parsed = parseDate(content!);
-                            if (parsed.isAfter(value.end!)) {
-                              return "Start date is after end date";
-                            }
-                          }
-                          return error;
-                        },
-                        value: (value.start ?? earliest) == null ? null : describeDate(value.start ?? earliest!),
-                        onChanged: (change) => setState(() {
-                          value = TimedRole((b) => b
-                            ..name = value.name
-                            ..unit = value.unit
-                            ..start = parseDate(change)
-                            ..end = value.end
-                          ).toUtc();
-                        }),
-                      )
-                  ),
+                  ? Row(
+                      children: [
+                        Expanded(
+                            flex: 5,
+                            child: DateFormField(
+                              label: "Start",
+                              validator: (content) {
+                                var error = InputValidation.date()(content);
+                                if (error == null) {
+                                  var parsed = parseDate(content!);
+                                  if (parsed.isAfter(value.end!)) {
+                                    return "Start date is after end date";
+                                  }
+                                }
+                                return error;
+                              },
+                              value: (value.start ?? earliest) == null ? null : describeDate(value.start ?? earliest!),
+                              onChanged: (change) => setState(() {
+                                value = TimedRole((b) => b
+                                  ..name = value.name
+                                  ..unit = value.unit
+                                  ..start = parseDate(change)
+                                  ..end = value.end
+                                ).toUtc();
+                              }),
+                            )
+                        ),
 
-                  const Spacer(flex: 1,),
+                        const Spacer(flex: 1,),
 
-                  Expanded(
-                      flex: 5,
-                      child: DateFormField(
-                        label: "End",
-                        validator: InputValidation.date(),
-                        value: (value.end ?? latest) == null ? null : describeDate(value.end ?? latest!),
-                        onChanged: (change) => setState(() {
-                          value = TimedRole((b) => b
-                            ..name = value.name
-                            ..unit = value.unit
-                            ..start = value.start
-                            ..end = parseDate(change)
-                          ).toUtc();
-                        }),
-                      )
-                  ),
-                ],
-              )
+                        Expanded(
+                            flex: 5,
+                            child: DateFormField(
+                              label: "End",
+                              validator: InputValidation.date(),
+                              value: (value.end ?? latest) == null ? null : describeDate(value.end ?? latest!),
+                              onChanged: (change) => setState(() {
+                                value = TimedRole((b) => b
+                                  ..name = value.name
+                                  ..unit = value.unit
+                                  ..start = value.start
+                                  ..end = parseDate(change)
+                                ).toUtc();
+                              }),
+                            )
+                        ),
+                      ],
+                    )
 
-                  :  const SizedBox(),
+                  : const SizedBox(),
 
               const SizedBox(height: 20,),
 

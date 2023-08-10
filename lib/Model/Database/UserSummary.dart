@@ -15,6 +15,7 @@ abstract class UserSummary implements Built<UserSummary, UserSummaryBuilder> {
   String get user_id;
   String get name;
   String? get room;
+  bool get individual_pass_status;
   BuiltList<UserEvent> get events;
 
   UserStatus status({String? event}) {
@@ -23,16 +24,16 @@ abstract class UserSummary implements Built<UserSummary, UserSummaryBuilder> {
           (
               event == null
                   ? events.where((e) => e.type == EventType.di.name)
-                  .where((e) => e.time.difference(DateTime.now()).inHours.abs() < 24)
-                  .toList()
-                  .sortedKey((e) => e.time.difference(DateTime.now()).inSeconds.abs())
-                  .first
+                      .where((e) => e.time.difference(DateTime.now()).inHours.abs() < 24)
+                      .toList()
+                      .sortedKey((e) => e.time.difference(DateTime.now()).inSeconds.abs())
+                      .first
                   : events.firstWhere((e) => e.event_id == event)
           ).status
       );
     }
     catch (e) {
-      return UserStatus.unsigned;
+      return UserStatus.unassigned;
     }
   }
 

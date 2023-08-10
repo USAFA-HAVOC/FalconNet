@@ -16,11 +16,21 @@ class UnitBar extends StatelessWidget {
   const UnitBar({super.key, required this.unit, required this.onDelete, required this.onEdit, required this.list});
 
   void attemptDelete(BuildContext context) {
-    showDialog(context: context, builder: (context) => ConfirmationDialog(
-      title: "Confirm Deletion",
-      description: "Please confirm you would like to delete unit ${unit.name}. This action cannot be undone.",
-      onConfirm: () => onDelete(unit),
-    ));
+    if (unit.sub_units.isEmpty) {
+      showDialog(context: context, builder: (context) => ConfirmationDialog(
+        title: "Confirm Deletion",
+        description: "Please confirm you would like to delete unit ${unit.name}. This action cannot be undone.",
+        onConfirm: () => onDelete(unit),
+      ));
+    }
+    else {
+      showDialog(context: context, builder: (context) => ConfirmationDialog(
+        title: "Confirm Deletion",
+        description: "Please confirm you would like to delete unit ${unit.name}. This action cannot be undone.",
+        onConfirm: () => onDelete(unit),
+      ));
+    }
+    unit;
   }
 
   @override

@@ -42,7 +42,8 @@ class UnitFormState extends State<UnitForm> {
     else {
       return [
         ...widget.list.units
-          .firstWhere((u) => u.name == parent).parent_units,
+            .where((u) => u.name == parent)
+            .firstOrNull?.parent_units ?? [],
         parent
       ];
     }

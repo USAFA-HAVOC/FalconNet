@@ -6,6 +6,7 @@ part 'PassStatusRequest.g.dart';
 abstract class PassStatusRequest implements Built<PassStatusRequest, PassStatusRequestBuilder> {
   static Serializer<PassStatusRequest> get serializer => _$passStatusRequestSerializer;
 
+  String get unit;
   int get index;
   bool get status;
 

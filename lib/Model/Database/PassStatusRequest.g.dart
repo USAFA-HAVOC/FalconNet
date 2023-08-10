@@ -20,6 +20,8 @@ class _$PassStatusRequestSerializer
   Iterable<Object?> serialize(Serializers serializers, PassStatusRequest object,
       {FullType specifiedType = FullType.unspecified}) {
     final result = <Object?>[
+      'unit',
+      serializers.serialize(object.unit, specifiedType: const FullType(String)),
       'index',
       serializers.serialize(object.index, specifiedType: const FullType(int)),
       'status',
@@ -41,6 +43,10 @@ class _$PassStatusRequestSerializer
       iterator.moveNext();
       final Object? value = iterator.current;
       switch (key) {
+        case 'unit':
+          result.unit = serializers.deserialize(value,
+              specifiedType: const FullType(String))! as String;
+          break;
         case 'index':
           result.index = serializers.deserialize(value,
               specifiedType: const FullType(int))! as int;
@@ -58,6 +64,8 @@ class _$PassStatusRequestSerializer
 
 class _$PassStatusRequest extends PassStatusRequest {
   @override
+  final String unit;
+  @override
   final int index;
   @override
   final bool status;
@@ -66,8 +74,10 @@ class _$PassStatusRequest extends PassStatusRequest {
           [void Function(PassStatusRequestBuilder)? updates]) =>
       (new PassStatusRequestBuilder()..update(updates))._build();
 
-  _$PassStatusRequest._({required this.index, required this.status})
+  _$PassStatusRequest._(
+      {required this.unit, required this.index, required this.status})
       : super._() {
+    BuiltValueNullFieldError.checkNotNull(unit, r'PassStatusRequest', 'unit');
     BuiltValueNullFieldError.checkNotNull(index, r'PassStatusRequest', 'index');
     BuiltValueNullFieldError.checkNotNull(
         status, r'PassStatusRequest', 'status');
@@ -85,6 +95,7 @@ class _$PassStatusRequest extends PassStatusRequest {
   bool operator ==(Object other) {
     if (identical(other, this)) return true;
     return other is PassStatusRequest &&
+        unit == other.unit &&
         index == other.index &&
         status == other.status;
   }
@@ -92,6 +103,7 @@ class _$PassStatusRequest extends PassStatusRequest {
   @override
   int get hashCode {
     var _$hash = 0;
+    _$hash = $jc(_$hash, unit.hashCode);
     _$hash = $jc(_$hash, index.hashCode);
     _$hash = $jc(_$hash, status.hashCode);
     _$hash = $jf(_$hash);
@@ -101,6 +113,7 @@ class _$PassStatusRequest extends PassStatusRequest {
   @override
   String toString() {
     return (newBuiltValueToStringHelper(r'PassStatusRequest')
+          ..add('unit', unit)
           ..add('index', index)
           ..add('status', status))
         .toString();
@@ -110,6 +123,10 @@ class _$PassStatusRequest extends PassStatusRequest {
 class PassStatusRequestBuilder
     implements Builder<PassStatusRequest, PassStatusRequestBuilder> {
   _$PassStatusRequest? _$v;
+
+  String? _unit;
+  String? get unit => _$this._unit;
+  set unit(String? unit) => _$this._unit = unit;
 
   int? _index;
   int? get index => _$this._index;
@@ -124,6 +141,7 @@ class PassStatusRequestBuilder
   PassStatusRequestBuilder get _$this {
     final $v = _$v;
     if ($v != null) {
+      _unit = $v.unit;
       _index = $v.index;
       _status = $v.status;
       _$v = null;
@@ -148,6 +166,8 @@ class PassStatusRequestBuilder
   _$PassStatusRequest _build() {
     final _$result = _$v ??
         new _$PassStatusRequest._(
+            unit: BuiltValueNullFieldError.checkNotNull(
+                unit, r'PassStatusRequest', 'unit'),
             index: BuiltValueNullFieldError.checkNotNull(
                 index, r'PassStatusRequest', 'index'),
             status: BuiltValueNullFieldError.checkNotNull(
