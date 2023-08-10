@@ -1,6 +1,5 @@
 import 'package:built_collection/built_collection.dart';
 import 'package:falcon_net/Model/Database/UnitList.dart';
-import 'package:falcon_net/Model/Database/UnitSummary.dart';
 import 'package:falcon_net/Structure/Components/AsyncPage.dart';
 import 'package:falcon_net/Structure/Components/LoadingShimmer.dart';
 import 'package:falcon_net/Structure/Components/PageWidget.dart';
@@ -34,8 +33,7 @@ class UnitEditorTaskState extends State<UnitEditorTask> {
     super.initState();
   }
 
-  void add(ScaffoldMessengerState messenger, Unit unit) async {
-    var units = (await connection).units.toList();
+  void add(ScaffoldMessengerState messenger, Unit unit, List<Unit> units) async {
     try {
       Unit complete = await Endpoints.createUnit(unit);
 
@@ -43,7 +41,8 @@ class UnitEditorTaskState extends State<UnitEditorTask> {
         connection = Future<UnitList>.value(UnitList((w) => w
           ..units = ListBuilder([
             ...units,
-            unit.toBuilder()
+
+            complete
           ])
         ));
       });
@@ -60,9 +59,7 @@ class UnitEditorTaskState extends State<UnitEditorTask> {
     }
   }
 
-  void delete(ScaffoldMessengerState messenger, Unit unit) async {
-    var units = (await connection).units.toList();
-
+  void delete(ScaffoldMessengerState messenger, Unit unit, List<Unit> units) async {
     try {
       await Endpoints.deleteUnit(unit);
 
@@ -85,9 +82,7 @@ class UnitEditorTaskState extends State<UnitEditorTask> {
     }
   }
 
-  void edit(ScaffoldMessengerState messenger, Unit unit) async {
-    var units = (await connection).units.toList();
-
+  void edit(ScaffoldMessengerState messenger, Unit unit, List<Unit> units) async {
     try {
       await Endpoints.editUnit(unit);
 
@@ -138,7 +133,7 @@ class UnitEditorTaskState extends State<UnitEditorTask> {
                 title: "New Unit",
                 children: [
                   UnitForm(
-                    onSubmit: (unit) => add(ScaffoldMessenger.of(context), unit),
+                    onSubmit: (unit) => add(ScaffoldMessenger.of(context), unit, data.units.toList()),
                     list: list,
                   )
                 ]
@@ -167,8 +162,8 @@ class UnitEditorTaskState extends State<UnitEditorTask> {
                     else {
                       return UnitBar(
                         unit: list.units[index - 1],
-                        onDelete: (unit) => delete(ScaffoldMessenger.of(context), unit),
-                        onEdit: (unit) => edit(ScaffoldMessenger.of(context), unit),
+                        onDelete: (unit) => delete(ScaffoldMessenger.of(context), unit, data.units.toList()),
+                        onEdit: (unit) => edit(ScaffoldMessenger.of(context), unit, data.units.toList()),
                         list: list,
                       );
                     }

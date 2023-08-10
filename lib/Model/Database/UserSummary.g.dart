@@ -23,6 +23,9 @@ class _$UserSummarySerializer implements StructuredSerializer<UserSummary> {
           specifiedType: const FullType(String)),
       'name',
       serializers.serialize(object.name, specifiedType: const FullType(String)),
+      'individual_pass_status',
+      serializers.serialize(object.individual_pass_status,
+          specifiedType: const FullType(bool)),
       'events',
       serializers.serialize(object.events,
           specifiedType:
@@ -62,6 +65,10 @@ class _$UserSummarySerializer implements StructuredSerializer<UserSummary> {
           result.room = serializers.deserialize(value,
               specifiedType: const FullType(String)) as String?;
           break;
+        case 'individual_pass_status':
+          result.individual_pass_status = serializers.deserialize(value,
+              specifiedType: const FullType(bool))! as bool;
+          break;
         case 'events':
           result.events.replace(serializers.deserialize(value,
                   specifiedType: const FullType(
@@ -83,6 +90,8 @@ class _$UserSummary extends UserSummary {
   @override
   final String? room;
   @override
+  final bool individual_pass_status;
+  @override
   final BuiltList<UserEvent> events;
 
   factory _$UserSummary([void Function(UserSummaryBuilder)? updates]) =>
@@ -92,10 +101,13 @@ class _$UserSummary extends UserSummary {
       {required this.user_id,
       required this.name,
       this.room,
+      required this.individual_pass_status,
       required this.events})
       : super._() {
     BuiltValueNullFieldError.checkNotNull(user_id, r'UserSummary', 'user_id');
     BuiltValueNullFieldError.checkNotNull(name, r'UserSummary', 'name');
+    BuiltValueNullFieldError.checkNotNull(
+        individual_pass_status, r'UserSummary', 'individual_pass_status');
     BuiltValueNullFieldError.checkNotNull(events, r'UserSummary', 'events');
   }
 
@@ -113,6 +125,7 @@ class _$UserSummary extends UserSummary {
         user_id == other.user_id &&
         name == other.name &&
         room == other.room &&
+        individual_pass_status == other.individual_pass_status &&
         events == other.events;
   }
 
@@ -122,6 +135,7 @@ class _$UserSummary extends UserSummary {
     _$hash = $jc(_$hash, user_id.hashCode);
     _$hash = $jc(_$hash, name.hashCode);
     _$hash = $jc(_$hash, room.hashCode);
+    _$hash = $jc(_$hash, individual_pass_status.hashCode);
     _$hash = $jc(_$hash, events.hashCode);
     _$hash = $jf(_$hash);
     return _$hash;
@@ -133,6 +147,7 @@ class _$UserSummary extends UserSummary {
           ..add('user_id', user_id)
           ..add('name', name)
           ..add('room', room)
+          ..add('individual_pass_status', individual_pass_status)
           ..add('events', events))
         .toString();
   }
@@ -153,6 +168,11 @@ class UserSummaryBuilder implements Builder<UserSummary, UserSummaryBuilder> {
   String? get room => _$this._room;
   set room(String? room) => _$this._room = room;
 
+  bool? _individual_pass_status;
+  bool? get individual_pass_status => _$this._individual_pass_status;
+  set individual_pass_status(bool? individual_pass_status) =>
+      _$this._individual_pass_status = individual_pass_status;
+
   ListBuilder<UserEvent>? _events;
   ListBuilder<UserEvent> get events =>
       _$this._events ??= new ListBuilder<UserEvent>();
@@ -166,6 +186,7 @@ class UserSummaryBuilder implements Builder<UserSummary, UserSummaryBuilder> {
       _user_id = $v.user_id;
       _name = $v.name;
       _room = $v.room;
+      _individual_pass_status = $v.individual_pass_status;
       _events = $v.events.toBuilder();
       _$v = null;
     }
@@ -196,6 +217,10 @@ class UserSummaryBuilder implements Builder<UserSummary, UserSummaryBuilder> {
               name: BuiltValueNullFieldError.checkNotNull(
                   name, r'UserSummary', 'name'),
               room: room,
+              individual_pass_status: BuiltValueNullFieldError.checkNotNull(
+                  individual_pass_status,
+                  r'UserSummary',
+                  'individual_pass_status'),
               events: events.build());
     } catch (_) {
       late String _$failedField;

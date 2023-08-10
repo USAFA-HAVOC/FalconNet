@@ -126,7 +126,7 @@ List<UserSummary> generateUserSummaries(int count) {
     ..name = "${randString(5)} ${randString(10)}"
     ..user_id = "user_${randString(10)}"
     ..room = pullRoom()
-    ..events = <UserEvent>[].toBuiltList().toBuilder()
+    ..individual_pass_status = true
     ..events = ListBuilder([
       (
           UserEventBuilder()

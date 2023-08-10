@@ -1,4 +1,3 @@
-import 'package:falcon_net/Model/Database/AccountabilityEvent.dart';
 import 'package:falcon_net/Structure/Pages/Events/DailySummary.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_image_slideshow/flutter_image_slideshow.dart';

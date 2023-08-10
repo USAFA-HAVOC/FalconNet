@@ -43,12 +43,15 @@ class AssignmentFormState extends State<AssignmentForm> {
   
   void removeUnit(BuildContext context, String base, {ScaffoldMessengerState? messenger}) async {
     bool descends(String parent, String target) => widget.units
-        .firstWhere((u) => u.name == parent)
-        .sub_units.any((s) => s == target || descends(s, target));
+        .where((u) => u.name == parent)
+        .map((u) => u.sub_units.any((s) => s == target || descends(s, target)))
+        .reduce((carry, value) => carry || value);
 
     List<String> others = units
         .where((u) => !units.any(
-            (p) => widget.units.firstWhere((o) => o.name == p).parent_units.toList().contains(u)
+            (p) => widget.units
+                .where((o) => o.name == p)
+                .any((g) => g.parent_units.toList().contains(u))
         ))
         .where((u) => u != base)
         .toList();
@@ -77,7 +80,9 @@ class AssignmentFormState extends State<AssignmentForm> {
   Widget build(BuildContext context) {
     List<String> bases = units
         .where((u) => !units.any(
-            (p) => widget.units.firstWhere((o) => o.name == p).parent_units.toList().contains(u)
+            (p) => widget.units
+                .where((o) => o.name == p)
+                .any((g) => g.parent_units.toList().contains(u))
     )).toList();
 
     List<String> grandchildren(List<String> children) =>

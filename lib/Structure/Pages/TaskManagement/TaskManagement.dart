@@ -6,7 +6,6 @@ import 'package:falcon_net/Model/Store/GlobalState.dart';
 import 'package:falcon_net/Structure/Components/FNPage.dart';
 import 'package:falcon_net/Structure/Components/ViewModel.dart';
 import 'package:falcon_net/Structure/Pages/TaskManagement/ExternalTaskWidget.dart';
-import 'package:falcon_net/Structure/Pages/TaskManagement/FormOneWidget.dart';
 import 'package:flutter/material.dart';
 
 ///Page acting as general hub for all cadet tasks
@@ -98,24 +97,6 @@ class TaskManagementState extends State<TaskManagement> {
           description: "Take accountability for your squadron."
       ));
     }
-
-    /*
-    if (state.user.roles.any((role) => role.role == Roles.jdo.name)) {
-      tasks.add(const ExternalTaskWidget(
-          path: "/task_management/ordering",
-          title: "Ordering",
-          description: "Please order appropriate number of meals for your squadron"
-      ));
-    }
-     */
-
-    //Add form one task widgets from state
-    tasks.addAll(
-        state.events
-            .where((f) => f.accountability_method == AccountabilityMethod.self_signed.name)
-            .where((f) => f.status == UserStatus.unsigned.name)
-            .map((f) => FormOneWidget(form: f))
-    );
 
     //If no relevant tasks, display no tasks message
     if (tasks.isEmpty) {

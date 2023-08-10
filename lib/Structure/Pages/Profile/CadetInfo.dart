@@ -21,15 +21,6 @@ class CadetInfo extends StatelessWidget {
             shrinkWrap: true,
             children: [
               const SizedBox(height: 20,),
-
-              // InputBlock(
-              //   label: "Name",
-              //   onSubmit: (value) => model.dispatch(InfoAction(modify: (b) => b..personal_info.full_name = value)),
-              //   validator: (String? value) => (value ?? "").characters.length >= 6,
-              //   error: "Name must have at least six characters",
-              //   hint: "Jane Doe",
-              //   initial: model.content.personal_info.full_name,
-              // ),
               InputBlock(
                 label: "Name",
                 disabled: true,
@@ -42,8 +33,9 @@ class CadetInfo extends StatelessWidget {
               InputBlock(
                 label: "Phone Number",
                 onSubmit: (value) => model.dispatch(InfoAction(modify: (b) => b..personal_info.phone_number = value)),
-                validator: (String? value) => (value ?? "").characters.length >= 10,
-                error: "Phone number must have at least ten characters",
+                validator: (String? value) => (value ?? "").characters.length < 10
+                    ? "Phone number must have at least ten characters"
+                    : null,
                 hint: "(123) 456-789",
                 initial: model.content.personal_info.phone_number,
               ),
@@ -52,9 +44,26 @@ class CadetInfo extends StatelessWidget {
 
               InputBlock(
                 label: "Room Number",
-                onSubmit: (value) => model.dispatch(InfoAction(modify: (b) => b..personal_info.room_number = value)),
-                validator: (String? value) => (value ?? "").characters.length >= 3,
-                error: "Room must have at least three characters",
+                onSubmit: (value) =>
+                    model.dispatch(InfoAction(modify: (b) => b..personal_info.room_number = value?.trim().toUpperCase())),
+                validator: (String? value) {
+                  if (value == null) {
+                    return "Must enter a valid room";
+                  }
+                  if (!(<String>["SIJAN", "VANDY"].any((b) => value.toUpperCase().startsWith(b)))) {
+                    return "Must start with either Sijan or Vandy";
+                  }
+                  if (value.trim().split(" ").length < 2) {
+                    return "Must include both a building and room number";
+                  }
+                  if (value.trim().split(" ").length > 2) {
+                    return "Must only include a building and room number";
+                  }
+                  var number = value.trim().split(" ").last;
+                  if (number.length < 3 || number.length > 4) {
+                    return "Room number must be 3-4 characters long";
+                  }
+                },
                 hint: "eg. 1A11",
                 initial: model.content.personal_info.room_number,
               ),
@@ -77,14 +86,13 @@ class CadetInfo extends StatelessWidget {
 ///Stylized input block for personal info blocks
 class InputBlock extends StatefulWidget {
   final void Function(String?) onSubmit;
-  final bool Function(String?)? validator;
+  final String? Function(String?)? validator;
   final String? hint;
   final String? initial;
-  final String? error;
   final String? label;
   final bool disabled;
 
-  const InputBlock({super.key, required this.onSubmit, this.validator, this.hint, this.error, this.initial, this.label, this.disabled = false});
+  const InputBlock({super.key, required this.onSubmit, this.validator, this.hint, this.initial, this.label, this.disabled = false});
 
   @override
   State<InputBlock> createState() => InputBlockState();
@@ -109,15 +117,8 @@ class InputBlockState extends State<InputBlock> {
     super.dispose();
   }
 
-  bool validate(String? value) {
-    if (widget.validator != null) {
-      return widget.validator!(value);
-    }
-    return false;
-  }
-
   void attemptSubmit(String? value) {
-    if (validate(value)) {
+    if (widget.validator?.call(value) == null) {
       widget.onSubmit(value);
     }
   }
@@ -151,7 +152,7 @@ class InputBlockState extends State<InputBlock> {
                 labelText: widget.label,
                 labelStyle: Theme.of(context).textTheme.titleSmall,
                 hintText: widget.hint,
-                errorText: validate(value) ? null : widget.error,
+                errorText: widget.validator?.call(value),
                 errorBorder: OutlineInputBorder(
                     borderSide: BorderSide(
                         color: Theme.of(context).colorScheme.error,

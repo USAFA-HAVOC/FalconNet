@@ -28,10 +28,9 @@ class IndividualStatusWidgetState extends State<IndividualStatusWidget> {
     super.initState();
     status = Map.fromEntries(
       widget.users
-          .where((user) => true/*!user.roles.any((r) => r.role == Roles.permanent_party.name)*/)
           .map((u) => MapEntry(
             u.user_id,
-            true // individual pass status
+            u.individual_pass_status
           ))
     );
   }

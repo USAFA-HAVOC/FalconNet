@@ -15,7 +15,7 @@ class AssigneeBar extends StatelessWidget {
   Widget build(BuildContext context) {
     List<String> bases = assignee.units
         .where((u) => !assignee.units.any(
-            (p) => units.firstWhere((o) => o.name == p).parent_units.toList().contains(u)
+            (p) => units.where((o) => o.name == p).any((g) => g.parent_units.toList().contains(u))
         )).toList();
 
     return InfoBar(

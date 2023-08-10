@@ -175,7 +175,7 @@ class Endpoints {
   static Endpoint<UnitAssignRequest, bool> setUnit = Endpoint("/unit/set-user");
 
   static Endpoint<PassStatusRequest, bool> setPassStatus = Endpoint("/unit/set-pass-status");
-  static Endpoint<IndividualStatusRequest, bool> setIndividualPassStatus = Endpoint("/unit/set-individual-pass-status");
+  static Endpoint<IndividualStatusRequest, bool> setIndividualPassStatus = Endpoint("/users/set-pass-status");
 
   static Endpoint<AccountabilityEvent, AccountabilityEvent> createEvent = Endpoint("/events/create");
   static Endpoint<StringRequest, bool> deleteEvent = Endpoint("/events/delete");
