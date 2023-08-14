@@ -25,7 +25,7 @@ jobs:
         run: |
           flutter config --enable-web
           flutter pub get
-          flutter build web --release
+          flutter build web --release --no-tree-shake-icons
       - name: Build And Deploy
         id: builddeploy
         uses: Azure/static-web-apps-deploy@v1
