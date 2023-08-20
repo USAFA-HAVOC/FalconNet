@@ -1,6 +1,8 @@
 import 'package:async_redux/async_redux.dart';
 import 'package:falcon_net/Model/Database/AccountabilityEvent.dart';
+import 'package:falcon_net/Model/Database/UserStatus.dart';
 import 'package:falcon_net/Model/Store/Actions/SignAction.dart';
+import 'package:falcon_net/Structure/Components/ConfirmationDialog.dart';
 import 'package:falcon_net/Structure/Components/InfoBar.dart';
 import 'package:falcon_net/Structure/Components/PageWidget.dart';
 import 'package:falcon_net/Utility/ErrorFormatting.dart';
@@ -25,6 +27,8 @@ class Signatures extends StatelessWidget {
         .where((e) => e.accountability_method == AccountabilityMethod.self_signed.name)
         .toList()
         .sortedKey((e) => e.time);
+
+    print(events);
 
     if (sorted.isEmpty) {
       return const PageWidget(
@@ -52,10 +56,19 @@ class Signatures extends StatelessWidget {
                   children: [
                     Expanded(
                       flex: 2,
-                      child: Text(
-                        describeDate(sorted[index].time),
-                        textAlign: TextAlign.start,
-                      ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: [
+                          Text(
+                            describeDate(sorted[index].time),
+                            textAlign: TextAlign.center,
+                          ),
+                          Text(
+                            describeTime(TimeOfDay.fromDateTime(sorted[index].time)),
+                            textAlign: TextAlign.center,
+                          ),
+                        ],
+                      )
                     ),
 
                     Expanded(
@@ -70,25 +83,32 @@ class Signatures extends StatelessWidget {
                       flex: 2,
                       child: StoreConnector<GlobalState, ViewModel<void>>(
                         converter: (store) => ViewModel(store: store, content: null),
-                        builder: (context, model) => IconButton(
-                          icon: const Icon(FontAwesome5.pen_nib),
-                          onPressed: () async {
-                            try {
-                              await model.dispatch(SignAction(event: sorted[index].event_id));
+                        builder: (context, model) => sorted[index].status == UserStatus.signed.name
+                            ? const Icon(Icons.check)
+                            : IconButton(
+                                icon: const Icon(FontAwesome5.pen_nib),
+                                onPressed: () => showDialog(context: context, builder: (context) => ConfirmationDialog(
+                                    title: "Confirm Signing",
+                                    description: "Please confirm you have completed the requirements to sign for this "
+                                        "event. This action cannot be undone.",
+                                    onConfirm: () async {
+                                      try {
+                                        await model.dispatch(SignAction(event: sorted[index].event_id));
 
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                const SnackBar(content: Text("Successfully Signed"))
-                              );
-                            }
-                            catch (e) {
-                              displayError(prefix: "Events", exception: e);
+                                        ScaffoldMessenger.of(context).showSnackBar(
+                                            const SnackBar(content: Text("Successfully Signed"))
+                                        );
+                                      }
+                                      catch (e) {
+                                        displayError(prefix: "Events", exception: e);
 
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                  const SnackBar(content: Text("Failed to Sign"))
-                              );
-                            }
-                          },
-                        ),
+                                        ScaffoldMessenger.of(context).showSnackBar(
+                                            const SnackBar(content: Text("Failed to Sign"))
+                                        );
+                                      }
+                                    }
+                                )),
+                              ),
                       )
                     )
                   ]

@@ -20,10 +20,10 @@ class UnitStatusWidget extends StatelessWidget {
 
   UnitStatusWidget({super.key, required UnitData data, this.label = "Current Status", String? event}) :
         here = false,
-        unsigned = data.members.where((signee) => signee.status(event: event) == UserStatus.unsigned).length,
-        signed = data.members.where((signee) => signee.status(event: event) == UserStatus.signed).length,
-        out = data.members.where((signee) => signee.status(event: event) == UserStatus.out).length,
-        leave = data.members.where((signee) => signee.status(event: event) == UserStatus.leave).length;
+        unsigned = data.members.where((signee) => signee.status.status == UserStatus.unsigned.name).length,
+        signed = data.members.where((signee) => signee.status.status == UserStatus.signed.name).length,
+        out = data.members.where((signee) => signee.status.status == UserStatus.out.name).length,
+        leave = data.members.where((signee) => signee.status.status == UserStatus.leave.name).length;
 
   UnitStatusWidget.fromList({super.key, required List<UnitSummary> units, this.label = "Current Status"}) :
         here = false,
@@ -34,10 +34,10 @@ class UnitStatusWidget extends StatelessWidget {
 
   UnitStatusWidget.fromUserSummaries({super.key, required List<UserSummary> users, this.label = "Current Status"}) :
         here = false,
-        unsigned = users.where((user) => user.status() == UserStatus.unsigned).length,
-        signed = users.where((user) => user.status() == UserStatus.signed).length,
-        out = users.where((user) => user.status() == UserStatus.out).length,
-        leave = users.where((user) => user.status() == UserStatus.leave).length;
+        unsigned = users.where((user) => user.status.status == UserStatus.unsigned.name).length,
+        signed = users.where((user) => user.status.status == UserStatus.signed.name).length,
+        out = users.where((user) => user.status.status == UserStatus.out.name).length,
+        leave = users.where((user) => user.status.status == UserStatus.leave.name).length;
 
   UnitStatusWidget.fromUsers({super.key, required List<User> users, this.label = "Current Status"}) :
         here = true,

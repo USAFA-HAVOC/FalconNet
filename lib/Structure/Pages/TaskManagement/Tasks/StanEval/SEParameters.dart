@@ -1,3 +1,5 @@
+import 'package:falcon_net/Model/Database/StanEvalUser.dart';
+
 import '../../../../../Model/Database/GradeType.dart';
 import '../../../../../Model/Database/UnitGrades.dart';
 import '../../../../../Model/Database/UserSummary.dart';
@@ -12,7 +14,7 @@ class SEParameters {
 class SEEventParameters {
   final GradeType type;
   final int index;
-  final List<UserSummary> members;
+  final List<StanEvalUser> members;
 
   const SEEventParameters({required this.type, required this.index, required this.members});
 }

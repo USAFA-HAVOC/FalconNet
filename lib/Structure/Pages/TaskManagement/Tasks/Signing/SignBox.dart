@@ -16,7 +16,7 @@ class SignBox extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    bool signable = user.status(event: event) == UserStatus.unsigned;
+    bool signable = user.status.status == UserStatus.unsigned.name;
 
     return InfoBar(
       exteriorPadding: const EdgeInsets.symmetric(vertical: 3),
@@ -33,7 +33,7 @@ class SignBox extends StatelessWidget {
         Expanded(
             flex: 2,
             child: Text(
-              user.status().display(),
+              UserStatusNames.parse(user.status.status).display(),
               style: Theme.of(context).textTheme.bodyLarge,
               textAlign: TextAlign.center,
             )

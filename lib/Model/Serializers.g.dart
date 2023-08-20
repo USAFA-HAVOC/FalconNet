@@ -23,6 +23,7 @@ Serializers _$serializers = (new Serializers().toBuilder()
       ..add(FormSummary.serializer)
       ..add(Grade.serializer)
       ..add(GradeSubmission.serializer)
+      ..add(IndividualPassStatus.serializer)
       ..add(IndividualStatusRequest.serializer)
       ..add(InitialData.serializer)
       ..add(PassHistoryModel.serializer)
@@ -31,6 +32,7 @@ Serializers _$serializers = (new Serializers().toBuilder()
       ..add(SchedulingEvent.serializer)
       ..add(SignRequest.serializer)
       ..add(SquadronAssignRequest.serializer)
+      ..add(StanEvalUser.serializer)
       ..add(StringRequest.serializer)
       ..add(TimedRole.serializer)
       ..add(Unit.serializer)
@@ -39,10 +41,13 @@ Serializers _$serializers = (new Serializers().toBuilder()
       ..add(UnitDataRequest.serializer)
       ..add(UnitGrades.serializer)
       ..add(UnitList.serializer)
+      ..add(UnitManagementThing.serializer)
       ..add(UnitOrder.serializer)
       ..add(UnitSummary.serializer)
       ..add(User.serializer)
       ..add(UserEvent.serializer)
+      ..add(UserEventExcusal.serializer)
+      ..add(UserEventStatus.serializer)
       ..add(UserGrades.serializer)
       ..add(UserList.serializer)
       ..add(UserNotification.serializer)
@@ -80,6 +85,17 @@ Serializers _$serializers = (new Serializers().toBuilder()
           const FullType(BuiltList, const [const FullType(Grade)]),
           () => new ListBuilder<Grade>())
       ..addBuilderFactory(
+          const FullType(
+              BuiltList, const [const FullType(IndividualPassStatus)]),
+          () => new ListBuilder<IndividualPassStatus>())
+      ..addBuilderFactory(
+          const FullType(BuiltList, const [const FullType(StanEvalUser)]),
+          () => new ListBuilder<StanEvalUser>())
+      ..addBuilderFactory(
+          const FullType(BuiltMap,
+              const [const FullType(String), const FullType(UserGrades)]),
+          () => new MapBuilder<String, UserGrades>())
+      ..addBuilderFactory(
           const FullType(BuiltList, const [const FullType(String)]),
           () => new ListBuilder<String>())
       ..addBuilderFactory(
@@ -116,21 +132,11 @@ Serializers _$serializers = (new Serializers().toBuilder()
           const FullType(BuiltList, const [const FullType(User)]),
           () => new ListBuilder<User>())
       ..addBuilderFactory(
-          const FullType(BuiltList, const [const FullType(UserEvent)]),
-          () => new ListBuilder<UserEvent>())
-      ..addBuilderFactory(
           const FullType(BuiltList, const [const FullType(UserSummary)]),
           () => new ListBuilder<UserSummary>())
       ..addBuilderFactory(
           const FullType(BuiltList, const [const FullType(UserSummary)]),
           () => new ListBuilder<UserSummary>())
-      ..addBuilderFactory(
-          const FullType(BuiltList, const [const FullType(UserSummary)]),
-          () => new ListBuilder<UserSummary>())
-      ..addBuilderFactory(
-          const FullType(BuiltMap,
-              const [const FullType(String), const FullType(UserGrades)]),
-          () => new MapBuilder<String, UserGrades>())
       ..addBuilderFactory(
           const FullType(BuiltList, const [const FullType(bool)]),
           () => new ListBuilder<bool>())

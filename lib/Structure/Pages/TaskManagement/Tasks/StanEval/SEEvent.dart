@@ -2,6 +2,7 @@ import 'package:async_redux/async_redux.dart';
 import 'package:built_collection/built_collection.dart';
 import 'package:falcon_net/Model/Database/GradeSubmission.dart';
 import 'package:falcon_net/Model/Database/GradeType.dart';
+import 'package:falcon_net/Model/Database/StanEvalUser.dart';
 import 'package:falcon_net/Model/Store/GlobalState.dart';
 import 'package:falcon_net/Structure/Components/FNPage.dart';
 import 'package:falcon_net/Structure/Components/PageWidget.dart';
@@ -20,7 +21,7 @@ import '../../../../../Model/Store/Endpoints.dart';
 class SEEvent extends StatefulWidget {
   final GradeType type;
   final int index;
-  final List<UserSummary> members;
+  final List<StanEvalUser> members;
 
   SEEvent({super.key, required SEEventParameters parameters})
       : type = parameters.type,
@@ -34,7 +35,7 @@ class SEEvent extends StatefulWidget {
 class SEEventState extends State<SEEvent> {
   TextEditingController score = TextEditingController();
   TextEditingController description = TextEditingController();
-  List<UserSummary> gradees = [];
+  List<StanEvalUser> gradees = [];
   String? scoreError;
   String? descriptionError;
 
@@ -115,7 +116,7 @@ class SEEventState extends State<SEEvent> {
           descriptionError = null;
           score.text = "";
           description.text = "";
-          gradees = <UserSummary>[];
+          gradees = <StanEvalUser>[];
         });
       } catch (e) {
         displayError(prefix: "S/E Event", exception: e);
@@ -127,7 +128,7 @@ class SEEventState extends State<SEEvent> {
 
   @override
   Widget build(BuildContext context) {
-    Map<String, List<UserSummary>> rooms = {};
+    Map<String, List<StanEvalUser>> rooms = {};
     for (var member in widget.members) {
       if (member.room != null) {
         if (rooms[member.room] == null) rooms[member.room!] = [];
@@ -155,7 +156,7 @@ class SEEventState extends State<SEEvent> {
                         onPressed: () => showDialog(
                             context: context,
                             builder: (context) =>
-                                SESelectionDialog<List<UserSummary>>(
+                                SESelectionDialog<List<StanEvalUser>>(
                                     contents: rooms,
                                     onAdd: (roommates) => setState(() =>
                                         gradees.addAll(roommates.where(
@@ -167,8 +168,8 @@ class SEEventState extends State<SEEvent> {
                         onPressed: () => showDialog(
                             context: context,
                             builder: (context) => SESelectionDialog<
-                                    UserSummary>(
-                                contents: Map<String, UserSummary>.fromEntries(
+                                StanEvalUser>(
+                                contents: Map<String, StanEvalUser>.fromEntries(
                                     widget.members
                                         .where((m) => !gradees
                                             .any((g) => g.user_id == m.user_id))

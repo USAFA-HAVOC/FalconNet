@@ -19,11 +19,22 @@ class _$UnitDataRequestSerializer
   @override
   Iterable<Object?> serialize(Serializers serializers, UnitDataRequest object,
       {FullType specifiedType = FullType.unspecified}) {
-    final result = <Object?>[
-      'unit',
-      serializers.serialize(object.unit, specifiedType: const FullType(String)),
-    ];
-
+    final result = <Object?>[];
+    Object? value;
+    value = object.unit;
+    if (value != null) {
+      result
+        ..add('unit')
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(String)));
+    }
+    value = object.event;
+    if (value != null) {
+      result
+        ..add('event')
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(String)));
+    }
     return result;
   }
 
@@ -41,7 +52,11 @@ class _$UnitDataRequestSerializer
       switch (key) {
         case 'unit':
           result.unit = serializers.deserialize(value,
-              specifiedType: const FullType(String))! as String;
+              specifiedType: const FullType(String)) as String?;
+          break;
+        case 'event':
+          result.event = serializers.deserialize(value,
+              specifiedType: const FullType(String)) as String?;
           break;
       }
     }
@@ -52,14 +67,14 @@ class _$UnitDataRequestSerializer
 
 class _$UnitDataRequest extends UnitDataRequest {
   @override
-  final String unit;
+  final String? unit;
+  @override
+  final String? event;
 
   factory _$UnitDataRequest([void Function(UnitDataRequestBuilder)? updates]) =>
       (new UnitDataRequestBuilder()..update(updates))._build();
 
-  _$UnitDataRequest._({required this.unit}) : super._() {
-    BuiltValueNullFieldError.checkNotNull(unit, r'UnitDataRequest', 'unit');
-  }
+  _$UnitDataRequest._({this.unit, this.event}) : super._();
 
   @override
   UnitDataRequest rebuild(void Function(UnitDataRequestBuilder) updates) =>
@@ -72,20 +87,25 @@ class _$UnitDataRequest extends UnitDataRequest {
   @override
   bool operator ==(Object other) {
     if (identical(other, this)) return true;
-    return other is UnitDataRequest && unit == other.unit;
+    return other is UnitDataRequest &&
+        unit == other.unit &&
+        event == other.event;
   }
 
   @override
   int get hashCode {
     var _$hash = 0;
     _$hash = $jc(_$hash, unit.hashCode);
+    _$hash = $jc(_$hash, event.hashCode);
     _$hash = $jf(_$hash);
     return _$hash;
   }
 
   @override
   String toString() {
-    return (newBuiltValueToStringHelper(r'UnitDataRequest')..add('unit', unit))
+    return (newBuiltValueToStringHelper(r'UnitDataRequest')
+          ..add('unit', unit)
+          ..add('event', event))
         .toString();
   }
 }
@@ -98,12 +118,17 @@ class UnitDataRequestBuilder
   String? get unit => _$this._unit;
   set unit(String? unit) => _$this._unit = unit;
 
+  String? _event;
+  String? get event => _$this._event;
+  set event(String? event) => _$this._event = event;
+
   UnitDataRequestBuilder();
 
   UnitDataRequestBuilder get _$this {
     final $v = _$v;
     if ($v != null) {
       _unit = $v.unit;
+      _event = $v.event;
       _$v = null;
     }
     return this;
@@ -124,10 +149,7 @@ class UnitDataRequestBuilder
   UnitDataRequest build() => _build();
 
   _$UnitDataRequest _build() {
-    final _$result = _$v ??
-        new _$UnitDataRequest._(
-            unit: BuiltValueNullFieldError.checkNotNull(
-                unit, r'UnitDataRequest', 'unit'));
+    final _$result = _$v ?? new _$UnitDataRequest._(unit: unit, event: event);
     replace(_$result);
     return _$result;
   }

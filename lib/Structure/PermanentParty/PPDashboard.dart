@@ -1,4 +1,5 @@
 import 'package:falcon_net/Model/Database/StringRequest.dart';
+import 'package:falcon_net/Model/Database/UnitDataRequest.dart';
 import 'package:falcon_net/Model/Database/UnitGrades.dart';
 import 'package:falcon_net/Structure/Components/AsyncPage.dart';
 import 'package:falcon_net/Structure/Components/GradeAveragesWidget.dart';
@@ -33,7 +34,7 @@ class PPDashboardState extends State<PPDashboard> {
   }
 
   Future<PPDashboardData> buildConnection() async {
-    var unit = await Endpoints.getOwnUnit(null);
+    var unit = await Endpoints.getUnit(UnitDataRequest.direct());
     var grades = await Endpoints.unitGrades(StringRequest((r) => r..string = unit.unit.name));
     return PPDashboardData(accountability: unit, grades: grades);
   }

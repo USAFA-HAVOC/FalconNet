@@ -1,11 +1,13 @@
 import 'dart:async';
 
+import 'package:falcon_net/Model/Database/UserEventStatus.dart';
 import 'package:falcon_net/Model/Store/Endpoints.dart';
 import 'package:falcon_net/Structure/Components/UnitStatusWidget.dart';
 import 'package:flutter/material.dart';
 
 import '../../../../../Model/Database/SignRequest.dart';
 import '../../../../../Model/Database/UnitData.dart';
+import '../../../../../Model/Database/UserStatus.dart';
 import '../../../../../Model/Database/UserSummary.dart';
 import '../../../../../Utility/ErrorFormatting.dart';
 import '../../../../Components/AsyncPage.dart';
@@ -45,6 +47,8 @@ class UnitSigningEventState extends State<UnitSigningEvent> {
   void initState() {
     super.initState();
 
+    print(widget.event);
+
     future = Future.value(widget.retrieve())
         .catchError((error, stackTrace) {
           displayError(prefix: "Signing", exception: error);
@@ -83,21 +87,17 @@ class UnitSigningEventState extends State<UnitSigningEvent> {
       ));
 
       setState(() {
-        future = Future<UnitData>.value(data.sign(member, event: widget.event));
-        /*
-        future = Future<UnitData>.value(
-            data.rebuild((u) => u.members.map((m) =>
-              m.user_id != member.user_id
-                ? m
-                : member.rebuild((m) =>
-                    m.events.map((e) =>
-                    e.event_id != widget.event
-                        ? e
-                        : e.rebuild((b) => b.status = UserStatus.signed.name)
-                    )
-                  )
-            ))
-        );*/
+        //future = Future<UnitData>.value(data.sign(member, event: widget.event));
+
+        var mutated = data.rebuild((u) => u.members.map((m) =>
+          m.user_id != member.user_id
+            ? m
+            : member.rebuild((m) =>
+                m.status = (UserEventStatusBuilder()..status = UserStatus.signed.name)
+              )
+        ));
+
+        future = Future<UnitData>.value(mutated);
       });
 
       messenger.showSnackBar(

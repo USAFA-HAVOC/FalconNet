@@ -63,7 +63,7 @@ class SigningWidgetState extends State<SigningWidget> {
 
     var ordered = search(
         widget.status!.members.toList()
-            .where((u) => u.status(event: widget.event) != UserStatus.unassigned)
+            .where((u) => u.status.status != UserStatus.unassigned.name)
             .toList(),
         query
     );

@@ -1,4 +1,3 @@
-import 'package:falcon_net/Model/Database/UserSummary.dart';
 import 'package:falcon_net/Structure/Components/InfoBar.dart';
 import 'package:falcon_net/Structure/Components/FNPage.dart';
 import 'package:falcon_net/Structure/Components/GraphWidget.dart';
@@ -8,6 +7,7 @@ import 'package:falcon_net/Utility/ListExtensions.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 
+import '../../../../../Model/Database/StanEvalUser.dart';
 import '../../../../../Model/Database/UserGrades.dart';
 import '../../../../Components/GradeAveragesWidget.dart';
 import '../../../../Components/GradeBoard.dart';
@@ -24,7 +24,7 @@ class SEAnalytics extends StatelessWidget {
   double calculateReporting(List<Grade> grades) =>
       grades.isNotEmpty ? grades.length / parameters.grades.members.length : 0;
 
-  List<Widget> buildStatisticBars(BuildContext context, {required void Function(String, Map<UserSummary, Grade>) onTap}) {
+  List<Widget> buildStatisticBars(BuildContext context, {required void Function(String, Map<StanEvalUser, Grade>) onTap}) {
     if (!parameters.grades.grades.values.any(
             (gradeSet) => gradeSet.amis.isNotEmpty || gradeSet.samis.isNotEmpty || gradeSet.pais.isNotEmpty)
     ) {
@@ -42,7 +42,7 @@ class SEAnalytics extends StatelessWidget {
 
     List<Widget> bars = <Widget>[];
 
-    Widget buildGradeBar(Map<UserSummary, Grade> grades, String name) =>
+    Widget buildGradeBar(Map<StanEvalUser, Grade> grades, String name) =>
         InfoBar(
           interiorPadding: const EdgeInsets.symmetric(vertical: 15, horizontal: 10),
           onTap: () => onTap(name, grades),

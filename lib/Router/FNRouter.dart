@@ -26,6 +26,7 @@ import '../Model/Store/Endpoints.dart';
 import '../Model/Store/GlobalState.dart';
 import '../Structure/FNNavigationBar.dart';
 import '../Structure/FNScaffold.dart';
+import '../Structure/Pages/Excusals/Excusals.dart';
 import '../Structure/PermanentParty/PPDrawer.dart';
 import '../Structure/Pages/Dashboard/Dashboard.dart';
 import '../Structure/Pages/Grades/Grades.dart';
@@ -224,6 +225,11 @@ GoRouter fnRouter(GlobalKey<NavigatorState> key, SignState sign, bool party) => 
                 GoRoute(
                   path: "events",
                   pageBuilder: fullSlide(const Events()),
+                ),
+
+                GoRoute(
+                  path: "excusals",
+                  pageBuilder: fullSlide(const Excusals()),
                 ),
 
                 GoRoute(

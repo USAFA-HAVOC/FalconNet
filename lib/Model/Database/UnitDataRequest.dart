@@ -6,7 +6,14 @@ part 'UnitDataRequest.g.dart';
 abstract class UnitDataRequest implements Built<UnitDataRequest, UnitDataRequestBuilder> {
   static Serializer<UnitDataRequest> get serializer => _$unitDataRequestSerializer;
 
-  String get unit;
+  String? get unit;
+  String? get event;
+
+  static UnitDataRequest direct({String? unit, String? event}) => (
+      UnitDataRequestBuilder()
+        ..unit = unit
+        ..event = event
+  ).build();
 
   UnitDataRequest._();
   factory UnitDataRequest([void Function(UnitDataRequestBuilder) updates]) = _$UnitDataRequest;

@@ -4,7 +4,6 @@ import 'package:falcon_net/Model/Database/StringRequest.dart';
 import 'package:flutter/material.dart';
 
 import '../../../../../Model/Database/AccountabilityEvent.dart';
-import '../../../../../Model/Database/UnitData.dart';
 import '../../../../../Model/Store/Endpoints.dart';
 import '../../../../../Utility/ErrorFormatting.dart';
 import '../../../../../Utility/TemporalFormatting.dart';
@@ -35,12 +34,6 @@ class CWOCTaskState extends State<CWOCTask> {
           return Future<List<AccountabilityEvent>>.error(error);
         });
   }
-
-  FutureOr<UnitData> retrieve(String event) => Endpoints.getOwnUnit(event)
-      .catchError((error, stackTrace) {
-    displayError(prefix: "CWOC", exception: error);
-    return Future<UnitData>.error(error);
-  });
 
   @override
   Widget build(BuildContext context) => AsyncPage(

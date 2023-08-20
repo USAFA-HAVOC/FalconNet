@@ -9,12 +9,16 @@ import 'package:falcon_net/Model/Database/CadetPass.dart';
 import 'package:falcon_net/Model/Database/CadetPassAllocation.dart';
 import 'package:falcon_net/Model/Database/FormSummary.dart';
 import 'package:falcon_net/Model/Database/GradeSubmission.dart';
+import 'package:falcon_net/Model/Database/IndividualPassStatus.dart';
 import 'package:falcon_net/Model/Database/PassStatusRequest.dart';
 import 'package:falcon_net/Model/Database/SchedulingEvent.dart';
 import 'package:falcon_net/Model/Database/SquadronAssignRequest.dart';
+import 'package:falcon_net/Model/Database/StanEvalUser.dart';
 import 'package:falcon_net/Model/Database/UnitDataRequest.dart';
+import 'package:falcon_net/Model/Database/UnitManagementThing.dart';
 import 'package:falcon_net/Model/Database/UnitOrder.dart';
 import 'package:falcon_net/Model/Database/User.dart';
+import 'package:falcon_net/Model/Database/UserEventExcusal.dart';
 import 'package:falcon_net/Model/Database/UserGrades.dart';
 import 'package:falcon_net/Model/Database/UserNotification.dart';
 import 'package:falcon_net/Model/Database/UserPersonalInfo.dart';
@@ -30,7 +34,6 @@ import 'Database/FormList.dart';
 import 'Database/IndividualStatusRequest.dart';
 import 'Database/InitialData.dart';
 import 'Database/PassHistoryModel.dart';
-import 'Database/Role.dart';
 import 'Database/RoleRequest.dart';
 import 'Database/SignRequest.dart';
 import 'Database/StringRequest.dart';
@@ -42,6 +45,7 @@ import 'Database/UnitGrades.dart';
 import 'Database/UnitList.dart';
 import 'Database/UnitSummary.dart';
 import 'Database/UserEvent.dart';
+import 'Database/UserEventStatus.dart';
 import 'Database/UserList.dart';
 import 'Database/UserSummaryList.dart';
 import 'Database/FormOneData.dart';
@@ -94,6 +98,11 @@ part 'Serializers.g.dart';
   InitialData,
   SignRequest,
   UserEvent,
+  UserEventStatus,
+  UserEventExcusal,
+  IndividualPassStatus,
+  UnitManagementThing,
+  StanEvalUser
 ])
 
 
