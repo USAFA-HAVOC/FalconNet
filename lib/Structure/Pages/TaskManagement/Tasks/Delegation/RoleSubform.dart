@@ -92,11 +92,13 @@ class RoleSubformState extends State<RoleSubform> {
             .toList()
         ).toList();
 
+    var ceiling = widget.units.firstWhere((u) => u.parent_units.isEmpty).name;
+
     var assignable = grandchildren(
         widget.applicable.where((r) => r.isAdmin())
             .map((r) => r.name == Roles.unit_admin.name
                 ? r.unit!
-                : widget.units.firstWhere((u) => u.parent_units.isEmpty).name
+                : ceiling
             )
             .toList()
     )
@@ -150,7 +152,7 @@ class RoleSubformState extends State<RoleSubform> {
 
               (requiresUnit(value.name))
                   ? DropdownButtonFormField<String>(
-                        value: value.unit!,
+                        value: assignable.contains(value.unit!) ? value.unit! : ceiling,
                         items: assignable.map((u) => DropdownMenuItem<String>(
                             value: u,
                             child: Text(u)

@@ -10,6 +10,8 @@ import 'package:falcon_net/Model/Database/RoleRequest.dart';
 import 'package:falcon_net/Model/Database/SignRequest.dart';
 import 'package:falcon_net/Model/Database/StringRequest.dart';
 import 'package:falcon_net/Model/Database/UnitData.dart';
+import 'package:falcon_net/Model/Database/UnitDataRequest.dart';
+import 'package:falcon_net/Model/Database/UnitManagementThing.dart';
 import 'package:falcon_net/Model/Database/User.dart';
 import 'package:falcon_net/Model/Database/UserGrades.dart';
 import 'package:falcon_net/Model/Database/UserSummaryList.dart';
@@ -169,10 +171,11 @@ class Endpoints {
   static Endpoint<Unit, Unit> deleteUnit = Endpoint("/unit/delete");
 
   static Endpoint<StringRequest, WingData> getWing = Endpoint("/unit/summaries");
-  static Endpoint<void, UnitData> getOwnUnit = Endpoint("/unit/data");
-  static Endpoint<StringRequest, UnitData> getUnit = Endpoint("/unit/data");
+  static Endpoint<UnitDataRequest, UnitData> getUnit = Endpoint("/unit/data");
 
   static Endpoint<UnitAssignRequest, bool> setUnit = Endpoint("/unit/set-user");
+
+  static Endpoint<StringRequest?, UnitManagementThing> getUnitManagementThing = Endpoint("/unit/pass-status");
 
   static Endpoint<PassStatusRequest, bool> setPassStatus = Endpoint("/unit/set-pass-status");
   static Endpoint<IndividualStatusRequest, bool> setIndividualPassStatus = Endpoint("/users/set-pass-status");

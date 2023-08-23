@@ -1,3 +1,4 @@
+import 'package:falcon_net/Model/Database/IndividualPassStatus.dart';
 import 'package:falcon_net/Model/Database/IndividualStatusRequest.dart';
 import 'package:falcon_net/Structure/Components/InfoBar.dart';
 import 'package:falcon_net/Structure/Components/PageWidget.dart';
@@ -10,7 +11,7 @@ import '../../../../../Model/Store/Endpoints.dart';
 import '../../../../Components/FNSearchBar.dart';
 
 class IndividualStatusWidget extends StatefulWidget {
-  final List<UserSummary> users;
+  final List<IndividualPassStatus> users;
 
   const IndividualStatusWidget({super.key, required this.users});
 
@@ -30,12 +31,12 @@ class IndividualStatusWidgetState extends State<IndividualStatusWidget> {
       widget.users
           .map((u) => MapEntry(
             u.user_id,
-            u.individual_pass_status
+            u.status
           ))
     );
   }
 
-  Widget buildStatus(BuildContext context, UserSummary user) {
+  Widget buildStatus(BuildContext context, IndividualPassStatus user) {
     var messenger = ScaffoldMessenger.of(context);
     return InfoBar(
       exteriorPadding: EdgeInsets.zero,

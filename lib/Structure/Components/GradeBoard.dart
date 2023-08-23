@@ -1,15 +1,15 @@
 import 'package:falcon_net/Model/Database/GradeType.dart';
+import 'package:falcon_net/Model/Database/StanEvalUser.dart';
 
 import '../../Model/Database/UnitGrades.dart';
 import '../../Model/Database/UserGrades.dart';
-import '../../Model/Database/UserSummary.dart';
 
 class GradeBoard {
-  Map<int, Map<UserSummary, Grade>> amis;
-  Map<int, Map<UserSummary, Grade>> samis;
-  Map<int, Map<UserSummary, Grade>> pais;
+  Map<int, Map<StanEvalUser, Grade>> amis;
+  Map<int, Map<StanEvalUser, Grade>> samis;
+  Map<int, Map<StanEvalUser, Grade>> pais;
 
-  Map<UserSummary, Grade> getRow(GradeType type, int index) {
+  Map<StanEvalUser, Grade> getRow(GradeType type, int index) {
     switch (type) {
       case GradeType.ami: return amis[index]!;
       case GradeType.sami: return samis[index]!;
@@ -20,13 +20,13 @@ class GradeBoard {
   GradeBoard({required this.amis, required this.samis, required this.pais});
 
   GradeBoard.fromUnitGrades({required UnitGrades unit}) :
-        amis = <int, Map<UserSummary, Grade>>{},
-        samis = <int, Map<UserSummary, Grade>>{},
-        pais = <int, Map<UserSummary, Grade>>{}
+        amis = <int, Map<StanEvalUser, Grade>>{},
+        samis = <int, Map<StanEvalUser, Grade>>{},
+        pais = <int, Map<StanEvalUser, Grade>>{}
   {
     var grades = unit.grades;
 
-    UserSummary findID(String id) {
+    StanEvalUser findID(String id) {
       return unit.members.firstWhere((m) => m.user_id == id);
     }
 
@@ -49,7 +49,7 @@ class GradeBoard {
   }
 
   double average(GradeType type) {
-    Map<int, Map<UserSummary, Grade>> relevant;
+    Map<int, Map<StanEvalUser, Grade>> relevant;
     switch (type) {
       case GradeType.ami:
         relevant = amis;

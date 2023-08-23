@@ -82,8 +82,6 @@ void main() async {
 
   FlutterNativeSplash.remove();
 
-  testSigning();
-
   runApp(
     FNApp(
       store: store,

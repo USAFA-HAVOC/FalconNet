@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:falcon_net/Model/Database/AccountabilityEvent.dart';
+import 'package:falcon_net/Model/Database/UnitDataRequest.dart';
 import 'package:falcon_net/Structure/Components/AsyncPage.dart';
 import 'package:falcon_net/Structure/Components/PageWidget.dart';
 import 'package:falcon_net/Structure/Pages/TaskManagement/Tasks/Signing/UnitSigningEvent.dart';
@@ -28,13 +29,12 @@ class UnitSigningTaskState extends State<UnitSigningTask> {
     future = Endpoints.getEvents(null)
       .then((list) => list.events.toList())
       .catchError((error, stackTrace) {
-        print(stackTrace);
         displayError(prefix: "Signing", exception: error);
         return Future<List<AccountabilityEvent>>.error(error);
       });
   }
 
-  FutureOr<UnitData> retrieve(String event) => Endpoints.getOwnUnit(event)
+  FutureOr<UnitData> retrieve(String event) => Endpoints.getUnit(UnitDataRequest.direct(event: event))
       .catchError((error, stackTrace) {
         displayError(prefix: "Signing", exception: error);
         return Future<UnitData>.error(error);
@@ -65,7 +65,7 @@ class UnitSigningTaskState extends State<UnitSigningTask> {
                   title: event.name ?? "Unnamed",
                   children: [
                     Text(
-                        "Due: ${describeDate(event.submission_deadline)}, ${describeTime(TimeOfDay.fromDateTime(event.submission_deadline))}"
+                        "Due: ${describeDate(event.submission_deadline.toLocal())}, ${describeTime(TimeOfDay.fromDateTime(event.submission_deadline.toLocal()))}"
                     ),
 
                     if (event.description != null) Text(

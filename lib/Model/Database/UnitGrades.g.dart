@@ -21,7 +21,7 @@ class _$UnitGradesSerializer implements StructuredSerializer<UnitGrades> {
       'members',
       serializers.serialize(object.members,
           specifiedType:
-              const FullType(BuiltList, const [const FullType(UserSummary)])),
+              const FullType(BuiltList, const [const FullType(StanEvalUser)])),
       'grades',
       serializers.serialize(object.grades,
           specifiedType: const FullType(BuiltMap,
@@ -45,7 +45,7 @@ class _$UnitGradesSerializer implements StructuredSerializer<UnitGrades> {
         case 'members':
           result.members.replace(serializers.deserialize(value,
                   specifiedType: const FullType(
-                      BuiltList, const [const FullType(UserSummary)]))!
+                      BuiltList, const [const FullType(StanEvalUser)]))!
               as BuiltList<Object?>);
           break;
         case 'grades':
@@ -64,7 +64,7 @@ class _$UnitGradesSerializer implements StructuredSerializer<UnitGrades> {
 
 class _$UnitGrades extends UnitGrades {
   @override
-  final BuiltList<UserSummary> members;
+  final BuiltList<StanEvalUser> members;
   @override
   final BuiltMap<String, UserGrades> grades;
 
@@ -112,10 +112,10 @@ class _$UnitGrades extends UnitGrades {
 class UnitGradesBuilder implements Builder<UnitGrades, UnitGradesBuilder> {
   _$UnitGrades? _$v;
 
-  ListBuilder<UserSummary>? _members;
-  ListBuilder<UserSummary> get members =>
-      _$this._members ??= new ListBuilder<UserSummary>();
-  set members(ListBuilder<UserSummary>? members) => _$this._members = members;
+  ListBuilder<StanEvalUser>? _members;
+  ListBuilder<StanEvalUser> get members =>
+      _$this._members ??= new ListBuilder<StanEvalUser>();
+  set members(ListBuilder<StanEvalUser>? members) => _$this._members = members;
 
   MapBuilder<String, UserGrades>? _grades;
   MapBuilder<String, UserGrades> get grades =>

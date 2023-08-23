@@ -40,9 +40,9 @@ class FNDrawer extends StatelessWidget {
                 path: "/events",
               ),
               DrawerItem(
-                icon: Icons.punch_clock,
-                title: "Pass Management",
-                path: "/pass_management",
+                icon: Icons.time_to_leave,
+                title: "Excusals",
+                path: "/excusals",
               ),
               DrawerItem(
                 icon: Icons.grade,

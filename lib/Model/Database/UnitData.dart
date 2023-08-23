@@ -19,11 +19,10 @@ abstract class UnitData implements Built<UnitData, UnitDataBuilder> {
 
 
   UnitData sign(UserSummary member, {String? event}) {
-
     return (toBuilder()
       ..signed = signed + 1
       ..unsigned = unsigned - 1
-      ..members = BuiltList<UserSummary>((members.where((u) => u.user_id != member.user_id).toList() + [member.sign(event: event)])).toBuilder()
+      ..members = BuiltList<UserSummary>((members.where((u) => u.user_id != member.user_id).toList() + [member.sign()])).toBuilder()
     ).build();
   }
 

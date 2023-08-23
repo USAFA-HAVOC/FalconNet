@@ -1,7 +1,9 @@
 import 'dart:core';
 import 'package:async_redux/async_redux.dart';
+import 'package:falcon_net/Model/Database/IndividualPassStatus.dart';
 import 'package:falcon_net/Model/Database/PassStatusRequest.dart';
 import 'package:falcon_net/Model/Database/TimedRole.dart';
+import 'package:falcon_net/Model/Database/UnitDataRequest.dart';
 import 'package:falcon_net/Structure/Components/LoadingShimmer.dart';
 import 'package:falcon_net/Structure/Components/PageWidget.dart';
 import 'package:falcon_net/Structure/Pages/TaskManagement/Tasks/UnitManagement/IndividualStatusWidget.dart';
@@ -17,7 +19,7 @@ import '../../../../Components/ViewModel.dart';
 
 class UnitManagementData {
   final List<bool> status;
-  final List<UserSummary> users;
+  final List<IndividualPassStatus> users;
 
   const UnitManagementData({required this.status, required this.users});
 }
@@ -45,7 +47,7 @@ class UnitManagementTaskState extends State<UnitManagementTask> {
 
   Future<UnitManagementData> requestData() async {
     try {
-      var data = await Endpoints.getOwnUnit(null);
+      var data = await Endpoints.getUnitManagementThing(null);
       //var forms = await Endpoints.getFormData(null);
       return UnitManagementData(
           status: data.unit.pass_status.toList(),

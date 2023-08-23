@@ -15,9 +15,9 @@ class DailySummary extends StatelessWidget {
   List<Widget> buildEventBars(BuildContext context) {
     var target = DateTime.now().add(Duration(days: day));
     var applicable = events.where((e) =>
-        e.time.year == target.year &&
-        e.time.month == target.month &&
-        e.time.day == target.day &&
+        e.time.toLocal().year == target.year &&
+        e.time.toLocal().month == target.month &&
+        e.time.toLocal().day == target.day &&
         e.type != EventType.di.name
     ).toList();
 
@@ -64,7 +64,7 @@ class DailySummary extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [
                 Text(
-                  describeTime(TimeOfDay.fromDateTime(e.time)),
+                  describeTime(TimeOfDay.fromDateTime(e.time.toLocal())),
                   style: Theme.of(context).textTheme.bodyLarge,
                 )
               ],

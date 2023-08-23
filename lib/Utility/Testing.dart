@@ -16,7 +16,7 @@ import '../Model/Database/AccountabilityEvent.dart';
 import '../Model/Database/User.dart';
 import '../Model/Database/Unit.dart';
 import '../Model/Database/UserGrades.dart';
-
+/*
 String randString(int lengthOfString){
   final random = Random();
   const allChars='AaBbCcDdlMmNnOoPpQqRrSsTtUuVvWwXxYyZzEeFfGgHhIiJjKkL';
@@ -166,3 +166,4 @@ void testSigning() {
   var member = unit.members.last;
   print(unit.sign(member, event: "test1").members.firstWhere((m) => m.user_id == member.user_id).status(event: "test1"));
 }
+ */

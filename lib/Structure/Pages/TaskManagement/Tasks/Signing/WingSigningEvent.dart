@@ -2,8 +2,8 @@ import 'dart:async';
 import 'dart:core';
 
 import 'package:falcon_net/Model/Database/SignRequest.dart';
-import 'package:falcon_net/Model/Database/StringRequest.dart';
 import 'package:falcon_net/Model/Database/UnitData.dart';
+import 'package:falcon_net/Model/Database/UnitDataRequest.dart';
 import 'package:falcon_net/Model/Database/UnitSummary.dart';
 import 'package:falcon_net/Model/Database/UserSummary.dart';
 import 'package:falcon_net/Model/Database/WingData.dart';
@@ -128,7 +128,7 @@ class WingSigningEventState extends State<WingSigningEvent> {
     var wing = await connection;
 
     try {
-      UnitData actual = await Endpoints.getUnit(StringRequest((b) => b..string = unit));
+      UnitData actual = await Endpoints.getUnit(UnitDataRequest.direct(unit: unit, event: widget.event));
       setState(() {
         connection = Future.value(wing.set(actual));
         loaded.removeWhere((u) => u.unit.name == unit || u.total == 0);

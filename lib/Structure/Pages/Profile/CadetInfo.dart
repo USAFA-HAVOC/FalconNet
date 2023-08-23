@@ -60,9 +60,10 @@ class CadetInfo extends StatelessWidget {
                     return "Must only include a building and room number";
                   }
                   var number = value.trim().split(" ").last;
-                  if (number.length < 3 || number.length > 4) {
-                    return "Room number must be 3-4 characters long";
+                  if (number.length < 3 || number.length > 5) {
+                    return "Room number must be 3-5 characters long";
                   }
+                  return null;
                 },
                 hint: "eg. 1A11",
                 initial: model.content.personal_info.room_number,
