@@ -25,6 +25,13 @@ class _$UserEventStatusSerializer
           specifiedType: const FullType(String)),
     ];
     Object? value;
+    value = object.returning;
+    if (value != null) {
+      result
+        ..add('returning')
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(DateTime)));
+    }
     value = object.signature_user_id;
     if (value != null) {
       result
@@ -72,6 +79,10 @@ class _$UserEventStatusSerializer
           result.status = serializers.deserialize(value,
               specifiedType: const FullType(String))! as String;
           break;
+        case 'returning':
+          result.returning = serializers.deserialize(value,
+              specifiedType: const FullType(DateTime)) as DateTime?;
+          break;
         case 'signature_user_id':
           result.signature_user_id = serializers.deserialize(value,
               specifiedType: const FullType(String)) as String?;
@@ -100,6 +111,8 @@ class _$UserEventStatus extends UserEventStatus {
   @override
   final String status;
   @override
+  final DateTime? returning;
+  @override
   final String? signature_user_id;
   @override
   final String? signature_name;
@@ -113,6 +126,7 @@ class _$UserEventStatus extends UserEventStatus {
 
   _$UserEventStatus._(
       {required this.status,
+      this.returning,
       this.signature_user_id,
       this.signature_name,
       this.signature_time,
@@ -134,6 +148,7 @@ class _$UserEventStatus extends UserEventStatus {
     if (identical(other, this)) return true;
     return other is UserEventStatus &&
         status == other.status &&
+        returning == other.returning &&
         signature_user_id == other.signature_user_id &&
         signature_name == other.signature_name &&
         signature_time == other.signature_time &&
@@ -144,6 +159,7 @@ class _$UserEventStatus extends UserEventStatus {
   int get hashCode {
     var _$hash = 0;
     _$hash = $jc(_$hash, status.hashCode);
+    _$hash = $jc(_$hash, returning.hashCode);
     _$hash = $jc(_$hash, signature_user_id.hashCode);
     _$hash = $jc(_$hash, signature_name.hashCode);
     _$hash = $jc(_$hash, signature_time.hashCode);
@@ -156,6 +172,7 @@ class _$UserEventStatus extends UserEventStatus {
   String toString() {
     return (newBuiltValueToStringHelper(r'UserEventStatus')
           ..add('status', status)
+          ..add('returning', returning)
           ..add('signature_user_id', signature_user_id)
           ..add('signature_name', signature_name)
           ..add('signature_time', signature_time)
@@ -171,6 +188,10 @@ class UserEventStatusBuilder
   String? _status;
   String? get status => _$this._status;
   set status(String? status) => _$this._status = status;
+
+  DateTime? _returning;
+  DateTime? get returning => _$this._returning;
+  set returning(DateTime? returning) => _$this._returning = returning;
 
   String? _signature_user_id;
   String? get signature_user_id => _$this._signature_user_id;
@@ -198,6 +219,7 @@ class UserEventStatusBuilder
     final $v = _$v;
     if ($v != null) {
       _status = $v.status;
+      _returning = $v.returning;
       _signature_user_id = $v.signature_user_id;
       _signature_name = $v.signature_name;
       _signature_time = $v.signature_time;
@@ -228,6 +250,7 @@ class UserEventStatusBuilder
           new _$UserEventStatus._(
               status: BuiltValueNullFieldError.checkNotNull(
                   status, r'UserEventStatus', 'status'),
+              returning: returning,
               signature_user_id: signature_user_id,
               signature_name: signature_name,
               signature_time: signature_time,

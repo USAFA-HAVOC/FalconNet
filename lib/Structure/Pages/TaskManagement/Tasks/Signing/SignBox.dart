@@ -1,3 +1,4 @@
+import 'package:falcon_net/Utility/TemporalFormatting.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttericon/font_awesome5_icons.dart';
 
@@ -24,19 +25,50 @@ class SignBox extends StatelessWidget {
       children: [
         Expanded(
           flex: 3,
-          child: Text(
-            user.name,
-            style: Theme.of(context).textTheme.titleSmall,
-          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              Text(
+                user.name,
+                style: Theme.of(context).textTheme.titleSmall,
+                textAlign: TextAlign.left,
+              ),
+
+              Text(
+                user.phone_number == null ? "Missing Phone #" : (user.phone_number!.trim().isEmpty ? "Missing Phone #" : user.phone_number!),
+                style: Theme.of(context).textTheme.bodyMedium,
+              )
+            ],
+          )
         ),
 
         Expanded(
             flex: 2,
-            child: Text(
-              UserStatusNames.parse(user.status.status).display(),
-              style: Theme.of(context).textTheme.bodyLarge,
-              textAlign: TextAlign.center,
-            )
+            child: (![UserStatus.out_returning.name, UserStatus.out.name, UserStatus.overdue.name].contains(user.status.status))
+              ? Text(
+                  UserStatusNames.parse(user.status.status).display(),
+                  style: Theme.of(context).textTheme.bodyLarge,
+                  textAlign: TextAlign.center,
+                )
+              : Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    Text(
+                      UserStatusNames.parse(user.status.status).display(),
+                      style: TextStyle(
+                        fontSize: Theme.of(context).textTheme.bodyLarge!.fontSize,
+                        color: Colors.red
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
+
+                    Text(
+                      "${describeDate(user.status.returning!)} ${describeTime(TimeOfDay.fromDateTime(user.status.returning!))}",
+                      style: Theme.of(context).textTheme.bodyMedium,
+                      textAlign: TextAlign.center,
+                    )
+                  ],
+                )
         ),
 
         Expanded(

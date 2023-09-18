@@ -25,6 +25,13 @@ class _$UnitDataSerializer implements StructuredSerializer<UnitData> {
           specifiedType: const FullType(int)),
       'out',
       serializers.serialize(object.out, specifiedType: const FullType(int)),
+      'out_returning',
+      serializers.serialize(object.out_returning,
+          specifiedType: const FullType(int)),
+      'overdue',
+      serializers.serialize(object.overdue, specifiedType: const FullType(int)),
+      'leave',
+      serializers.serialize(object.leave, specifiedType: const FullType(int)),
       'total',
       serializers.serialize(object.total, specifiedType: const FullType(int)),
       'unit',
@@ -61,6 +68,18 @@ class _$UnitDataSerializer implements StructuredSerializer<UnitData> {
           result.out = serializers.deserialize(value,
               specifiedType: const FullType(int))! as int;
           break;
+        case 'out_returning':
+          result.out_returning = serializers.deserialize(value,
+              specifiedType: const FullType(int))! as int;
+          break;
+        case 'overdue':
+          result.overdue = serializers.deserialize(value,
+              specifiedType: const FullType(int))! as int;
+          break;
+        case 'leave':
+          result.leave = serializers.deserialize(value,
+              specifiedType: const FullType(int))! as int;
+          break;
         case 'total':
           result.total = serializers.deserialize(value,
               specifiedType: const FullType(int))! as int;
@@ -90,6 +109,12 @@ class _$UnitData extends UnitData {
   @override
   final int out;
   @override
+  final int out_returning;
+  @override
+  final int overdue;
+  @override
+  final int leave;
+  @override
   final int total;
   @override
   final Unit unit;
@@ -103,6 +128,9 @@ class _$UnitData extends UnitData {
       {required this.signed,
       required this.unsigned,
       required this.out,
+      required this.out_returning,
+      required this.overdue,
+      required this.leave,
       required this.total,
       required this.unit,
       required this.members})
@@ -110,6 +138,10 @@ class _$UnitData extends UnitData {
     BuiltValueNullFieldError.checkNotNull(signed, r'UnitData', 'signed');
     BuiltValueNullFieldError.checkNotNull(unsigned, r'UnitData', 'unsigned');
     BuiltValueNullFieldError.checkNotNull(out, r'UnitData', 'out');
+    BuiltValueNullFieldError.checkNotNull(
+        out_returning, r'UnitData', 'out_returning');
+    BuiltValueNullFieldError.checkNotNull(overdue, r'UnitData', 'overdue');
+    BuiltValueNullFieldError.checkNotNull(leave, r'UnitData', 'leave');
     BuiltValueNullFieldError.checkNotNull(total, r'UnitData', 'total');
     BuiltValueNullFieldError.checkNotNull(unit, r'UnitData', 'unit');
     BuiltValueNullFieldError.checkNotNull(members, r'UnitData', 'members');
@@ -129,6 +161,9 @@ class _$UnitData extends UnitData {
         signed == other.signed &&
         unsigned == other.unsigned &&
         out == other.out &&
+        out_returning == other.out_returning &&
+        overdue == other.overdue &&
+        leave == other.leave &&
         total == other.total &&
         unit == other.unit &&
         members == other.members;
@@ -140,6 +175,9 @@ class _$UnitData extends UnitData {
     _$hash = $jc(_$hash, signed.hashCode);
     _$hash = $jc(_$hash, unsigned.hashCode);
     _$hash = $jc(_$hash, out.hashCode);
+    _$hash = $jc(_$hash, out_returning.hashCode);
+    _$hash = $jc(_$hash, overdue.hashCode);
+    _$hash = $jc(_$hash, leave.hashCode);
     _$hash = $jc(_$hash, total.hashCode);
     _$hash = $jc(_$hash, unit.hashCode);
     _$hash = $jc(_$hash, members.hashCode);
@@ -153,6 +191,9 @@ class _$UnitData extends UnitData {
           ..add('signed', signed)
           ..add('unsigned', unsigned)
           ..add('out', out)
+          ..add('out_returning', out_returning)
+          ..add('overdue', overdue)
+          ..add('leave', leave)
           ..add('total', total)
           ..add('unit', unit)
           ..add('members', members))
@@ -175,6 +216,19 @@ class UnitDataBuilder implements Builder<UnitData, UnitDataBuilder> {
   int? get out => _$this._out;
   set out(int? out) => _$this._out = out;
 
+  int? _out_returning;
+  int? get out_returning => _$this._out_returning;
+  set out_returning(int? out_returning) =>
+      _$this._out_returning = out_returning;
+
+  int? _overdue;
+  int? get overdue => _$this._overdue;
+  set overdue(int? overdue) => _$this._overdue = overdue;
+
+  int? _leave;
+  int? get leave => _$this._leave;
+  set leave(int? leave) => _$this._leave = leave;
+
   int? _total;
   int? get total => _$this._total;
   set total(int? total) => _$this._total = total;
@@ -196,6 +250,9 @@ class UnitDataBuilder implements Builder<UnitData, UnitDataBuilder> {
       _signed = $v.signed;
       _unsigned = $v.unsigned;
       _out = $v.out;
+      _out_returning = $v.out_returning;
+      _overdue = $v.overdue;
+      _leave = $v.leave;
       _total = $v.total;
       _unit = $v.unit.toBuilder();
       _members = $v.members.toBuilder();
@@ -229,6 +286,12 @@ class UnitDataBuilder implements Builder<UnitData, UnitDataBuilder> {
                   unsigned, r'UnitData', 'unsigned'),
               out: BuiltValueNullFieldError.checkNotNull(
                   out, r'UnitData', 'out'),
+              out_returning: BuiltValueNullFieldError.checkNotNull(
+                  out_returning, r'UnitData', 'out_returning'),
+              overdue: BuiltValueNullFieldError.checkNotNull(
+                  overdue, r'UnitData', 'overdue'),
+              leave: BuiltValueNullFieldError.checkNotNull(
+                  leave, r'UnitData', 'leave'),
               total: BuiltValueNullFieldError.checkNotNull(
                   total, r'UnitData', 'total'),
               unit: unit.build(),

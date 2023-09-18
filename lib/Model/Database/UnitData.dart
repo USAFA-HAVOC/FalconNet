@@ -13,8 +13,13 @@ abstract class UnitData implements Built<UnitData, UnitDataBuilder> {
   int get signed;
   int get unsigned;
   int get out;
+  int get out_returning;
+  int get overdue;
+  int get leave;
+
   int get total;
   Unit get unit;
+
   BuiltList<UserSummary> get members;
 
 
