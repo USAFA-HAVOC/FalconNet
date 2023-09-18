@@ -11,6 +11,7 @@ abstract class UserEventStatus implements Built<UserEventStatus, UserEventStatus
   static Serializer<UserEventStatus> get serializer => _$userEventStatusSerializer;
 
   String get status;
+  DateTime? get returning;
   String? get signature_user_id;
   String? get signature_name;
   DateTime? get signature_time;

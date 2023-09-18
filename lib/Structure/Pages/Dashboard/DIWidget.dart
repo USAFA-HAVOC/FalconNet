@@ -90,6 +90,8 @@ class DIWidget extends StatelessWidget {
                   )
                 ];
                 break;
+              case UserStatus.out_returning:
+              case UserStatus.overdue:
               case UserStatus.out:
                 text = [
                   Text(

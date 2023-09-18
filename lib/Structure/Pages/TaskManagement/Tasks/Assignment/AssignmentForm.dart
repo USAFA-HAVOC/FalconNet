@@ -85,6 +85,7 @@ class AssignmentFormState extends State<AssignmentForm> {
                 .any((g) => g.parent_units.toList().contains(u))
     )).toList();
 
+    //Good luck, lol
     List<String> grandchildren(List<String> children) =>
         children.map((e) => widget.units.where((u) => u.name == e))
             .expand((s) => s

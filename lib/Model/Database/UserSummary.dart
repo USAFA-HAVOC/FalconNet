@@ -12,6 +12,7 @@ abstract class UserSummary implements Built<UserSummary, UserSummaryBuilder> {
   String get user_id;
   String get name;
   UserEventStatus get status;
+  String? get phone_number;
 
 
   UserSummary sign() =>
