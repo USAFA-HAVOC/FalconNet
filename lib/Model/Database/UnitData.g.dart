@@ -38,6 +38,9 @@ class _$UnitDataSerializer implements StructuredSerializer<UnitData> {
       serializers.serialize(object.total, specifiedType: const FullType(int)),
       'unit',
       serializers.serialize(object.unit, specifiedType: const FullType(Unit)),
+      'event',
+      serializers.serialize(object.event,
+          specifiedType: const FullType(AccountabilityEvent)),
       'members',
       serializers.serialize(object.members,
           specifiedType:
@@ -94,6 +97,11 @@ class _$UnitDataSerializer implements StructuredSerializer<UnitData> {
           result.unit.replace(serializers.deserialize(value,
               specifiedType: const FullType(Unit))! as Unit);
           break;
+        case 'event':
+          result.event.replace(serializers.deserialize(value,
+                  specifiedType: const FullType(AccountabilityEvent))!
+              as AccountabilityEvent);
+          break;
         case 'members':
           result.members.replace(serializers.deserialize(value,
                   specifiedType: const FullType(
@@ -127,6 +135,8 @@ class _$UnitData extends UnitData {
   @override
   final Unit unit;
   @override
+  final AccountabilityEvent event;
+  @override
   final BuiltList<UserSummary> members;
 
   factory _$UnitData([void Function(UnitDataBuilder)? updates]) =>
@@ -142,6 +152,7 @@ class _$UnitData extends UnitData {
       required this.leave,
       required this.total,
       required this.unit,
+      required this.event,
       required this.members})
       : super._() {
     BuiltValueNullFieldError.checkNotNull(signed, r'UnitData', 'signed');
@@ -154,6 +165,7 @@ class _$UnitData extends UnitData {
     BuiltValueNullFieldError.checkNotNull(leave, r'UnitData', 'leave');
     BuiltValueNullFieldError.checkNotNull(total, r'UnitData', 'total');
     BuiltValueNullFieldError.checkNotNull(unit, r'UnitData', 'unit');
+    BuiltValueNullFieldError.checkNotNull(event, r'UnitData', 'event');
     BuiltValueNullFieldError.checkNotNull(members, r'UnitData', 'members');
   }
 
@@ -177,6 +189,7 @@ class _$UnitData extends UnitData {
         leave == other.leave &&
         total == other.total &&
         unit == other.unit &&
+        event == other.event &&
         members == other.members;
   }
 
@@ -192,6 +205,7 @@ class _$UnitData extends UnitData {
     _$hash = $jc(_$hash, leave.hashCode);
     _$hash = $jc(_$hash, total.hashCode);
     _$hash = $jc(_$hash, unit.hashCode);
+    _$hash = $jc(_$hash, event.hashCode);
     _$hash = $jc(_$hash, members.hashCode);
     _$hash = $jf(_$hash);
     return _$hash;
@@ -209,6 +223,7 @@ class _$UnitData extends UnitData {
           ..add('leave', leave)
           ..add('total', total)
           ..add('unit', unit)
+          ..add('event', event)
           ..add('members', members))
         .toString();
   }
@@ -254,6 +269,11 @@ class UnitDataBuilder implements Builder<UnitData, UnitDataBuilder> {
   UnitBuilder get unit => _$this._unit ??= new UnitBuilder();
   set unit(UnitBuilder? unit) => _$this._unit = unit;
 
+  AccountabilityEventBuilder? _event;
+  AccountabilityEventBuilder get event =>
+      _$this._event ??= new AccountabilityEventBuilder();
+  set event(AccountabilityEventBuilder? event) => _$this._event = event;
+
   ListBuilder<UserSummary>? _members;
   ListBuilder<UserSummary> get members =>
       _$this._members ??= new ListBuilder<UserSummary>();
@@ -273,6 +293,7 @@ class UnitDataBuilder implements Builder<UnitData, UnitDataBuilder> {
       _leave = $v.leave;
       _total = $v.total;
       _unit = $v.unit.toBuilder();
+      _event = $v.event.toBuilder();
       _members = $v.members.toBuilder();
       _$v = null;
     }
@@ -315,12 +336,15 @@ class UnitDataBuilder implements Builder<UnitData, UnitDataBuilder> {
               total: BuiltValueNullFieldError.checkNotNull(
                   total, r'UnitData', 'total'),
               unit: unit.build(),
+              event: event.build(),
               members: members.build());
     } catch (_) {
       late String _$failedField;
       try {
         _$failedField = 'unit';
         unit.build();
+        _$failedField = 'event';
+        event.build();
         _$failedField = 'members';
         members.build();
       } catch (e) {

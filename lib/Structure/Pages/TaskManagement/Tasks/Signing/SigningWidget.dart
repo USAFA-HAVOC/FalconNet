@@ -12,6 +12,7 @@ import 'SignBox.dart';
 class SigningWidget extends StatefulWidget {
   final UnitData? status;
   final String? event;
+  final bool frozen;
   final void Function(UserSummary) onSign;
   final void Function(UserSummary)? onExcuse;
 
@@ -19,6 +20,7 @@ class SigningWidget extends StatefulWidget {
     super.key,
     required this.status,
     required this.onSign,
+    required this.frozen,
     this.onExcuse,
     this.event
   });
@@ -88,6 +90,7 @@ class SigningWidgetState extends State<SigningWidget> {
         return SignBox(
           user: member,
           event: widget.event,
+          frozen: widget.frozen,
           onSign: () => widget.onSign(member),
           onExcuse: (widget.onExcuse != null) ? () => widget.onExcuse?.call(member) : null,
         );

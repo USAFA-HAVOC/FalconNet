@@ -3,6 +3,7 @@ import 'package:built_value/built_value.dart';
 import 'package:built_value/serializer.dart';
 import 'package:falcon_net/Model/Database/Excusal.dart';
 
+import 'AccountabilityEvent.dart';
 import 'Unit.dart';
 import 'UserSummary.dart';
 
@@ -21,6 +22,7 @@ abstract class UnitData implements Built<UnitData, UnitDataBuilder> {
 
   int get total;
   Unit get unit;
+  AccountabilityEvent get event;
 
   BuiltList<UserSummary> get members;
 

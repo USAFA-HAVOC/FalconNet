@@ -27,12 +27,14 @@ class WingSigningEvent extends StatefulWidget {
   final EdgeInsets padding;
   final FutureOr<WingData> Function() retrieve;
   final int? refresh;
+  final bool frozen;
 
   const WingSigningEvent({
     super.key,
     this.label = "CWOC",
     required this.event,
     required this.retrieve,
+    required this.frozen,
     this.refresh,
     required this.excusable,
     this.padding = const EdgeInsets.all(20)
@@ -183,6 +185,7 @@ class WingSigningEventState extends State<WingSigningEvent> {
     if (loaded.any((u) => u.unit.name == unit.unit.name)) {
       var data = loaded.firstWhere((u) => u.unit.name == unit.unit.name);
       body = SigningWidget(
+        frozen: widget.frozen,
         status: data,
         event: widget.event,
         onSign: (signee) => signFor(
@@ -245,6 +248,7 @@ class WingSigningEventState extends State<WingSigningEvent> {
     if (loaded.any((u) => u.unit.name == unit.unit.name)) {
       var data = loaded.firstWhere((u) => u.unit.name == unit.unit.name);
       body = SigningWidget(
+        frozen: widget.frozen,
         status: data,
         event: widget.event,
         onSign: (signee) => signFor(

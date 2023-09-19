@@ -51,6 +51,8 @@ class CWOCTaskState extends State<CWOCTask> {
           )];
         }
 
+        print(applicable);
+
         return applicable.map((event) =>
             PageWidget(
                 title: event.name ?? (event.type == EventType.di.name ? "DI ${describeDate(event.time.toLocal())}" : "Unnamed"),
@@ -79,6 +81,7 @@ class CWOCTaskState extends State<CWOCTask> {
                               refresh: 10,
                               padding: const EdgeInsets.only(left: 20, bottom: 20, right: 20),
                               excusable: event.type != EventType.di.name,
+                              frozen: !(event.submission_deadline.isAfter(DateTime.now()) && event.submission_start.isBefore(DateTime.now())),
                             ),
                           )
                       ),
@@ -105,6 +108,7 @@ class CWOCTaskState extends State<CWOCTask> {
                                   refresh: 10,
                                   padding: const EdgeInsets.only(left: 20, bottom: 20, right: 20),
                                   excusable: event.type != EventType.di.name,
+                                  frozen: !(event.submission_start.isBefore(DateTime.now()) && event.submission_deadline.isAfter(DateTime.now())),
                                 ),
                               ],
                             )

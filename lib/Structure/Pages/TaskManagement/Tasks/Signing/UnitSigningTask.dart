@@ -87,6 +87,7 @@ class UnitSigningTaskState extends State<UnitSigningTask> {
                                 event: event.id,
                                 padding: const EdgeInsets.only(left: 20, bottom: 20, right: 20),
                                 excusable: event.type != EventType.di.name,
+                                frozen: !(event.submission_deadline.isAfter(DateTime.now()) && event.submission_start.isBefore(DateTime.now())),
                               ),
                             )
                         ),
