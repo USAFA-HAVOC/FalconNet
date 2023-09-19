@@ -23,6 +23,7 @@ class SDOTask extends StatelessWidget {
           label: "SDO",
           statusLabel: "Inspections",
           event: null,
+          excusable: false,
         );
       }
   );

@@ -20,7 +20,6 @@ class Excusals extends StatelessWidget {
                 title: "Daily Excusals",
                 children: [
 
-
                 ]
             ),
 

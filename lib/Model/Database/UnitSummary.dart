@@ -11,6 +11,10 @@ abstract class UnitSummary implements Built<UnitSummary, UnitSummaryBuilder> {
   int? get signed;
   int? get unsigned;
   int? get out;
+  int? get leave;
+  int? get overdue;
+  int? get excused;
+  int? get out_returning;
   int? get total;
   Unit get unit;
 

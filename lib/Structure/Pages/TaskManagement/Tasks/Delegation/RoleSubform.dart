@@ -87,10 +87,10 @@ class RoleSubformState extends State<RoleSubform> {
 
     List<String> grandchildren(List<String> children) =>
         children.map((e) => widget.units.where((u) => u.name == e))
-            .expand((s) => s
+          .expand((s) => s
             .expand((u) => [...grandchildren(u.sub_units.toList()), u.name])
             .toList()
-        ).toList();
+          ).toList();
 
     var ceiling = widget.units.firstWhere((u) => u.parent_units.isEmpty).name;
 

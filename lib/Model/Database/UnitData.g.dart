@@ -30,6 +30,8 @@ class _$UnitDataSerializer implements StructuredSerializer<UnitData> {
           specifiedType: const FullType(int)),
       'overdue',
       serializers.serialize(object.overdue, specifiedType: const FullType(int)),
+      'excused',
+      serializers.serialize(object.excused, specifiedType: const FullType(int)),
       'leave',
       serializers.serialize(object.leave, specifiedType: const FullType(int)),
       'total',
@@ -76,6 +78,10 @@ class _$UnitDataSerializer implements StructuredSerializer<UnitData> {
           result.overdue = serializers.deserialize(value,
               specifiedType: const FullType(int))! as int;
           break;
+        case 'excused':
+          result.excused = serializers.deserialize(value,
+              specifiedType: const FullType(int))! as int;
+          break;
         case 'leave':
           result.leave = serializers.deserialize(value,
               specifiedType: const FullType(int))! as int;
@@ -113,6 +119,8 @@ class _$UnitData extends UnitData {
   @override
   final int overdue;
   @override
+  final int excused;
+  @override
   final int leave;
   @override
   final int total;
@@ -130,6 +138,7 @@ class _$UnitData extends UnitData {
       required this.out,
       required this.out_returning,
       required this.overdue,
+      required this.excused,
       required this.leave,
       required this.total,
       required this.unit,
@@ -141,6 +150,7 @@ class _$UnitData extends UnitData {
     BuiltValueNullFieldError.checkNotNull(
         out_returning, r'UnitData', 'out_returning');
     BuiltValueNullFieldError.checkNotNull(overdue, r'UnitData', 'overdue');
+    BuiltValueNullFieldError.checkNotNull(excused, r'UnitData', 'excused');
     BuiltValueNullFieldError.checkNotNull(leave, r'UnitData', 'leave');
     BuiltValueNullFieldError.checkNotNull(total, r'UnitData', 'total');
     BuiltValueNullFieldError.checkNotNull(unit, r'UnitData', 'unit');
@@ -163,6 +173,7 @@ class _$UnitData extends UnitData {
         out == other.out &&
         out_returning == other.out_returning &&
         overdue == other.overdue &&
+        excused == other.excused &&
         leave == other.leave &&
         total == other.total &&
         unit == other.unit &&
@@ -177,6 +188,7 @@ class _$UnitData extends UnitData {
     _$hash = $jc(_$hash, out.hashCode);
     _$hash = $jc(_$hash, out_returning.hashCode);
     _$hash = $jc(_$hash, overdue.hashCode);
+    _$hash = $jc(_$hash, excused.hashCode);
     _$hash = $jc(_$hash, leave.hashCode);
     _$hash = $jc(_$hash, total.hashCode);
     _$hash = $jc(_$hash, unit.hashCode);
@@ -193,6 +205,7 @@ class _$UnitData extends UnitData {
           ..add('out', out)
           ..add('out_returning', out_returning)
           ..add('overdue', overdue)
+          ..add('excused', excused)
           ..add('leave', leave)
           ..add('total', total)
           ..add('unit', unit)
@@ -225,6 +238,10 @@ class UnitDataBuilder implements Builder<UnitData, UnitDataBuilder> {
   int? get overdue => _$this._overdue;
   set overdue(int? overdue) => _$this._overdue = overdue;
 
+  int? _excused;
+  int? get excused => _$this._excused;
+  set excused(int? excused) => _$this._excused = excused;
+
   int? _leave;
   int? get leave => _$this._leave;
   set leave(int? leave) => _$this._leave = leave;
@@ -252,6 +269,7 @@ class UnitDataBuilder implements Builder<UnitData, UnitDataBuilder> {
       _out = $v.out;
       _out_returning = $v.out_returning;
       _overdue = $v.overdue;
+      _excused = $v.excused;
       _leave = $v.leave;
       _total = $v.total;
       _unit = $v.unit.toBuilder();
@@ -290,6 +308,8 @@ class UnitDataBuilder implements Builder<UnitData, UnitDataBuilder> {
                   out_returning, r'UnitData', 'out_returning'),
               overdue: BuiltValueNullFieldError.checkNotNull(
                   overdue, r'UnitData', 'overdue'),
+              excused: BuiltValueNullFieldError.checkNotNull(
+                  excused, r'UnitData', 'excused'),
               leave: BuiltValueNullFieldError.checkNotNull(
                   leave, r'UnitData', 'leave'),
               total: BuiltValueNullFieldError.checkNotNull(

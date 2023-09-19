@@ -13,8 +13,15 @@ class SigningWidget extends StatefulWidget {
   final UnitData? status;
   final String? event;
   final void Function(UserSummary) onSign;
+  final void Function(UserSummary)? onExcuse;
 
-  const SigningWidget({super.key, required this.status, required this.onSign, this.event});
+  const SigningWidget({
+    super.key,
+    required this.status,
+    required this.onSign,
+    this.onExcuse,
+    this.event
+  });
 
   @override
   State<SigningWidget> createState() => SigningWidgetState();
@@ -76,13 +83,13 @@ class SigningWidgetState extends State<SigningWidget> {
         if (index == 0) {
           return FNSearchBar(onChanged: (change) => setState(() => query = change));
         }
-
         var member = ordered[index - 1];
 
         return SignBox(
           user: member,
           event: widget.event,
           onSign: () => widget.onSign(member),
+          onExcuse: (widget.onExcuse != null) ? () => widget.onExcuse?.call(member) : null,
         );
       },
     );
