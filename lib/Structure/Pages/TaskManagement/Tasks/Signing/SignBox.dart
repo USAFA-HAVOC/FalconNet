@@ -9,6 +9,7 @@ import '../../../../../Model/Database/UserStatus.dart';
 import '../../../../../Model/Database/UserSummary.dart';
 import '../../../../Components/ConfirmationDialog.dart';
 import '../../../../Components/InfoBar.dart';
+import 'SigningDialog.dart';
 
 ///Box for displaying name, signing status, and signing button
 class SignBox extends StatelessWidget {
@@ -113,7 +114,7 @@ class SignBox extends StatelessWidget {
             flex: 1,
             child: IconButton(
               onPressed: signable
-                  ? () => showDialog(context: context, builder: (context) => ConfirmationDialog(
+                  ? () => showDialog(context: context, builder: (context) => SigningDialog(
                       title: "Confirm Signing",
                       description: "Please confirm you would like to sign for "
                           "${user.name}. This action cannot be undone.",

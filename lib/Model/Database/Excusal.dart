@@ -55,13 +55,18 @@ abstract class Excusal implements Built<Excusal, ExcusalBuilder> {
 
   String get type;
   String? get sca_number;
-  String get other_description;
+  String? get other_description;
 
   Excusal._();
   factory Excusal([void Function(ExcusalBuilder) updates]) = _$Excusal;
 }
 
-abstract class EventExcusal implements Built<EventExcusal, EventExcusalBuilder> {
+abstract class ExcusalSpecifier {
+  Excusal get excusal;
+  String get event_id;
+}
+
+abstract class EventExcusal implements Built<EventExcusal, EventExcusalBuilder>, ExcusalSpecifier {
   static Serializer<EventExcusal> get serializer => _$eventExcusalSerializer;
 
   String? get id;
@@ -73,7 +78,7 @@ abstract class EventExcusal implements Built<EventExcusal, EventExcusalBuilder> 
   factory EventExcusal([void Function(EventExcusalBuilder) updates]) = _$EventExcusal;
 }
 
-abstract class RecurringExcusal implements Built<RecurringExcusal, RecurringExcusalBuilder> {
+abstract class RecurringExcusal implements Built<RecurringExcusal, RecurringExcusalBuilder>, ExcusalSpecifier {
   static Serializer<RecurringExcusal> get serializer => _$recurringExcusalSerializer;
 
   String? get id;

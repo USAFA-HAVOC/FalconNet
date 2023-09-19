@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:built_value/serializer.dart';
 import 'package:dio/dio.dart';
 import 'package:falcon_net/Model/Database/AccountabilityEvent.dart';
+import 'package:falcon_net/Model/Database/Excusal.dart';
 import 'package:falcon_net/Model/Database/InitialData.dart';
 import 'package:falcon_net/Model/Database/PassHistoryModel.dart';
 import 'package:falcon_net/Model/Database/PassStatusRequest.dart';
@@ -184,6 +185,12 @@ class Endpoints {
   static Endpoint<StringRequest, bool> deleteEvent = Endpoint("/events/delete");
   static Endpoint<SignRequest, bool> signEvent = Endpoint("/events/sign");
   static Endpoint<void, EventList> getEvents = Endpoint("/events/all", get: true);
+
+  static Endpoint<SignRequest, bool> excuseOther = Endpoint("/excusals/signer-excuse");
+  static Endpoint<EventExcusal, EventExcusal> createExcusal = Endpoint("/excusals/create");
+  static Endpoint<RecurringExcusal, RecurringExcusal> createRecurring = Endpoint("/excusals/create_recurring");
+  static Endpoint<StringRequest, bool> deleteExcusal = Endpoint("/excusals/delete");
+  static Endpoint<StringRequest, bool> deleteRecurring = Endpoint("/excusals/delete-recurring");
 }
 
 Future<void> login(String token) async {
