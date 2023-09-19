@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:falcon_net/Model/Database/StringRequest.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 import '../../../../../Model/Database/AccountabilityEvent.dart';
@@ -62,7 +63,7 @@ class CWOCTaskState extends State<CWOCTask> {
                       "Description: ${event.description!}"
                   ),
 
-                  ElevatedButton(
+                  if (!kIsWeb) ElevatedButton(
                       onPressed: () => showModalBottomSheet(
                           context: context,
                           shape: const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(10))),
@@ -79,6 +80,34 @@ class CWOCTaskState extends State<CWOCTask> {
                               padding: const EdgeInsets.only(left: 20, bottom: 20, right: 20),
                               excusable: event.type != EventType.di.name,
                             ),
+                          )
+                      ),
+                      child: const Text("Open")
+                  )
+
+                  else ElevatedButton(
+                      onPressed: () => showDialog(
+                          context: context,
+                          builder: (context) => Dialog(
+                            insetPadding: const EdgeInsets.only(top: 30, right: 10, left: 10, bottom: 10),
+                            child: ListView(
+                              shrinkWrap: true,
+                              children: [
+                                const Align(
+                                  alignment: Alignment.topLeft,
+                                  child: CloseButton(),
+                                ),
+
+                                WingSigningEvent(
+                                  retrieve: () => Endpoints.getWing((StringRequestBuilder()..string = event.id!).build()),
+                                  label: event.name ?? (event.type == EventType.di.name ? "DI" : "Unnamed"),
+                                  event: event.id!,
+                                  refresh: 10,
+                                  padding: const EdgeInsets.only(left: 20, bottom: 20, right: 20),
+                                  excusable: event.type != EventType.di.name,
+                                ),
+                              ],
+                            )
                           )
                       ),
                       child: const Text("Open")

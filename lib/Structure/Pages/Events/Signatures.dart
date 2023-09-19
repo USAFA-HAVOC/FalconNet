@@ -26,6 +26,7 @@ class Signatures extends StatelessWidget {
         .where((e) => e.type != EventType.di.name)
         .where((e) => e.accountability_method == AccountabilityMethod.self_signed.name)
         .where((e) => e.submission_deadline.isAfter(DateTime.now()))
+        .where((e) => e.submission_start.isBefore(DateTime.now()))
         .toList()
         .sortedKey((e) => e.time);
 
