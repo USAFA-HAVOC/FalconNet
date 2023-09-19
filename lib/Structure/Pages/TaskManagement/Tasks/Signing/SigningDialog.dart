@@ -55,7 +55,10 @@ class SigningDialog extends StatelessWidget {
                   ),
 
                   if (onExcuse != null) ElevatedButton(
-                      onPressed: () => onExcuse!(),
+                      onPressed: () {
+                        Navigator.pop(context);
+                        onExcuse!();
+                      },
                       child: Text(
                         "Excuse",
                         style: Theme.of(context).textTheme.labelLarge,

@@ -1,10 +1,12 @@
 import 'dart:async';
 
 import 'package:falcon_net/Structure/Components/AsyncPage.dart';
+import 'package:falcon_net/Structure/Components/InfoBar.dart';
 import 'package:falcon_net/Structure/Components/LoadingShimmer.dart';
 import 'package:falcon_net/Structure/Components/PageWidget.dart';
 import 'package:falcon_net/Structure/Components/UnitStatusWidget.dart';
 import 'package:falcon_net/Utility/ListExtensions.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:string_similarity/string_similarity.dart';
 
@@ -74,39 +76,85 @@ class AccountabilityTaskState extends State<AccountabilityTask> {
     return scores.map((s) => s.key).toList();
   }
 
-  ExpansionPanel buildExpansionPanel(User user, bool expanded) => ExpansionPanel(
-      canTapOnHeader: true,
-      isExpanded: expanded,
-      headerBuilder: (context, expanded) => Padding(
-        padding: const EdgeInsets.all(10),
-        child: Row(
+  Widget buildPanelWeb(User user) {
+    return DecoratedBox(
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(10),
+        border: Border.all(color: Theme.of(context).dividerColor),
+      ),
+      child: Column(
+          mainAxisSize: MainAxisSize.min,
           children: [
-            Expanded(
-                flex: 5,
-                child: Text(
-                  user.personal_info.full_name,
-                  style: Theme.of(context).textTheme.titleSmall,
-                  textAlign: TextAlign.left,
-                )
+            Padding(
+              padding: const EdgeInsets.all(10),
+              child: Row(
+                children: [
+                  Expanded(
+                      flex: 5,
+                      child: Text(
+                        user.personal_info.full_name,
+                        style: Theme.of(context).textTheme.titleSmall,
+                        textAlign: TextAlign.left,
+                      )
+                  ),
+
+                  Expanded(
+                      flex: 3,
+                      child: Text(
+                        user.accountability?.current_leave != null
+                            ? "On Leave"
+                            : user.accountability?.current_pass != null
+                            ? "Signed-Out"
+                            : "Here",
+                        style: Theme.of(context).textTheme.titleSmall,
+                        textAlign: TextAlign.center,
+                      )
+                  ),
+                ],
+              ),
             ),
 
-            Expanded(
-                flex: 3,
-                child: Text(
-                  user.accountability?.current_leave != null
-                      ? "On Leave"
-                      : user.accountability?.current_pass != null
-                          ? "Signed-Out"
-                          : "Here",
-                  style: Theme.of(context).textTheme.titleSmall,
-                  textAlign: TextAlign.center,
-                )
-            ),
-          ],
-        ),
+            StatusDescriptionWidget(user: user,)
+          ]
       ),
-      body: StatusDescriptionWidget(user: user,)
-  );
+    );
+  }
+
+  ExpansionPanel buildExpansionPanel(User user, bool expanded) {
+      return ExpansionPanel(
+        canTapOnHeader: true,
+        isExpanded: expanded,
+        headerBuilder: (context, expanded) => Padding(
+          padding: const EdgeInsets.all(10),
+          child: Row(
+            children: [
+              Expanded(
+                  flex: 5,
+                  child: Text(
+                    user.personal_info.full_name,
+                    style: Theme.of(context).textTheme.titleSmall,
+                    textAlign: TextAlign.left,
+                  )
+              ),
+
+              Expanded(
+                  flex: 3,
+                  child: Text(
+                    user.accountability?.current_leave != null
+                        ? "On Leave"
+                        : user.accountability?.current_pass != null
+                        ? "Signed-Out"
+                        : "Here",
+                    style: Theme.of(context).textTheme.titleSmall,
+                    textAlign: TextAlign.center,
+                  )
+              ),
+            ],
+          ),
+        ),
+        body: StatusDescriptionWidget(user: user,)
+      );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -129,7 +177,11 @@ class AccountabilityTaskState extends State<AccountabilityTask> {
             children: [
               FNSearchBar(onChanged: (q) => setState(() => query = q)),
 
-              ExpansionPanelList(
+              if (kIsWeb) ListView(
+                shrinkWrap: true,
+                children: ordered.enumeratedMap((m, index) => buildPanelWeb(m)).toList(),
+              )
+              else ExpansionPanelList(
                 expansionCallback: (index, state) => setState(() => expansions[ordered[index].id!] = !state),
                 children: ordered.enumeratedMap((m, index) => buildExpansionPanel(m, expansions[ordered[index].id!]!)).toList(),
               )
