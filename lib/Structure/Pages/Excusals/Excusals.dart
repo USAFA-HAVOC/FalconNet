@@ -4,8 +4,10 @@ import 'package:falcon_net/Model/Store/Actions/ExcusalAction.dart';
 import 'package:falcon_net/Model/Store/GlobalState.dart';
 import 'package:falcon_net/Structure/Components/FNPage.dart';
 import 'package:falcon_net/Structure/Components/PageWidget.dart';
+import 'package:falcon_net/Structure/Pages/Excusals/ExcusalForm.dart';
 import 'package:falcon_net/Structure/Pages/Excusals/ExcusalList.dart';
 import 'package:falcon_net/Structure/Pages/Excusals/RecurringExcusalDescriptor.dart';
+import 'package:falcon_net/Structure/Pages/Excusals/RecurringForm.dart';
 import 'package:flutter/material.dart';
 
 import '../../Components/ViewModel.dart';
@@ -26,13 +28,41 @@ class Excusals extends StatelessWidget {
     );
   }
 
-  static openExcusalDialog(BuildContext context, EventExcusal? excusal) {
+  static openExcusalDialog(BuildContext context, EventExcusal? excusal, void Function(EventExcusal) onSubmit) => showDialog(
+      context: context,
+      builder: (context) => Dialog(
+        insetPadding: const EdgeInsets.all(20),
+        child: Padding(
+          padding: const EdgeInsets.all(10),
+          child: ExcusalForm(
+            excusal: excusal,
+            onSubmit: (excusal) {
+              Navigator.pop(context);
+              onSubmit(excusal);
+            },
+            onCancel: () => Navigator.pop(context),
+          ),
+        )
+      )
+  );
 
-  }
-
-  static openRecurringDialog(BuildContext context, RecurringExcusal? recurring) {
-
-  }
+  static openRecurringDialog(BuildContext context, RecurringExcusal? recurring, void Function(RecurringExcusal) onSubmit) => showDialog(
+      context: context,
+      builder: (context) => Dialog(
+          insetPadding: const EdgeInsets.all(20),
+          child: Padding(
+            padding: EdgeInsets.all(10),
+            child: RecurringForm(
+              excusal: recurring,
+              onSubmit: (excusal) {
+                Navigator.pop(context);
+                onSubmit(excusal);
+              },
+              onCancel: () => Navigator.pop(context),
+            ),
+          )
+      )
+  );
 
   @override
   Widget build(BuildContext context) => StoreConnector<GlobalState, ViewModel<GlobalState>>(
@@ -44,20 +74,34 @@ class Excusals extends StatelessWidget {
                 title: "Daily Excusals",
                 children: [
                   ExcusalList<EventExcusal>(
-                    excusals: model.content.excusals.toList(),
-                    add: (excusal) => model.dispatch(ExcusalAction.createExcusal(
-                        excusal: excusal,
-                        onFail: failureMessage(context, "create"),
-                    )),
+                    excusals: model.content.excusals
+                        .where((e) =>
+                            model.content.events.firstWhere((ev) => ev.event_id == e.event_id)
+                                .submission_deadline.isAfter(DateTime.now())
+                        ).toList(),
+                    add: (excusal) => model.dispatch(ExcusalAction.createExcusal(excusal: excusal)),
                     converter: (excusal) => EventExcusalDescriptor(
                       excusal: excusal,
-                      onEdit: () {},
-                      onDelete: () => model.dispatch(ExcusalAction.deleteExcusal(
-                          excusal: excusal,
-                          onFail: failureMessage(context, "delete"),
-                      )),
+                      onEdit: () => openExcusalDialog(
+                        context,
+                        excusal,
+                        (excusal) => model.dispatch(ExcusalAction.createExcusal(excusal: excusal,))
+                      ),
+                      onDelete: () => model.dispatch(ExcusalAction.deleteExcusal(excusal: excusal)),
                     ),
-                  )
+                  ),
+
+                  ElevatedButton(
+                      onPressed: () => openExcusalDialog(
+                          context,
+                          null,
+                          (excusal) => model.dispatch(ExcusalAction.createExcusal(excusal: excusal,))
+                      ),
+                      child: const Icon(
+                        Icons.add,
+                        color: Colors.white,
+                      )
+                  ),
                 ]
             ),
 
@@ -66,19 +110,29 @@ class Excusals extends StatelessWidget {
                 children: [
                   ExcusalList<RecurringExcusal>(
                     excusals: model.content.recurring.toList(),
-                    add: (excusal) => model.dispatch(ExcusalAction.createRecurring(
-                        recurring: excusal,
-                        onFail: failureMessage(context, "create")
-                    )),
+                    add: (excusal) => model.dispatch(ExcusalAction.createRecurring(recurring: excusal,)),
                     converter: (excusal) => RecurringExcusalDescriptor(
                         excusal: excusal,
-                        onEdit: () {},
-                        onDelete: () => model.dispatch(ExcusalAction.deleteRecurring(
-                            recurring: excusal,
-                            onFail: failureMessage(context, "delete")
-                        )),
+                        onEdit: () => openRecurringDialog(
+                            context,
+                            excusal,
+                            (excusal) => model.dispatch(ExcusalAction.createRecurring(recurring: excusal,))
+                        ),
+                        onDelete: () => model.dispatch(ExcusalAction.deleteRecurring(recurring: excusal,)),
                     ),
-                  )
+                  ),
+
+                  ElevatedButton(
+                      onPressed: () => openRecurringDialog(
+                          context,
+                          null,
+                          (excusal) => model.dispatch(ExcusalAction.createRecurring(recurring: excusal))
+                      ),
+                      child: const Icon(
+                        Icons.add,
+                        color: Colors.white,
+                      )
+                  ),
                 ]
             )
           ]

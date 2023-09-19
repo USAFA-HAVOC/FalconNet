@@ -116,20 +116,22 @@ class UnitSigningEventState extends State<UnitSigningEvent> {
 
   void excuse(UserSummary member, UnitData data, ScaffoldMessengerState messenger) async {
     try {
-      await Endpoints.signEvent(SignRequest((s) => s
+      var excusal = await Endpoints.excuseOther(SignRequest((s) => s
         ..event_id = widget.event
         ..user_id = member.user_id
       ));
 
       setState(() {
-        //future = Future<UnitData>.value(data.sign(member, event: widget.event));
-
         var mutated = data.rebuild((u) => u.members.map((m) =>
         m.user_id != member.user_id
             ? m
             : member.rebuild((m) =>
-        m.status = (UserEventStatusBuilder()..status = UserStatus.signed.name)
-        )
+                m.status = (
+                    UserEventStatusBuilder()
+                      ..status = UserStatus.excused.name
+                      ..excusal = excusal.excusal.toBuilder()
+                )
+              )
         ));
 
         future = Future<UnitData>.value(mutated);

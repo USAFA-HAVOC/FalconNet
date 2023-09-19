@@ -28,7 +28,7 @@ class RecurringExcusalDescriptor extends StatelessWidget {
         (RecurringExcusalTypeNames.parse(excusal.recurring_excusal_type) == RecurringExcusalType.days_of_week)
             ? excusal.excused_days!.asMap().entries
                 .where((e) => e.value)
-                .map((e) => days[e.key - 1])
+                .map((e) => days[e.key])
                 .reduce((carry, value) => "$carry, $value")
             : RecurringExcusalTypeNames
                 .parse(excusal.recurring_excusal_type)

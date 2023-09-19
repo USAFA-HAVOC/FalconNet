@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:fluttericon/font_awesome5_icons.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import '../../../../../Model/Database/Excusal.dart';
 import '../../../../../Model/Database/UserStatus.dart';
 import '../../../../../Model/Database/UserSummary.dart';
 import '../../../../Components/ConfirmationDialog.dart';
@@ -81,33 +82,59 @@ class SignBox extends StatelessWidget {
           )
         ),
 
-        Expanded(
+        if ([UserStatus.out_returning.name, UserStatus.out.name, UserStatus.overdue.name].contains(user.status.status)) Expanded(
+          flex: 2,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              Text(
+                UserStatusNames.parse(user.status.status).display(),
+                style: TextStyle(
+                    fontSize: Theme.of(context).textTheme.bodyLarge!.fontSize,
+                    color: Colors.red
+                ),
+                textAlign: TextAlign.center,
+              ),
+
+              Text(
+                "${describeDate(user.status.returning!.toLocal())} ${describeTime(TimeOfDay.fromDateTime(user.status.returning!.toLocal()))}",
+                style: Theme.of(context).textTheme.bodyMedium,
+                textAlign: TextAlign.center,
+              )
+            ],
+          )
+        )
+
+        else if ([UserStatus.excused.name].contains(user.status.status)) Expanded(
             flex: 2,
-            child: (![UserStatus.out_returning.name, UserStatus.out.name, UserStatus.overdue.name].contains(user.status.status))
-              ? Text(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                Text(
                   UserStatusNames.parse(user.status.status).display(),
-                  style: Theme.of(context).textTheme.bodyLarge,
+                  style: TextStyle(
+                      fontSize: Theme.of(context).textTheme.bodyLarge!.fontSize,
+                      color: Colors.red
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+
+                Text(
+                  [ExcusalType.sca.name, ExcusalType.other.name].contains(user.status.excusal!.type) ? user.status.excusal!.other_description ?? "SCA: ${user.status.excusal!.sca_number}" : ExcusalTypeNames.parse(user.status.excusal!.type).display(),
+                  style: Theme.of(context).textTheme.bodyMedium,
                   textAlign: TextAlign.center,
                 )
-              : Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    Text(
-                      UserStatusNames.parse(user.status.status).display(),
-                      style: TextStyle(
-                        fontSize: Theme.of(context).textTheme.bodyLarge!.fontSize,
-                        color: Colors.red
-                      ),
-                      textAlign: TextAlign.center,
-                    ),
+              ],
+            )
+        )
 
-                    Text(
-                      "${describeDate(user.status.returning!)} ${describeTime(TimeOfDay.fromDateTime(user.status.returning!))}",
-                      style: Theme.of(context).textTheme.bodyMedium,
-                      textAlign: TextAlign.center,
-                    )
-                  ],
-                )
+        else Expanded(
+            flex: 2,
+            child: Text(
+              UserStatusNames.parse(user.status.status).display(),
+              style: Theme.of(context).textTheme.bodyLarge,
+              textAlign: TextAlign.center,
+            ),
         ),
 
         Expanded(

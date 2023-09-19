@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 
-import '../../../Model/Database/UserEvent.dart';
-
 class ExcusalList<T> extends StatelessWidget {
   final List<T> excusals;
   final Widget Function(T) converter;
@@ -22,8 +20,9 @@ class ExcusalList<T> extends StatelessWidget {
         children: this.excusals.map((e) => converter(e)).toList(),
       );
     }
-    return Padding(
-      padding: EdgeInsets.all(10),
+
+    return const Padding(
+      padding: EdgeInsets.symmetric(vertical: 20, horizontal: 10),
       child: Center(
         child: Text("No excusals to display")
       ),
