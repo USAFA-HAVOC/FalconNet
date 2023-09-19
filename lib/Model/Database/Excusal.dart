@@ -63,7 +63,7 @@ abstract class Excusal implements Built<Excusal, ExcusalBuilder> {
 
 abstract class ExcusalSpecifier {
   Excusal get excusal;
-  String get event_id;
+  String? get id;
 }
 
 abstract class EventExcusal implements Built<EventExcusal, EventExcusalBuilder>, ExcusalSpecifier {

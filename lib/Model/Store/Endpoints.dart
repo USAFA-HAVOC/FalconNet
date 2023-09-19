@@ -188,7 +188,7 @@ class Endpoints {
 
   static Endpoint<SignRequest, bool> excuseOther = Endpoint("/excusals/signer-excuse");
   static Endpoint<EventExcusal, EventExcusal> createExcusal = Endpoint("/excusals/create");
-  static Endpoint<RecurringExcusal, RecurringExcusal> createRecurring = Endpoint("/excusals/create_recurring");
+  static Endpoint<RecurringExcusal, RecurringExcusal> createRecurring = Endpoint("/excusals/create-recurring");
   static Endpoint<StringRequest, bool> deleteExcusal = Endpoint("/excusals/delete");
   static Endpoint<StringRequest, bool> deleteRecurring = Endpoint("/excusals/delete-recurring");
 }
