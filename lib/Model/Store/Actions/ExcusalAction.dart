@@ -36,7 +36,7 @@ class ExcusalAction extends ReduxAction<GlobalState> {
     this.onSucceed
   }) :
         excusal = null,
-        create = true;
+        create = false;
 
   ExcusalAction.deleteExcusal({
     required this.excusal,
@@ -44,7 +44,7 @@ class ExcusalAction extends ReduxAction<GlobalState> {
     this.onSucceed
   }) :
         recurring = null,
-        create = true;
+        create = false;
 
   @override
   Future<GlobalState?> reduce() async {
@@ -62,24 +62,24 @@ class ExcusalAction extends ReduxAction<GlobalState> {
           var full = await Endpoints.createRecurring(recurring!);
           onSucceed?.call();
           return state
-              .rebuild((s) => s.recurring.retainWhere((e) => e.event_id != full.event_id))
+              .rebuild((s) => s.recurring.retainWhere((e) => e.id != full.id))
               .rebuild((s) => s.recurring.add(recurring!));
         }
       }
 
       else {
         if (excusal != null) {
-          await Endpoints.deleteExcusal((StringRequestBuilder()..string = excusal!.event_id).build());
+          await Endpoints.deleteExcusal((StringRequestBuilder()..string = excusal!.id).build());
           onSucceed?.call();
           return state
-              .rebuild((s) => s.excusals.retainWhere((e) => e.event_id != excusal!.event_id));
+              .rebuild((s) => s.excusals.retainWhere((e) => e.id != excusal!.id));
         }
 
         else if (recurring != null) {
-          await Endpoints.deleteRecurring((StringRequestBuilder()..string = recurring!.event_id).build());
+          await Endpoints.deleteRecurring((StringRequestBuilder()..string = recurring!.id).build());
           onSucceed?.call();
           return state
-              .rebuild((s) => s.recurring.retainWhere((e) => e.event_id != recurring!.event_id));
+              .rebuild((s) => s.recurring.retainWhere((e) => e.id != recurring!.id));
         }
       }
 

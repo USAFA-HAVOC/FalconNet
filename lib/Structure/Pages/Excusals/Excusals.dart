@@ -14,6 +14,26 @@ import 'EventExcusalDescriptor.dart';
 class Excusals extends StatelessWidget {
   const Excusals({super.key});
 
+  static successMessage(BuildContext context, String verb) {
+    ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text("Successfully ${verb}d excusal"))
+    );
+  }
+
+  static failureMessage(BuildContext context, String verb) {
+    ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text("Failed to $verb excusal"))
+    );
+  }
+
+  static openExcusalDialog(BuildContext context, EventExcusal? excusal) {
+
+  }
+
+  static openRecurringDialog(BuildContext context, RecurringExcusal? recurring) {
+
+  }
+
   @override
   Widget build(BuildContext context) => StoreConnector<GlobalState, ViewModel<GlobalState>>(
       converter: (store) => ViewModel(store: store, content: store.state),
@@ -25,11 +45,17 @@ class Excusals extends StatelessWidget {
                 children: [
                   ExcusalList<EventExcusal>(
                     excusals: model.content.excusals.toList(),
-                    add: (excusal) => model.dispatch(ExcusalAction.createExcusal(excusal: excusal)),
+                    add: (excusal) => model.dispatch(ExcusalAction.createExcusal(
+                        excusal: excusal,
+                        onFail: failureMessage(context, "create"),
+                    )),
                     converter: (excusal) => EventExcusalDescriptor(
                       excusal: excusal,
                       onEdit: () {},
-                      onDelete: () => model.dispatch(ExcusalAction.deleteExcusal(excusal: excusal)),
+                      onDelete: () => model.dispatch(ExcusalAction.deleteExcusal(
+                          excusal: excusal,
+                          onFail: failureMessage(context, "delete"),
+                      )),
                     ),
                   )
                 ]
@@ -40,11 +66,17 @@ class Excusals extends StatelessWidget {
                 children: [
                   ExcusalList<RecurringExcusal>(
                     excusals: model.content.recurring.toList(),
-                    add: (excusal) => model.dispatch(ExcusalAction.createRecurring(recurring: excusal)),
+                    add: (excusal) => model.dispatch(ExcusalAction.createRecurring(
+                        recurring: excusal,
+                        onFail: failureMessage(context, "create")
+                    )),
                     converter: (excusal) => RecurringExcusalDescriptor(
                         excusal: excusal,
                         onEdit: () {},
-                        onDelete: () => model.dispatch(ExcusalAction.deleteRecurring(recurring: excusal)),
+                        onDelete: () => model.dispatch(ExcusalAction.deleteRecurring(
+                            recurring: excusal,
+                            onFail: failureMessage(context, "delete")
+                        )),
                     ),
                   )
                 ]

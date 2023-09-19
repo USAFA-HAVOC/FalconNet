@@ -163,9 +163,6 @@ class _$RecurringExcusalSerializer
       'excusal',
       serializers.serialize(object.excusal,
           specifiedType: const FullType(Excusal)),
-      'event_id',
-      serializers.serialize(object.event_id,
-          specifiedType: const FullType(String)),
     ];
     Object? value;
     value = object.id;
@@ -225,10 +222,6 @@ class _$RecurringExcusalSerializer
         case 'excusal':
           result.excusal.replace(serializers.deserialize(value,
               specifiedType: const FullType(Excusal))! as Excusal);
-          break;
-        case 'event_id':
-          result.event_id = serializers.deserialize(value,
-              specifiedType: const FullType(String))! as String;
           break;
       }
     }
@@ -496,8 +489,6 @@ class _$RecurringExcusal extends RecurringExcusal {
   final BuiltList<bool>? excused_days;
   @override
   final Excusal excusal;
-  @override
-  final String event_id;
 
   factory _$RecurringExcusal(
           [void Function(RecurringExcusalBuilder)? updates]) =>
@@ -509,8 +500,7 @@ class _$RecurringExcusal extends RecurringExcusal {
       required this.event_types,
       required this.recurring_excusal_type,
       this.excused_days,
-      required this.excusal,
-      required this.event_id})
+      required this.excusal})
       : super._() {
     BuiltValueNullFieldError.checkNotNull(
         user_id, r'RecurringExcusal', 'user_id');
@@ -520,8 +510,6 @@ class _$RecurringExcusal extends RecurringExcusal {
         recurring_excusal_type, r'RecurringExcusal', 'recurring_excusal_type');
     BuiltValueNullFieldError.checkNotNull(
         excusal, r'RecurringExcusal', 'excusal');
-    BuiltValueNullFieldError.checkNotNull(
-        event_id, r'RecurringExcusal', 'event_id');
   }
 
   @override
@@ -541,8 +529,7 @@ class _$RecurringExcusal extends RecurringExcusal {
         event_types == other.event_types &&
         recurring_excusal_type == other.recurring_excusal_type &&
         excused_days == other.excused_days &&
-        excusal == other.excusal &&
-        event_id == other.event_id;
+        excusal == other.excusal;
   }
 
   @override
@@ -554,7 +541,6 @@ class _$RecurringExcusal extends RecurringExcusal {
     _$hash = $jc(_$hash, recurring_excusal_type.hashCode);
     _$hash = $jc(_$hash, excused_days.hashCode);
     _$hash = $jc(_$hash, excusal.hashCode);
-    _$hash = $jc(_$hash, event_id.hashCode);
     _$hash = $jf(_$hash);
     return _$hash;
   }
@@ -567,8 +553,7 @@ class _$RecurringExcusal extends RecurringExcusal {
           ..add('event_types', event_types)
           ..add('recurring_excusal_type', recurring_excusal_type)
           ..add('excused_days', excused_days)
-          ..add('excusal', excusal)
-          ..add('event_id', event_id))
+          ..add('excusal', excusal))
         .toString();
   }
 }
@@ -606,10 +591,6 @@ class RecurringExcusalBuilder
   ExcusalBuilder get excusal => _$this._excusal ??= new ExcusalBuilder();
   set excusal(ExcusalBuilder? excusal) => _$this._excusal = excusal;
 
-  String? _event_id;
-  String? get event_id => _$this._event_id;
-  set event_id(String? event_id) => _$this._event_id = event_id;
-
   RecurringExcusalBuilder();
 
   RecurringExcusalBuilder get _$this {
@@ -621,7 +602,6 @@ class RecurringExcusalBuilder
       _recurring_excusal_type = $v.recurring_excusal_type;
       _excused_days = $v.excused_days?.toBuilder();
       _excusal = $v.excusal.toBuilder();
-      _event_id = $v.event_id;
       _$v = null;
     }
     return this;
@@ -655,9 +635,7 @@ class RecurringExcusalBuilder
                   r'RecurringExcusal',
                   'recurring_excusal_type'),
               excused_days: _excused_days?.build(),
-              excusal: excusal.build(),
-              event_id: BuiltValueNullFieldError.checkNotNull(
-                  event_id, r'RecurringExcusal', 'event_id'));
+              excusal: excusal.build());
     } catch (_) {
       late String _$failedField;
       try {
