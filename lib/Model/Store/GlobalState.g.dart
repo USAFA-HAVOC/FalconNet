@@ -19,6 +19,10 @@ class _$GlobalState extends GlobalState {
   final UserGrades grades;
   @override
   final BuiltList<UserEvent> events;
+  @override
+  final BuiltList<RecurringExcusal> recurring;
+  @override
+  final BuiltList<EventExcusal> excusals;
 
   factory _$GlobalState([void Function(GlobalStateBuilder)? updates]) =>
       (new GlobalStateBuilder()..update(updates))._build();
@@ -29,7 +33,9 @@ class _$GlobalState extends GlobalState {
       required this.history,
       required this.settings,
       required this.grades,
-      required this.events})
+      required this.events,
+      required this.recurring,
+      required this.excusals})
       : super._() {
     BuiltValueNullFieldError.checkNotNull(status, r'GlobalState', 'status');
     BuiltValueNullFieldError.checkNotNull(user, r'GlobalState', 'user');
@@ -37,6 +43,9 @@ class _$GlobalState extends GlobalState {
     BuiltValueNullFieldError.checkNotNull(settings, r'GlobalState', 'settings');
     BuiltValueNullFieldError.checkNotNull(grades, r'GlobalState', 'grades');
     BuiltValueNullFieldError.checkNotNull(events, r'GlobalState', 'events');
+    BuiltValueNullFieldError.checkNotNull(
+        recurring, r'GlobalState', 'recurring');
+    BuiltValueNullFieldError.checkNotNull(excusals, r'GlobalState', 'excusals');
   }
 
   @override
@@ -55,7 +64,9 @@ class _$GlobalState extends GlobalState {
         history == other.history &&
         settings == other.settings &&
         grades == other.grades &&
-        events == other.events;
+        events == other.events &&
+        recurring == other.recurring &&
+        excusals == other.excusals;
   }
 
   @override
@@ -67,6 +78,8 @@ class _$GlobalState extends GlobalState {
     _$hash = $jc(_$hash, settings.hashCode);
     _$hash = $jc(_$hash, grades.hashCode);
     _$hash = $jc(_$hash, events.hashCode);
+    _$hash = $jc(_$hash, recurring.hashCode);
+    _$hash = $jc(_$hash, excusals.hashCode);
     _$hash = $jf(_$hash);
     return _$hash;
   }
@@ -79,7 +92,9 @@ class _$GlobalState extends GlobalState {
           ..add('history', history)
           ..add('settings', settings)
           ..add('grades', grades)
-          ..add('events', events))
+          ..add('events', events)
+          ..add('recurring', recurring)
+          ..add('excusals', excusals))
         .toString();
   }
 }
@@ -114,6 +129,18 @@ class GlobalStateBuilder implements Builder<GlobalState, GlobalStateBuilder> {
       _$this._events ??= new ListBuilder<UserEvent>();
   set events(ListBuilder<UserEvent>? events) => _$this._events = events;
 
+  ListBuilder<RecurringExcusal>? _recurring;
+  ListBuilder<RecurringExcusal> get recurring =>
+      _$this._recurring ??= new ListBuilder<RecurringExcusal>();
+  set recurring(ListBuilder<RecurringExcusal>? recurring) =>
+      _$this._recurring = recurring;
+
+  ListBuilder<EventExcusal>? _excusals;
+  ListBuilder<EventExcusal> get excusals =>
+      _$this._excusals ??= new ListBuilder<EventExcusal>();
+  set excusals(ListBuilder<EventExcusal>? excusals) =>
+      _$this._excusals = excusals;
+
   GlobalStateBuilder();
 
   GlobalStateBuilder get _$this {
@@ -125,6 +152,8 @@ class GlobalStateBuilder implements Builder<GlobalState, GlobalStateBuilder> {
       _settings = $v.settings.toBuilder();
       _grades = $v.grades.toBuilder();
       _events = $v.events.toBuilder();
+      _recurring = $v.recurring.toBuilder();
+      _excusals = $v.excusals.toBuilder();
       _$v = null;
     }
     return this;
@@ -155,7 +184,9 @@ class GlobalStateBuilder implements Builder<GlobalState, GlobalStateBuilder> {
               history: history.build(),
               settings: settings.build(),
               grades: grades.build(),
-              events: events.build());
+              events: events.build(),
+              recurring: recurring.build(),
+              excusals: excusals.build());
     } catch (_) {
       late String _$failedField;
       try {
@@ -169,6 +200,10 @@ class GlobalStateBuilder implements Builder<GlobalState, GlobalStateBuilder> {
         grades.build();
         _$failedField = 'events';
         events.build();
+        _$failedField = 'recurring';
+        recurring.build();
+        _$failedField = 'excusals';
+        excusals.build();
       } catch (e) {
         throw new BuiltValueNestedFieldError(
             r'GlobalState', _$failedField, e.toString());

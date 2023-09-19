@@ -47,6 +47,13 @@ class _$CadetPassSerializer implements StructuredSerializer<CadetPass> {
         ..add(serializers.serialize(value,
             specifiedType: const FullType(String)));
     }
+    value = object.closed_time;
+    if (value != null) {
+      result
+        ..add('closed_time')
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(DateTime)));
+    }
     value = object.sca_number;
     if (value != null) {
       result
@@ -88,6 +95,10 @@ class _$CadetPassSerializer implements StructuredSerializer<CadetPass> {
           result.end_time = serializers.deserialize(value,
               specifiedType: const FullType(DateTime))! as DateTime;
           break;
+        case 'closed_time':
+          result.closed_time = serializers.deserialize(value,
+              specifiedType: const FullType(DateTime)) as DateTime?;
+          break;
         case 'description':
           result.description = serializers.deserialize(value,
               specifiedType: const FullType(String))! as String;
@@ -123,6 +134,8 @@ class _$CadetPass extends CadetPass {
   @override
   final DateTime end_time;
   @override
+  final DateTime? closed_time;
+  @override
   final String description;
   @override
   final String? sca_number;
@@ -140,6 +153,7 @@ class _$CadetPass extends CadetPass {
       required this.pass_type,
       required this.start_time,
       required this.end_time,
+      this.closed_time,
       required this.description,
       this.sca_number,
       required this.city,
@@ -172,6 +186,7 @@ class _$CadetPass extends CadetPass {
         pass_type == other.pass_type &&
         start_time == other.start_time &&
         end_time == other.end_time &&
+        closed_time == other.closed_time &&
         description == other.description &&
         sca_number == other.sca_number &&
         city == other.city &&
@@ -186,6 +201,7 @@ class _$CadetPass extends CadetPass {
     _$hash = $jc(_$hash, pass_type.hashCode);
     _$hash = $jc(_$hash, start_time.hashCode);
     _$hash = $jc(_$hash, end_time.hashCode);
+    _$hash = $jc(_$hash, closed_time.hashCode);
     _$hash = $jc(_$hash, description.hashCode);
     _$hash = $jc(_$hash, sca_number.hashCode);
     _$hash = $jc(_$hash, city.hashCode);
@@ -202,6 +218,7 @@ class _$CadetPass extends CadetPass {
           ..add('pass_type', pass_type)
           ..add('start_time', start_time)
           ..add('end_time', end_time)
+          ..add('closed_time', closed_time)
           ..add('description', description)
           ..add('sca_number', sca_number)
           ..add('city', city)
@@ -233,6 +250,10 @@ class CadetPassBuilder implements Builder<CadetPass, CadetPassBuilder> {
   DateTime? get end_time => _$this._end_time;
   set end_time(DateTime? end_time) => _$this._end_time = end_time;
 
+  DateTime? _closed_time;
+  DateTime? get closed_time => _$this._closed_time;
+  set closed_time(DateTime? closed_time) => _$this._closed_time = closed_time;
+
   String? _description;
   String? get description => _$this._description;
   set description(String? description) => _$this._description = description;
@@ -259,6 +280,7 @@ class CadetPassBuilder implements Builder<CadetPass, CadetPassBuilder> {
       _pass_type = $v.pass_type;
       _start_time = $v.start_time;
       _end_time = $v.end_time;
+      _closed_time = $v.closed_time;
       _description = $v.description;
       _sca_number = $v.sca_number;
       _city = $v.city;
@@ -294,6 +316,7 @@ class CadetPassBuilder implements Builder<CadetPass, CadetPassBuilder> {
                 start_time, r'CadetPass', 'start_time'),
             end_time: BuiltValueNullFieldError.checkNotNull(
                 end_time, r'CadetPass', 'end_time'),
+            closed_time: closed_time,
             description: BuiltValueNullFieldError.checkNotNull(
                 description, r'CadetPass', 'description'),
             sca_number: sca_number,

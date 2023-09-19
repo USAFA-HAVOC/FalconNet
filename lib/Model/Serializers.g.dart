@@ -15,6 +15,7 @@ Serializers _$serializers = (new Serializers().toBuilder()
       ..add(CadetPass.serializer)
       ..add(CadetPassAllocation.serializer)
       ..add(DIRequest.serializer)
+      ..add(EventExcusal.serializer)
       ..add(EventList.serializer)
       ..add(Excusal.serializer)
       ..add(FormDataList.serializer)
@@ -28,6 +29,7 @@ Serializers _$serializers = (new Serializers().toBuilder()
       ..add(InitialData.serializer)
       ..add(PassHistoryModel.serializer)
       ..add(PassStatusRequest.serializer)
+      ..add(RecurringExcusal.serializer)
       ..add(RoleRequest.serializer)
       ..add(SchedulingEvent.serializer)
       ..add(SignRequest.serializer)
@@ -70,6 +72,12 @@ Serializers _$serializers = (new Serializers().toBuilder()
           const FullType(BuiltList, const [const FullType(UserEvent)]),
           () => new ListBuilder<UserEvent>())
       ..addBuilderFactory(
+          const FullType(BuiltList, const [const FullType(EventExcusal)]),
+          () => new ListBuilder<EventExcusal>())
+      ..addBuilderFactory(
+          const FullType(BuiltList, const [const FullType(RecurringExcusal)]),
+          () => new ListBuilder<RecurringExcusal>())
+      ..addBuilderFactory(
           const FullType(BuiltList, const [const FullType(FormOneData)]),
           () => new ListBuilder<FormOneData>())
       ..addBuilderFactory(
@@ -110,6 +118,12 @@ Serializers _$serializers = (new Serializers().toBuilder()
       ..addBuilderFactory(
           const FullType(BuiltList, const [const FullType(TimedRole)]),
           () => new ListBuilder<TimedRole>())
+      ..addBuilderFactory(
+          const FullType(BuiltList, const [const FullType(String)]),
+          () => new ListBuilder<String>())
+      ..addBuilderFactory(
+          const FullType(BuiltList, const [const FullType(bool)]),
+          () => new ListBuilder<bool>())
       ..addBuilderFactory(
           const FullType(BuiltList, const [const FullType(String)]),
           () => new ListBuilder<String>())

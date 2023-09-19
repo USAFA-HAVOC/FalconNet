@@ -43,6 +43,8 @@ class GlobalAction extends ReduxAction<GlobalState> {
           sb.grades = data.grades?.toBuilder();
           sb.history = data.pass_history?.toBuilder();
           sb.events = data.events?.toBuilder();
+          sb.excusals = data.event_excusals?.toBuilder();
+          sb.recurring = data.recurring_excusals?.toBuilder();
         }
 
         var unset = false;

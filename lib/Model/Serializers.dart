@@ -95,6 +95,8 @@ part 'Serializers.g.dart';
   EventList,
   Attendee,
   Excusal,
+  EventExcusal,
+  RecurringExcusal,
   InitialData,
   SignRequest,
   UserEvent,

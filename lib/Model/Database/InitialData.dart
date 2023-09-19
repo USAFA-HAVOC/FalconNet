@@ -3,6 +3,7 @@ import 'package:built_value/built_value.dart';
 import 'package:built_value/serializer.dart';
 
 import 'CadetPass.dart';
+import 'Excusal.dart';
 import 'User.dart';
 import 'UserEvent.dart';
 import 'UserGrades.dart';
@@ -16,6 +17,8 @@ abstract class InitialData implements Built<InitialData, InitialDataBuilder> {
   UserGrades? get grades;
   BuiltList<CadetPass>? get pass_history;
   BuiltList<UserEvent>? get events;
+  BuiltList<EventExcusal>? get event_excusals;
+  BuiltList<RecurringExcusal>? get recurring_excusals;
 
   InitialData._();
   factory InitialData([void Function(InitialDataBuilder) updates]) = _$InitialData;

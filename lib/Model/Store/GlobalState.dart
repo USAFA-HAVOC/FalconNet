@@ -7,6 +7,7 @@ import 'package:falcon_net/Model/Database/User.dart';
 import 'package:falcon_net/Model/Database/UserSettings.dart';
 
 import '../Database/AccountabilityEvent.dart';
+import '../Database/Excusal.dart';
 import '../Database/PassHistoryModel.dart';
 import '../Database/UserEvent.dart';
 import '../Database/UserGrades.dart';
@@ -22,6 +23,8 @@ abstract class GlobalState implements Built<GlobalState, GlobalStateBuilder> {
   UserSettings get settings;
   UserGrades get grades;
   BuiltList<UserEvent> get events;
+  BuiltList<RecurringExcusal> get recurring;
+  BuiltList<EventExcusal> get excusals;
 
   GlobalState._();
   factory GlobalState([void Function(GlobalStateBuilder) updates]) = _$GlobalState;

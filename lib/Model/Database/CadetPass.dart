@@ -11,6 +11,7 @@ abstract class CadetPass implements Built<CadetPass, CadetPassBuilder> {
   String get pass_type;
   DateTime get start_time;
   DateTime get end_time;
+  DateTime? get closed_time;
   String get description;
   String? get sca_number;
   String get city;
