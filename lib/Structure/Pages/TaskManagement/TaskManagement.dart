@@ -62,7 +62,7 @@ class TaskManagementState extends State<TaskManagement> {
       tasks.add(const ExternalTaskWidget(
           path: "/task_management/unit_management",
           title: "Unit Management",
-          description: "Manage pass status for your unit. Create and manage forms."
+          description: "Manage passes for your unit."
       ));
     }
 

@@ -10,6 +10,7 @@ import 'package:falcon_net/Model/Database/WingData.dart';
 import 'package:falcon_net/Model/Store/Endpoints.dart';
 import 'package:falcon_net/Structure/Components/LoadingShimmer.dart';
 import 'package:falcon_net/Structure/Components/UnitStatusWidget.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 import '../../../../../Utility/ErrorFormatting.dart';

@@ -8,7 +8,7 @@ abstract class IndividualPassStatus implements Built<IndividualPassStatus, Indiv
 
   String get user_id;
   String get name;
-  bool get status;
+  bool get individual_pass_status;
 
   IndividualPassStatus._();
   factory IndividualPassStatus([void Function(IndividualPassStatusBuilder) updates]) = _$IndividualPassStatus;
