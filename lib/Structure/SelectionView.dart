@@ -92,7 +92,9 @@ class SelectionView extends StatelessWidget {
               ),
             ),
           ),
+
           const SizedBox(height: 20.0),
+
           SizedBox(
             width: 200.0,
             height: 50.0,

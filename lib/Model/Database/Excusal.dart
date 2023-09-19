@@ -1,3 +1,4 @@
+import 'package:built_collection/built_collection.dart';
 import 'package:built_value/built_value.dart';
 import 'package:built_value/serializer.dart';
 
@@ -12,11 +13,48 @@ enum ExcusalType {
   other
 }
 
+extension ExcusalTypeNames on ExcusalType {
+  String display() {
+    switch (this) {
+      case ExcusalType.sca: return "SCA";
+      case ExcusalType.los: return "LOS";
+      case ExcusalType.ic_status: return "IC Status";
+      case ExcusalType.gr: return "GR";
+      case ExcusalType.bedrest: return "Bedrest";
+      case ExcusalType.other: return "Other";
+    }
+  }
+
+  static ExcusalType parse(String text) =>
+      ExcusalType.values.firstWhere((e) => e.name == text);
+}
+
+enum RecurringExcusalType {
+  all_events,
+  m_days,
+  t_days,
+  days_of_week
+}
+
+extension RecurringExcusalTypeNames on RecurringExcusalType {
+  String display() {
+    switch (this) {
+      case RecurringExcusalType.all_events: return "All Days";
+      case RecurringExcusalType.m_days: return "M-Days";
+      case RecurringExcusalType.t_days: return "T-Days";
+      case RecurringExcusalType.days_of_week: return "Days of Week";
+    }
+  }
+
+  static RecurringExcusalType parse(String text) =>
+      RecurringExcusalType.values.firstWhere((e) => e.name == text);
+}
+
 abstract class Excusal implements Built<Excusal, ExcusalBuilder> {
   static Serializer<Excusal> get serializer => _$excusalSerializer;
 
   String get type;
-  String get sca_number;
+  String? get sca_number;
   String get other_description;
 
   Excusal._();
@@ -40,7 +78,9 @@ abstract class RecurringExcusal implements Built<RecurringExcusal, RecurringExcu
 
   String? get id;
   String get user_id;
-  String get event_type;
+  BuiltList<String> get event_types;
+  String get recurring_excusal_type;
+  BuiltList<bool>? get excused_days;
   Excusal get excusal;
 
   RecurringExcusal._();

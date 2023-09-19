@@ -25,10 +25,9 @@ class Signatures extends StatelessWidget {
     var sorted = events
         .where((e) => e.type != EventType.di.name)
         .where((e) => e.accountability_method == AccountabilityMethod.self_signed.name)
+        .where((e) => e.submission_deadline.isAfter(DateTime.now()))
         .toList()
         .sortedKey((e) => e.time);
-
-    print(events);
 
     if (sorted.isEmpty) {
       return const PageWidget(
@@ -60,11 +59,11 @@ class Signatures extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.stretch,
                         children: [
                           Text(
-                            describeDate(sorted[index].time),
+                            describeDate(sorted[index].time.toLocal()),
                             textAlign: TextAlign.center,
                           ),
                           Text(
-                            describeTime(TimeOfDay.fromDateTime(sorted[index].time)),
+                            describeTime(TimeOfDay.fromDateTime(sorted[index].time.toLocal())),
                             textAlign: TextAlign.center,
                           ),
                         ],

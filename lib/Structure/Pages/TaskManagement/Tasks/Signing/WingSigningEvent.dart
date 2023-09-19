@@ -23,6 +23,7 @@ import 'SigningWidget.dart';
 class WingSigningEvent extends StatefulWidget {
   final String label;
   final String event;
+  final bool excusable;
   final EdgeInsets padding;
   final FutureOr<WingData> Function() retrieve;
   final int? refresh;
@@ -33,6 +34,7 @@ class WingSigningEvent extends StatefulWidget {
     required this.event,
     required this.retrieve,
     this.refresh,
+    required this.excusable,
     this.padding = const EdgeInsets.all(20)
   });
 
@@ -124,6 +126,32 @@ class WingSigningEventState extends State<WingSigningEvent> {
     }
   }
 
+  ///Signs for an individual signee in a given unit
+  void excuseFor(WingData wing, UnitData unit, UserSummary signee, ScaffoldMessengerState messenger) async {
+    try {
+      await Endpoints.signEvent(SignRequest((s) => s
+        ..event_id = widget.event
+        ..user_id = signee.user_id
+      ));
+
+      setState(() {
+        UnitData signed = unit.sign(signee, event: widget.event);
+        connection = Future.value(wing.set(signed));
+        loaded = loaded.where((u) => signed.unit.name != u.unit.name).toList() + [signed];
+      });
+
+      messenger.showSnackBar(
+          const SnackBar(content: Text("Successfully Signed"))
+      );
+    }
+    catch (e) {
+      displayError(prefix: "CWOC", exception: e);
+      messenger.showSnackBar(
+          const SnackBar(content: Text("Failed to sign"))
+      );
+    }
+  }
+
   ///Loads a given unit based on the unit name
   void loadUnit(String unit, ScaffoldMessengerState? messenger) async {
     var wing = await connection;
@@ -163,6 +191,12 @@ class WingSigningEventState extends State<WingSigningEvent> {
           data.members.firstWhere((m) => m.user_id == signee.user_id),
           ScaffoldMessenger.of(context)
         ),
+        onExcuse: widget.excusable ? (member) => excuseFor(
+            wing,
+            data,
+            data.members.firstWhere((m) => m.user_id == member.user_id),
+            ScaffoldMessenger.of(context)
+        ) : null,
       );
     }
 
@@ -219,7 +253,7 @@ class WingSigningEventState extends State<WingSigningEvent> {
 
       (g % 2 == 0 ? left : right).addAll(
           [
-            UnitStatusWidget.fromList(units: units, label: group),
+            UnitStatusWidget.fromList(units: units.where((u) => u.unit.parent_units.contains(group)).toList(), label: group),
 
             const SizedBox(height: 20,)
           ]

@@ -11,6 +11,7 @@ abstract class UserEvent implements Built<UserEvent, UserEventBuilder> {
   String? get name;
   String? get description;
   DateTime get time;
+  DateTime get submission_deadline;
   String get accountability_method;
   String get type;
   String get status;

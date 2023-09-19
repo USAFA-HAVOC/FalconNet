@@ -1,6 +1,9 @@
+import 'package:falcon_net/Utility/ErrorFormatting.dart';
 import 'package:falcon_net/Utility/TemporalFormatting.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttericon/font_awesome5_icons.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../../../../../Model/Database/UserStatus.dart';
 import '../../../../../Model/Database/UserSummary.dart';
@@ -12,8 +15,15 @@ class SignBox extends StatelessWidget {
   final UserSummary user;
   final String? event;
   final void Function() onSign;
+  final void Function()? onExcuse;
 
-  const SignBox({super.key, required this.onSign, required this.user, this.event});
+  const SignBox({
+    super.key,
+    required this.onExcuse,
+    required this.onSign,
+    required this.user,
+    this.event
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -23,6 +33,34 @@ class SignBox extends StatelessWidget {
       exteriorPadding: const EdgeInsets.symmetric(vertical: 3),
       interiorPadding: const EdgeInsets.symmetric(vertical: 3, horizontal: 10),
       children: [
+        if (!kIsWeb) Expanded(
+          flex: 1,
+          child: IconButton(
+            icon: Icon(
+              Icons.phone_rounded,
+              color: (user.phone_number == null || (user.phone_number ?? "").isEmpty) ? Colors.grey : Colors.black,
+            ),
+            onPressed: (user.phone_number == null || (user.phone_number ?? "").isEmpty) ? null : () async {
+
+              String valid = user.phone_number!.replaceAll(" ", "");
+
+              try {
+                if (!await launchUrl(Uri.parse("tel:$valid"))) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(content: Text("Failed to launch phone"))
+                  );
+                }
+              }
+              catch (e) {
+                displayError(prefix: "Phone", exception: e);
+                ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(content: Text("Failed to launch phone"))
+                );
+              }
+            },
+          )
+        ),
+
         Expanded(
           flex: 3,
           child: Column(
@@ -77,10 +115,10 @@ class SignBox extends StatelessWidget {
               onPressed: signable
                   ? () => showDialog(context: context, builder: (context) => ConfirmationDialog(
                       title: "Confirm Signing",
-                      description: "Please confirm you would like to sign "
-                          "${user.name}'s dormitory inspection. "
-                          "This action cannot be undone.",
-                      onConfirm: onSign
+                      description: "Please confirm you would like to sign for "
+                          "${user.name}. This action cannot be undone.",
+                      onConfirm: onSign,
+                      onExcuse: onExcuse,
                     ))
                   : null,
               icon: Icon(

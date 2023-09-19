@@ -22,6 +22,7 @@ class UnitSigningEvent extends StatefulWidget {
   final String statusLabel;
   final String? event;
   final EdgeInsets padding;
+  final bool excusable;
   final FutureOr<UnitData> Function() retrieve;
   final int? refresh;
 
@@ -31,6 +32,7 @@ class UnitSigningEvent extends StatefulWidget {
     required this.statusLabel,
     required this.event,
     required this.retrieve,
+    required this.excusable,
     this.padding = const EdgeInsets.all(20),
     this.refresh
   });
@@ -112,6 +114,39 @@ class UnitSigningEventState extends State<UnitSigningEvent> {
     }
   }
 
+  void excuse(UserSummary member, UnitData data, ScaffoldMessengerState messenger) async {
+    try {
+      await Endpoints.signEvent(SignRequest((s) => s
+        ..event_id = widget.event
+        ..user_id = member.user_id
+      ));
+
+      setState(() {
+        //future = Future<UnitData>.value(data.sign(member, event: widget.event));
+
+        var mutated = data.rebuild((u) => u.members.map((m) =>
+        m.user_id != member.user_id
+            ? m
+            : member.rebuild((m) =>
+        m.status = (UserEventStatusBuilder()..status = UserStatus.signed.name)
+        )
+        ));
+
+        future = Future<UnitData>.value(mutated);
+      });
+
+      messenger.showSnackBar(
+          const SnackBar(content: Text("Successfully Signed"))
+      );
+    }
+    catch(e) {
+      displayError(prefix: "Signing", exception: e);
+      messenger.showSnackBar(
+          const SnackBar(content: Text("Failed to Sign"))
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return AsyncPage(
@@ -133,6 +168,7 @@ class UnitSigningEventState extends State<UnitSigningEvent> {
               status: data,
               event: widget.event,
               onSign: (member) => sign(member, data, ScaffoldMessenger.of(context)),
+              onExcuse: widget.excusable ? (member) => excuse(member, data, ScaffoldMessenger.of(context)) : null,
             ),
           ],
         )

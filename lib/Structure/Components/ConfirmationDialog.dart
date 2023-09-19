@@ -8,8 +8,16 @@ class ConfirmationDialog extends StatelessWidget {
   final String description;
   final void Function() onConfirm;
   final void Function()? onCancel;
+  final void Function()? onExcuse;
 
-  const ConfirmationDialog({super.key, required this.title, required this.description, required this.onConfirm, this.onCancel});
+  const ConfirmationDialog({
+    super.key,
+    required this.title,
+    required this.description,
+    required this.onConfirm,
+    this.onCancel,
+    this.onExcuse
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -72,6 +80,14 @@ class ConfirmationDialog extends StatelessWidget {
                       ),
                     ],
                   ),
+
+                  if (onExcuse != null) ElevatedButton(
+                      onPressed: () => onExcuse!(),
+                      child: Text(
+                        "Excuse",
+                        style: Theme.of(context).textTheme.labelLarge,
+                      )
+                  )
                 ],
               ),
             ]

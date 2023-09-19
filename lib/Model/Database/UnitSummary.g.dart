@@ -40,6 +40,30 @@ class _$UnitSummarySerializer implements StructuredSerializer<UnitSummary> {
         ..add('out')
         ..add(serializers.serialize(value, specifiedType: const FullType(int)));
     }
+    value = object.leave;
+    if (value != null) {
+      result
+        ..add('leave')
+        ..add(serializers.serialize(value, specifiedType: const FullType(int)));
+    }
+    value = object.overdue;
+    if (value != null) {
+      result
+        ..add('overdue')
+        ..add(serializers.serialize(value, specifiedType: const FullType(int)));
+    }
+    value = object.excused;
+    if (value != null) {
+      result
+        ..add('excused')
+        ..add(serializers.serialize(value, specifiedType: const FullType(int)));
+    }
+    value = object.out_returning;
+    if (value != null) {
+      result
+        ..add('out_returning')
+        ..add(serializers.serialize(value, specifiedType: const FullType(int)));
+    }
     value = object.total;
     if (value != null) {
       result
@@ -72,6 +96,22 @@ class _$UnitSummarySerializer implements StructuredSerializer<UnitSummary> {
           result.out = serializers.deserialize(value,
               specifiedType: const FullType(int)) as int?;
           break;
+        case 'leave':
+          result.leave = serializers.deserialize(value,
+              specifiedType: const FullType(int)) as int?;
+          break;
+        case 'overdue':
+          result.overdue = serializers.deserialize(value,
+              specifiedType: const FullType(int)) as int?;
+          break;
+        case 'excused':
+          result.excused = serializers.deserialize(value,
+              specifiedType: const FullType(int)) as int?;
+          break;
+        case 'out_returning':
+          result.out_returning = serializers.deserialize(value,
+              specifiedType: const FullType(int)) as int?;
+          break;
         case 'total':
           result.total = serializers.deserialize(value,
               specifiedType: const FullType(int)) as int?;
@@ -95,6 +135,14 @@ class _$UnitSummary extends UnitSummary {
   @override
   final int? out;
   @override
+  final int? leave;
+  @override
+  final int? overdue;
+  @override
+  final int? excused;
+  @override
+  final int? out_returning;
+  @override
   final int? total;
   @override
   final Unit unit;
@@ -103,7 +151,15 @@ class _$UnitSummary extends UnitSummary {
       (new UnitSummaryBuilder()..update(updates))._build();
 
   _$UnitSummary._(
-      {this.signed, this.unsigned, this.out, this.total, required this.unit})
+      {this.signed,
+      this.unsigned,
+      this.out,
+      this.leave,
+      this.overdue,
+      this.excused,
+      this.out_returning,
+      this.total,
+      required this.unit})
       : super._() {
     BuiltValueNullFieldError.checkNotNull(unit, r'UnitSummary', 'unit');
   }
@@ -122,6 +178,10 @@ class _$UnitSummary extends UnitSummary {
         signed == other.signed &&
         unsigned == other.unsigned &&
         out == other.out &&
+        leave == other.leave &&
+        overdue == other.overdue &&
+        excused == other.excused &&
+        out_returning == other.out_returning &&
         total == other.total &&
         unit == other.unit;
   }
@@ -132,6 +192,10 @@ class _$UnitSummary extends UnitSummary {
     _$hash = $jc(_$hash, signed.hashCode);
     _$hash = $jc(_$hash, unsigned.hashCode);
     _$hash = $jc(_$hash, out.hashCode);
+    _$hash = $jc(_$hash, leave.hashCode);
+    _$hash = $jc(_$hash, overdue.hashCode);
+    _$hash = $jc(_$hash, excused.hashCode);
+    _$hash = $jc(_$hash, out_returning.hashCode);
     _$hash = $jc(_$hash, total.hashCode);
     _$hash = $jc(_$hash, unit.hashCode);
     _$hash = $jf(_$hash);
@@ -144,6 +208,10 @@ class _$UnitSummary extends UnitSummary {
           ..add('signed', signed)
           ..add('unsigned', unsigned)
           ..add('out', out)
+          ..add('leave', leave)
+          ..add('overdue', overdue)
+          ..add('excused', excused)
+          ..add('out_returning', out_returning)
           ..add('total', total)
           ..add('unit', unit))
         .toString();
@@ -165,6 +233,23 @@ class UnitSummaryBuilder implements Builder<UnitSummary, UnitSummaryBuilder> {
   int? get out => _$this._out;
   set out(int? out) => _$this._out = out;
 
+  int? _leave;
+  int? get leave => _$this._leave;
+  set leave(int? leave) => _$this._leave = leave;
+
+  int? _overdue;
+  int? get overdue => _$this._overdue;
+  set overdue(int? overdue) => _$this._overdue = overdue;
+
+  int? _excused;
+  int? get excused => _$this._excused;
+  set excused(int? excused) => _$this._excused = excused;
+
+  int? _out_returning;
+  int? get out_returning => _$this._out_returning;
+  set out_returning(int? out_returning) =>
+      _$this._out_returning = out_returning;
+
   int? _total;
   int? get total => _$this._total;
   set total(int? total) => _$this._total = total;
@@ -181,6 +266,10 @@ class UnitSummaryBuilder implements Builder<UnitSummary, UnitSummaryBuilder> {
       _signed = $v.signed;
       _unsigned = $v.unsigned;
       _out = $v.out;
+      _leave = $v.leave;
+      _overdue = $v.overdue;
+      _excused = $v.excused;
+      _out_returning = $v.out_returning;
       _total = $v.total;
       _unit = $v.unit.toBuilder();
       _$v = null;
@@ -210,6 +299,10 @@ class UnitSummaryBuilder implements Builder<UnitSummary, UnitSummaryBuilder> {
               signed: signed,
               unsigned: unsigned,
               out: out,
+              leave: leave,
+              overdue: overdue,
+              excused: excused,
+              out_returning: out_returning,
               total: total,
               unit: unit.build());
     } catch (_) {

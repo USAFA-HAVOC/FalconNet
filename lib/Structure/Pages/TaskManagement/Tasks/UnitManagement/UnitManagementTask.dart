@@ -115,7 +115,7 @@ class UnitManagementTaskState extends State<UnitManagementTask> {
               return [
                 PageWidget(
                     title: "Pass Status",
-                    children: ["Firsties", "2-Degs", "3-Degs", "4-Degs"].asMap().map((index, key) => MapEntry(index, Row(
+                    children: ["4-Degs", "3-Degs", "2-Degs", "Firsties"].asMap().map((index, key) => MapEntry(index, Row(
                       children: [
                         Expanded(
                           flex: 5,

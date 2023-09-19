@@ -86,6 +86,7 @@ class UnitSigningTaskState extends State<UnitSigningTask> {
                                 statusLabel: "Individuals",
                                 event: event.id,
                                 padding: const EdgeInsets.only(left: 20, bottom: 20, right: 20),
+                                excusable: event.type != EventType.di.name,
                               ),
                             )
                         ),

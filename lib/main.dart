@@ -15,7 +15,6 @@ import 'package:falcon_net/Services/SchedulingService.dart';
 import 'package:falcon_net/Theme/Dark/DarkTheme.dart';
 import 'package:falcon_net/Theme/Light/LightTheme.dart';
 import 'package:falcon_net/Theme/Random/RandomTheme.dart';
-import 'package:falcon_net/Utility/Testing.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:go_router/go_router.dart';
@@ -156,19 +155,11 @@ class FNAppState extends State<FNApp> {
           )
         ),
         builder: (context, model) {
-          if (!model.content.party || !model.content.loaded) {
-            return MaterialApp.router(
-                theme: model.content.theme == "light" ? lightTheme : randomTheme,
-                darkTheme: darkTheme,
-                themeMode: model.content.theme == "dark" ? ThemeMode.dark : ThemeMode.light,
-                routerConfig: router
-            );
-          }
           return MaterialApp.router(
               theme: model.content.theme == "light" ? lightTheme : randomTheme,
               darkTheme: darkTheme,
               themeMode: model.content.theme == "dark" ? ThemeMode.dark : ThemeMode.light,
-              routerConfig: ppRouter
+              routerConfig: (!model.content.party || !model.content.loaded) ? router : ppRouter
           );
         }
       ),

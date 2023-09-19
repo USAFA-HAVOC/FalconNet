@@ -15,6 +15,7 @@ abstract class UnitData implements Built<UnitData, UnitDataBuilder> {
   int get out;
   int get out_returning;
   int get overdue;
+  int get excused;
   int get leave;
 
   int get total;

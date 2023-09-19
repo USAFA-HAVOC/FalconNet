@@ -77,6 +77,7 @@ class CWOCTaskState extends State<CWOCTask> {
                               event: event.id!,
                               refresh: 10,
                               padding: const EdgeInsets.only(left: 20, bottom: 20, right: 20),
+                              excusable: event.type != EventType.di.name,
                             ),
                           )
                       ),

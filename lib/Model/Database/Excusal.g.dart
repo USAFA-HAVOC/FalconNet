@@ -24,14 +24,18 @@ class _$ExcusalSerializer implements StructuredSerializer<Excusal> {
     final result = <Object?>[
       'type',
       serializers.serialize(object.type, specifiedType: const FullType(String)),
-      'sca_number',
-      serializers.serialize(object.sca_number,
-          specifiedType: const FullType(String)),
       'other_description',
       serializers.serialize(object.other_description,
           specifiedType: const FullType(String)),
     ];
-
+    Object? value;
+    value = object.sca_number;
+    if (value != null) {
+      result
+        ..add('sca_number')
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(String)));
+    }
     return result;
   }
 
@@ -52,7 +56,7 @@ class _$ExcusalSerializer implements StructuredSerializer<Excusal> {
           break;
         case 'sca_number':
           result.sca_number = serializers.deserialize(value,
-              specifiedType: const FullType(String))! as String;
+              specifiedType: const FullType(String)) as String?;
           break;
         case 'other_description':
           result.other_description = serializers.deserialize(value,
@@ -145,8 +149,12 @@ class _$RecurringExcusalSerializer
       'user_id',
       serializers.serialize(object.user_id,
           specifiedType: const FullType(String)),
-      'event_type',
-      serializers.serialize(object.event_type,
+      'event_types',
+      serializers.serialize(object.event_types,
+          specifiedType:
+              const FullType(BuiltList, const [const FullType(String)])),
+      'recurring_excusal_type',
+      serializers.serialize(object.recurring_excusal_type,
           specifiedType: const FullType(String)),
       'excusal',
       serializers.serialize(object.excusal,
@@ -159,6 +167,14 @@ class _$RecurringExcusalSerializer
         ..add('id')
         ..add(serializers.serialize(value,
             specifiedType: const FullType(String)));
+    }
+    value = object.excused_days;
+    if (value != null) {
+      result
+        ..add('excused_days')
+        ..add(serializers.serialize(value,
+            specifiedType:
+                const FullType(BuiltList, const [const FullType(bool)])));
     }
     return result;
   }
@@ -183,9 +199,21 @@ class _$RecurringExcusalSerializer
           result.user_id = serializers.deserialize(value,
               specifiedType: const FullType(String))! as String;
           break;
-        case 'event_type':
-          result.event_type = serializers.deserialize(value,
+        case 'event_types':
+          result.event_types.replace(serializers.deserialize(value,
+                  specifiedType: const FullType(
+                      BuiltList, const [const FullType(String)]))!
+              as BuiltList<Object?>);
+          break;
+        case 'recurring_excusal_type':
+          result.recurring_excusal_type = serializers.deserialize(value,
               specifiedType: const FullType(String))! as String;
+          break;
+        case 'excused_days':
+          result.excused_days.replace(serializers.deserialize(value,
+                  specifiedType:
+                      const FullType(BuiltList, const [const FullType(bool)]))!
+              as BuiltList<Object?>);
           break;
         case 'excusal':
           result.excusal.replace(serializers.deserialize(value,
@@ -202,7 +230,7 @@ class _$Excusal extends Excusal {
   @override
   final String type;
   @override
-  final String sca_number;
+  final String? sca_number;
   @override
   final String other_description;
 
@@ -210,12 +238,9 @@ class _$Excusal extends Excusal {
       (new ExcusalBuilder()..update(updates))._build();
 
   _$Excusal._(
-      {required this.type,
-      required this.sca_number,
-      required this.other_description})
+      {required this.type, this.sca_number, required this.other_description})
       : super._() {
     BuiltValueNullFieldError.checkNotNull(type, r'Excusal', 'type');
-    BuiltValueNullFieldError.checkNotNull(sca_number, r'Excusal', 'sca_number');
     BuiltValueNullFieldError.checkNotNull(
         other_description, r'Excusal', 'other_description');
   }
@@ -304,8 +329,7 @@ class ExcusalBuilder implements Builder<Excusal, ExcusalBuilder> {
         new _$Excusal._(
             type:
                 BuiltValueNullFieldError.checkNotNull(type, r'Excusal', 'type'),
-            sca_number: BuiltValueNullFieldError.checkNotNull(
-                sca_number, r'Excusal', 'sca_number'),
+            sca_number: sca_number,
             other_description: BuiltValueNullFieldError.checkNotNull(
                 other_description, r'Excusal', 'other_description'));
     replace(_$result);
@@ -458,7 +482,11 @@ class _$RecurringExcusal extends RecurringExcusal {
   @override
   final String user_id;
   @override
-  final String event_type;
+  final BuiltList<String> event_types;
+  @override
+  final String recurring_excusal_type;
+  @override
+  final BuiltList<bool>? excused_days;
   @override
   final Excusal excusal;
 
@@ -469,13 +497,17 @@ class _$RecurringExcusal extends RecurringExcusal {
   _$RecurringExcusal._(
       {this.id,
       required this.user_id,
-      required this.event_type,
+      required this.event_types,
+      required this.recurring_excusal_type,
+      this.excused_days,
       required this.excusal})
       : super._() {
     BuiltValueNullFieldError.checkNotNull(
         user_id, r'RecurringExcusal', 'user_id');
     BuiltValueNullFieldError.checkNotNull(
-        event_type, r'RecurringExcusal', 'event_type');
+        event_types, r'RecurringExcusal', 'event_types');
+    BuiltValueNullFieldError.checkNotNull(
+        recurring_excusal_type, r'RecurringExcusal', 'recurring_excusal_type');
     BuiltValueNullFieldError.checkNotNull(
         excusal, r'RecurringExcusal', 'excusal');
   }
@@ -494,7 +526,9 @@ class _$RecurringExcusal extends RecurringExcusal {
     return other is RecurringExcusal &&
         id == other.id &&
         user_id == other.user_id &&
-        event_type == other.event_type &&
+        event_types == other.event_types &&
+        recurring_excusal_type == other.recurring_excusal_type &&
+        excused_days == other.excused_days &&
         excusal == other.excusal;
   }
 
@@ -503,7 +537,9 @@ class _$RecurringExcusal extends RecurringExcusal {
     var _$hash = 0;
     _$hash = $jc(_$hash, id.hashCode);
     _$hash = $jc(_$hash, user_id.hashCode);
-    _$hash = $jc(_$hash, event_type.hashCode);
+    _$hash = $jc(_$hash, event_types.hashCode);
+    _$hash = $jc(_$hash, recurring_excusal_type.hashCode);
+    _$hash = $jc(_$hash, excused_days.hashCode);
     _$hash = $jc(_$hash, excusal.hashCode);
     _$hash = $jf(_$hash);
     return _$hash;
@@ -514,7 +550,9 @@ class _$RecurringExcusal extends RecurringExcusal {
     return (newBuiltValueToStringHelper(r'RecurringExcusal')
           ..add('id', id)
           ..add('user_id', user_id)
-          ..add('event_type', event_type)
+          ..add('event_types', event_types)
+          ..add('recurring_excusal_type', recurring_excusal_type)
+          ..add('excused_days', excused_days)
           ..add('excusal', excusal))
         .toString();
   }
@@ -532,9 +570,22 @@ class RecurringExcusalBuilder
   String? get user_id => _$this._user_id;
   set user_id(String? user_id) => _$this._user_id = user_id;
 
-  String? _event_type;
-  String? get event_type => _$this._event_type;
-  set event_type(String? event_type) => _$this._event_type = event_type;
+  ListBuilder<String>? _event_types;
+  ListBuilder<String> get event_types =>
+      _$this._event_types ??= new ListBuilder<String>();
+  set event_types(ListBuilder<String>? event_types) =>
+      _$this._event_types = event_types;
+
+  String? _recurring_excusal_type;
+  String? get recurring_excusal_type => _$this._recurring_excusal_type;
+  set recurring_excusal_type(String? recurring_excusal_type) =>
+      _$this._recurring_excusal_type = recurring_excusal_type;
+
+  ListBuilder<bool>? _excused_days;
+  ListBuilder<bool> get excused_days =>
+      _$this._excused_days ??= new ListBuilder<bool>();
+  set excused_days(ListBuilder<bool>? excused_days) =>
+      _$this._excused_days = excused_days;
 
   ExcusalBuilder? _excusal;
   ExcusalBuilder get excusal => _$this._excusal ??= new ExcusalBuilder();
@@ -547,7 +598,9 @@ class RecurringExcusalBuilder
     if ($v != null) {
       _id = $v.id;
       _user_id = $v.user_id;
-      _event_type = $v.event_type;
+      _event_types = $v.event_types.toBuilder();
+      _recurring_excusal_type = $v.recurring_excusal_type;
+      _excused_days = $v.excused_days?.toBuilder();
       _excusal = $v.excusal.toBuilder();
       _$v = null;
     }
@@ -576,12 +629,21 @@ class RecurringExcusalBuilder
               id: id,
               user_id: BuiltValueNullFieldError.checkNotNull(
                   user_id, r'RecurringExcusal', 'user_id'),
-              event_type: BuiltValueNullFieldError.checkNotNull(
-                  event_type, r'RecurringExcusal', 'event_type'),
+              event_types: event_types.build(),
+              recurring_excusal_type: BuiltValueNullFieldError.checkNotNull(
+                  recurring_excusal_type,
+                  r'RecurringExcusal',
+                  'recurring_excusal_type'),
+              excused_days: _excused_days?.build(),
               excusal: excusal.build());
     } catch (_) {
       late String _$failedField;
       try {
+        _$failedField = 'event_types';
+        event_types.build();
+
+        _$failedField = 'excused_days';
+        _excused_days?.build();
         _$failedField = 'excusal';
         excusal.build();
       } catch (e) {
