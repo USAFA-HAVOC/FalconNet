@@ -238,6 +238,87 @@ class WingSigningEventState extends State<WingSigningEvent> {
     );
   }
 
+  Widget buildWebPanel(BuildContext context, WingData wing, UnitSummary unit) {
+    Widget body;
+
+    //Displays signing widget if full unit data is available
+    if (loaded.any((u) => u.unit.name == unit.unit.name)) {
+      var data = loaded.firstWhere((u) => u.unit.name == unit.unit.name);
+      body = SigningWidget(
+        status: data,
+        event: widget.event,
+        onSign: (signee) => signFor(
+            wing,
+            data,
+            data.members.firstWhere((m) => m.user_id == signee.user_id),
+            ScaffoldMessenger.of(context)
+        ),
+        onExcuse: widget.excusable ? (member) => excuseFor(
+            wing,
+            data,
+            data.members.firstWhere((m) => m.user_id == member.user_id),
+            ScaffoldMessenger.of(context)
+        ) : null,
+      );
+    }
+
+    //Otherwise displays a loading shimmer until results are available
+    else {
+      body = const LoadingShimmer(height: 500,);
+    }
+
+    return DecoratedBox(
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(10),
+        border: Border.all(color: Theme.of(context).dividerColor),
+      ),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(20),
+
+            child: Row(
+              children: [
+                Expanded(
+                    child: Text(
+                      unit.unit.name,
+                      style: Theme.of(context).textTheme.titleSmall,
+                    )
+                ),
+
+                Expanded(
+                  child: Text(
+                    "${(unit.signed! + unit.out! + (unit.leave ?? 0) + (unit.excused!))}/${unit.total!}",
+                    style: Theme.of(context).textTheme.titleSmall,
+                    textAlign: TextAlign.end,
+                  ),
+                )
+              ],
+            ),
+          ),
+
+          Padding(
+            padding: const EdgeInsets.all(10),
+            child: ElevatedButton(
+              onPressed: () {
+                setState(() => expansions[unit.unit.name] = !expansions[unit.unit.name]!);
+                loadUnit(unit.unit.name, ScaffoldMessenger.of(context));
+              },
+              child: Text(expansions[unit.unit.name]! ? "Close" : "Open"),
+            ),
+          ),
+
+          if (expansions[unit.unit.name]!) Padding(
+            padding: const EdgeInsets.all(20),
+            child: body,
+          )
+        ],
+      ),
+    );
+  }
+
 
   Widget buildStatusGrid(List<UnitSummary> units) {
     List<String> groups = Set<String>.from(
@@ -404,7 +485,14 @@ class WingSigningEventState extends State<WingSigningEvent> {
             },
           ),
 
-          ExpansionPanelList(
+          if (kIsWeb) ListView(
+            primary: true,
+            shrinkWrap: true,
+            children: units.toList().map((unit) =>
+                buildWebPanel(context, data, unit)
+            ).toList(),
+          )
+          else ExpansionPanelList(
             children: units.toList().map((unit) =>
                 buildPanel(context, data, unit)
             ).toList(),
