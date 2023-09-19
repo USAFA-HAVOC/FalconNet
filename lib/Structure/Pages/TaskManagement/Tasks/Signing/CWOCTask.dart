@@ -70,6 +70,7 @@ class CWOCTaskState extends State<CWOCTask> {
                           showDragHandle: true,
                           builder: (context) => FractionallySizedBox(
                             heightFactor: 1.0,
+                            widthFactor: 1.0,
                             child: WingSigningEvent(
                               retrieve: () => Endpoints.getWing((StringRequestBuilder()..string = event.id!).build()),
                               label: event.name ?? (event.type == EventType.di.name ? "DI" : "Unnamed"),

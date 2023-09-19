@@ -31,7 +31,7 @@ class IndividualStatusWidgetState extends State<IndividualStatusWidget> {
       widget.users
           .map((u) => MapEntry(
             u.user_id,
-            u.status
+            u.individual_pass_status
           ))
     );
   }
