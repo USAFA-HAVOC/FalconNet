@@ -56,6 +56,12 @@
       "languageVersion": "2.17"
     },
     {
+      "name": "bouncing_widget",
+      "rootUri": "file:///Users/rylie/.pub-cache/hosted/pub.dev/bouncing_widget-2.0.0",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
+    },
+    {
       "name": "build",
       "rootUri": "file:///Users/rylie/.pub-cache/hosted/pub.dev/build-2.3.1",
       "packageUri": "lib/",
@@ -237,7 +243,7 @@
     },
     {
       "name": "flutter",
-      "rootUri": "file:///Users/Rylie/Documents/Flutter/flutter/packages/flutter",
+      "rootUri": "file:///Users/rylie/Documents/Flutter/flutter/packages/flutter",
       "packageUri": "lib/",
       "languageVersion": "3.0"
     },
@@ -326,8 +332,14 @@
       "languageVersion": "2.12"
     },
     {
+      "name": "flutter_svg",
+      "rootUri": "file:///Users/rylie/.pub-cache/hosted/pub.dev/flutter_svg-2.0.7",
+      "packageUri": "lib/",
+      "languageVersion": "2.19"
+    },
+    {
       "name": "flutter_test",
-      "rootUri": "file:///Users/Rylie/Documents/Flutter/flutter/packages/flutter_test",
+      "rootUri": "file:///Users/rylie/Documents/Flutter/flutter/packages/flutter_test",
       "packageUri": "lib/",
       "languageVersion": "3.0"
     },
@@ -339,7 +351,7 @@
     },
     {
       "name": "flutter_web_plugins",
-      "rootUri": "file:///Users/Rylie/Documents/Flutter/flutter/packages/flutter_web_plugins",
+      "rootUri": "file:///Users/rylie/Documents/Flutter/flutter/packages/flutter_web_plugins",
       "packageUri": "lib/",
       "languageVersion": "3.0"
     },
@@ -472,6 +484,12 @@
     {
       "name": "path",
       "rootUri": "file:///Users/rylie/.pub-cache/hosted/pub.dev/path-1.8.3",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
+    },
+    {
+      "name": "path_parsing",
+      "rootUri": "file:///Users/rylie/.pub-cache/hosted/pub.dev/path_parsing-1.0.1",
       "packageUri": "lib/",
       "languageVersion": "2.12"
     },
@@ -627,7 +645,7 @@
     },
     {
       "name": "sky_engine",
-      "rootUri": "file:///Users/Rylie/Documents/Flutter/flutter/bin/cache/pkg/sky_engine",
+      "rootUri": "file:///Users/rylie/Documents/Flutter/flutter/bin/cache/pkg/sky_engine",
       "packageUri": "lib/",
       "languageVersion": "3.0"
     },
@@ -716,6 +734,72 @@
       "languageVersion": "2.17"
     },
     {
+      "name": "url_launcher",
+      "rootUri": "file:///Users/rylie/.pub-cache/hosted/pub.dev/url_launcher-6.1.14",
+      "packageUri": "lib/",
+      "languageVersion": "3.0"
+    },
+    {
+      "name": "url_launcher_android",
+      "rootUri": "file:///Users/rylie/.pub-cache/hosted/pub.dev/url_launcher_android-6.1.0",
+      "packageUri": "lib/",
+      "languageVersion": "2.19"
+    },
+    {
+      "name": "url_launcher_ios",
+      "rootUri": "file:///Users/rylie/.pub-cache/hosted/pub.dev/url_launcher_ios-6.1.5",
+      "packageUri": "lib/",
+      "languageVersion": "2.19"
+    },
+    {
+      "name": "url_launcher_linux",
+      "rootUri": "file:///Users/rylie/.pub-cache/hosted/pub.dev/url_launcher_linux-3.0.6",
+      "packageUri": "lib/",
+      "languageVersion": "2.19"
+    },
+    {
+      "name": "url_launcher_macos",
+      "rootUri": "file:///Users/rylie/.pub-cache/hosted/pub.dev/url_launcher_macos-3.0.7",
+      "packageUri": "lib/",
+      "languageVersion": "2.19"
+    },
+    {
+      "name": "url_launcher_platform_interface",
+      "rootUri": "file:///Users/rylie/.pub-cache/hosted/pub.dev/url_launcher_platform_interface-2.1.5",
+      "packageUri": "lib/",
+      "languageVersion": "2.19"
+    },
+    {
+      "name": "url_launcher_web",
+      "rootUri": "file:///Users/rylie/.pub-cache/hosted/pub.dev/url_launcher_web-2.0.19",
+      "packageUri": "lib/",
+      "languageVersion": "2.19"
+    },
+    {
+      "name": "url_launcher_windows",
+      "rootUri": "file:///Users/rylie/.pub-cache/hosted/pub.dev/url_launcher_windows-3.0.8",
+      "packageUri": "lib/",
+      "languageVersion": "2.19"
+    },
+    {
+      "name": "vector_graphics",
+      "rootUri": "file:///Users/rylie/.pub-cache/hosted/pub.dev/vector_graphics-1.1.7",
+      "packageUri": "lib/",
+      "languageVersion": "2.17"
+    },
+    {
+      "name": "vector_graphics_codec",
+      "rootUri": "file:///Users/rylie/.pub-cache/hosted/pub.dev/vector_graphics_codec-1.1.7",
+      "packageUri": "lib/",
+      "languageVersion": "2.17"
+    },
+    {
+      "name": "vector_graphics_compiler",
+      "rootUri": "file:///Users/rylie/.pub-cache/hosted/pub.dev/vector_graphics_compiler-1.1.7",
+      "packageUri": "lib/",
+      "languageVersion": "2.19"
+    },
+    {
       "name": "vector_math",
       "rootUri": "file:///Users/rylie/.pub-cache/hosted/pub.dev/vector_math-2.1.4",
       "packageUri": "lib/",
@@ -794,7 +878,7 @@
       "languageVersion": "3.0"
     }
   ],
-  "generated": "2023-08-14T15:09:38.706498Z",
+  "generated": "2023-09-19T20:23:47.095333Z",
   "generator": "pub",
   "generatorVersion": "3.0.3"
 }

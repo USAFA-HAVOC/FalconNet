@@ -27,6 +27,9 @@ class _$UserEventSerializer implements StructuredSerializer<UserEvent> {
       'submission_deadline',
       serializers.serialize(object.submission_deadline,
           specifiedType: const FullType(DateTime)),
+      'submission_start',
+      serializers.serialize(object.submission_start,
+          specifiedType: const FullType(DateTime)),
       'accountability_method',
       serializers.serialize(object.accountability_method,
           specifiedType: const FullType(String)),
@@ -106,6 +109,10 @@ class _$UserEventSerializer implements StructuredSerializer<UserEvent> {
           result.submission_deadline = serializers.deserialize(value,
               specifiedType: const FullType(DateTime))! as DateTime;
           break;
+        case 'submission_start':
+          result.submission_start = serializers.deserialize(value,
+              specifiedType: const FullType(DateTime))! as DateTime;
+          break;
         case 'accountability_method':
           result.accountability_method = serializers.deserialize(value,
               specifiedType: const FullType(String))! as String;
@@ -149,6 +156,8 @@ class _$UserEvent extends UserEvent {
   @override
   final DateTime submission_deadline;
   @override
+  final DateTime submission_start;
+  @override
   final String accountability_method;
   @override
   final String type;
@@ -170,6 +179,7 @@ class _$UserEvent extends UserEvent {
       this.description,
       required this.time,
       required this.submission_deadline,
+      required this.submission_start,
       required this.accountability_method,
       required this.type,
       required this.status,
@@ -181,6 +191,8 @@ class _$UserEvent extends UserEvent {
     BuiltValueNullFieldError.checkNotNull(time, r'UserEvent', 'time');
     BuiltValueNullFieldError.checkNotNull(
         submission_deadline, r'UserEvent', 'submission_deadline');
+    BuiltValueNullFieldError.checkNotNull(
+        submission_start, r'UserEvent', 'submission_start');
     BuiltValueNullFieldError.checkNotNull(
         accountability_method, r'UserEvent', 'accountability_method');
     BuiltValueNullFieldError.checkNotNull(type, r'UserEvent', 'type');
@@ -203,6 +215,7 @@ class _$UserEvent extends UserEvent {
         description == other.description &&
         time == other.time &&
         submission_deadline == other.submission_deadline &&
+        submission_start == other.submission_start &&
         accountability_method == other.accountability_method &&
         type == other.type &&
         status == other.status &&
@@ -219,6 +232,7 @@ class _$UserEvent extends UserEvent {
     _$hash = $jc(_$hash, description.hashCode);
     _$hash = $jc(_$hash, time.hashCode);
     _$hash = $jc(_$hash, submission_deadline.hashCode);
+    _$hash = $jc(_$hash, submission_start.hashCode);
     _$hash = $jc(_$hash, accountability_method.hashCode);
     _$hash = $jc(_$hash, type.hashCode);
     _$hash = $jc(_$hash, status.hashCode);
@@ -237,6 +251,7 @@ class _$UserEvent extends UserEvent {
           ..add('description', description)
           ..add('time', time)
           ..add('submission_deadline', submission_deadline)
+          ..add('submission_start', submission_start)
           ..add('accountability_method', accountability_method)
           ..add('type', type)
           ..add('status', status)
@@ -270,6 +285,11 @@ class UserEventBuilder implements Builder<UserEvent, UserEventBuilder> {
   DateTime? get submission_deadline => _$this._submission_deadline;
   set submission_deadline(DateTime? submission_deadline) =>
       _$this._submission_deadline = submission_deadline;
+
+  DateTime? _submission_start;
+  DateTime? get submission_start => _$this._submission_start;
+  set submission_start(DateTime? submission_start) =>
+      _$this._submission_start = submission_start;
 
   String? _accountability_method;
   String? get accountability_method => _$this._accountability_method;
@@ -309,6 +329,7 @@ class UserEventBuilder implements Builder<UserEvent, UserEventBuilder> {
       _description = $v.description;
       _time = $v.time;
       _submission_deadline = $v.submission_deadline;
+      _submission_start = $v.submission_start;
       _accountability_method = $v.accountability_method;
       _type = $v.type;
       _status = $v.status;
@@ -345,6 +366,8 @@ class UserEventBuilder implements Builder<UserEvent, UserEventBuilder> {
                 time, r'UserEvent', 'time'),
             submission_deadline: BuiltValueNullFieldError.checkNotNull(
                 submission_deadline, r'UserEvent', 'submission_deadline'),
+            submission_start: BuiltValueNullFieldError.checkNotNull(
+                submission_start, r'UserEvent', 'submission_start'),
             accountability_method: BuiltValueNullFieldError.checkNotNull(
                 accountability_method, r'UserEvent', 'accountability_method'),
             type: BuiltValueNullFieldError.checkNotNull(
