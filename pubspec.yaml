@@ -61,7 +61,6 @@ dependencies:
   timezone: ^0.8.0
   fluttericon: ^2.0.0
   flutter_image_slideshow: ^0.1.6
-  url_launcher: ^6.1.14
 
 dev_dependencies:
   flutter_test:
