@@ -21,6 +21,10 @@ abstract class WingData implements Built<WingData, WingDataBuilder> {
                 UnitSummary((b) => b
                     ..unsigned = unit.unsigned
                     ..out = unit.out
+                    ..leave = unit.leave
+                    ..excused = unit.excused
+                    ..overdue = unit.overdue
+                    ..out_returning = unit.out_returning
                     ..signed = unit.signed
                     ..total = unit.total
                     ..unit = Unit((u) => u

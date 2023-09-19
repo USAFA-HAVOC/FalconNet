@@ -281,7 +281,8 @@ class LeaveLocatorFormState extends State<LeaveLocatorForm> {
                   labelText: "Emergency Contact Name"),
               style: Theme.of(context).textTheme.bodyLarge,
               validator: InputValidation.stringLength(
-                  emptyMessage: "Please enter a name"),
+                  emptyMessage: "Please enter a name"
+              ),
             ),
 
             TextFormField(

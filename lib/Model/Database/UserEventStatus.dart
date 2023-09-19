@@ -1,6 +1,7 @@
 import 'package:built_value/built_value.dart';
 import 'package:built_value/serializer.dart';
 
+import 'Excusal.dart';
 import 'UserEventExcusal.dart';
 
 
@@ -15,7 +16,7 @@ abstract class UserEventStatus implements Built<UserEventStatus, UserEventStatus
   String? get signature_user_id;
   String? get signature_name;
   DateTime? get signature_time;
-  UserEventExcusal? get excusal;
+  Excusal? get excusal;
 
   UserEventStatus._();
   factory UserEventStatus([void Function(UserEventStatusBuilder) updates]) = _$UserEventStatus;

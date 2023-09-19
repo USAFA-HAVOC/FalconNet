@@ -58,7 +58,7 @@ class _$UserEventStatusSerializer
       result
         ..add('excusal')
         ..add(serializers.serialize(value,
-            specifiedType: const FullType(UserEventExcusal)));
+            specifiedType: const FullType(Excusal)));
     }
     return result;
   }
@@ -97,8 +97,7 @@ class _$UserEventStatusSerializer
           break;
         case 'excusal':
           result.excusal.replace(serializers.deserialize(value,
-                  specifiedType: const FullType(UserEventExcusal))!
-              as UserEventExcusal);
+              specifiedType: const FullType(Excusal))! as Excusal);
           break;
       }
     }
@@ -119,7 +118,7 @@ class _$UserEventStatus extends UserEventStatus {
   @override
   final DateTime? signature_time;
   @override
-  final UserEventExcusal? excusal;
+  final Excusal? excusal;
 
   factory _$UserEventStatus([void Function(UserEventStatusBuilder)? updates]) =>
       (new UserEventStatusBuilder()..update(updates))._build();
@@ -208,10 +207,9 @@ class UserEventStatusBuilder
   set signature_time(DateTime? signature_time) =>
       _$this._signature_time = signature_time;
 
-  UserEventExcusalBuilder? _excusal;
-  UserEventExcusalBuilder get excusal =>
-      _$this._excusal ??= new UserEventExcusalBuilder();
-  set excusal(UserEventExcusalBuilder? excusal) => _$this._excusal = excusal;
+  ExcusalBuilder? _excusal;
+  ExcusalBuilder get excusal => _$this._excusal ??= new ExcusalBuilder();
+  set excusal(ExcusalBuilder? excusal) => _$this._excusal = excusal;
 
   UserEventStatusBuilder();
 

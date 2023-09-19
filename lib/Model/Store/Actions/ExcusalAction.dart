@@ -54,8 +54,8 @@ class ExcusalAction extends ReduxAction<GlobalState> {
           var full = await Endpoints.createExcusal(excusal!);
           onSucceed?.call();
           return state
-              .rebuild((s) => s.excusals.retainWhere((e) => e.event_id != full.event_id))
-              .rebuild((s) => s.excusals.add(excusal!));
+              .rebuild((s) => s.excusals.retainWhere((e) => e.id != full.id))
+              .rebuild((s) => s.excusals.add(full));
         }
 
         else if (recurring != null) {
@@ -63,7 +63,7 @@ class ExcusalAction extends ReduxAction<GlobalState> {
           onSucceed?.call();
           return state
               .rebuild((s) => s.recurring.retainWhere((e) => e.id != full.id))
-              .rebuild((s) => s.recurring.add(recurring!));
+              .rebuild((s) => s.recurring.add(full));
         }
       }
 

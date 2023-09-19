@@ -129,15 +129,15 @@ class WingSigningEventState extends State<WingSigningEvent> {
   ///Signs for an individual signee in a given unit
   void excuseFor(WingData wing, UnitData unit, UserSummary signee, ScaffoldMessengerState messenger) async {
     try {
-      await Endpoints.signEvent(SignRequest((s) => s
+      var excusal = await Endpoints.excuseOther(SignRequest((s) => s
         ..event_id = widget.event
         ..user_id = signee.user_id
       ));
 
       setState(() {
-        UnitData signed = unit.sign(signee, event: widget.event);
-        connection = Future.value(wing.set(signed));
-        loaded = loaded.where((u) => signed.unit.name != u.unit.name).toList() + [signed];
+        UnitData excused = unit.excuse(signee, excusal, event: widget.event);
+        connection = Future.value(wing.set(excused));
+        loaded = loaded.where((u) => excused.unit.name != u.unit.name).toList() + [excused];
       });
 
       messenger.showSnackBar(
@@ -222,7 +222,7 @@ class WingSigningEventState extends State<WingSigningEvent> {
 
               Expanded(
                 child: Text(
-                  "${(unit.signed! + unit.out!)}/${unit.total!}",
+                  "${(unit.signed! + unit.out! + (unit.leave ?? 0) + (unit.excused!))}/${unit.total!}",
                   style: Theme.of(context).textTheme.titleSmall,
                   textAlign: TextAlign.end,
                 ),

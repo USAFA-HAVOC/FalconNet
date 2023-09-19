@@ -186,7 +186,7 @@ class Endpoints {
   static Endpoint<SignRequest, bool> signEvent = Endpoint("/events/sign");
   static Endpoint<void, EventList> getEvents = Endpoint("/events/all", get: true);
 
-  static Endpoint<SignRequest, bool> excuseOther = Endpoint("/excusals/signer-excuse");
+  static Endpoint<SignRequest, EventExcusal> excuseOther = Endpoint("/excusals/signer-excuse");
   static Endpoint<EventExcusal, EventExcusal> createExcusal = Endpoint("/excusals/create");
   static Endpoint<RecurringExcusal, RecurringExcusal> createRecurring = Endpoint("/excusals/create-recurring");
   static Endpoint<StringRequest, bool> deleteExcusal = Endpoint("/excusals/delete");

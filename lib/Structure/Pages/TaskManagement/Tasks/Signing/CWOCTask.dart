@@ -55,7 +55,7 @@ class CWOCTaskState extends State<CWOCTask> {
                 title: event.name ?? (event.type == EventType.di.name ? "DI ${describeDate(event.time.toLocal())}" : "Unnamed"),
                 children: [
                   Text(
-                      "Due: ${describeDate(event.submission_deadline)}, ${describeTime(TimeOfDay.fromDateTime(event.submission_deadline))}"
+                      "Due: ${describeDate(event.submission_deadline.toLocal())}, ${describeTime(TimeOfDay.fromDateTime(event.submission_deadline.toLocal()))}"
                   ),
 
                   if (event.description != null) Text(

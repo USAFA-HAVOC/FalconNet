@@ -1,6 +1,8 @@
 import 'package:async_redux/async_redux.dart';
+import 'package:falcon_net/Utility/TemporalFormatting.dart';
 import 'package:flutter/material.dart';
 
+import '../../../Model/Database/AccountabilityEvent.dart';
 import '../../../Model/Database/Excusal.dart';
 import '../../../Model/Database/UserEvent.dart';
 import '../../../Model/Store/GlobalState.dart';
@@ -23,6 +25,7 @@ class EventExcusalDescriptor extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => StoreConnector<GlobalState, ViewModel<List<UserEvent>>>(
+      converter: (store) => ViewModel(store: store, content: store.state.events.toList()),
       builder: (context, model) {
         UserEvent event = model.content.firstWhere((e) => e.event_id == excusal.event_id);
         ExcusalType type = ExcusalTypeNames.parse(excusal.excusal.type);
@@ -45,12 +48,12 @@ class EventExcusalDescriptor extends StatelessWidget {
                     ),
 
                     Text(
-                      event.name ?? "DI",
+                      "${event.name ?? "DI"} ${describeDate(event.time.toLocal(), true)}",
                       style: Theme.of(context).textTheme.titleSmall,
                     ),
 
                     Text(
-                      event.type,
+                      EventTypeNames.parse(event.type).describe(),
                       style: Theme.of(context).textTheme.bodyMedium,
                     ),
                   ],
