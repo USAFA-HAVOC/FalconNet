@@ -25,6 +25,7 @@ class UnitSigningEvent extends StatefulWidget {
   final bool excusable;
   final FutureOr<UnitData> Function() retrieve;
   final int? refresh;
+  final bool? frozen;
 
   const UnitSigningEvent({
     super.key,
@@ -33,6 +34,7 @@ class UnitSigningEvent extends StatefulWidget {
     required this.event,
     required this.retrieve,
     required this.excusable,
+    this.frozen,
     this.padding = const EdgeInsets.all(20),
     this.refresh
   });
@@ -169,6 +171,7 @@ class UnitSigningEventState extends State<UnitSigningEvent> {
             SigningWidget(
               status: data,
               event: widget.event,
+              frozen: widget.frozen ?? !(data.event.submission_start.isBefore(DateTime.now()) && data.event.submission_deadline.isAfter(DateTime.now())),
               onSign: (member) => sign(member, data, ScaffoldMessenger.of(context)),
               onExcuse: widget.excusable ? (member) => excuse(member, data, ScaffoldMessenger.of(context)) : null,
             ),

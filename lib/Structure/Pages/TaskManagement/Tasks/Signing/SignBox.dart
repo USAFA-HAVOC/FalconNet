@@ -16,6 +16,7 @@ import 'SigningDialog.dart';
 class SignBox extends StatelessWidget {
   final UserSummary user;
   final String? event;
+  final bool frozen;
   final void Function() onSign;
   final void Function()? onExcuse;
 
@@ -24,12 +25,13 @@ class SignBox extends StatelessWidget {
     required this.onExcuse,
     required this.onSign,
     required this.user,
+    required this.frozen,
     this.event
   });
 
   @override
   Widget build(BuildContext context) {
-    bool signable = user.status.status == UserStatus.unsigned.name;
+    bool signable = user.status.status == UserStatus.unsigned.name && !frozen;
 
     return InfoBar(
       exteriorPadding: const EdgeInsets.symmetric(vertical: 3),
