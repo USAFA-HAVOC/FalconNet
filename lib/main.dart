@@ -26,6 +26,7 @@ import 'Router/FNRouter.dart';
 import 'Structure/Components/ViewModel.dart';
 import 'Services/NotificationService.dart';
 
+//Ethan is dumb
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
