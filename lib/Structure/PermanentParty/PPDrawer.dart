@@ -71,12 +71,6 @@ class PPDrawer extends StatelessWidget {
                     title: "Unit Assignment",
                     path: "/permanent_party/unit_assignment"
                 ),
-
-                DrawerItem(
-                    icon: Icons.numbers,
-                    title: "Squad Assignment",
-                    path: "/permanent_party/squadron_assignment"
-                ),
               ],
             ),
           )
