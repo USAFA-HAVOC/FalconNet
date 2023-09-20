@@ -46,7 +46,7 @@
 		</data>
 		<key>Frameworks/App.framework/App</key>
 		<data>
-		/jMIRu+6f5Vo8XzI2rv5nYgBok0=
+		sYksC2dOgzGVP7G6qeyKsps0tIc=
 		</data>
 		<key>Frameworks/App.framework/Info.plist</key>
 		<data>
@@ -54,15 +54,15 @@
 		</data>
 		<key>Frameworks/App.framework/_CodeSignature/CodeResources</key>
 		<data>
-		JecLA1V8Tw6ErqLy7CXyewwF5pk=
+		ADd31I4e7Gb7vIZjUlOW+m952/M=
 		</data>
 		<key>Frameworks/App.framework/flutter_assets/AssetManifest.json</key>
 		<data>
-		jB12KCw8azBX/CjJKI8DBg0AlHY=
+		nsXwjQKuYs2kkdtB2lT9qncX7/c=
 		</data>
 		<key>Frameworks/App.framework/flutter_assets/AssetManifest.smcbin</key>
 		<data>
-		PAFAei8Ejr+aoSLRxWWeRdXtNZc=
+		Gx+kXk+jBDHQsP1wznRQQA7tEl0=
 		</data>
 		<key>Frameworks/App.framework/flutter_assets/FontManifest.json</key>
 		<data>
@@ -70,7 +70,7 @@
 		</data>
 		<key>Frameworks/App.framework/flutter_assets/NOTICES.Z</key>
 		<data>
-		hBvHb8r7RgTnbgOXIgqLnTwpuQc=
+		KNNZNtCBQ4h6IAgC+MrZygFXRbc=
 		</data>
 		<key>Frameworks/App.framework/flutter_assets/assets/fonts/Proxima%20Nova%20Font.otf</key>
 		<data>
@@ -103,6 +103,14 @@
 		<key>Frameworks/App.framework/flutter_assets/assets/icon/FalconNet-IOS.png</key>
 		<data>
 		kI2O+ZqvoH5A5GJU40wVQk2UCbo=
+		</data>
+		<key>Frameworks/App.framework/flutter_assets/assets/icon/apple.svg</key>
+		<data>
+		gyUSpp/6/EMwQuXIFHEjBJz4pMk=
+		</data>
+		<key>Frameworks/App.framework/flutter_assets/assets/icon/microsoft.svg</key>
+		<data>
+		6y/suqexQessP3psTIYTmZ8p1cM=
 		</data>
 		<key>Frameworks/App.framework/flutter_assets/assets/images/aflogo.png</key>
 		<data>
@@ -258,7 +266,7 @@
 		</data>
 		<key>Frameworks/App.framework/flutter_assets/kernel_blob.bin</key>
 		<data>
-		7G+JrO71iPka5qxv0KwO2WLKZLw=
+		SCLVXgvqs48v03OXMEJxmIzLkdE=
 		</data>
 		<key>Frameworks/App.framework/flutter_assets/packages/aad_oauth/assets/msalv2.js</key>
 		<data>
@@ -588,6 +596,18 @@
 		<data>
 		ZbPCjffp8FSnjrUU1QrJ4kqFCqg=
 		</data>
+		<key>Frameworks/url_launcher_ios.framework/Info.plist</key>
+		<data>
+		9gUjh1cbCdrGly456E4tW6pY44I=
+		</data>
+		<key>Frameworks/url_launcher_ios.framework/_CodeSignature/CodeResources</key>
+		<data>
+		Grb+u61SdVHgxS1JI+mKcatUolQ=
+		</data>
+		<key>Frameworks/url_launcher_ios.framework/url_launcher_ios</key>
+		<data>
+		QaRfjyJfwN+ZEuU0CL5dqZA3gqc=
+		</data>
 		<key>Frameworks/webview_flutter_wkwebview.framework/Info.plist</key>
 		<data>
 		p5i2kEcjXoU0sJYaKZXGirB8MNk=
@@ -602,7 +622,7 @@
 		</data>
 		<key>Info.plist</key>
 		<data>
-		nwnfFuY2XZTnajwEujEiawFb9EY=
+		Bj7jETt/vlPoctCaRQ+BB5HPSmA=
 		</data>
 		<key>PkgInfo</key>
 		<data>
@@ -685,7 +705,7 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			TMCbQPA94SckCySMNWhyNZfO57j0w/pkXpv3R5n5+4k=
+			69mxuOHzXVbDflzZd40DjeQknlX4VlR2FVknPs5c8nU=
 			</data>
 		</dict>
 		<key>Frameworks/App.framework/Info.plist</key>
@@ -699,21 +719,21 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			ZLI5MdW1yIXwebXkM/gSHh2uSF8jQgfXg9nJXYUnGqw=
+			sFyt5Zvm9V4MV8Evibk1zlN+EeXtW1TjEsbVDIIsQqk=
 			</data>
 		</dict>
 		<key>Frameworks/App.framework/flutter_assets/AssetManifest.json</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			fB+/zl4UwdI2AWJChLgoFFSZ3Ahd773wvc+lwWOiGcw=
+			JiJ/eCNLD93XMnV7KEix65SfloYqdhoeQepGw4FC4B8=
 			</data>
 		</dict>
 		<key>Frameworks/App.framework/flutter_assets/AssetManifest.smcbin</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			fdelSAA25LzWy9bUH07yuFqV7NKT40nGETPQr5Nsrp4=
+			WgpBlyJKaA3/DMOWH2N15kdcfeqGURWgFRTS9afguR0=
 			</data>
 		</dict>
 		<key>Frameworks/App.framework/flutter_assets/FontManifest.json</key>
@@ -727,7 +747,7 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			pskqEKXh82wuwFHCTpyj6CJjU4/paegI49i1F5zqMrg=
+			f9JVqk97tQbAQEE40E/34Ov0npeUk4cSfrhODK4gclY=
 			</data>
 		</dict>
 		<key>Frameworks/App.framework/flutter_assets/assets/fonts/Proxima%20Nova%20Font.otf</key>
@@ -784,6 +804,20 @@
 			<key>hash2</key>
 			<data>
 			mmB0CIZtjqB7W3Nsy1OozLO2SbwxvA6SN14q2lURU64=
+			</data>
+		</dict>
+		<key>Frameworks/App.framework/flutter_assets/assets/icon/apple.svg</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			PilrIxggaDX6Vt1RxwZo/HkdO5kx/Hu2gJ5I7qDxiqE=
+			</data>
+		</dict>
+		<key>Frameworks/App.framework/flutter_assets/assets/icon/microsoft.svg</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			ga0AEJG4NE4hagg9Hupbt3oc4HIABqTjNwu4tPyYtzI=
 			</data>
 		</dict>
 		<key>Frameworks/App.framework/flutter_assets/assets/images/aflogo.png</key>
@@ -1056,7 +1090,7 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			0+c078K/xhfWjt/uTsjzDFDsC9jawpE+7dwEifNnD1s=
+			vND26aXRKp7zCEO0SQb6nf5VrNdBInBH2MDAVK9/wm8=
 			</data>
 		</dict>
 		<key>Frameworks/App.framework/flutter_assets/packages/aad_oauth/assets/msalv2.js</key>
@@ -1631,6 +1665,27 @@
 			<key>hash2</key>
 			<data>
 			MRvUD/q6msGuh0qJhvlHNALGcKqflSTsJRN5eZRWI3s=
+			</data>
+		</dict>
+		<key>Frameworks/url_launcher_ios.framework/Info.plist</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			XeERFnoyHvJN59kn9wlqvcTcXO+mu1CY1mvO6ofdNaI=
+			</data>
+		</dict>
+		<key>Frameworks/url_launcher_ios.framework/_CodeSignature/CodeResources</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			6v9ejMmIjvgkdhfTa0jXrcx94lJUv2i7nfqlZ7Z/Mo8=
+			</data>
+		</dict>
+		<key>Frameworks/url_launcher_ios.framework/url_launcher_ios</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			wxVSCLvrvkNMQEf8geCbO7QFkFzk2CKeWO+y3fi2srM=
 			</data>
 		</dict>
 		<key>Frameworks/webview_flutter_wkwebview.framework/Info.plist</key>
