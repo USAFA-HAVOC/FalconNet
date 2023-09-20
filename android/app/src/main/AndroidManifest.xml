@@ -1,8 +1,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.arkwerx.falconnet">
+    package="com.arkwerk.falconnet">
    <application
-        android:label="falcon_net"
-        android:name="${applicationName}"
+        android:label="falconnet"
+        android:name="com.arkwerk.falconnet"
         android:icon="@mipmap/ic_launcher">
        <receiver android:name="com.dexterous.flutterlocalnotifications.ScheduledNotificationBootReceiver"
                android:exported="false">

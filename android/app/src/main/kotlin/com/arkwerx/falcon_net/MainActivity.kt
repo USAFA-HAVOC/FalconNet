@@ -1,4 +1,4 @@
-package com.arkwerx.falconnet
+package com.arkwerk.falconnet
 
 import io.flutter.embedding.android.FlutterActivity
 
