@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.arkwerx.falcon_net">
+    package="com.arkwerx.falconnet">
    <application
         android:label="falcon_net"
         android:name="${applicationName}"
