@@ -107,8 +107,10 @@ final defaultEvents = ListBuilder<UserEvent>([
       ..event_id = "demo_di_id"
       ..type = EventType.di.name
       ..accountability_method = AccountabilityMethod.di.name
-      ..time = DateTime.now().add(Duration(hours: 3))
+      ..time = DateTime.now().add(const Duration(hours: 3))
       ..status = UserStatus.unsigned.name
+      ..submission_start = DateTime.now().subtract(const Duration(hours: 0, minutes: 30))
+      ..submission_deadline = DateTime.now().add(const Duration(hours: 3, minutes: 30))
   )
 ]).build();
 
