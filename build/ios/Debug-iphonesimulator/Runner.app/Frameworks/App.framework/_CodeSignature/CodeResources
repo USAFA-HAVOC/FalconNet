@@ -8,13 +8,13 @@
 		<data>
 		85iaADE5tc/NukRC+KGdiZaZ0ZA=
 		</data>
+		<key>flutter_assets/AssetManifest.bin</key>
+		<data>
+		PAFAei8Ejr+aoSLRxWWeRdXtNZc=
+		</data>
 		<key>flutter_assets/AssetManifest.json</key>
 		<data>
-		nsXwjQKuYs2kkdtB2lT9qncX7/c=
-		</data>
-		<key>flutter_assets/AssetManifest.smcbin</key>
-		<data>
-		Gx+kXk+jBDHQsP1wznRQQA7tEl0=
+		jB12KCw8azBX/CjJKI8DBg0AlHY=
 		</data>
 		<key>flutter_assets/FontManifest.json</key>
 		<data>
@@ -22,7 +22,7 @@
 		</data>
 		<key>flutter_assets/NOTICES.Z</key>
 		<data>
-		KNNZNtCBQ4h6IAgC+MrZygFXRbc=
+		rDg4TkSHje7QkbYKb2B8SmeYyGY=
 		</data>
 		<key>flutter_assets/assets/fonts/Proxima%20Nova%20Font.otf</key>
 		<data>
@@ -55,14 +55,6 @@
 		<key>flutter_assets/assets/icon/FalconNet-IOS.png</key>
 		<data>
 		kI2O+ZqvoH5A5GJU40wVQk2UCbo=
-		</data>
-		<key>flutter_assets/assets/icon/apple.svg</key>
-		<data>
-		gyUSpp/6/EMwQuXIFHEjBJz4pMk=
-		</data>
-		<key>flutter_assets/assets/icon/microsoft.svg</key>
-		<data>
-		6y/suqexQessP3psTIYTmZ8p1cM=
 		</data>
 		<key>flutter_assets/assets/images/aflogo.png</key>
 		<data>
@@ -214,11 +206,11 @@
 		</data>
 		<key>flutter_assets/isolate_snapshot_data</key>
 		<data>
-		iE/Ls6ZCbUNpDVZNZZePWZJrFU4=
+		G7f+W7DM6WgAF6e4R0YmmZObSn4=
 		</data>
 		<key>flutter_assets/kernel_blob.bin</key>
 		<data>
-		SCLVXgvqs48v03OXMEJxmIzLkdE=
+		rdvtRsfQOYY/qMk6wlqsxDfLsp4=
 		</data>
 		<key>flutter_assets/packages/aad_oauth/assets/msalv2.js</key>
 		<data>
@@ -362,23 +354,23 @@
 		</data>
 		<key>flutter_assets/vm_snapshot_data</key>
 		<data>
-		wVCDsOQlJhUyvrMuhaM3MeqUNWk=
+		GIVOmCdKRJPjhwyeBDaqRSmW/rc=
 		</data>
 	</dict>
 	<key>files2</key>
 	<dict>
+		<key>flutter_assets/AssetManifest.bin</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			fdelSAA25LzWy9bUH07yuFqV7NKT40nGETPQr5Nsrp4=
+			</data>
+		</dict>
 		<key>flutter_assets/AssetManifest.json</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			JiJ/eCNLD93XMnV7KEix65SfloYqdhoeQepGw4FC4B8=
-			</data>
-		</dict>
-		<key>flutter_assets/AssetManifest.smcbin</key>
-		<dict>
-			<key>hash2</key>
-			<data>
-			WgpBlyJKaA3/DMOWH2N15kdcfeqGURWgFRTS9afguR0=
+			fB+/zl4UwdI2AWJChLgoFFSZ3Ahd773wvc+lwWOiGcw=
 			</data>
 		</dict>
 		<key>flutter_assets/FontManifest.json</key>
@@ -392,7 +384,7 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			f9JVqk97tQbAQEE40E/34Ov0npeUk4cSfrhODK4gclY=
+			HrFd+LrWEGtRW0jYgmguDpxN8hDlPsppDonHSQc9VBE=
 			</data>
 		</dict>
 		<key>flutter_assets/assets/fonts/Proxima%20Nova%20Font.otf</key>
@@ -449,20 +441,6 @@
 			<key>hash2</key>
 			<data>
 			mmB0CIZtjqB7W3Nsy1OozLO2SbwxvA6SN14q2lURU64=
-			</data>
-		</dict>
-		<key>flutter_assets/assets/icon/apple.svg</key>
-		<dict>
-			<key>hash2</key>
-			<data>
-			PilrIxggaDX6Vt1RxwZo/HkdO5kx/Hu2gJ5I7qDxiqE=
-			</data>
-		</dict>
-		<key>flutter_assets/assets/icon/microsoft.svg</key>
-		<dict>
-			<key>hash2</key>
-			<data>
-			ga0AEJG4NE4hagg9Hupbt3oc4HIABqTjNwu4tPyYtzI=
 			</data>
 		</dict>
 		<key>flutter_assets/assets/images/aflogo.png</key>
@@ -728,14 +706,14 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			IS1N6DNrJD83/wtVyIXrVhNS2anREgkxrJXQXI3RUWM=
+			a0WltY9enMx/xAaluQU9u54Z/KOGA8WPZlZ1IIuzDMM=
 			</data>
 		</dict>
 		<key>flutter_assets/kernel_blob.bin</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			vND26aXRKp7zCEO0SQb6nf5VrNdBInBH2MDAVK9/wm8=
+			pXNgXKMf/SFIbF4UTjULqXnMVclG4OijRbTgg+IdXTM=
 			</data>
 		</dict>
 		<key>flutter_assets/packages/aad_oauth/assets/msalv2.js</key>
@@ -987,7 +965,7 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			pKvVVo/CPIJFzUPS2fhLuWOuiKFXCBKbw9g8gmDjVXE=
+			K4h+E8VrnmlmBepiVsQbyWlUOtVSA/UGiqBRPbjQJ+8=
 			</data>
 		</dict>
 	</dict>

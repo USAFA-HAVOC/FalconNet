@@ -159,7 +159,8 @@ class FNAppState extends State<FNApp> {
               theme: model.content.theme == "light" ? lightTheme : randomTheme,
               darkTheme: darkTheme,
               themeMode: model.content.theme == "dark" ? ThemeMode.dark : ThemeMode.light,
-              routerConfig: (!model.content.party || !model.content.loaded) ? router : ppRouter
+              routerConfig: (!model.content.party || !model.content.loaded) ? router : ppRouter,
+              debugShowCheckedModeBanner: false,
           );
         }
       ),
