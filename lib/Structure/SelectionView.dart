@@ -11,8 +11,11 @@ class SelectionView extends StatelessWidget {
   final Function() onSigned;
   final Function() onDemo;
 
-  const SelectionView({Key? key, required this.onSigned, required this.onDemo})
-      : super(key: key);
+  const SelectionView({
+    Key? key,
+    required this.onSigned,
+    required this.onDemo,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

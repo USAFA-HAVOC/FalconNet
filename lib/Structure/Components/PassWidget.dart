@@ -4,6 +4,7 @@ import 'package:falcon_net/Model/Store/GlobalState.dart';
 import 'package:falcon_net/Structure/Components/PageWidget.dart';
 import 'package:falcon_net/Structure/Components/ViewModel.dart';
 import 'package:falcon_net/Theme/NegativeButtonTheme.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
 
 import '../../Model/Database/User.dart';
@@ -21,28 +22,23 @@ class PassWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     var messenger = ScaffoldMessenger.of(context);
     return StoreConnector<GlobalState, ViewModel<User>>(
-        converter: (store) => ViewModel<User>(
-            store: store,
-            content: store.state.user
-        ),
+        converter: (store) =>
+            ViewModel<User>(store: store, content: store.state.user),
         builder: (context, model) {
           //List of children to filled
           List<Widget> children;
 
-          if (
-            !(model.content.accountability?.effective_pass_status ?? true) ||
-            !(model.content.accountability?.current_leave?.departure_time.isAfter(DateTime.now()) ?? true)
-          ) {
-            children = const [
-              PassStatus()
-            ];
+          if (!(model.content.accountability?.effective_pass_status ?? true) ||
+              !(model.content.accountability?.current_leave?.departure_time
+                      .isAfter(DateTime.now()) ??
+                  true)) {
+            children = const [PassStatus()];
           }
 
           //If no current pass, display status and new pass button
           else if (model.content.accountability?.current_pass == null) {
             children = [
               const PassStatus(),
-
               ElevatedButton(
                 //Opens a pass form dialog
                 onPressed: () {
@@ -62,12 +58,18 @@ class PassWidget extends StatelessWidget {
                             model.dispatch(PassAction.open(
                               pass,
                               onFail: () {
+                                FirebaseAnalytics.instance
+                                    .logEvent(name: 'new-pass-fail');
                                 messenger.showSnackBar(const SnackBar(
-                                    content: Text("Unable to Open Pass")));
+                                  content: Text("Unable to Open Pass"),
+                                ));
                               },
                               onSucceed: () {
+                                FirebaseAnalytics.instance
+                                    .logEvent(name: 'new-pass-success');
                                 messenger.showSnackBar(const SnackBar(
-                                    content: Text("Pass Opened Successfully")));
+                                  content: Text("Pass Opened Successfully"),
+                                ));
                               },
                             ));
                           },
@@ -81,9 +83,7 @@ class PassWidget extends StatelessWidget {
                     ),
                   );
                 },
-
                 style: Theme.of(context).elevatedButtonTheme.style,
-
                 child: Padding(
                   padding: const EdgeInsets.symmetric(vertical: 10),
                   child: Text(
@@ -99,7 +99,6 @@ class PassWidget extends StatelessWidget {
           else {
             children = [
               const PassStatus(),
-
               Row(
                 children: [
                   Expanded(
@@ -110,48 +109,47 @@ class PassWidget extends StatelessWidget {
                         showDialog(
                             context: context,
                             builder: (context) => Dialog(
-                              child: Padding(
-                                padding: const EdgeInsets.all(10),
-                                child: PassForm(
-                                  accountability: model.content.accountability!,
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(10),
+                                    child: PassForm(
+                                      accountability:
+                                          model.content.accountability!,
 
-                                  //Passes existing data
-                                  editing: model.content.accountability!.current_pass,
+                                      //Passes existing data
+                                      editing: model
+                                          .content.accountability!.current_pass,
 
-                                  //Closes dialog and dispatches update pass action
-                                  onSubmit: (pass) {
-                                    Navigator.of(context).pop();
-                                    model.dispatch(PassAction.update(
-                                      pass,
-                                      onFail: () {
-                                        messenger.showSnackBar(
-                                          const SnackBar(
-                                            content: Text(
-                                                "Unable to Update Pass"
-                                            ),
-                                          ),
-                                        );
+                                      //Closes dialog and dispatches update pass action
+                                      onSubmit: (pass) {
+                                        Navigator.of(context).pop();
+                                        model.dispatch(PassAction.update(
+                                          pass,
+                                          onFail: () {
+                                            messenger.showSnackBar(
+                                              const SnackBar(
+                                                content: Text(
+                                                    "Unable to Update Pass"),
+                                              ),
+                                            );
+                                          },
+                                          onSucceed: () {
+                                            messenger.showSnackBar(
+                                              const SnackBar(
+                                                content: Text(
+                                                    "Pass Updated Successfully"),
+                                              ),
+                                            );
+                                          },
+                                        ));
                                       },
-                                      onSucceed: () {
-                                        messenger.showSnackBar(
-                                          const SnackBar(
-                                            content: Text(
-                                                "Pass Updated Successfully"
-                                            ),
-                                          ),
-                                        );
-                                      },
-                                    ));
-                                  },
 
-                                  //Closes dialog
-                                  onCancel: () {
-                                    Navigator.of(context).pop();
-                                  },
-                                ),
-                              ),
-                            )
-                        );
+                                      //Closes dialog
+                                      onCancel: () {
+                                        Navigator.of(context).pop();
+                                      },
+                                    ),
+                                  ),
+                                ));
                       },
                       child: Padding(
                         padding: const EdgeInsets.symmetric(vertical: 10),
@@ -168,7 +166,9 @@ class PassWidget extends StatelessWidget {
                   Expanded(
                     flex: 10,
                     child: ElevatedButton(
-                      style: Theme.of(context).extension<NegativeButtonTheme>()!.style,
+                      style: Theme.of(context)
+                          .extension<NegativeButtonTheme>()!
+                          .style,
 
                       //Dispatches close pass action
                       onPressed: () {
@@ -209,7 +209,6 @@ class PassWidget extends StatelessWidget {
             title: title,
             children: children,
           );
-        }
-    );
+        });
   }
 }

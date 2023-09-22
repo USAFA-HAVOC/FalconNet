@@ -17,6 +17,7 @@ import 'package:falcon_net/Model/Database/UserGrades.dart';
 import 'package:falcon_net/Model/Database/UserSummaryList.dart';
 import 'package:falcon_net/Model/Serializers.dart';
 import 'package:falcon_net/Services/AuthService.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/foundation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import "package:universal_html/html.dart" as html;
@@ -47,12 +48,12 @@ class APIData {
 
   static const String _tenantID = "7ab80a06-f029-45c0-84d1-7dad19ce3c61";
   static const String _clientID = "198ea96e-078e-4bdc-9b90-0dea3a9ea43b";
-  String get authURL => "https://login.microsoftonline.com/$_tenantID/oauth2/v2.0/authorize"
+  String get authURL =>
+      "https://login.microsoftonline.com/$_tenantID/oauth2/v2.0/authorize"
       "?client_id=$_clientID"
       "&scope=$_clientID/FalconNet offline_access"
       "&response_type=code"
       "&redirect_uri=$apiLocation/web_login";
-
 
   static final APIData _instance = APIData._internal();
 
@@ -65,8 +66,7 @@ class APIData {
     var server = preferences.getBool("dev-server");
     if (server == null) {
       await preferences.setBool("dev-server", false);
-    }
-    else {
+    } else {
       devServer = server;
     }
   }
@@ -82,8 +82,6 @@ Dio dio = Dio(options);
 
 const String clientId = '198ea96e-078e-4bdc-9b90-0dea3a9ea43b';
 const String tenant = '7ab80a06-f029-45c0-84d1-7dad19ce3c61';
-
-
 
 Future<void> authLogin() async {
   var res = await AuthService().login();
@@ -104,7 +102,6 @@ class Endpoint<Req, Res> {
   Endpoint(this.path, {this.protected = false, this.get = false});
 
   Future<Res> call(Req request, {String? token}) async {
-
     if (APIData().demo) {
       return demoEndpoints[path]!(request) as Res;
     }
@@ -113,7 +110,10 @@ class Endpoint<Req, Res> {
 
     await authLogin();
 
-    if (request is String || request is FormData || request is Map || request == null) {
+    if (request is String ||
+        request is FormData ||
+        request is Map ||
+        request == null) {
       data = request;
     } else {
       try {
@@ -128,23 +128,26 @@ class Endpoint<Req, Res> {
     if (get) {
       res = await dio.get(path, queryParameters: data);
     } else {
-      res = await dio.post(path, data: data, options: Options(headers: {
-        HttpHeaders.contentTypeHeader: "application/json"
-      }));
+      res = await dio.post(path,
+          data: data,
+          options: Options(
+              headers: {HttpHeaders.contentTypeHeader: "application/json"}));
     }
 
-
-    return serializers.deserialize(res.data, specifiedType: FullType(Res)) as Res;
+    return serializers.deserialize(res.data, specifiedType: FullType(Res))
+        as Res;
   }
 }
 
 class Endpoints {
-  static Endpoint<void, InitialData> initial = Endpoint("/pages/home", get: true);
+  static Endpoint<void, InitialData> initial =
+      Endpoint("/pages/home", get: true);
 
   static Endpoint<void, User> getProfile = Endpoint("/profile/info", get: true);
   static Endpoint<User, bool> editProfile = Endpoint("/profile/edit");
 
-  static Endpoint<CadetLeave, CadetLeave> createLeave = Endpoint("/leave/create");
+  static Endpoint<CadetLeave, CadetLeave> createLeave =
+      Endpoint("/leave/create");
   static Endpoint<CadetLeave, bool> updateLeave = Endpoint("/leave/create");
   static Endpoint<void, bool> clearLeave = Endpoint("/leave/clear");
 
@@ -152,17 +155,23 @@ class Endpoints {
   static Endpoint<void, bool> closePass = Endpoint("/passes/close");
   static Endpoint<CadetPass, bool> updatePass = Endpoint("/passes/update");
 
-  static Endpoint<void, PassHistoryModel> getPassHistory = Endpoint("/passes/history");
-  static Endpoint<void, UserGrades> getGrades = Endpoint("/grades/info", get: true);
+  static Endpoint<void, PassHistoryModel> getPassHistory =
+      Endpoint("/passes/history");
+  static Endpoint<void, UserGrades> getGrades =
+      Endpoint("/grades/info", get: true);
   static Endpoint<GradeSubmission, bool> setGrades = Endpoint("/grades/set");
-  static Endpoint<StringRequest, UnitGrades> unitGrades = Endpoint("/grades/unit");
+  static Endpoint<StringRequest, UnitGrades> unitGrades =
+      Endpoint("/grades/unit");
 
   static Endpoint<RoleRequest, bool> setRoles = Endpoint("/roles/set");
 
-  static Endpoint<SquadronAssignRequest, bool> assignSquad = Endpoint("squadron/assign");
-  static Endpoint<UnitAssignRequest, bool> assignUnit = Endpoint("/unit/assign");
+  static Endpoint<SquadronAssignRequest, bool> assignSquad =
+      Endpoint("squadron/assign");
+  static Endpoint<UnitAssignRequest, bool> assignUnit =
+      Endpoint("/unit/assign");
 
-  static Endpoint<void, UserSummaryList> getUserSummaries = Endpoint("/users/summaries");
+  static Endpoint<void, UserSummaryList> getUserSummaries =
+      Endpoint("/users/summaries");
   static Endpoint<void, UserList> getUsers = Endpoint("/users/get", get: true);
 
   static Endpoint<void, UnitList> listUnits = Endpoint("/unit/list");
@@ -170,20 +179,26 @@ class Endpoints {
   static Endpoint<Unit, Unit> editUnit = Endpoint("/unit/modify");
   static Endpoint<Unit, Unit> deleteUnit = Endpoint("/unit/delete");
 
-  static Endpoint<StringRequest, WingData> getWing = Endpoint("/unit/summaries");
+  static Endpoint<StringRequest, WingData> getWing =
+      Endpoint("/unit/summaries");
   static Endpoint<UnitDataRequest, UnitData> getUnit = Endpoint("/unit/data");
 
   static Endpoint<UnitAssignRequest, bool> setUnit = Endpoint("/unit/set-user");
 
-  static Endpoint<StringRequest?, UnitManagementThing> getUnitManagementThing = Endpoint("/unit/pass-status");
+  static Endpoint<StringRequest?, UnitManagementThing> getUnitManagementThing =
+      Endpoint("/unit/pass-status");
 
-  static Endpoint<PassStatusRequest, bool> setPassStatus = Endpoint("/unit/set-pass-status");
-  static Endpoint<IndividualStatusRequest, bool> setIndividualPassStatus = Endpoint("/users/set-pass-status");
+  static Endpoint<PassStatusRequest, bool> setPassStatus =
+      Endpoint("/unit/set-pass-status");
+  static Endpoint<IndividualStatusRequest, bool> setIndividualPassStatus =
+      Endpoint("/users/set-pass-status");
 
-  static Endpoint<AccountabilityEvent, AccountabilityEvent> createEvent = Endpoint("/events/create");
+  static Endpoint<AccountabilityEvent, AccountabilityEvent> createEvent =
+      Endpoint("/events/create");
   static Endpoint<StringRequest, bool> deleteEvent = Endpoint("/events/delete");
   static Endpoint<SignRequest, bool> signEvent = Endpoint("/events/sign");
-  static Endpoint<void, EventList> getEvents = Endpoint("/events/all", get: true);
+  static Endpoint<void, EventList> getEvents =
+      Endpoint("/events/all", get: true);
 }
 
 Future<void> login(String token) async {
@@ -224,4 +239,5 @@ Future<void> logout() async {
   APIData().authenticated = false;
   var preferences = await SharedPreferences.getInstance();
   preferences.setBool("account", false);
+  FirebaseAnalytics.instance.logEvent(name: 'log-out');
 }

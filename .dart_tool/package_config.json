@@ -3,9 +3,15 @@
   "packages": [
     {
       "name": "_fe_analyzer_shared",
-      "rootUri": "file:///Users/pavelryabov/.pub-cache/hosted/pub.dev/_fe_analyzer_shared-61.0.0",
+      "rootUri": "file:///Users/pavelryabov/.pub-cache/hosted/pub.dev/_fe_analyzer_shared-64.0.0",
       "packageUri": "lib/",
-      "languageVersion": "2.17"
+      "languageVersion": "3.0"
+    },
+    {
+      "name": "_flutterfire_internals",
+      "rootUri": "file:///Users/pavelryabov/.pub-cache/hosted/pub.dev/_flutterfire_internals-1.3.6",
+      "packageUri": "lib/",
+      "languageVersion": "2.18"
     },
     {
       "name": "aad_oauth",
@@ -15,13 +21,13 @@
     },
     {
       "name": "analyzer",
-      "rootUri": "file:///Users/pavelryabov/.pub-cache/hosted/pub.dev/analyzer-5.13.0",
+      "rootUri": "file:///Users/pavelryabov/.pub-cache/hosted/pub.dev/analyzer-6.2.0",
       "packageUri": "lib/",
-      "languageVersion": "2.19"
+      "languageVersion": "3.0"
     },
     {
       "name": "archive",
-      "rootUri": "file:///Users/pavelryabov/.pub-cache/hosted/pub.dev/archive-3.3.9",
+      "rootUri": "file:///Users/pavelryabov/.pub-cache/hosted/pub.dev/archive-3.4.0",
       "packageUri": "lib/",
       "languageVersion": "2.12"
     },
@@ -105,13 +111,13 @@
     },
     {
       "name": "built_value",
-      "rootUri": "file:///Users/pavelryabov/.pub-cache/hosted/pub.dev/built_value-8.6.2",
+      "rootUri": "file:///Users/pavelryabov/.pub-cache/hosted/pub.dev/built_value-8.6.3",
       "packageUri": "lib/",
       "languageVersion": "2.12"
     },
     {
       "name": "built_value_generator",
-      "rootUri": "file:///Users/pavelryabov/.pub-cache/hosted/pub.dev/built_value_generator-8.6.2",
+      "rootUri": "file:///Users/pavelryabov/.pub-cache/hosted/pub.dev/built_value_generator-8.6.3",
       "packageUri": "lib/",
       "languageVersion": "3.0"
     },
@@ -183,9 +189,9 @@
     },
     {
       "name": "dart_style",
-      "rootUri": "file:///Users/pavelryabov/.pub-cache/hosted/pub.dev/dart_style-2.3.2",
+      "rootUri": "file:///Users/pavelryabov/.pub-cache/hosted/pub.dev/dart_style-2.3.3",
       "packageUri": "lib/",
-      "languageVersion": "2.19"
+      "languageVersion": "3.0"
     },
     {
       "name": "dartz",
@@ -228,6 +234,54 @@
       "rootUri": "file:///Users/pavelryabov/.pub-cache/hosted/pub.dev/file-6.1.4",
       "packageUri": "lib/",
       "languageVersion": "2.12"
+    },
+    {
+      "name": "firebase_analytics",
+      "rootUri": "file:///Users/pavelryabov/.pub-cache/hosted/pub.dev/firebase_analytics-10.5.0",
+      "packageUri": "lib/",
+      "languageVersion": "2.18"
+    },
+    {
+      "name": "firebase_analytics_platform_interface",
+      "rootUri": "file:///Users/pavelryabov/.pub-cache/hosted/pub.dev/firebase_analytics_platform_interface-3.7.0",
+      "packageUri": "lib/",
+      "languageVersion": "2.18"
+    },
+    {
+      "name": "firebase_analytics_web",
+      "rootUri": "file:///Users/pavelryabov/.pub-cache/hosted/pub.dev/firebase_analytics_web-0.5.5",
+      "packageUri": "lib/",
+      "languageVersion": "2.18"
+    },
+    {
+      "name": "firebase_core",
+      "rootUri": "file:///Users/pavelryabov/.pub-cache/hosted/pub.dev/firebase_core-2.16.0",
+      "packageUri": "lib/",
+      "languageVersion": "2.18"
+    },
+    {
+      "name": "firebase_core_platform_interface",
+      "rootUri": "file:///Users/pavelryabov/.pub-cache/hosted/pub.dev/firebase_core_platform_interface-4.8.0",
+      "packageUri": "lib/",
+      "languageVersion": "2.18"
+    },
+    {
+      "name": "firebase_core_web",
+      "rootUri": "file:///Users/pavelryabov/.pub-cache/hosted/pub.dev/firebase_core_web-2.8.0",
+      "packageUri": "lib/",
+      "languageVersion": "2.18"
+    },
+    {
+      "name": "firebase_crashlytics",
+      "rootUri": "file:///Users/pavelryabov/.pub-cache/hosted/pub.dev/firebase_crashlytics-3.3.6",
+      "packageUri": "lib/",
+      "languageVersion": "2.18"
+    },
+    {
+      "name": "firebase_crashlytics_platform_interface",
+      "rootUri": "file:///Users/pavelryabov/.pub-cache/hosted/pub.dev/firebase_crashlytics_platform_interface-3.6.6",
+      "packageUri": "lib/",
+      "languageVersion": "2.18"
     },
     {
       "name": "fixnum",
@@ -405,7 +459,7 @@
     },
     {
       "name": "image",
-      "rootUri": "file:///Users/pavelryabov/.pub-cache/hosted/pub.dev/image-4.0.17",
+      "rootUri": "file:///Users/pavelryabov/.pub-cache/hosted/pub.dev/image-4.1.0",
       "packageUri": "lib/",
       "languageVersion": "2.15"
     },
@@ -789,13 +843,13 @@
     },
     {
       "name": "webview_flutter_wkwebview",
-      "rootUri": "file:///Users/pavelryabov/.pub-cache/hosted/pub.dev/webview_flutter_wkwebview-3.7.4",
+      "rootUri": "file:///Users/pavelryabov/.pub-cache/hosted/pub.dev/webview_flutter_wkwebview-3.8.0",
       "packageUri": "lib/",
       "languageVersion": "2.19"
     },
     {
       "name": "win32",
-      "rootUri": "file:///Users/pavelryabov/.pub-cache/hosted/pub.dev/win32-5.0.7",
+      "rootUri": "file:///Users/pavelryabov/.pub-cache/hosted/pub.dev/win32-5.0.8",
       "packageUri": "lib/",
       "languageVersion": "3.0"
     },
@@ -824,7 +878,7 @@
       "languageVersion": "3.0"
     }
   ],
-  "generated": "2023-09-19T05:09:19.158652Z",
+  "generated": "2023-09-22T19:09:22.512435Z",
   "generator": "pub",
   "generatorVersion": "3.1.2"
 }

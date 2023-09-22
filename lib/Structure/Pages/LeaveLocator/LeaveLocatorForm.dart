@@ -5,6 +5,7 @@ import 'package:falcon_net/Model/Store/GlobalState.dart';
 import 'package:falcon_net/Structure/Components/ViewModel.dart';
 import 'package:falcon_net/Utility/InputValidation.dart';
 import 'package:falcon_net/Utility/TemporalFormatting.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
 import '../../Components/DateFormField.dart';
 import '../../Components/TimeFormField.dart';
@@ -85,15 +86,58 @@ class LeaveLocatorFormState extends State<LeaveLocatorForm> {
   ///Build state options
   List<DropdownMenuItem<String>> buildStateOptions() {
     List<String> options = <String>[
-      "Alaska", "Alabama", "Arkansas", "Arizona", "California", "Colorado",
-      "Connecticut", "DC", "Delaware", "Florida", "Georgia", "Hawaii", "Iowa",
-      "Idaho", "Illinois", "Indiana", "Kansas", "Kentucky", "Louisiana",
-      "Massachusetts", "Maryland", "Maine", "Michigan", "Minnesota", "Missouri",
-      "Mississippi", "Montana", "North Carolina", "North Dakota", "Nebraska",
-      "New Hampshire", "New Jersey", "New Mexico", "Nevada", "New York", "Ohio",
-      "Oklahoma", "Oregon", "Pennsylvania", "Rhode Island", "South Carolina",
-      "South Dakota", "Tennessee", "Texas", "Utah", "Virginia", "Vermont",
-      "Washington", "Wisconsin", "West Virginia", "Wyoming", "Select"
+      "Alaska",
+      "Alabama",
+      "Arkansas",
+      "Arizona",
+      "California",
+      "Colorado",
+      "Connecticut",
+      "DC",
+      "Delaware",
+      "Florida",
+      "Georgia",
+      "Hawaii",
+      "Iowa",
+      "Idaho",
+      "Illinois",
+      "Indiana",
+      "Kansas",
+      "Kentucky",
+      "Louisiana",
+      "Massachusetts",
+      "Maryland",
+      "Maine",
+      "Michigan",
+      "Minnesota",
+      "Missouri",
+      "Mississippi",
+      "Montana",
+      "North Carolina",
+      "North Dakota",
+      "Nebraska",
+      "New Hampshire",
+      "New Jersey",
+      "New Mexico",
+      "Nevada",
+      "New York",
+      "Ohio",
+      "Oklahoma",
+      "Oregon",
+      "Pennsylvania",
+      "Rhode Island",
+      "South Carolina",
+      "South Dakota",
+      "Tennessee",
+      "Texas",
+      "Utah",
+      "Virginia",
+      "Vermont",
+      "Washington",
+      "Wisconsin",
+      "West Virginia",
+      "Wyoming",
+      "Select"
     ];
 
     //Map each to a menu item
@@ -126,14 +170,27 @@ class LeaveLocatorFormState extends State<LeaveLocatorForm> {
                       if (widget.dialog) {
                         Navigator.of(context).pop();
                       }
-                      model.dispatch(LeaveAction.set(
-                          formatLeave(model.content.id), onSucceed: () {
-                        messenger.showSnackBar(const SnackBar(
-                            content: Text("Leave Data Submitted")));
-                      }, onFail: () {
-                        messenger.showSnackBar(const SnackBar(
-                            content: Text("Failed to Submit Leave Data")));
-                      }));
+                      model.dispatch(
+                        LeaveAction.set(
+                          formatLeave(model.content.id),
+                          onSucceed: () {
+                            FirebaseAnalytics.instance
+                                .logEvent(name: 'leave-locator-success');
+                            messenger.showSnackBar(
+                              const SnackBar(
+                                  content: Text("Leave Data Submitted")),
+                            );
+                          },
+                          onFail: () {
+                            FirebaseAnalytics.instance
+                                .logEvent(name: 'leave-locator-fail');
+                            messenger.showSnackBar(
+                              const SnackBar(
+                                  content: Text("Failed to Submit Leave Data")),
+                            );
+                          },
+                        ),
+                      );
                     }
                   },
 
@@ -149,7 +206,6 @@ class LeaveLocatorFormState extends State<LeaveLocatorForm> {
             )));
     List<Widget> cancel = [
       const Spacer(flex: 1),
-
       Expanded(
         flex: 5,
         child: ElevatedButton(
@@ -236,9 +292,9 @@ class LeaveLocatorFormState extends State<LeaveLocatorForm> {
                         emptyMessage: "Please enter a city"),
                   ),
                 ),
-
-                const Spacer(flex: 1,),
-
+                const Spacer(
+                  flex: 1,
+                ),
                 Expanded(
                   flex: 2,
                   child: TextFormField(
@@ -246,24 +302,19 @@ class LeaveLocatorFormState extends State<LeaveLocatorForm> {
                     keyboardType: TextInputType.number,
                     decoration: InputDecoration(
                         labelStyle: Theme.of(context).textTheme.bodyLarge,
-                        labelText: "Zip"
-                    ),
+                        labelText: "Zip"),
                     style: Theme.of(context).textTheme.bodyLarge,
                     validator: InputValidation.stringLength(
-                        length: 5,
-                        emptyMessage: "Please enter a zip code"
-                    ),
+                        length: 5, emptyMessage: "Please enter a zip code"),
                   ),
                 ),
               ],
             ),
-
             DropdownButtonFormField(
               value: state,
               decoration: InputDecoration(
                   labelStyle: Theme.of(context).textTheme.bodyLarge,
-                  labelText: "State"
-              ),
+                  labelText: "State"),
               onChanged: (value) {
                 setState(() {
                   state = value!;
@@ -272,7 +323,6 @@ class LeaveLocatorFormState extends State<LeaveLocatorForm> {
               validator: InputValidation.dropdown(),
               items: buildStateOptions(),
             ),
-
             TextFormField(
               controller: nameController,
               keyboardType: TextInputType.name,
@@ -283,7 +333,6 @@ class LeaveLocatorFormState extends State<LeaveLocatorForm> {
               validator: InputValidation.stringLength(
                   emptyMessage: "Please enter a name"),
             ),
-
             TextFormField(
               controller: phoneController,
               keyboardType: TextInputType.phone,
@@ -294,19 +343,16 @@ class LeaveLocatorFormState extends State<LeaveLocatorForm> {
               validator: InputValidation.stringLength(
                   emptyMessage: "Please enter a phone number"),
             ),
-
             const Divider(
               thickness: 1,
               height: 40,
               indent: 10,
               endIndent: 10,
             ),
-
             Text(
               "Departure",
               style: Theme.of(context).textTheme.titleSmall,
             ),
-
             Row(
               children: [
                 Expanded(
@@ -326,9 +372,7 @@ class LeaveLocatorFormState extends State<LeaveLocatorForm> {
                     }),
                   ),
                 ),
-
                 const Spacer(flex: 1),
-
                 Expanded(
                   flex: 4,
                   child: TimeFormField(
@@ -343,24 +387,20 @@ class LeaveLocatorFormState extends State<LeaveLocatorForm> {
                 )
               ],
             ),
-
             LeaveMethodSubform(
               type: LeaveMethodSubformType.departure,
               controller: depMethodController,
             ),
-
             const Divider(
               thickness: 1,
               height: 40,
               indent: 10,
               endIndent: 10,
             ),
-
             Text(
               "Return",
               style: Theme.of(context).textTheme.titleSmall,
             ),
-
             Row(
               children: [
                 Expanded(
@@ -375,9 +415,7 @@ class LeaveLocatorFormState extends State<LeaveLocatorForm> {
                     }),
                   ),
                 ),
-
                 const Spacer(flex: 1),
-
                 Expanded(
                   flex: 4,
                   child: TimeFormField(
@@ -392,15 +430,11 @@ class LeaveLocatorFormState extends State<LeaveLocatorForm> {
                 )
               ],
             ),
-
             LeaveMethodSubform(
                 type: LeaveMethodSubformType.arrival,
-                controller: retMethodController
-            ),
-
+                controller: retMethodController),
             buildSubmissionBar(context),
           ],
-        )
-    );
+        ));
   }
 }
