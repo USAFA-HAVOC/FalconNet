@@ -10,6 +10,7 @@ enum ExcusalType {
   ic_status,
   gr,
   bedrest,
+  airmanship,
   other
 }
 
@@ -21,6 +22,7 @@ extension ExcusalTypeNames on ExcusalType {
       case ExcusalType.ic_status: return "IC Status";
       case ExcusalType.gr: return "GR";
       case ExcusalType.bedrest: return "Bedrest";
+      case ExcusalType.airmanship: return "Airmanship";
       case ExcusalType.other: return "Other";
     }
   }
