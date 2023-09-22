@@ -38,7 +38,7 @@ class RecurringExcusalDescriptor extends StatelessWidget {
     String typeDesc = switch (type) {
       ExcusalType.other => excusal.excusal.other_description,
       ExcusalType.sca => "SCA: ${excusal.excusal.sca_number}",
-      ExcusalType.bedrest || ExcusalType.ic_status || ExcusalType.los || ExcusalType.gr => type.display()
+      ExcusalType.bedrest || ExcusalType.ic_status || ExcusalType.los || ExcusalType.gr || ExcusalType.airmanship => type.display()
     }!;
 
     return InfoBar(
