@@ -50,9 +50,10 @@ dependencies:
   built_collection: ^5.1.1
   universal_html: ^2.2.3
   flutter_inappwebview:
-    git:
-      url: https://github.com/Estrelio/flutter_inappwebview.git
-      ref: fix-xcode-17
+    # This fixes iOS 17 but breaks Web (don't ask)
+    # git:
+    #   url: https://github.com/Estrelio/flutter_inappwebview.git
+    #   ref: fix-xcode-17
   aad_oauth: 0.4.2
   webview_flutter: ^4.0.5
   dartz: ^0.10.1
