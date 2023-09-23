@@ -15,6 +15,9 @@ import 'package:falcon_net/Services/SchedulingService.dart';
 import 'package:falcon_net/Theme/Dark/DarkTheme.dart';
 import 'package:falcon_net/Theme/Light/LightTheme.dart';
 import 'package:falcon_net/Theme/Random/RandomTheme.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:go_router/go_router.dart';
@@ -25,10 +28,25 @@ import 'Model/Database/UserSettings.dart';
 import 'Router/FNRouter.dart';
 import 'Structure/Components/ViewModel.dart';
 import 'Services/NotificationService.dart';
+import 'firebase_options.dart';
 
 //Ethan is dumb
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
+  // Initialize Firebase app
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+
+  // Enable Firebase Crashlytics (only on mobile)
+  if (!kIsWeb) {
+    FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterError;
+    PlatformDispatcher.instance.onError = (error, stack) {
+      FirebaseCrashlytics.instance.recordError(error, stack, fatal: true);
+      return true;
+    };
+  }
 
   //Initialize a default store
   //Replace the default global state with an api call
@@ -40,21 +58,16 @@ void main() async {
           ..ms_oid = ""
           ..roles = ListBuilder()
           ..personal_info = UserPersonalInfo((b3) => b3
-              ..full_name = ""
-              ..email = ""
-              ..phone_number = ""
-              ..room_number = ""
-            ).toBuilder()
-          ).toBuilder()
+            ..full_name = ""
+            ..email = ""
+            ..phone_number = ""
+            ..room_number = "").toBuilder()).toBuilder()
         ..settings = UserSettings((b2) => b2
-            ..theme = "light"
-            ..taskPush = false
-            ..diPush = false
-            ..passPush = false
-            ..pushNotifications = false
-          ).toBuilder()
-      )
-  );
+          ..theme = "light"
+          ..taskPush = false
+          ..diPush = false
+          ..passPush = false
+          ..pushNotifications = false).toBuilder()));
 
   final Config authConfig = Config(
     tenant: tenant,
@@ -63,7 +76,8 @@ void main() async {
     // redirectUri is Optional as a default is calculated based on app type/web location
     redirectUri: "${APIData().apiLocation}/mobile_redirect",
     navigatorKey: navigatorKey,
-    webUseRedirect: true, // default is false - on web only, forces a redirect flow instead of popup auth
+    webUseRedirect:
+        true, // default is false - on web only, forces a redirect flow instead of popup auth
     //Optional parameter: Centered CircularProgressIndicator while rendering web page in WebView
     loader: const Center(child: CircularProgressIndicator()),
   );
@@ -82,12 +96,7 @@ void main() async {
 
   FlutterNativeSplash.remove();
 
-  runApp(
-    FNApp(
-      store: store,
-      account: account
-    )
-  );
+  runApp(FNApp(store: store, account: account));
 }
 
 class RouterComponents {
@@ -95,7 +104,8 @@ class RouterComponents {
   final bool party;
   final bool loaded;
 
-  const RouterComponents({required this.theme, required this.party, required this.loaded});
+  const RouterComponents(
+      {required this.theme, required this.party, required this.loaded});
 }
 
 class FNApp extends StatefulWidget {
@@ -126,10 +136,11 @@ class FNAppState extends State<FNApp> {
     if (APIData().authenticated) {
       router = fnRouter(navigatorKey, SignState.signed, false);
       ppRouter = fnRouter(navigatorKey, SignState.signed, true);
-    }
-    else {
-      router = fnRouter(navigatorKey, widget.account ? SignState.account : SignState.none, false);
-      ppRouter = fnRouter(navigatorKey, widget.account ? SignState.account : SignState.none, true);
+    } else {
+      router = fnRouter(navigatorKey,
+          widget.account ? SignState.account : SignState.none, false);
+      ppRouter = fnRouter(navigatorKey,
+          widget.account ? SignState.account : SignState.none, true);
     }
 
     super.initState();
@@ -148,13 +159,12 @@ class FNAppState extends State<FNApp> {
       store: widget.store,
       child: StoreConnector<GlobalState, ViewModel<RouterComponents>>(
         converter: (store) => ViewModel(
-          store: store,
-          content: RouterComponents(
-            theme: store.state.settings.theme,
-            party: store.state.user.roles.any((r) => r.name == Roles.permanent_party.name),
-            loaded: store.state.status == AppStatus.nominal
-          )
-        ),
+            store: store,
+            content: RouterComponents(
+                theme: store.state.settings.theme,
+                party: store.state.user.roles
+                    .any((r) => r.name == Roles.permanent_party.name),
+                loaded: store.state.status == AppStatus.nominal)),
         builder: (context, model) {
           return MaterialApp.router(
               theme: model.content.theme == "light" ? lightTheme : randomTheme,

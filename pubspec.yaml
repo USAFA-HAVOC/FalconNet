@@ -3,7 +3,7 @@ description: A new FalconNet 2.0 Implementation.
 
 # The following line prevents the package from being accidentally published to
 # pub.dev using `flutter pub publish`. This is preferred for private packages.
-publish_to: 'none' # Remove this line if you wish to publish to pub.dev
+publish_to: "none" # Remove this line if you wish to publish to pub.dev
 
 # The following defines the version and build number for your application.
 # A version number is three numbers separated by dots, like 1.2.43
@@ -20,7 +20,7 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 version: 1.4.0+7
 
 environment:
-  sdk: '>=3.0.0'
+  sdk: ">=3.0.0"
 
 # Dependencies specify other packages that your package needs in order to work.
 # To automatically upgrade your package dependencies to the latest versions
@@ -49,7 +49,10 @@ dependencies:
   string_similarity: ^2.0.0
   built_collection: ^5.1.1
   universal_html: ^2.2.3
-  flutter_inappwebview: ^5.7.2+3
+  flutter_inappwebview:
+    git:
+      url: https://github.com/Estrelio/flutter_inappwebview.git
+      ref: fix-xcode-17
   aad_oauth: 0.4.2
   webview_flutter: ^4.0.5
   dartz: ^0.10.1
@@ -64,6 +67,9 @@ dependencies:
   url_launcher: ^6.1.14
   flutter_svg: ^2.0.7
   bouncing_widget: ^2.0.0
+  firebase_core: ^2.16.0
+  firebase_analytics: ^10.5.0
+  firebase_crashlytics: ^3.3.6
 
 dev_dependencies:
   flutter_test:

@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "150025587834",
+    "project_id": "falconnet-376419",
+    "storage_bucket": "falconnet-376419.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:150025587834:android:c983d78fa2d81252dc7fc3",
+        "android_client_info": {
+          "package_name": "com.arkwerk.falconnet"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "150025587834-6pfbn8clbojkrol3vrb501qn7c6kgjif.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDxiV746uAou1wednXtsLpICFuOJ0rZEw4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "150025587834-6pfbn8clbojkrol3vrb501qn7c6kgjif.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "150025587834-3dcrrvrlii7b2l3pkgbj89q9ubht6jq3.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.hero.application"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
