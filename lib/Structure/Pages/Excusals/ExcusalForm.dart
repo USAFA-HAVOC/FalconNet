@@ -14,13 +14,12 @@ class ExcusalForm extends StatefulWidget {
   final EventExcusal? excusal;
   final void Function(EventExcusal) onSubmit;
   final void Function() onCancel;
-  
-  const ExcusalForm({
-    super.key,
-    required this.excusal,
-    required this.onSubmit,
-    required this.onCancel
-  });
+
+  const ExcusalForm(
+      {super.key,
+      required this.excusal,
+      required this.onSubmit,
+      required this.onCancel});
 
   @override
   State<StatefulWidget> createState() => ExcusalFormState();
@@ -37,134 +36,138 @@ class ExcusalFormState extends State<ExcusalForm> {
   void initState() {
     super.initState();
     type = widget.excusal?.excusal.type ?? ExcusalType.sca.name;
-    secondary = TextEditingController(text: widget.excusal?.excusal.sca_number ?? widget.excusal?.excusal.other_description);
+    secondary = TextEditingController(
+        text: widget.excusal?.excusal.sca_number ??
+            widget.excusal?.excusal.other_description);
     event = widget.excusal?.event_id;
   }
 
   void attemptSubmit(String user) {
     if (key.currentState?.validate() ?? false) {
       widget.onSubmit((EventExcusalBuilder()
-          ..event_id = event
-          ..excusal = (ExcusalBuilder()
+            ..event_id = event
+            ..excusal = (ExcusalBuilder()
               ..type = type
-              ..other_description = (type == ExcusalType.other.name) ? secondary.text : null
-              ..sca_number = (type == ExcusalType.sca.name) ? secondary.text : null
-          )
-          ..id = widget.excusal?.id
-          ..user_id = user
-      ).build());
+              ..other_description =
+                  (type == ExcusalType.other.name) ? secondary.text : null
+              ..sca_number =
+                  (type == ExcusalType.sca.name) ? secondary.text : null)
+            ..id = widget.excusal?.id
+            ..user_id = user)
+          .build());
     }
   }
 
   @override
-  Widget build(BuildContext context) => StoreConnector<GlobalState, ViewModel<GlobalState>>(
-      converter: (store) => ViewModel(store: store, content: store.state),
-      builder: (context, model) {
-        return Form(
-          key: key,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              DropdownButtonFormField<String?>(
-                  value: type,
-
-                  decoration: InputDecoration(
-                      labelStyle: Theme.of(context).textTheme.bodyLarge,
-                      labelText: "Excusal Type"
+  Widget build(BuildContext context) =>
+      StoreConnector<GlobalState, ViewModel<GlobalState>>(
+        converter: (store) => ViewModel(store: store, content: store.state),
+        builder: (context, model) {
+          return Form(
+            key: key,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                DropdownButtonFormField<String?>(
+                    value: type,
+                    decoration: InputDecoration(
+                        labelStyle: Theme.of(context).textTheme.bodyLarge,
+                        labelText: "Excusal Type"),
+                    items: ExcusalType.values
+                        .map((v) => DropdownMenuItem(
+                            value: v.name, child: Text(v.display())))
+                        .toList(),
+                    validator: InputValidation.dropdown(),
+                    onChanged: (change) =>
+                        setState(() => type = change ?? type)),
+                if (type == ExcusalType.sca.name)
+                  TextFormField(
+                    controller: secondary,
+                    keyboardType: TextInputType.number,
+                    decoration: InputDecoration(
+                        labelStyle: Theme.of(context).textTheme.bodyLarge,
+                        labelText: "SCA Number"),
+                    style: Theme.of(context).textTheme.bodyLarge,
+                    validator: InputValidation.stringLength(
+                        emptyMessage: "Please enter an SCA Number"),
                   ),
-
-                  items: ExcusalType.values.map((v) => DropdownMenuItem(
-                      value: v.name,
-                      child: Text(v.display())
-                  )).toList(),
-
-                  validator: InputValidation.dropdown(),
-
-                  onChanged: (change) => setState(() => type = change ?? type)
-              ),
-
-              if (type == ExcusalType.sca.name) TextFormField(
-                controller: secondary,
-                keyboardType: TextInputType.number,
-                decoration: InputDecoration(
-                    labelStyle: Theme.of(context).textTheme.bodyLarge,
-                    labelText: "SCA Number"
-                ),
-                style: Theme.of(context).textTheme.bodyLarge,
-                validator: InputValidation.stringLength(
-                    emptyMessage: "Please enter an SCA Number"
-                ),
-              ),
-
-              if (type == ExcusalType.other.name) TextFormField(
-                controller: secondary,
-                keyboardType: TextInputType.text,
-                decoration: InputDecoration(
-                    labelStyle: Theme.of(context).textTheme.bodyLarge,
-                    labelText: "Other Description"
-                ),
-                style: Theme.of(context).textTheme.bodyLarge,
-                validator: InputValidation.stringLength(
-                    emptyMessage: "Please enter a description"
-                ),
-              ),
-
-              DropdownButtonFormField<String?>(
+                if (type == ExcusalType.other.name)
+                  TextFormField(
+                    controller: secondary,
+                    keyboardType: TextInputType.text,
+                    decoration: InputDecoration(
+                        labelStyle: Theme.of(context).textTheme.bodyLarge,
+                        labelText: "Other Description"),
+                    style: Theme.of(context).textTheme.bodyLarge,
+                    validator: InputValidation.stringLength(
+                        emptyMessage: "Please enter a description"),
+                  ),
+                DropdownButtonFormField<String?>(
                   value: event,
-                  items: model.content.events.toList()
-                      .where((e) => e.type != EventType.di.name)
-                      .where((e) => e.submission_deadline.isAfter(DateTime.now()))
-                      .toList().sortedKey((e) => e.time)
-                      .map((e) => DropdownMenuItem(
-                          value: e.event_id,
-                          child: Text("${e.name ?? "No Description"} ${describeDate(e.time.toLocal(), true)}")
-                      )).toList() + const [DropdownMenuItem(
-                          value: null,
-                          child: Text("Select")
-                      )],
-
+                  items: model.content.events
+                          .toList()
+                          .where((e) => e.type != EventType.di.name)
+                          .where((e) =>
+                              e.submission_deadline.isAfter(DateTime.now()))
+                          .toList()
+                          .sortedKey((e) => e.time)
+                          .map((e) => DropdownMenuItem(
+                              value: e.event_id,
+                              child: Text(
+                                  "${e.name ?? "No Description"} ${describeDate(e.time.toLocal(), true)}")))
+                          .toList() +
+                      const [
+                        DropdownMenuItem(value: null, child: Text("Select"))
+                      ],
                   onChanged: (change) => setState(() => event = change),
-
                   validator: InputValidation.dropdown(),
-
                   decoration: InputDecoration(
                       labelStyle: Theme.of(context).textTheme.bodyLarge,
-                      labelText: "Event"
-                  ),
-              ),
-
-              Row(
-                children: [
-                  Expanded(
-                    flex: 5,
-                    child: Padding(
-                      padding: const EdgeInsets.all(5),
+                      labelText: "Event"),
+                ),
+                const SizedBox(height: 20),
+                Row(
+                  children: [
+                    Expanded(
                       child: ElevatedButton(
                         onPressed: () => attemptSubmit(model.content.user.id!),
-                        child: const Text("Submit"),
-                      ),
-                    )
-                  ),
-
-                  const Spacer(flex: 1,),
-
-                  Expanded(
-                      flex: 5,
-                      child: Padding(
-                        padding: const EdgeInsets.all(5),
-                        child: ElevatedButton(
-                          onPressed: widget.onCancel,
-                          style: Theme.of(context).extension<NegativeButtonTheme>()!.style,
-                          child: const Text("Cancel"),
+                        child: Padding(
+                          padding: const EdgeInsets.all(10),
+                          child: Text(
+                            "Submit",
+                            style: Theme.of(context).textTheme.labelLarge,
+                          ),
                         ),
-                      )
-                  ),
-                ],
-              )
-            ],
-          ),
-        );
-      }
-  );
+                      ),
+                    ),
+                    const SizedBox(width: 10),
+                    Expanded(
+                      child: FilledButton(
+                        style: const ButtonStyle(
+                          backgroundColor: MaterialStatePropertyAll(
+                            Color(0xffe8e8e8),
+                          ),
+                        ),
+                        onPressed: widget.onCancel,
+                        child: Padding(
+                          padding: const EdgeInsets.all(10),
+                          child: Text(
+                            "Cancel",
+                            style: Theme.of(context)
+                                .textTheme
+                                .labelLarge!
+                                .copyWith(color: Colors.black),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 10),
+              ],
+            ),
+          );
+        },
+      );
 }

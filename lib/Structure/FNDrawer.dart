@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 import 'Components/PaddedColumn.dart';
@@ -14,7 +15,11 @@ class FNDrawer extends StatelessWidget {
       //Sets height as exactly three quarters of screen in both dimensions
       //Change to loose to shrink to size of content
       constraints: BoxConstraints.tight(
-          Size(viewport.width * 0.75, viewport.height)),
+        Size(
+          kIsWeb ? 340 : viewport.width * 0.75,
+          viewport.height,
+        ),
+      ),
       child: DecoratedBox(
         decoration: BoxDecoration(
           color: Theme.of(context).primaryColor,

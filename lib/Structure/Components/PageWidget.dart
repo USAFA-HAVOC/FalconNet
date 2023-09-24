@@ -14,32 +14,34 @@ class PageWidget extends StatelessWidget {
     super.key,
     required this.title,
     required this.children,
-    this.padding = const EdgeInsets.only(top: 10, left: 10, right: 10, bottom: 5),
+    this.padding =
+        const EdgeInsets.only(top: 10, left: 16, right: 16, bottom: 5),
     this.spacing = const EdgeInsets.symmetric(vertical: 5),
   });
 
   @override
   Widget build(BuildContext context) {
-
     //Returns a card with spacing between title and body and uniform spacing between body children
     return Card(
-        child: PaddedColumn(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          mainAxisSize: MainAxisSize.min,
-          padding: padding,
-          children: [
-            Text(
+      child: PaddedColumn(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        mainAxisSize: MainAxisSize.min,
+        padding: padding,
+        children: [
+          Padding(
+            padding: const EdgeInsets.only(top: 8),
+            child: Text(
               title,
               style: Theme.of(context).textTheme.titleMedium,
             ),
-
-            PaddedColumn(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              padding: spacing,
-              children: children,
-            ),
-          ]
-        )
+          ),
+          PaddedColumn(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            padding: spacing,
+            children: children,
+          ),
+        ],
+      ),
     );
   }
 }

@@ -94,12 +94,13 @@ GoRouter fnRouter(GlobalKey<NavigatorState> key, SignState sign, bool party) =>
                     builder: (context, model) {
                       if (model.content == AppStatus.nominal) {
                         return FNScaffold(
-                            navBar: const FNNavigationBar(
-                              dashboardPath: "/permanent_party",
-                              profilePath: "/permanent_party/profile",
-                            ),
-                            drawer: const PPDrawer(),
-                            child: child);
+                          navBar: const FNNavigationBar(
+                            dashboardPath: "/permanent_party",
+                            profilePath: "/permanent_party/profile",
+                          ),
+                          drawer: const PPDrawer(),
+                          child: child,
+                        );
                       } else if (model.content == AppStatus.loading) {
                         return LoadingShimmer(
                             height: MediaQuery.of(context)

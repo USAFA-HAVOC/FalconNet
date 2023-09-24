@@ -128,6 +128,17 @@ flutter:
     - family: ProximaNova
       fonts:
         - asset: assets/fonts/Proxima Nova Font.otf
+        - weight: 400
+        - asset: assets/fonts/ProximaNova-Black.ttf
+        - weight: 900
+        - asset: assets/fonts/ProximaNova-ExtraBold.ttf
+        - weight: 800
+        - asset: assets/fonts/ProximaNova-Bold.ttf
+        - weight: 700
+        - asset: assets/fonts/ProximaNova-SemiBold.ttf
+        - weight: 600
+        - asset: assets/fonts/ProximaNova-Regular.ttf
+        - weight: 500
 
 flutter_native_splash:
   # This package generates native code to customize Flutter's default white native splash screen

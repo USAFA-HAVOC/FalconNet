@@ -5,6 +5,7 @@ import 'package:falcon_net/Structure/Components/PageWidget.dart';
 import 'package:falcon_net/Structure/Components/ViewModel.dart';
 import 'package:falcon_net/Theme/NegativeButtonTheme.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 import '../../Model/Database/User.dart';
@@ -47,37 +48,47 @@ class PassWidget extends StatelessWidget {
                     builder: (context) => Dialog(
                       insetPadding: const EdgeInsets.all(20),
                       backgroundColor: Theme.of(context).cardTheme.color,
-                      child: Padding(
-                        padding: const EdgeInsets.all(20),
-                        child: PassForm(
-                          accountability: model.content.accountability!,
+                      shape: const RoundedRectangleBorder(
+                        borderRadius: BorderRadius.all(
+                          Radius.circular(12),
+                        ),
+                      ),
+                      child: ConstrainedBox(
+                        constraints: kIsWeb
+                            ? const BoxConstraints(maxWidth: 450)
+                            : const BoxConstraints(),
+                        child: Padding(
+                          padding: const EdgeInsets.only(left: 20, right: 20, top: 10),
+                          child: PassForm(
+                            accountability: model.content.accountability!,
 
-                          //Closes dialog and dispatches open pass action
-                          onSubmit: (pass) {
-                            Navigator.of(context).pop();
-                            model.dispatch(PassAction.open(
-                              pass,
-                              onFail: () {
-                                FirebaseAnalytics.instance
-                                    .logEvent(name: 'new-pass-fail');
-                                messenger.showSnackBar(const SnackBar(
-                                  content: Text("Unable to Open Pass"),
-                                ));
-                              },
-                              onSucceed: () {
-                                FirebaseAnalytics.instance
-                                    .logEvent(name: 'new-pass-success');
-                                messenger.showSnackBar(const SnackBar(
-                                  content: Text("Pass Opened Successfully"),
-                                ));
-                              },
-                            ));
-                          },
+                            //Closes dialog and dispatches open pass action
+                            onSubmit: (pass) {
+                              Navigator.of(context).pop();
+                              model.dispatch(PassAction.open(
+                                pass,
+                                onFail: () {
+                                  FirebaseAnalytics.instance
+                                      .logEvent(name: 'new-pass-fail');
+                                  messenger.showSnackBar(const SnackBar(
+                                    content: Text("Unable to Open Pass"),
+                                  ));
+                                },
+                                onSucceed: () {
+                                  FirebaseAnalytics.instance
+                                      .logEvent(name: 'new-pass-success');
+                                  messenger.showSnackBar(const SnackBar(
+                                    content: Text("Pass Opened Successfully"),
+                                  ));
+                                },
+                              ));
+                            },
 
-                          //Closes dialog
-                          onCancel: () {
-                            Navigator.of(context).pop();
-                          },
+                            //Closes dialog
+                            onCancel: () {
+                              Navigator.of(context).pop();
+                            },
+                          ),
                         ),
                       ),
                     ),
@@ -85,7 +96,7 @@ class PassWidget extends StatelessWidget {
                 },
                 style: Theme.of(context).elevatedButtonTheme.style,
                 child: Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 10),
+                  padding: const EdgeInsets.symmetric(vertical: 12),
                   child: Text(
                     "New Pass",
                     style: Theme.of(context).textTheme.labelLarge,
