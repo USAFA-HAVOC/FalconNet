@@ -18,11 +18,11 @@ class Settings extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return StoreConnector<GlobalState, ViewModel<UserSettings>>(
-        converter: (store) => ViewModel<UserSettings>(store: store, content: store.state.settings),
-        builder: (context, model) {
-          return ListView(
-            primary: false,
-            shrinkWrap: true,
+      converter: (store) =>
+          ViewModel<UserSettings>(store: store, content: store.state.settings),
+      builder: (context, model) {
+        return SingleChildScrollView(
+          child: Column(
             children: [
               Row(
                 children: [
@@ -31,9 +31,7 @@ class Settings extends StatelessWidget {
                       child: Text(
                         "Dark Theme",
                         style: Theme.of(context).textTheme.titleMedium,
-                      )
-                  ),
-
+                      )),
                   Expanded(
                       flex: 2,
                       child: Switch(
@@ -41,35 +39,36 @@ class Settings extends StatelessWidget {
 
                         //Dispatches set setting action with new value
                         onChanged: (value) {
-                          model.dispatch(SettingsAction(modify: (b) => b..theme = value ? "dark" : "light"));
+                          model.dispatch(SettingsAction(
+                              modify: (b) =>
+                                  b..theme = value ? "dark" : "light"));
                         },
-                      )
-                  ),
+                      )),
                 ],
               ),
 
               // Row(
-                // children: [
-                  // Expanded(
-                      // flex: 10,
-                      // child: Text(
-                        // "Random Theme",
-                        // style: Theme.of(context).textTheme.titleMedium,
-                      // )
-                  // ),
+              // children: [
+              // Expanded(
+              // flex: 10,
+              // child: Text(
+              // "Random Theme",
+              // style: Theme.of(context).textTheme.titleMedium,
+              // )
+              // ),
 
-                  // Expanded(
-                      // flex: 2,
-                      // child: Switch(
-                        // value: model.content.theme == "random",
+              // Expanded(
+              // flex: 2,
+              // child: Switch(
+              // value: model.content.theme == "random",
 
-                        // Dispatches set setting action with new value
-                        // onChanged: (value) {
-                          // model.dispatch(SettingsAction(modify: (b) => b..theme = value ? "random" : "light"));
-                        // },
-                      // )
-                  // ),
-                // ],
+              // Dispatches set setting action with new value
+              // onChanged: (value) {
+              // model.dispatch(SettingsAction(modify: (b) => b..theme = value ? "random" : "light"));
+              // },
+              // )
+              // ),
+              // ],
               // ),
 
               Row(
@@ -79,9 +78,7 @@ class Settings extends StatelessWidget {
                       child: Text(
                         "Push Notifications",
                         style: Theme.of(context).textTheme.titleMedium,
-                      )
-                  ),
-
+                      )),
                   Expanded(
                       flex: 2,
                       child: Switch(
@@ -89,62 +86,64 @@ class Settings extends StatelessWidget {
 
                         //Dispatches set setting action with new value
                         onChanged: (value) {
-                          model.dispatch(SettingsAction(modify: (b) => b..pushNotifications=value..diPush=value..passPush=value..taskPush=value));
+                          model.dispatch(SettingsAction(
+                              modify: (b) => b
+                                ..pushNotifications = value
+                                ..diPush = value
+                                ..passPush = value
+                                ..taskPush = value));
                         },
-                      )
-                  ),
+                      )),
                 ],
               ),
 
-              NotificationsExtension(beginOpen: model.content.pushNotifications),
+              NotificationsExtension(
+                  beginOpen: model.content.pushNotifications),
 
               ElevatedButton(
-                  onPressed: () => showDialog(context: context, builder: (context) => PasswordDialog(
-                      onCancel: () => context.pop(),
-                      onSucceed: () => context.push("/profile/developer")
-                  )),
-                  style: Theme.of(context).extension<NegativeButtonTheme>()!.style,
+                  onPressed: () => showDialog(
+                      context: context,
+                      builder: (context) => PasswordDialog(
+                          onCancel: () => context.pop(),
+                          onSucceed: () => context.push("/profile/developer"))),
+                  style:
+                      Theme.of(context).extension<NegativeButtonTheme>()!.style,
                   child: Stack(
                     children: [
                       Align(
                         alignment: AlignmentDirectional.center,
-                        child: Text(
-                            "Developer Settings",
-                            style: Theme.of(context).textTheme.labelLarge
-                        ),
+                        child: Text("Developer Settings",
+                            style: Theme.of(context).textTheme.labelLarge),
                       ),
-
                       const Align(
                         alignment: AlignmentDirectional.centerEnd,
                         child: Icon(Icons.developer_mode),
                       )
                     ],
-                  )
-              ),
+                  )),
 
               ElevatedButton(
                 onPressed: () => logout().then((_) => context.go("/selection")),
-                style: Theme.of(context).extension<NegativeButtonTheme>()!.style,
+                style:
+                    Theme.of(context).extension<NegativeButtonTheme>()!.style,
                 child: Stack(
                   children: [
                     Align(
                       alignment: AlignmentDirectional.center,
-                      child: Text(
-                        "Log Out",
-                        style: Theme.of(context).textTheme.labelLarge
-                      ),
+                      child: Text("Log Out",
+                          style: Theme.of(context).textTheme.labelLarge),
                     ),
-
                     const Align(
                       alignment: AlignmentDirectional.centerEnd,
                       child: Icon(Icons.logout),
                     )
                   ],
-                )
-              )
+                ),
+              ),
             ],
-          );
-        }
+          ),
+        );
+      },
     );
   }
 }
@@ -161,8 +160,8 @@ class NotificationsExtension extends StatefulWidget {
   State<NotificationsExtension> createState() => NotificationsExtensionState();
 }
 
-class NotificationsExtensionState extends State<NotificationsExtension> with SingleTickerProviderStateMixin {
-
+class NotificationsExtensionState extends State<NotificationsExtension>
+    with SingleTickerProviderStateMixin {
   //Animation controllers for push notifications expansion
   late final AnimationController controller;
   late final Animation<double> animation;
@@ -193,9 +192,9 @@ class NotificationsExtensionState extends State<NotificationsExtension> with Sin
   @override
   Widget build(BuildContext context) {
     return StoreConnector<GlobalState, ViewModel<UserSettings>>(
-      converter: (store) => ViewModel<UserSettings>(store: store, content: store.state.settings),
+      converter: (store) =>
+          ViewModel<UserSettings>(store: store, content: store.state.settings),
       builder: (context, model) {
-
         /*
         If animation controller state doesn't match setting state, initiate
         animation to appropriate value
@@ -221,9 +220,7 @@ class NotificationsExtensionState extends State<NotificationsExtension> with Sin
                         child: Text(
                           "Overdue Passes",
                           style: Theme.of(context).textTheme.titleSmall,
-                        )
-                    ),
-
+                        )),
                     Expanded(
                         flex: 2,
                         child: Switch(
@@ -231,10 +228,10 @@ class NotificationsExtensionState extends State<NotificationsExtension> with Sin
 
                           //Dispatches set setting action with new value
                           onChanged: (value) {
-                            model.dispatch(SettingsAction(modify: (b) => b..passPush = value));
+                            model.dispatch(SettingsAction(
+                                modify: (b) => b..passPush = value));
                           },
-                        )
-                    ),
+                        )),
                   ],
                 ),
                 Row(
@@ -244,9 +241,7 @@ class NotificationsExtensionState extends State<NotificationsExtension> with Sin
                         child: Text(
                           "Dormitory Inspection",
                           style: Theme.of(context).textTheme.titleSmall,
-                        )
-                    ),
-
+                        )),
                     Expanded(
                         flex: 2,
                         child: Switch(
@@ -254,10 +249,10 @@ class NotificationsExtensionState extends State<NotificationsExtension> with Sin
 
                           //Dispatches set setting action with new value
                           onChanged: (value) {
-                            model.dispatch(SettingsAction(modify: (b) => b..diPush = value));
+                            model.dispatch(SettingsAction(
+                                modify: (b) => b..diPush = value));
                           },
-                        )
-                    ),
+                        )),
                   ],
                 ),
                 Row(
@@ -267,9 +262,7 @@ class NotificationsExtensionState extends State<NotificationsExtension> with Sin
                         child: Text(
                           "Task Management",
                           style: Theme.of(context).textTheme.titleSmall,
-                        )
-                    ),
-
+                        )),
                     Expanded(
                         flex: 2,
                         child: Switch(
@@ -277,10 +270,10 @@ class NotificationsExtensionState extends State<NotificationsExtension> with Sin
 
                           //Dispatches set setting action with new value
                           onChanged: (value) {
-                            model.dispatch(SettingsAction(modify: (b) => b..taskPush = value));
+                            model.dispatch(SettingsAction(
+                                modify: (b) => b..taskPush = value));
                           },
-                        )
-                    ),
+                        )),
                   ],
                 ),
               ],

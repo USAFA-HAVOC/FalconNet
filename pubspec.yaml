@@ -128,8 +128,6 @@ flutter:
     # This is a custom family for the Proxima Nova Font
     - family: ProximaNova
       fonts:
-        - asset: assets/fonts/Proxima Nova Font.otf
-        - weight: 400
         - asset: assets/fonts/ProximaNova-Black.ttf
         - weight: 900
         - asset: assets/fonts/ProximaNova-ExtraBold.ttf

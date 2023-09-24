@@ -80,7 +80,7 @@ class SelectionView extends StatelessWidget {
                                 fontWeight: FontWeight.w800,
                               ),
                             ),
-                            SizedBox(height: 5),
+                            SizedBox(height: 2),
                             Text(
                               'Sign in to continue.',
                               style: TextStyle(

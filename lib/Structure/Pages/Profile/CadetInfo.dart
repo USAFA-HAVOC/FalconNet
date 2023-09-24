@@ -14,43 +14,50 @@ class CadetInfo extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return StoreConnector<GlobalState, ViewModel<User>>(
-        converter: (store) => ViewModel<User>(store: store, content: store.state.user),
-        builder: (context, model) {
-          return ListView(
-            primary: false,
-            shrinkWrap: true,
+      converter: (store) =>
+          ViewModel<User>(store: store, content: store.state.user),
+      builder: (context, model) {
+        return SingleChildScrollView(
+          child: Column(
             children: [
-              const SizedBox(height: 20,),
+              const SizedBox(
+                height: 20,
+              ),
               InputBlock(
                 label: "Name",
                 disabled: true,
                 initial: model.content.personal_info.full_name,
-                onSubmit: (input) {  },
+                onSubmit: (input) {},
               ),
-
-              const SizedBox(height: 20,),
-
+              const SizedBox(
+                height: 20,
+              ),
               InputBlock(
                 label: "Phone Number",
-                onSubmit: (value) => model.dispatch(InfoAction(modify: (b) => b..personal_info.phone_number = value)),
-                validator: (String? value) => (value ?? "").characters.length < 10
-                    ? "Phone number must have at least ten characters"
-                    : null,
+                onSubmit: (value) => model.dispatch(InfoAction(
+                    modify: (b) => b..personal_info.phone_number = value)),
+                validator: (String? value) =>
+                    (value ?? "").characters.length < 10
+                        ? "Phone number must have at least ten characters"
+                        : null,
                 hint: "(123) 456-789",
                 initial: model.content.personal_info.phone_number,
               ),
-
-              const SizedBox(height: 20,),
-
+              const SizedBox(
+                height: 20,
+              ),
               InputBlock(
                 label: "Room Number",
-                onSubmit: (value) =>
-                    model.dispatch(InfoAction(modify: (b) => b..personal_info.room_number = value?.trim().toUpperCase())),
+                onSubmit: (value) => model.dispatch(InfoAction(
+                    modify: (b) => b
+                      ..personal_info.room_number =
+                          value?.trim().toUpperCase())),
                 validator: (String? value) {
                   if (value == null) {
                     return "Must enter a valid room";
                   }
-                  if (!(<String>["SIJAN", "VANDY"].any((b) => value.toUpperCase().startsWith(b)))) {
+                  if (!(<String>["SIJAN", "VANDY"]
+                      .any((b) => value.toUpperCase().startsWith(b)))) {
                     return "Must start with either Sijan or Vandy";
                   }
                   if (value.trim().split(" ").length < 2) {
@@ -68,18 +75,19 @@ class CadetInfo extends StatelessWidget {
                 hint: "eg. 1A11",
                 initial: model.content.personal_info.room_number,
               ),
-
-              const SizedBox(height: 20,),
-
+              const SizedBox(
+                height: 20,
+              ),
               InputBlock(
                 label: "Unit",
                 disabled: true,
                 initial: model.content.assigned_unit,
-                onSubmit: (input) {  },
+                onSubmit: (input) {},
               ),
             ],
-          );
-        }
+          ),
+        );
+      },
     );
   }
 }
@@ -93,7 +101,14 @@ class InputBlock extends StatefulWidget {
   final String? label;
   final bool disabled;
 
-  const InputBlock({super.key, required this.onSubmit, this.validator, this.hint, this.initial, this.label, this.disabled = false});
+  const InputBlock(
+      {super.key,
+      required this.onSubmit,
+      this.validator,
+      this.hint,
+      this.initial,
+      this.label,
+      this.disabled = false});
 
   @override
   State<InputBlock> createState() => InputBlockState();
@@ -128,47 +143,45 @@ class InputBlockState extends State<InputBlock> {
   Widget build(BuildContext context) {
     return FocusScope(
         child: Focus(
+      //Toggles focus state
+      onFocusChange: (focused) => setState(() {
+        selected = focused;
+        if (!focused) {
+          widget.onSubmit(controller.text);
+        }
+      }),
 
-          //Toggles focus state
-          onFocusChange: (focused) => setState(() {
-            selected = focused;
-            if (!focused) {
-              widget.onSubmit(controller.text);
-            }
-          }),
+      child: TextField(
+        readOnly: widget.disabled,
+        controller: controller,
+        onChanged: (change) => setState(() {
+          value = change;
+        }),
+        style: Theme.of(context).textTheme.bodyMedium,
 
-          child: TextField(
-            readOnly: widget.disabled,
-            controller: controller,
-            onChanged: (change) => setState(() {
-              value = change;
-            }),
-            style: Theme.of(context).textTheme.bodyMedium,
-
-            /*
+        /*
             Displays error text when validation fails
             When not focused on, box has focus background
              */
-            decoration: InputDecoration(
-                labelText: widget.label,
-                labelStyle: Theme.of(context).textTheme.titleSmall,
-                hintText: widget.hint,
-                errorText: widget.validator?.call(value),
-                errorBorder: OutlineInputBorder(
-                    borderSide: BorderSide(
-                        color: Theme.of(context).colorScheme.error,
-                    ),
-                ),
-                border: OutlineInputBorder(
-                    borderSide: BorderSide(
-                        color: Theme.of(context).focusColor
-                    ),
-                ),
-                filled: !selected || widget.disabled,
-                fillColor: widget.disabled ? Theme.of(context).disabledColor : Theme.of(context).focusColor,
+        decoration: InputDecoration(
+          labelText: widget.label,
+          labelStyle: Theme.of(context).textTheme.titleSmall,
+          hintText: widget.hint,
+          errorText: widget.validator?.call(value),
+          errorBorder: OutlineInputBorder(
+            borderSide: BorderSide(
+              color: Theme.of(context).colorScheme.error,
             ),
           ),
-        )
-    );
+          border: OutlineInputBorder(
+            borderSide: BorderSide(color: Theme.of(context).focusColor),
+          ),
+          filled: !selected || widget.disabled,
+          fillColor: widget.disabled
+              ? Theme.of(context).disabledColor
+              : Theme.of(context).focusColor,
+        ),
+      ),
+    ));
   }
 }
