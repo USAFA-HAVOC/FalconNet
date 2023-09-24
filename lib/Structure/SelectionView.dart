@@ -4,6 +4,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:wiredash/wiredash.dart';
 
 import '../Model/Store/Endpoints.dart';
 
@@ -20,6 +21,16 @@ class SelectionView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Wiredash.of(context).show(inheritMaterialTheme: true);
+        },
+        backgroundColor: const Color(0xff000080),
+        child: const Icon(
+          Icons.feedback_rounded,
+          color: Colors.white,
+        ),
+      ),
       body: Stack(
         alignment: Alignment.center,
         children: [

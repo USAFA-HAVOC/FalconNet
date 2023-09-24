@@ -446,6 +446,11 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "4.0.1"
+  flutter_localizations:
+    dependency: transitive
+    description: flutter
+    source: sdk
+    version: "0.0.0"
   flutter_native_splash:
     dependency: "direct main"
     description:
@@ -624,6 +629,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "4.1.0"
+  intl:
+    dependency: transitive
+    description:
+      name: intl
+      sha256: "3bc132a9dbce73a7e4a21a17d06e1878839ffbf975568bc875c60537824b0c4d"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.18.1"
   io:
     dependency: transitive
     description:
@@ -1205,6 +1218,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "5.0.8"
+  wiredash:
+    dependency: "direct main"
+    description:
+      name: wiredash
+      sha256: "30aeeb2c981de8e861188b87ea5472a2a6e11480bafaf645ef4fa3d1064ccb5f"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.7.4"
   xdg_directories:
     dependency: transitive
     description:

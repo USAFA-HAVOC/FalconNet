@@ -338,6 +338,12 @@
       "languageVersion": "2.12"
     },
     {
+      "name": "flutter_localizations",
+      "rootUri": "file:///Users/pavelryabov/Documents/flutter/packages/flutter_localizations",
+      "packageUri": "lib/",
+      "languageVersion": "3.0"
+    },
+    {
       "name": "flutter_native_splash",
       "rootUri": "file:///Users/pavelryabov/.pub-cache/hosted/pub.dev/flutter_native_splash-2.3.2",
       "packageUri": "lib/",
@@ -474,6 +480,12 @@
       "rootUri": "file:///Users/pavelryabov/.pub-cache/hosted/pub.dev/image-4.1.0",
       "packageUri": "lib/",
       "languageVersion": "2.15"
+    },
+    {
+      "name": "intl",
+      "rootUri": "file:///Users/pavelryabov/.pub-cache/hosted/pub.dev/intl-0.18.1",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
     },
     {
       "name": "io",
@@ -914,6 +926,12 @@
       "languageVersion": "3.0"
     },
     {
+      "name": "wiredash",
+      "rootUri": "file:///Users/pavelryabov/.pub-cache/hosted/pub.dev/wiredash-1.7.4",
+      "packageUri": "lib/",
+      "languageVersion": "2.17"
+    },
+    {
       "name": "xdg_directories",
       "rootUri": "file:///Users/pavelryabov/.pub-cache/hosted/pub.dev/xdg_directories-1.0.3",
       "packageUri": "lib/",
@@ -938,7 +956,7 @@
       "languageVersion": "3.0"
     }
   ],
-  "generated": "2023-09-24T04:48:55.889264Z",
+  "generated": "2023-09-24T05:47:20.677378Z",
   "generator": "pub",
   "generatorVersion": "3.1.2"
 }

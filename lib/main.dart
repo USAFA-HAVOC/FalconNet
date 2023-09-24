@@ -22,6 +22,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:go_router/go_router.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:wiredash/wiredash.dart';
 
 import 'Model/Database/Role.dart';
 import 'Model/Database/UserSettings.dart';
@@ -159,21 +160,32 @@ class FNAppState extends State<FNApp> {
       store: widget.store,
       child: StoreConnector<GlobalState, ViewModel<RouterComponents>>(
         converter: (store) => ViewModel(
-            store: store,
-            content: RouterComponents(
-                theme: store.state.settings.theme,
-                party: store.state.user.roles
-                    .any((r) => r.name == Roles.permanent_party.name),
-                loaded: store.state.status == AppStatus.nominal)),
+          store: store,
+          content: RouterComponents(
+            theme: store.state.settings.theme,
+            party: store.state.user.roles.any(
+              (r) => r.name == Roles.permanent_party.name,
+            ),
+            loaded: store.state.status == AppStatus.nominal,
+          ),
+        ),
         builder: (context, model) {
-          return MaterialApp.router(
+          return Wiredash(
+            projectId: 'faclonnet-97dwf3a',
+            secret: 'LGwpMVNqfcmrl3n2VDYazoFiQr0P4Oz9',
+            child: MaterialApp.router(
+              debugShowCheckedModeBanner: false,
               theme: model.content.theme == "light" ? lightTheme : randomTheme,
               darkTheme: darkTheme,
-              themeMode: model.content.theme == "dark" ? ThemeMode.dark : ThemeMode.light,
-              routerConfig: (!model.content.party || !model.content.loaded) ? router : ppRouter,
-              debugShowCheckedModeBanner: false,
+              themeMode: model.content.theme == "dark"
+                  ? ThemeMode.dark
+                  : ThemeMode.light,
+              routerConfig: (!model.content.party || !model.content.loaded)
+                  ? router
+                  : ppRouter,
+            ),
           );
-        }
+        },
       ),
     );
   }
