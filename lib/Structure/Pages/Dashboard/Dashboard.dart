@@ -14,7 +14,6 @@ class Dashboard extends StatelessWidget {
         title: "Dashboard",
         children: [
           PassWidget(),
-
           DIWidget(),
         ]
     );

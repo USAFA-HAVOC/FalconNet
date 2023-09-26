@@ -71,6 +71,7 @@ dependencies:
   firebase_core: ^2.16.0
   firebase_analytics: ^10.5.0
   firebase_crashlytics: ^3.3.6
+  wiredash: ^1.7.4
 
 dev_dependencies:
   flutter_test:
@@ -127,7 +128,16 @@ flutter:
     # This is a custom family for the Proxima Nova Font
     - family: ProximaNova
       fonts:
-        - asset: assets/fonts/Proxima Nova Font.otf
+        - asset: assets/fonts/ProximaNova-Black.ttf
+        - weight: 900
+        - asset: assets/fonts/ProximaNova-ExtraBold.ttf
+        - weight: 800
+        - asset: assets/fonts/ProximaNova-Bold.ttf
+        - weight: 700
+        - asset: assets/fonts/ProximaNova-SemiBold.ttf
+        - weight: 600
+        - asset: assets/fonts/ProximaNova-Regular.ttf
+        - weight: 500
 
 flutter_native_splash:
   # This package generates native code to customize Flutter's default white native splash screen

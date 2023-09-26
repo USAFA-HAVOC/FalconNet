@@ -17,7 +17,7 @@ TextTheme lightTextTheme = const TextTheme(
 
   //Label is used for contrast against dark colors
   labelLarge: TextStyle(
-    fontSize: 20,
+    fontSize: 18,
     color: Colors.white,
   ),
   labelMedium: TextStyle(

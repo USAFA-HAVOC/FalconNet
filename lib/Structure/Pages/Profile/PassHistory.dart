@@ -16,20 +16,18 @@ class PassHistory extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return StoreConnector<GlobalState, ViewModel<List<CadetPass>>>(
-        converter: (store) => ViewModel<List<CadetPass>>(store: store, content: store.state.history.toList()),
-        builder: (context, model) {
+      converter: (store) => ViewModel<List<CadetPass>>(
+          store: store, content: store.state.history.toList()),
+      builder: (context, model) {
+        var mutable = model.content;
+        mutable.sort((a, b) => b.start_time.compareTo(a.start_time));
 
-          var mutable = model.content;
-          mutable.sort((a, b) => b.start_time.compareTo(a.start_time));
-
-          //Generate list view dynamically as list is scrolled with builder constructor
-          return ListView.builder(
-            shrinkWrap: true,
-            primary: false,
-            itemCount: model.content.length,
-            itemBuilder: (context, index) => PassRecord(pass: mutable[index]),
-          );
-        }
+        //Generate list view dynamically as list is scrolled with builder constructor
+        return Column(
+          children:
+              model.content.map((pass) => PassRecord(pass: pass)).toList(),
+        );
+      },
     );
   }
 }
@@ -41,12 +39,18 @@ class PassRecord extends StatelessWidget {
 
   String formatType(String type) {
     switch (type) {
-      case "discretionary": return "Discretionary";
-      case "weekend": return "Weekend Sign-Out Period";
-      case "weekday": return "Weekday Sign-Out Period";
-      case "sca": return "SCA";
-      case "esss": return "eSSS";
-      default: return type;
+      case "discretionary":
+        return "Discretionary";
+      case "weekend":
+        return "Weekend Sign-Out Period";
+      case "weekday":
+        return "Weekday Sign-Out Period";
+      case "sca":
+        return "SCA";
+      case "esss":
+        return "eSSS";
+      default:
+        return type;
     }
   }
 
@@ -55,32 +59,24 @@ class PassRecord extends StatelessWidget {
     return InfoBar(
       exteriorPadding: const EdgeInsets.symmetric(vertical: 5),
       children: [
-
         //Displays date range as stacked column
         Expanded(
           flex: 6,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Text(
-                  describeDate(pass.start_time),
-                  style: Theme.of(context).textTheme.bodyMedium
-              ),
-
-              Text(
-                  "-",
-                  style: Theme.of(context).textTheme.bodyMedium
-              ),
-
-              Text(
-                  describeDate(pass.end_time),
-                  style: Theme.of(context).textTheme.bodyMedium
-              ),
+              Text(describeDate(pass.start_time),
+                  style: Theme.of(context).textTheme.bodyMedium),
+              Text("-", style: Theme.of(context).textTheme.bodyMedium),
+              Text(describeDate(pass.end_time),
+                  style: Theme.of(context).textTheme.bodyMedium),
             ],
           ),
         ),
 
-        const Spacer(flex: 1,),
+        const Spacer(
+          flex: 1,
+        ),
 
         //Displays pass type, description, and location in stacked column
         Expanded(
@@ -89,15 +85,14 @@ class PassRecord extends StatelessWidget {
             padding: const EdgeInsets.symmetric(vertical: 2),
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              Text(formatType(pass.pass_type),
+                  style: Theme.of(context).textTheme.bodySmall),
               Text(
-                  formatType(pass.pass_type),
-                  style: Theme.of(context).textTheme.bodySmall
-              ),
-
-              Text(
-                  (pass.sca_number == null ? "" : "SCA: ${pass.sca_number!}. ") + pass.description,
-                  style: Theme.of(context).textTheme.bodyMedium
-              ),
+                  (pass.sca_number == null
+                          ? ""
+                          : "SCA: ${pass.sca_number!}. ") +
+                      pass.description,
+                  style: Theme.of(context).textTheme.bodyMedium),
             ],
           ),
         ),

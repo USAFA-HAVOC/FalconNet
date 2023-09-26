@@ -12,15 +12,16 @@ class Events extends StatelessWidget {
   const Events({super.key});
 
   @override
-  Widget build(BuildContext context) => StoreConnector<GlobalState, ViewModel<List<UserEvent>>>(
-      converter: (store) => ViewModel(store: store, content: store.state.events.toList()),
-      builder: (context, model) => FNPage(
+  Widget build(BuildContext context) =>
+      StoreConnector<GlobalState, ViewModel<List<UserEvent>>>(
+        converter: (store) =>
+            ViewModel(store: store, content: store.state.events.toList()),
+        builder: (context, model) => FNPage(
           title: "Events",
           children: [
             Schedule(events: model.content),
-            
             Signatures(events: model.content)
-          ]
-      )
-  );
+          ],
+        ),
+      );
 }

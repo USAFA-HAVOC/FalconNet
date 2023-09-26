@@ -4,6 +4,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:wiredash/wiredash.dart';
 
 import '../Model/Store/Endpoints.dart';
 
@@ -20,6 +21,16 @@ class SelectionView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Wiredash.of(context).show(inheritMaterialTheme: true);
+        },
+        backgroundColor: const Color(0xff000080),
+        child: const Icon(
+          Icons.feedback_rounded,
+          color: Colors.white,
+        ),
+      ),
       body: Stack(
         alignment: Alignment.center,
         children: [
@@ -69,6 +80,7 @@ class SelectionView extends StatelessWidget {
                                 fontWeight: FontWeight.w800,
                               ),
                             ),
+                            SizedBox(height: 2),
                             Text(
                               'Sign in to continue.',
                               style: TextStyle(
@@ -90,71 +102,77 @@ class SelectionView extends StatelessWidget {
                         (_) => showDialog(
                           context: context,
                           builder: (context) => Dialog(
-                            child: Padding(
-                              padding: const EdgeInsets.all(10),
-                              child: ListView(
-                                shrinkWrap: true,
+                            child: ConstrainedBox(
+                              constraints: kIsWeb
+                                  ? const BoxConstraints(maxWidth: 450)
+                                  : const BoxConstraints(),
+                              child: Padding(
                                 padding: const EdgeInsets.all(10),
-                                primary: false,
-                                children: [
-                                  Text(
-                                    "FalconNet Data Consent",
-                                    style:
-                                        Theme.of(context).textTheme.titleMedium,
-                                  ),
-                                  const SizedBox(height: 10),
-                                  Text(
-                                    "You are accessing an Information System (IS) that is provided for United States"
-                                    " Air Force Academy-authorized use only. To learn"
-                                    " more about how FalconNet uses permissions and connections granted by the user, "
-                                    "please read FalconNet's Privacy Policy and Transparency Guide. "
-                                    "When you select 'Accept' or access FalconNet affiliated data sources "
-                                    "you are agreeing to FalconNet's Terms of Use.",
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .bodyMedium
-                                        ?.copyWith(height: 1.4),
-                                  ),
-                                  const SizedBox(height: 12),
-                                  ElevatedButton(
-                                    style: const ButtonStyle(
-                                      padding: MaterialStatePropertyAll(
-                                        EdgeInsets.symmetric(vertical: 10),
+                                child: ListView(
+                                  shrinkWrap: true,
+                                  padding: const EdgeInsets.all(10),
+                                  primary: false,
+                                  children: [
+                                    Text(
+                                      "FalconNet Data Consent",
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .titleMedium,
+                                    ),
+                                    const SizedBox(height: 10),
+                                    Text(
+                                      "You are accessing an Information System (IS) that is provided for United States"
+                                      " Air Force Academy-authorized use only. To learn"
+                                      " more about how FalconNet uses permissions and connections granted by the user, "
+                                      "please read FalconNet's Privacy Policy and Transparency Guide. "
+                                      "When you select 'Accept' or access FalconNet affiliated data sources "
+                                      "you are agreeing to FalconNet's Terms of Use.",
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .bodyMedium
+                                          ?.copyWith(height: 1.4),
+                                    ),
+                                    const SizedBox(height: 18),
+                                    ElevatedButton(
+                                      style: const ButtonStyle(
+                                        padding: MaterialStatePropertyAll(
+                                          EdgeInsets.symmetric(vertical: 16),
+                                        ),
+                                      ),
+                                      onPressed: () async => showDialog(
+                                        context: context,
+                                        builder: (context) => const FNPrivacy(),
+                                      ),
+                                      child: const Text(
+                                        "View Privacy Policy",
+                                        style: TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 16,
+                                        ),
                                       ),
                                     ),
-                                    onPressed: () async => showDialog(
-                                      context: context,
-                                      builder: (context) => const FNPrivacy(),
-                                    ),
-                                    child: const Text(
-                                      "View Privacy Policy",
-                                      style: TextStyle(
-                                        color: Colors.white,
-                                        fontSize: 18,
+                                    const SizedBox(height: 8),
+                                    ElevatedButton(
+                                      style: const ButtonStyle(
+                                        padding: MaterialStatePropertyAll(
+                                          EdgeInsets.symmetric(vertical: 16),
+                                        ),
                                       ),
-                                    ),
-                                  ),
-                                  const SizedBox(height: 4),
-                                  ElevatedButton(
-                                    style: const ButtonStyle(
-                                      padding: MaterialStatePropertyAll(
-                                        EdgeInsets.symmetric(vertical: 10),
+                                      onPressed: () async {
+                                        Navigator.of(context).pop();
+                                        await attemptLogin();
+                                        onSigned();
+                                      },
+                                      child: const Text(
+                                        "Accept",
+                                        style: TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 16,
+                                        ),
                                       ),
-                                    ),
-                                    onPressed: () async {
-                                      Navigator.of(context).pop();
-                                      await attemptLogin();
-                                      onSigned();
-                                    },
-                                    child: const Text(
-                                      "Accept",
-                                      style: TextStyle(
-                                        color: Colors.white,
-                                        fontSize: 18,
-                                      ),
-                                    ),
-                                  )
-                                ],
+                                    )
+                                  ],
+                                ),
                               ),
                             ),
                           ),
@@ -184,7 +202,7 @@ class SelectionView extends StatelessWidget {
                         ),
                       ),
                     ),
-                    const SizedBox(height: 10),
+                    const SizedBox(height: 15),
                   ],
                 ),
               ),

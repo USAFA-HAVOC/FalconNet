@@ -24,97 +24,97 @@ class Signatures extends StatelessWidget {
   Widget build(BuildContext context) {
     var sorted = events
         .where((e) => e.type != EventType.di.name)
-        .where((e) => e.accountability_method == AccountabilityMethod.self_signed.name)
+        .where((e) =>
+            e.accountability_method == AccountabilityMethod.self_signed.name)
         .where((e) => e.submission_deadline.isAfter(DateTime.now()))
         .where((e) => e.submission_start.isBefore(DateTime.now()))
         .toList()
         .sortedKey((e) => e.time);
 
     if (sorted.isEmpty) {
-      return const PageWidget(
-          title: "Attendance",
-          children: [
-            Padding(
-              padding: EdgeInsets.all(20),
-              child: Text(
-                "No Signable Events",
-                textAlign: TextAlign.center,
-              ),
-            )
-          ]
-      );
+      return const PageWidget(title: "Attendance", children: [
+        Padding(
+          padding: EdgeInsets.all(20),
+          child: Text(
+            "No Signable Events",
+            textAlign: TextAlign.center,
+          ),
+        )
+      ]);
     }
 
     return PageWidget(
-        title: "Attendance",
-        children: [
-          ListView.builder(
-              itemCount: sorted.length,
-              primary: false,
-              shrinkWrap: true,
-              itemBuilder: (context, index) => InfoBar(
+      title: "Attendance",
+      children: [
+        ...sorted.map(
+          (event) => InfoBar(
+            children: [
+              Expanded(
+                flex: 2,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
-                    Expanded(
-                      flex: 2,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.stretch,
-                        children: [
-                          Text(
-                            describeDate(sorted[index].time.toLocal()),
-                            textAlign: TextAlign.center,
-                          ),
-                          Text(
-                            describeTime(TimeOfDay.fromDateTime(sorted[index].time.toLocal())),
-                            textAlign: TextAlign.center,
-                          ),
-                        ],
-                      )
+                    Text(
+                      describeDate(event.time.toLocal()),
+                      textAlign: TextAlign.center,
                     ),
-
-                    Expanded(
-                      flex: 5,
-                      child: Text(
-                        sorted[index].name ?? "Unnamed",
-                        textAlign: TextAlign.center,
-                      )
+                    Text(
+                      describeTime(
+                          TimeOfDay.fromDateTime(event.time.toLocal())),
+                      textAlign: TextAlign.center,
                     ),
+                  ],
+                ),
+              ),
+              Expanded(
+                flex: 5,
+                child: Text(
+                  event.name ?? "Unnamed",
+                  textAlign: TextAlign.center,
+                ),
+              ),
+              Expanded(
+                flex: 2,
+                child: StoreConnector<GlobalState, ViewModel<void>>(
+                  converter: (store) => ViewModel(store: store, content: null),
+                  builder: (context, model) => event.status ==
+                          UserStatus.signed.name
+                      ? const Icon(Icons.check)
+                      : IconButton(
+                          icon: const Icon(FontAwesome5.pen_nib),
+                          onPressed: () => showDialog(
+                            context: context,
+                            builder: (context) => ConfirmationDialog(
+                              title: "Confirm Signing",
+                              description:
+                                  "Please confirm you have completed the requirements to sign for this "
+                                  "event. This action cannot be undone.",
+                              onConfirm: () async {
+                                try {
+                                  await model.dispatch(
+                                      SignAction(event: event.event_id));
 
-                    Expanded(
-                      flex: 2,
-                      child: StoreConnector<GlobalState, ViewModel<void>>(
-                        converter: (store) => ViewModel(store: store, content: null),
-                        builder: (context, model) => sorted[index].status == UserStatus.signed.name
-                            ? const Icon(Icons.check)
-                            : IconButton(
-                                icon: const Icon(FontAwesome5.pen_nib),
-                                onPressed: () => showDialog(context: context, builder: (context) => ConfirmationDialog(
-                                    title: "Confirm Signing",
-                                    description: "Please confirm you have completed the requirements to sign for this "
-                                        "event. This action cannot be undone.",
-                                    onConfirm: () async {
-                                      try {
-                                        await model.dispatch(SignAction(event: sorted[index].event_id));
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                      const SnackBar(
+                                          content:
+                                              Text("Successfully Signed")));
+                                } catch (e) {
+                                  displayError(prefix: "Events", exception: e);
 
-                                        ScaffoldMessenger.of(context).showSnackBar(
-                                            const SnackBar(content: Text("Successfully Signed"))
-                                        );
-                                      }
-                                      catch (e) {
-                                        displayError(prefix: "Events", exception: e);
-
-                                        ScaffoldMessenger.of(context).showSnackBar(
-                                            const SnackBar(content: Text("Failed to Sign"))
-                                        );
-                                      }
-                                    }
-                                )),
-                              ),
-                      )
-                    )
-                  ]
-              )
-          )
-        ]
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                      const SnackBar(
+                                          content: Text("Failed to Sign")));
+                                }
+                              },
+                            ),
+                          ),
+                        ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ],
     );
   }
 }

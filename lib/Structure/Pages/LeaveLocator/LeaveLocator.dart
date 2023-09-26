@@ -3,6 +3,7 @@ import 'package:falcon_net/Model/Database/CadetLeave.dart';
 import 'package:falcon_net/Model/Store/GlobalState.dart';
 import 'package:falcon_net/Structure/Components/FNPage.dart';
 import 'package:falcon_net/Structure/Components/ViewModel.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'LeaveInfo.dart';
 import 'LeaveLocatorForm.dart';
@@ -17,27 +18,28 @@ class LeaveLocator extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return FNPage(
-        title: "Leave Locator",
-        children: [
-          Card(
-            child: Padding(
-                padding: const EdgeInsets.all(20),
+      title: "Leave Locator",
+      children: [
+        Card(
+          child: Padding(
+              padding: const EdgeInsets.all(20),
 
-                //Displays form or existing data depending on state
-                child: StoreConnector<GlobalState, ViewModel<CadetLeave?>>(
-                  converter: (store) => ViewModel<CadetLeave?>(store: store, content: store.state.user.accountability?.current_leave),
-                  builder: (context, model) {
-                    if (model.content == null) {
-                      return LeaveLocatorForm(dialog: false, editing: test);
-                    }
-                    else {
-                      return const LeaveInfo();
-                    }
-                  },
-                )
-            ),
-          )
-        ]
+              //Displays form or existing data depending on state
+              child: StoreConnector<GlobalState, ViewModel<CadetLeave?>>(
+                converter: (store) => ViewModel<CadetLeave?>(
+                    store: store,
+                    content: store.state.user.accountability?.current_leave),
+                builder: (context, model) {
+                  if (model.content == null) {
+                    return LeaveLocatorForm(dialog: false, editing: test);
+                  } else {
+                    return const LeaveInfo();
+                  }
+                },
+              )),
+        ),
+        if (kIsWeb) const SizedBox(width: 400)
+      ],
     );
   }
 }
