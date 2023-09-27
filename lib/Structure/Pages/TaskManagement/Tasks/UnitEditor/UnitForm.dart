@@ -11,13 +11,12 @@ class UnitForm extends StatefulWidget {
   final Unit? existing;
   final UnitList list;
 
-  const UnitForm({
-      super.key,
+  const UnitForm(
+      {super.key,
       this.onCancel,
       required this.onSubmit,
       required this.list,
-      this.existing
-  });
+      this.existing});
 
   @override
   State<StatefulWidget> createState() => UnitFormState();
@@ -31,19 +30,23 @@ class UnitFormState extends State<UnitForm> {
   @override
   void initState() {
     name = TextEditingController(text: widget.existing?.name ?? "");
-    group = TextEditingController(text: widget.existing?.parent_units.isNotEmpty ?? false ? widget.existing!.parent_units.last : "");
+    group = TextEditingController(
+        text: widget.existing?.parent_units.isNotEmpty ?? false
+            ? widget.existing!.parent_units.last
+            : "");
     super.initState();
   }
 
   List<String> buildParents(String parent) {
     if (parent.isEmpty) {
       return [];
-    }
-    else {
+    } else {
       return [
         ...widget.list.units
-            .where((u) => u.name == parent)
-            .firstOrNull?.parent_units ?? [],
+                .where((u) => u.name == parent)
+                .firstOrNull
+                ?.parent_units ??
+            [],
         parent
       ];
     }
@@ -99,13 +102,12 @@ class UnitFormState extends State<UnitForm> {
                   borderRadius: BorderRadius.circular(10)),
               labelStyle: Theme.of(context).textTheme.bodyLarge,
               labelText: "Parent",
-              suffixIcon: const Icon(Icons.people)
-          ),
+              suffixIcon: const Icon(Icons.people)),
         ),
         ElevatedButton(
           onPressed: () {
-            if (widget.list.units.any((u) =>
-                    u.name.toLowerCase() == name.text.toLowerCase()) &&
+            if (widget.list.units.any(
+                    (u) => u.name.toLowerCase() == name.text.toLowerCase()) &&
                 widget.existing == null) {
               setState(() {
                 nameError = "Duplicate unit name";
@@ -114,13 +116,15 @@ class UnitFormState extends State<UnitForm> {
               setState(() {
                 nameError = "Unit name cannot be blank";
               });
-            } else if (group.text.isEmpty || widget.list.units.any((u) => u.name == group.text)) {
+            } else if (group.text.isEmpty ||
+                widget.list.units.any((u) => u.name == group.text)) {
               widget.onSubmit(Unit((u) => u
                 ..name = name.text
                 ..parent_units = buildParents(group.text).build().toBuilder()
-                ..pass_status = (widget.existing?.pass_status ?? [true, true, true, true].build()).toBuilder()
-                ..id = widget.existing?.id
-              ));
+                ..pass_status = (widget.existing?.pass_status ??
+                        [true, true, true, true].build())
+                    .toBuilder()
+                ..id = widget.existing?.id));
 
               setState(() {
                 name.text = "";
@@ -131,17 +135,17 @@ class UnitFormState extends State<UnitForm> {
               if (widget.existing != null) {
                 Navigator.of(context).pop();
               }
-            }
-
-            else {
-              ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text(
-                "Provided parent unit doesn't exist"
-              )));
+            } else {
+              ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                  content: Text("Provided parent unit doesn't exist")));
             }
           },
           child: Padding(
-            padding: const EdgeInsets.symmetric(vertical: 10),
-            child: Text(widget.existing == null ? "Add Unit" : "Set Unit"),
+            padding: const EdgeInsets.symmetric(vertical: 12),
+            child: Text(
+              widget.existing == null ? "Add Unit" : "Set Unit",
+              style: Theme.of(context).textTheme.labelMedium,
+            ),
           ),
         ),
         ...cancel

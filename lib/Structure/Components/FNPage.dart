@@ -23,7 +23,7 @@ class FNPage extends StatelessWidget {
           children: [
             const SizedBox(height: 10),
             Padding(
-              padding: const EdgeInsets.only(left: 12),
+              padding: const EdgeInsets.only(left: kIsWeb ? 12: 0),
               child: Text(
                 title,
                 style: Theme.of(context).textTheme.titleLarge!,
@@ -32,21 +32,22 @@ class FNPage extends StatelessWidget {
             const SizedBox(height: 10),
             if (kIsWeb &&
                 MediaQuery.of(context).size.width >
-                    (children.length <= 3 ? 600 : 1000))
-              IntrinsicHeight(
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    ...children.map(
-                      (c) => Expanded(
-                        child: Padding(
-                          padding: const EdgeInsets.all(10),
-                          child: c,
-                        ),
+                    (children.length < 4 ? 600 : 1000))
+              Wrap(
+                crossAxisAlignment: WrapCrossAlignment.start,
+                children: [
+                  ...children.map(
+                    (c) => Container(
+                      constraints: BoxConstraints(
+                        maxWidth: title == 'Task Management' ? 300 : 500,
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.all(10),
+                        child: c,
                       ),
                     ),
-                  ],
-                ),
+                  ),
+                ],
               )
             else
               ...children.map(

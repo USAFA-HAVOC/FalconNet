@@ -21,6 +21,8 @@ class SelectionView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      floatingActionButtonLocation:
+          kIsWeb ? null : FloatingActionButtonLocation.startTop,
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           Wiredash.of(context).show(inheritMaterialTheme: true);

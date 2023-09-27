@@ -260,7 +260,7 @@ class LeaveLocatorFormState extends State<LeaveLocatorForm> {
     return Form(
         key: key,
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
+          crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisSize: MainAxisSize.min,
           children: [
             Text(
