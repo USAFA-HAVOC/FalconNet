@@ -61,14 +61,14 @@ class DelegationTaskState extends State<DelegationTask> {
   Future<bool> assign(UserDelegates delegate, List<TimedRole> roles, {ScaffoldMessengerState? messenger}) async {
     try {
       await Endpoints.setRoles(RoleRequest((r) => r
-        ..user_id = delegate.id
+        ..user_id = delegate.user_id
         ..new_roles = roles.toBuiltList().toBuilder()
       ));
 
       var data = await connection;
 
       setState(() {
-        var others = data.users.where((d) => d.id != delegate.id).toList();
+        var others = data.users.where((d) => d.user_id != delegate.user_id).toList();
         var modified = delegate.rebuild((d) => d..roles = roles.toBuiltList().toBuilder());
         var full = others + [modified];
         connection = Future.value(DelegationData(units: data.units, users: full));

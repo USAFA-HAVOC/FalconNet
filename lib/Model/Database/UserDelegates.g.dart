@@ -19,6 +19,9 @@ class _$UserDelegatesSerializer implements StructuredSerializer<UserDelegates> {
   Iterable<Object?> serialize(Serializers serializers, UserDelegates object,
       {FullType specifiedType = FullType.unspecified}) {
     final result = <Object?>[
+      'user_id',
+      serializers.serialize(object.user_id,
+          specifiedType: const FullType(String)),
       'name',
       serializers.serialize(object.name, specifiedType: const FullType(String)),
       'assigned_unit',
@@ -34,13 +37,6 @@ class _$UserDelegatesSerializer implements StructuredSerializer<UserDelegates> {
               const FullType(BuiltList, const [const FullType(TimedRole)])),
     ];
     Object? value;
-    value = object.id;
-    if (value != null) {
-      result
-        ..add('id')
-        ..add(serializers.serialize(value,
-            specifiedType: const FullType(String)));
-    }
     value = object.class_year_idx;
     if (value != null) {
       result
@@ -62,9 +58,9 @@ class _$UserDelegatesSerializer implements StructuredSerializer<UserDelegates> {
       iterator.moveNext();
       final Object? value = iterator.current;
       switch (key) {
-        case 'id':
-          result.id = serializers.deserialize(value,
-              specifiedType: const FullType(String)) as String?;
+        case 'user_id':
+          result.user_id = serializers.deserialize(value,
+              specifiedType: const FullType(String))! as String;
           break;
         case 'name':
           result.name = serializers.deserialize(value,
@@ -99,7 +95,7 @@ class _$UserDelegatesSerializer implements StructuredSerializer<UserDelegates> {
 
 class _$UserDelegates extends UserDelegates {
   @override
-  final String? id;
+  final String user_id;
   @override
   final String name;
   @override
@@ -115,13 +111,14 @@ class _$UserDelegates extends UserDelegates {
       (new UserDelegatesBuilder()..update(updates))._build();
 
   _$UserDelegates._(
-      {this.id,
+      {required this.user_id,
       required this.name,
       this.class_year_idx,
       required this.assigned_unit,
       required this.units,
       required this.roles})
       : super._() {
+    BuiltValueNullFieldError.checkNotNull(user_id, r'UserDelegates', 'user_id');
     BuiltValueNullFieldError.checkNotNull(name, r'UserDelegates', 'name');
     BuiltValueNullFieldError.checkNotNull(
         assigned_unit, r'UserDelegates', 'assigned_unit');
@@ -140,7 +137,7 @@ class _$UserDelegates extends UserDelegates {
   bool operator ==(Object other) {
     if (identical(other, this)) return true;
     return other is UserDelegates &&
-        id == other.id &&
+        user_id == other.user_id &&
         name == other.name &&
         class_year_idx == other.class_year_idx &&
         assigned_unit == other.assigned_unit &&
@@ -151,7 +148,7 @@ class _$UserDelegates extends UserDelegates {
   @override
   int get hashCode {
     var _$hash = 0;
-    _$hash = $jc(_$hash, id.hashCode);
+    _$hash = $jc(_$hash, user_id.hashCode);
     _$hash = $jc(_$hash, name.hashCode);
     _$hash = $jc(_$hash, class_year_idx.hashCode);
     _$hash = $jc(_$hash, assigned_unit.hashCode);
@@ -164,7 +161,7 @@ class _$UserDelegates extends UserDelegates {
   @override
   String toString() {
     return (newBuiltValueToStringHelper(r'UserDelegates')
-          ..add('id', id)
+          ..add('user_id', user_id)
           ..add('name', name)
           ..add('class_year_idx', class_year_idx)
           ..add('assigned_unit', assigned_unit)
@@ -178,9 +175,9 @@ class UserDelegatesBuilder
     implements Builder<UserDelegates, UserDelegatesBuilder> {
   _$UserDelegates? _$v;
 
-  String? _id;
-  String? get id => _$this._id;
-  set id(String? id) => _$this._id = id;
+  String? _user_id;
+  String? get user_id => _$this._user_id;
+  set user_id(String? user_id) => _$this._user_id = user_id;
 
   String? _name;
   String? get name => _$this._name;
@@ -210,7 +207,7 @@ class UserDelegatesBuilder
   UserDelegatesBuilder get _$this {
     final $v = _$v;
     if ($v != null) {
-      _id = $v.id;
+      _user_id = $v.user_id;
       _name = $v.name;
       _class_year_idx = $v.class_year_idx;
       _assigned_unit = $v.assigned_unit;
@@ -240,7 +237,8 @@ class UserDelegatesBuilder
     try {
       _$result = _$v ??
           new _$UserDelegates._(
-              id: id,
+              user_id: BuiltValueNullFieldError.checkNotNull(
+                  user_id, r'UserDelegates', 'user_id'),
               name: BuiltValueNullFieldError.checkNotNull(
                   name, r'UserDelegates', 'name'),
               class_year_idx: class_year_idx,

@@ -5,6 +5,7 @@ import 'package:falcon_net/Model/Database/GradeType.dart';
 import 'package:falcon_net/Model/Database/StanEvalUser.dart';
 import 'package:falcon_net/Model/Store/GlobalState.dart';
 import 'package:falcon_net/Structure/Components/FNPage.dart';
+import 'package:falcon_net/Structure/Components/GradeBoard.dart';
 import 'package:falcon_net/Structure/Components/PageWidget.dart';
 import 'package:falcon_net/Structure/Pages/TaskManagement/Tasks/StanEval/SEInfoDialog.dart';
 import 'package:falcon_net/Structure/Pages/TaskManagement/Tasks/StanEval/SEParameters.dart';
@@ -13,17 +14,21 @@ import 'package:falcon_net/Structure/Pages/TaskManagement/Tasks/StanEval/SESelec
 import 'package:falcon_net/Utility/ErrorFormatting.dart';
 import 'package:flutter/material.dart';
 
+import '../../../../../Model/Database/UnitGrades.dart';
+import '../../../../../Model/Database/UserGrades.dart';
 import '../../../../../Model/Store/Endpoints.dart';
 
 class SEEvent extends StatefulWidget {
   final GradeType type;
   final int index;
   final List<StanEvalUser> members;
+  final UnitGrades grades;
 
   SEEvent({super.key, required SEEventParameters parameters})
       : type = parameters.type,
         index = parameters.index,
-        members = parameters.members;
+        members = parameters.members,
+        grades = parameters.grades;
 
   @override
   State<StatefulWidget> createState() => SEEventState();
@@ -56,20 +61,31 @@ class SEEventState extends State<SEEvent> {
                         ),
                       ),
                       IconButton(
-                          onPressed: () =>
-                              setState(() => gradees.remove(gradee)),
+                          onPressed: () => setState(() => gradees.remove(gradee)),
                           icon: const Icon(Icons.delete))
                     ],
-                  )),
+                  )
+              ),
             ),
-          ))
-      .toList();
+          )
+  ).toList();
 
-  /*
-  List<String> ungradedRooms() {
-    widget.members.map((m) => m.)
+  Map<String, List<StanEvalUser>> ungradedRooms() {
+    Map<StanEvalUser, Grade> grades = GradeBoard
+        .fromUnitGrades(unit: widget.grades)
+        .getRow(widget.type, widget.index);
+    var ungraded = widget.members.where((m) => !grades.containsKey(m)).toList();
+    var rooms = ungraded
+        .map((u) => u.room)
+        .toSet()
+        .toList()
+        .map((e) => [e])
+        .reduce((carry, value) => carry + value)
+        .where((element) => element != null)
+        .map((r) => MapEntry(r!, widget.members.where((m) => m.room == r).toList()));
+
+    return Map.fromEntries(rooms);
   }
-   */
 
   void submit(ScaffoldMessengerState messenger, String graderID) async {
     int? parsedScore = int.tryParse(score.text);
@@ -107,8 +123,7 @@ class SEEventState extends State<SEEvent> {
           ..number = widget.index
           ..cadets = gradees.map((g) => g.user_id).toList().build().toBuilder()
           ..grader_id = graderID));
-        messenger.showSnackBar(
-            const SnackBar(content: Text("Successfully Submitted Grade")));
+        messenger.showSnackBar(const SnackBar(content: Text("Successfully Submitted Grade")));
         setState(() {
           scoreError = null;
           descriptionError = null;
@@ -151,32 +166,64 @@ class SEEventState extends State<SEEvent> {
                         ),
                       ),
                     if (gradees.isNotEmpty) ...buildGradeeBars(),
+
                     ElevatedButton(
                         onPressed: () => showDialog(
-                            context: context,
-                            builder: (context) =>
-                                SESelectionDialog<List<StanEvalUser>>(
-                                    contents: rooms,
-                                    onAdd: (roommates) => setState(() =>
-                                        gradees.addAll(roommates.where(
-                                            (member) => !gradees.any((g) =>
+                          context: context,
+                          builder: (context) =>
+                            SESelectionDialog<List<StanEvalUser>>(
+                                contents: ungradedRooms(),
+                                onAdd: (roommates) => setState(() =>
+                                  gradees.addAll(roommates.where(
+                                    (member) =>
+                                    !gradees.any((g) => g.user_id == member.user_id)
+                                  ))
+                                )
+                            )
+                        ),
+                        child: const Text(
+                            "Add Ungraded Room"
+                        )
+                    ),
+
+                    Row(
+                      mainAxisSize: MainAxisSize.max,
+
+                      children: [
+                        Expanded(child: ElevatedButton(
+                            onPressed: () => showDialog(
+                                context: context,
+                                builder: (context) =>
+                                    SESelectionDialog<List<StanEvalUser>>(
+                                        contents: rooms,
+                                        onAdd: (roommates) => setState(() =>
+                                            gradees.addAll(roommates.where(
+                                                    (member) => !gradees.any((g) =>
                                                 g.user_id ==
-                                                member.user_id)))))),
-                        child: const Text("Add Room")),
-                    ElevatedButton(
-                        onPressed: () => showDialog(
-                            context: context,
-                            builder: (context) => SESelectionDialog<
-                                StanEvalUser>(
-                                contents: Map<String, StanEvalUser>.fromEntries(
-                                    widget.members
-                                        .where((m) => !gradees
+                                                    member.user_id)))))),
+                            child: const Text(
+                                "Add Room"
+                            )
+                        )),
+
+                        Expanded(child: ElevatedButton(
+                            onPressed: () => showDialog(
+                                context: context,
+                                builder: (context) => SESelectionDialog<
+                                    StanEvalUser>(
+                                    contents: Map<String, StanEvalUser>.fromEntries(
+                                        widget.members
+                                            .where((m) => !gradees
                                             .any((g) => g.user_id == m.user_id))
-                                        .map((m) => MapEntry(m.name, m))),
-                                onAdd: (member) =>
-                                    setState(() => gradees.add(member)))),
-                        child: const Text("Add Cadet")),
+                                            .map((m) => MapEntry(m.name, m))),
+                                    onAdd: (member) =>
+                                        setState(() => gradees.add(member)))),
+                            child: const Text("Add Cadet")
+                        ))
+                      ],
+                    )
                   ]),
+
                   PageWidget(
                     title: "Submission",
                     children: [

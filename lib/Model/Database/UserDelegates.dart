@@ -9,7 +9,7 @@ part 'UserDelegates.g.dart';
 abstract class UserDelegates implements Built<UserDelegates, UserDelegatesBuilder> {
   static Serializer<UserDelegates> get serializer => _$userDelegatesSerializer;
 
-  String? get id;
+  String get user_id;
   String get name;
   int? get class_year_idx;
   String get assigned_unit;
