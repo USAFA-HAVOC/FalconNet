@@ -10,6 +10,7 @@ import 'package:aad_oauth/request_token.dart';
 import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
 import 'package:falcon_net/Model/Store/Endpoints.dart';
+import 'package:falcon_net/Utility/ErrorFormatting.dart';
 import 'package:flutter/foundation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import "package:universal_html/html.dart" as html;
@@ -46,7 +47,7 @@ class AuthService extends CoreOAuth {
   /// both access and refresh tokens are invalid, the web gui will be used.
   @override
   Future<Either<Failure, Token>> login(
-      {bool refreshIfAvailable = false}) async {
+      {bool refreshIfAvailable = true}) async {
     await _removeOldTokenOnFirstLogin();
     return await _authorization(refreshIfAvailable: refreshIfAvailable);
   }
@@ -80,7 +81,7 @@ class AuthService extends CoreOAuth {
   /// will be returned, as long as we deem it still valid. In the event that
   /// both access and refresh tokens are invalid, the web gui will be used.
   Future<Either<Failure, Token>> _authorization(
-      {bool refreshIfAvailable = false}) async {
+      {bool refreshIfAvailable = true}) async {
     var token = await _authStorage.loadTokenFromCache();
 
     if (!refreshIfAvailable) {
@@ -95,7 +96,7 @@ class AuthService extends CoreOAuth {
             queryParameters: {"refresh_token": token.refreshToken!});
         token = Token.fromJson(json.decode(res.data!));
       } catch (e) {
-
+        displayError(prefix: "Auth", exception: e);
       }
     }
 

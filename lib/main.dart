@@ -29,7 +29,7 @@ import 'Model/Database/UserSettings.dart';
 import 'Router/FNRouter.dart';
 import 'Structure/Components/ViewModel.dart';
 import 'Services/NotificationService.dart';
-import 'firebase_options.dart';
+import 'Utility/firebase_options.dart';
 
 //Ethan is dumb
 void main() async {
