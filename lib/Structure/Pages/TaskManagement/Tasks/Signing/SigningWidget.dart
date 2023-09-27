@@ -35,8 +35,8 @@ class SigningWidgetState extends State<SigningWidget> {
   List<UserSummary> search(List<UserSummary> applicable, String q) {
     var mutable = applicable;
     mutable.sort((a, b) {
-      var first = a.name.toLowerCase();
-      var second = b.name.toLowerCase();
+      var first = a.name.split(" ").last.toLowerCase();
+      var second = b.name.split(" ").last.toLowerCase();
       var query = q.toLowerCase();
       var firstScore = first.similarityTo(query);
       var secondScore = second.similarityTo(query);

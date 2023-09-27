@@ -30,149 +30,95 @@ class CWOCTaskState extends State<CWOCTask> {
     future = Endpoints.getEvents(null)
         .then((list) => list.events.toList())
         .catchError((error, stackTrace) {
-      print(stackTrace);
-      displayError(prefix: "CWOC", exception: error);
-      return Future<List<AccountabilityEvent>>.error(error);
-    });
+          print(stackTrace);
+          displayError(prefix: "CWOC", exception: error);
+          return Future<List<AccountabilityEvent>>.error(error);
+        });
   }
 
   @override
   Widget build(BuildContext context) => AsyncPage(
-        title: widget.label,
-        connection: future,
-        builder: (context, data) {
-          var applicable = data.where((e) =>
-              e.time.isAfter(DateTime.now().subtract(const Duration(days: 2))));
+      title: widget.label,
+      connection: future,
+      builder: (context, data) {
+        var applicable = data
+            .where((e) => e.time.isAfter(DateTime.now().subtract(const Duration(days: 2))));
 
-          if (applicable.isEmpty) {
-            return [
-              const Padding(
-                padding: EdgeInsets.all(20),
-                child: Center(
-                  child: Text("No Signable Events"),
-                ),
-              )
-            ];
-          }
+        if (applicable.isEmpty) {
+          return [const Padding(
+            padding: EdgeInsets.all(20),
+            child: Center(child: Text("No Signable Events"),),
+          )];
+        }
 
-          print(applicable);
+        print(applicable);
 
-          return applicable
-              .map(
-                (event) => PageWidget(
-                  title: event.name ??
-                      (event.type == EventType.di.name
-                          ? "DI ${describeDate(event.time.toLocal())}"
-                          : "Unnamed"),
-                  children: [
-                    Text(
-                        "Due: ${describeDate(event.submission_deadline.toLocal())}, ${describeTime(TimeOfDay.fromDateTime(event.submission_deadline.toLocal()))}"),
-                    if (event.description != null)
-                      Text("Description: ${event.description!}"),
-                    if (!kIsWeb)
-                      ElevatedButton(
-                        onPressed: () => showModalBottomSheet(
+        return applicable.map((event) =>
+            PageWidget(
+                title: event.name ?? (event.type == EventType.di.name ? "DI ${describeDate(event.time.toLocal())}" : "Unnamed"),
+                children: [
+                  Text(
+                      "Due: ${describeDate(event.submission_deadline.toLocal())}, ${describeTime(TimeOfDay.fromDateTime(event.submission_deadline.toLocal()))}"
+                  ),
+
+                  if (event.description != null) Text(
+                      "Description: ${event.description!}"
+                  ),
+
+                  if (!kIsWeb) ElevatedButton(
+                      onPressed: () => showModalBottomSheet(
                           context: context,
-                          shape: const RoundedRectangleBorder(
-                            borderRadius: BorderRadius.all(Radius.circular(10)),
-                          ),
+                          shape: const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(10))),
                           isScrollControlled: true,
                           showDragHandle: true,
                           builder: (context) => FractionallySizedBox(
                             heightFactor: 1.0,
                             widthFactor: 1.0,
                             child: WingSigningEvent(
-                              retrieve: () => Endpoints.getWing(
-                                  (StringRequestBuilder()..string = event.id!)
-                                      .build()),
-                              label: event.name ??
-                                  (event.type == EventType.di.name
-                                      ? "DI"
-                                      : "Unnamed"),
+                              retrieve: () => Endpoints.getWing((StringRequestBuilder()..string = event.id!).build()),
+                              label: event.name ?? (event.type == EventType.di.name ? "DI" : "Unnamed"),
                               event: event.id!,
                               refresh: 10,
-                              padding: const EdgeInsets.only(
-                                  left: 20, bottom: 20, right: 20),
+                              padding: const EdgeInsets.only(left: 20, bottom: 20, right: 20),
                               excusable: event.type != EventType.di.name,
-                              frozen: !(event.submission_deadline
-                                      .isAfter(DateTime.now()) &&
-                                  event.submission_start
-                                      .isBefore(DateTime.now())),
+                              frozen: !(event.submission_deadline.isAfter(DateTime.now()) && event.submission_start.isBefore(DateTime.now())),
                             ),
-                          ),
-                        ),
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 8),
-                          child: Text(
-                            "Open",
-                            style: Theme.of(context).textTheme.labelMedium,
-                          ),
-                        ),
-                      )
-                    else
-                      ElevatedButton(
-                        onPressed: () => showDialog(
+                          )
+                      ),
+                      child: const Text("Open")
+                  )
+
+                  else ElevatedButton(
+                      onPressed: () => showDialog(
                           context: context,
                           builder: (context) => Dialog(
-                            insetPadding: kIsWeb
-                                ? EdgeInsets.zero
-                                : const EdgeInsets.only(
-                                    top: 30,
-                                    right: 10,
-                                    left: 10,
-                                    bottom: 10,
-                                  ),
-                            child: Stack(
+                            insetPadding: const EdgeInsets.only(top: 30, right: 10, left: 10, bottom: 10),
+                            child: ListView(
+                              shrinkWrap: true,
                               children: [
-                                ListView(
-                                  shrinkWrap: true,
-                                  children: [
-                                    const SizedBox(height: 24),
-                                    WingSigningEvent(
-                                      retrieve: () => Endpoints.getWing(
-                                          (StringRequestBuilder()
-                                                ..string = event.id!)
-                                              .build()),
-                                      label: event.name ??
-                                          (event.type == EventType.di.name
-                                              ? "DI"
-                                              : "Unnamed"),
-                                      event: event.id!,
-                                      refresh: 10,
-                                      padding: const EdgeInsets.only(
-                                        left: 24,
-                                        bottom: 20,
-                                        right: 24,
-                                      ),
-                                      excusable:
-                                          event.type != EventType.di.name,
-                                      frozen: !(event.submission_start
-                                              .isBefore(DateTime.now()) &&
-                                          event.submission_deadline
-                                              .isAfter(DateTime.now())),
-                                    ),
-                                  ],
-                                ),
-                                const Positioned(
-                                  top: 0,
+                                const Align(
+                                  alignment: Alignment.topLeft,
                                   child: CloseButton(),
                                 ),
+
+                                WingSigningEvent(
+                                  retrieve: () => Endpoints.getWing((StringRequestBuilder()..string = event.id!).build()),
+                                  label: event.name ?? (event.type == EventType.di.name ? "DI" : "Unnamed"),
+                                  event: event.id!,
+                                  refresh: 10,
+                                  padding: const EdgeInsets.only(left: 20, bottom: 20, right: 20),
+                                  excusable: event.type != EventType.di.name,
+                                  frozen: !(event.submission_start.isBefore(DateTime.now()) && event.submission_deadline.isAfter(DateTime.now())),
+                                ),
                               ],
-                            ),
-                          ),
-                        ),
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 8),
-                          child: Text(
-                            "Open",
-                            style: Theme.of(context).textTheme.labelMedium,
-                          ),
-                        ),
+                            )
+                          )
                       ),
-                  ],
-                ),
-              )
-              .toList();
-        },
-      );
+                      child: const Text("Open")
+                  )
+                ]
+            )
+        ).toList();
+      }
+  );
 }

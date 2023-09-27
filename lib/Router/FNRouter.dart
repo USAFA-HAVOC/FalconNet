@@ -157,7 +157,11 @@ GoRouter fnRouter(GlobalKey<NavigatorState> key, SignState sign, bool party) =>
                                   })))),
                       GoRoute(
                           path: "accountability",
-                          pageBuilder: fullSlide(const AccountabilityTask())),
+                          pageBuilder: fullSlide(StoreConnector<GlobalState, String>(
+                            converter: (store) => store.state.user.assigned_unit!,
+                            builder: (context, unit) => AccountabilityTask(unit: unit)
+                          ))
+                      ),
                       GoRoute(
                           path: "unit_management",
                           pageBuilder: fullSlide(const UnitManagementTask())),
@@ -306,8 +310,11 @@ GoRouter fnRouter(GlobalKey<NavigatorState> key, SignState sign, bool party) =>
                             ),
                             GoRoute(
                                 path: "accountability",
-                                pageBuilder:
-                                    fullSlide(const AccountabilityTask())),
+                                pageBuilder: fullSlide(StoreConnector<GlobalState, String>(
+                                  converter: (store) => store.state.user.assigned_unit!,
+                                  builder: (context, unit) => AccountabilityTask(unit: unit)
+                                ))
+                            ),
                             GoRoute(
                                 path: "stan_eval",
                                 pageBuilder: fullSlide(const StanEvalTask()),

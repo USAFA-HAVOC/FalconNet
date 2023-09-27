@@ -13,9 +13,6 @@ import 'package:falcon_net/Structure/Pages/TaskManagement/Tasks/StanEval/SESelec
 import 'package:falcon_net/Utility/ErrorFormatting.dart';
 import 'package:flutter/material.dart';
 
-
-
-import '../../../../../Model/Database/UserSummary.dart';
 import '../../../../../Model/Store/Endpoints.dart';
 
 class SEEvent extends StatefulWidget {
@@ -68,6 +65,12 @@ class SEEventState extends State<SEEvent> {
           ))
       .toList();
 
+  /*
+  List<String> ungradedRooms() {
+    widget.members.map((m) => m.)
+  }
+   */
+
   void submit(ScaffoldMessengerState messenger, String graderID) async {
     int? parsedScore = int.tryParse(score.text);
 
@@ -83,11 +86,6 @@ class SEEventState extends State<SEEvent> {
       setState(() {
         scoreError = null;
         descriptionError = "Discrepancies required for non-perfect scores";
-      });
-    } else if (description.text.length < 10 && parsedScore < 100) {
-      setState(() {
-        scoreError = null;
-        descriptionError = "Minimum 10 characters";
       });
     } else if (gradees.isEmpty) {
       setState(() {
@@ -126,6 +124,8 @@ class SEEventState extends State<SEEvent> {
     }
   }
 
+
+
   @override
   Widget build(BuildContext context) {
     Map<String, List<StanEvalUser>> rooms = {};
@@ -139,8 +139,7 @@ class SEEventState extends State<SEEvent> {
     return StoreConnector<GlobalState, String>(
         converter: (model) => model.state.user.id!,
         builder: (context, id) => FNPage(
-                title:
-                    "Submit ${widget.type.display()} #${(widget.index + 1).toString()}",
+                title: "Submit ${widget.type.display()} #${(widget.index + 1).toString()}",
                 children: [
                   PageWidget(title: "Gradees", children: [
                     if (gradees.isEmpty)

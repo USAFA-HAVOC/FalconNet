@@ -1,13 +1,13 @@
+import 'package:falcon_net/Model/Database/UserDelegates.dart';
 import 'package:falcon_net/Structure/Components/InfoBar.dart';
 import 'package:flutter/material.dart';
 
 import '../../../../../Model/Database/Unit.dart';
-import '../../../../../Model/Database/User.dart';
 
 class AssigneeBar extends StatelessWidget {
-  final User assignee;
+  final UserDelegates assignee;
   final List<Unit> units;
-  final void Function(User) onAssign;
+  final void Function(UserDelegates) onAssign;
 
   const AssigneeBar({super.key, required this.assignee, required this.units, required this.onAssign});
 
@@ -26,7 +26,7 @@ class AssigneeBar extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  assignee.personal_info.full_name,
+                  assignee.name,
                   style: Theme.of(context).textTheme.titleSmall,
                 ),
 

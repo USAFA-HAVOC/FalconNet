@@ -58,7 +58,7 @@ abstract class TimedRole implements Built<TimedRole, TimedRoleBuilder> {
     ];
 
     if (name == Roles.fn_admin.name) {
-      return [Roles.fn_admin.name, Roles.wing_admin.name, Roles.group_admin.name, Roles.unit_admin.name, Roles.cwoc.name, Roles.permanent_party.name] + delegates;
+      return [Roles.fn_admin.name, Roles.unit_admin.name, Roles.cwoc.name, Roles.permanent_party.name] + delegates;
     }
 
     else if (name == Roles.permanent_party.name || name == Roles.unit_admin.name) {
@@ -70,7 +70,6 @@ abstract class TimedRole implements Built<TimedRole, TimedRoleBuilder> {
 
   bool isAdmin() {
     return name == Roles.fn_admin.name
-        || name == Roles.wing_admin.name
         || name == Roles.unit_admin.name
         || name == Roles.permanent_party.name;
   }
@@ -81,10 +80,6 @@ abstract class TimedRole implements Built<TimedRole, TimedRoleBuilder> {
     }
     if (name == Roles.permanent_party.name) {
       return other.name != Roles.fn_admin.name && other.name != Roles.permanent_party.name;
-    }
-
-    if (name == Roles.wing_admin.name) {
-      return other.name != Roles.fn_admin.name && other.name != Roles.wing_admin.name && other.name != Roles.permanent_party.name;
     }
 
     if (name == Roles.unit_admin.name) {

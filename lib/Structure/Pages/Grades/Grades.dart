@@ -26,26 +26,28 @@ class Grades extends StatelessWidget {
   Widget build(BuildContext context) {
     return StoreConnector<GlobalState, ViewModel<UserGrades>>(
       converter: (store) => ViewModel<UserGrades>(store: store, content: store.state.grades!),
-      builder: (context, model) => FNPage(
-        title: "Grades",
-        children: [
-            GradeAveragesWidget.user(user: model.content),
+      builder: (context, model) {
+        return FNPage(
+            title: "Grades",
+            children: [
+              GradeAveragesWidget.user(user: model.content),
 
-            if (model.content.amis.isNotEmpty) GraphWidget(
-              name: "AMI Scores",
-              data: List<FlSpot>.generate(
-                  model.content.amis.length,
-                  (index) => FlSpot(model.content.amis[index].index + 1, model.content.amis[index].score.toDouble())
+              if (model.content.amis.isNotEmpty) GraphWidget(
+                name: "AMI Scores",
+                data: List<FlSpot>.generate(
+                    model.content.amis.length,
+                        (index) => FlSpot(model.content.amis[index].index + 1, model.content.amis[index].score.toDouble())
+                ),
               ),
-            ),
 
-            GradePanel(grades: model.content.amis.toList(), label: "AMI"),
+              GradePanel(grades: model.content.amis.toList(), label: "AMI"),
 
-            GradePanel(grades: model.content.samis.toList(), label: "SAMI"),
+              GradePanel(grades: model.content.samis.toList(), label: "SAMI"),
 
-            GradePanel(grades: model.content.pais.toList(), label: "PAI"),
-        ]
-      )
+              GradePanel(grades: model.content.pais.toList(), label: "PAI"),
+            ]
+        );
+      }
     );
   }
 }

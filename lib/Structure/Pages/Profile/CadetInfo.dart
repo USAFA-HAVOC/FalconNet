@@ -29,9 +29,11 @@ class CadetInfo extends StatelessWidget {
                 initial: model.content.personal_info.full_name,
                 onSubmit: (input) {},
               ),
+
               const SizedBox(
                 height: 20,
               ),
+
               InputBlock(
                 label: "Phone Number",
                 onSubmit: (value) => model.dispatch(InfoAction(
@@ -43,9 +45,11 @@ class CadetInfo extends StatelessWidget {
                 hint: "(123) 456-789",
                 initial: model.content.personal_info.phone_number,
               ),
+
               const SizedBox(
                 height: 20,
               ),
+
               InputBlock(
                 label: "Room Number",
                 onSubmit: (value) => model.dispatch(InfoAction(
@@ -56,9 +60,13 @@ class CadetInfo extends StatelessWidget {
                   if (value == null) {
                     return "Must enter a valid room";
                   }
-                  if (!(<String>["SIJAN", "VANDY"]
+                  if ((<String>["AWAY"]
                       .any((b) => value.toUpperCase().startsWith(b)))) {
-                    return "Must start with either Sijan or Vandy";
+                    return value.trim().length == 4 ? null : "No room number required with Away";
+                  }
+                  if (!(<String>["SIJAN", "VANDY", "AWAY"]
+                      .any((b) => value.toUpperCase().startsWith(b)))) {
+                    return "Must start with either Sijan or Vandy or Away";
                   }
                   if (value.trim().split(" ").length < 2) {
                     return "Must include both a building and room number";

@@ -77,6 +77,11 @@ class SignBox extends StatelessWidget {
               ),
 
               Text(
+                  "C${4 - user.class_year_idx}C, ${user.room_number ?? "No Room"}",
+                  style: Theme.of(context).textTheme.bodyMedium,
+              ),
+
+              Text(
                 user.phone_number == null ? "Missing Phone #" : (user.phone_number!.trim().isEmpty ? "Missing Phone #" : user.phone_number!),
                 style: Theme.of(context).textTheme.bodyMedium,
               )

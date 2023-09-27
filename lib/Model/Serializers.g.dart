@@ -47,6 +47,8 @@ Serializers _$serializers = (new Serializers().toBuilder()
       ..add(UnitOrder.serializer)
       ..add(UnitSummary.serializer)
       ..add(User.serializer)
+      ..add(UserDelegates.serializer)
+      ..add(UserDelegatesList.serializer)
       ..add(UserEvent.serializer)
       ..add(UserEventExcusal.serializer)
       ..add(UserEventStatus.serializer)
@@ -122,6 +124,12 @@ Serializers _$serializers = (new Serializers().toBuilder()
           const FullType(BuiltList, const [const FullType(String)]),
           () => new ListBuilder<String>())
       ..addBuilderFactory(
+          const FullType(BuiltList, const [const FullType(TimedRole)]),
+          () => new ListBuilder<TimedRole>())
+      ..addBuilderFactory(
+          const FullType(BuiltList, const [const FullType(String)]),
+          () => new ListBuilder<String>())
+      ..addBuilderFactory(
           const FullType(BuiltList, const [const FullType(bool)]),
           () => new ListBuilder<bool>())
       ..addBuilderFactory(
@@ -145,6 +153,9 @@ Serializers _$serializers = (new Serializers().toBuilder()
       ..addBuilderFactory(
           const FullType(BuiltList, const [const FullType(User)]),
           () => new ListBuilder<User>())
+      ..addBuilderFactory(
+          const FullType(BuiltList, const [const FullType(UserDelegates)]),
+          () => new ListBuilder<UserDelegates>())
       ..addBuilderFactory(
           const FullType(BuiltList, const [const FullType(UserSummary)]),
           () => new ListBuilder<UserSummary>())
