@@ -4,6 +4,7 @@ import 'package:falcon_net/Model/Database/UserDelegates.dart';
 import 'package:falcon_net/Structure/Components/LoadingShimmer.dart';
 import 'package:falcon_net/Structure/Components/PageWidget.dart';
 import 'package:falcon_net/Utility/ErrorFormatting.dart';
+import 'package:falcon_net/Utility/StringSearch.dart';
 import 'package:flutter/material.dart';
 import  'package:string_similarity/string_similarity.dart';
 
