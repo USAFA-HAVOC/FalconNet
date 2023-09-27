@@ -67,6 +67,7 @@ class UnitStatusWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return PageWidget(
         title: label,
+        hasShadow: false,
         spacing: EdgeInsets.zero,
         padding: const EdgeInsets.only(left: 10, top: 10, right: 10),
         children: [
