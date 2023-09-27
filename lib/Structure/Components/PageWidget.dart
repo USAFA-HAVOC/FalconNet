@@ -9,6 +9,7 @@ class PageWidget extends StatelessWidget {
   final List<Widget> children;
   final EdgeInsets padding;
   final EdgeInsets spacing;
+  final bool hasShadow;
 
   const PageWidget({
     super.key,
@@ -17,14 +18,21 @@ class PageWidget extends StatelessWidget {
     this.padding =
         const EdgeInsets.only(top: 10, left: 16, right: 16, bottom: 5),
     this.spacing = const EdgeInsets.symmetric(vertical: 5),
+    this.hasShadow = true,
   });
 
   @override
   Widget build(BuildContext context) {
     //Returns a card with spacing between title and body and uniform spacing between body children
     return Card(
-      elevation: 5,
+      elevation: hasShadow ? 5 : 0,
       shadowColor: Colors.black.withOpacity(0.3),
+      shape: !hasShadow
+          ? RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(10),
+              side: BorderSide(color: Theme.of(context).dividerColor),
+            )
+          : null,
       child: PaddedColumn(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         mainAxisSize: MainAxisSize.min,
