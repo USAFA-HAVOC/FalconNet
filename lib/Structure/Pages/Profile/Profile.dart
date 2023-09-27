@@ -56,6 +56,8 @@ class ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
   Widget build(BuildContext context) {
     return FNPage(title: "Profile", children: [
       Card(
+        elevation: 5,
+        shadowColor: Colors.black.withOpacity(0.3),
         child: PaddedColumn(
           padding: const EdgeInsets.all(10),
           children: [

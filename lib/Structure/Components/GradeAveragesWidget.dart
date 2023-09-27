@@ -12,8 +12,12 @@ class GradeAveragesWidget extends StatelessWidget {
   final void Function()? onTap;
   final String label;
 
-  GradeAveragesWidget.unit({super.key, required UnitGrades unit, this.onTap, this.label = "Averages"}) :
-        ami = !unit.grades.values.any((grade) => grade.amis.isNotEmpty)
+  GradeAveragesWidget.unit(
+      {super.key,
+      required UnitGrades unit,
+      this.onTap,
+      this.label = "Averages"})
+      : ami = !unit.grades.values.any((grade) => grade.amis.isNotEmpty)
             ? "NA"
             : GradeBoard.fromUnitGrades(unit: unit)
                 .average(GradeType.ami)
@@ -24,70 +28,73 @@ class GradeAveragesWidget extends StatelessWidget {
                 .average(GradeType.sami)
                 .toStringAsFixed(0);
 
-  GradeAveragesWidget.user({super.key, required UserGrades user, this.onTap, this.label = "Averages"}) :
-        ami = user.amis.isEmpty
+  GradeAveragesWidget.user(
+      {super.key,
+      required UserGrades user,
+      this.onTap,
+      this.label = "Averages"})
+      : ami = user.amis.isEmpty
             ? "NA"
-            : (user.amis.map((g) => g.score)
-                .reduce((carry, value) => carry + value) / user.amis.length)
+            : (user.amis
+                        .map((g) => g.score)
+                        .reduce((carry, value) => carry + value) /
+                    user.amis.length)
                 .toStringAsFixed(1),
         sami = user.samis.isEmpty
             ? "NA"
-            : (user.samis.map((g) => g.score)
-                .reduce((carry, value) => carry + value) / user.samis.length)
+            : (user.samis
+                        .map((g) => g.score)
+                        .reduce((carry, value) => carry + value) /
+                    user.samis.length)
                 .toStringAsFixed(1);
 
   @override
   Widget build(BuildContext context) {
-    return PageWidget(
-        title: label,
-        children: [
-          Padding(
-            padding: const EdgeInsets.symmetric(vertical: 10),
-            child: Row(
-              children: [
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Text(
-                        ami,
-                        style: Theme.of(context).textTheme.displayMedium,
-                      ),
-
-                      Text(
-                        "AMI Average",
-                        style: Theme.of(context).textTheme.titleSmall,
-                      )
-                    ],
+    return PageWidget(title: label, children: [
+      Padding(
+        padding: const EdgeInsets.symmetric(vertical: 10),
+        child: Row(
+          children: [
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Text(
+                    ami,
+                    style: Theme.of(context).textTheme.displayMedium,
                   ),
-                ),
-
-                const VerticalDivider(thickness: 1,),
-
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Text(
-                        sami,
-                        style: Theme.of(context).textTheme.displayMedium,
-                      ),
-
-                      Text(
-                        "SAMI Average",
-                        style: Theme.of(context).textTheme.titleSmall,
-                      )
-                    ],
-                  ),
-                )
-              ],
+                  Text(
+                    "AMI Average",
+                    style: Theme.of(context).textTheme.titleSmall,
+                  )
+                ],
+              ),
             ),
-          ),
-
-          if (onTap != null) ElevatedButton(onPressed: onTap, child: const Text("Open Analytics"))
-        ]
-    );
+            const VerticalDivider(
+              thickness: 1,
+            ),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Text(
+                    sami,
+                    style: Theme.of(context).textTheme.displayMedium,
+                  ),
+                  Text(
+                    "SAMI Average",
+                    style: Theme.of(context).textTheme.titleSmall,
+                  )
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
+      if (onTap != null)
+        ElevatedButton(onPressed: onTap, child: const Text("Open Analytics"))
+    ]);
   }
 }

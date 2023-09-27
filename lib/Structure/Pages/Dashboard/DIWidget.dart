@@ -25,168 +25,166 @@ class DIWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     var messenger = ScaffoldMessenger.of(context);
     return StoreConnector<GlobalState, ViewModel<GlobalState>>(
-        converter: (store) => ViewModel<GlobalState>(
-            store: store,
-            content: store.state
-        ),
+        converter: (store) =>
+            ViewModel<GlobalState>(store: store, content: store.state),
         builder: (context, model) => ScheduledBuilder(
-          id: "di",
-          builder: (context, payload) {
+            id: "di",
+            builder: (context, payload) {
+              //Determine text based on state values
+              List<Widget> text;
 
-            //Determine text based on state values
-            List<Widget> text;
+              //Whether cadet is able to sign own di based on roles
+              bool senior = model.content.user.roles
+                  .any((role) => role.name == Roles.signable.name);
 
-            //Whether cadet is able to sign own di based on roles
-            bool senior = model.content.user.roles.any((role) => role.name == Roles.signable.name);
+              //Determines whether time is signable
+              bool time = !DateTime.now()
+                  .isBefore(combineDate(DateTime.now(), diOpens));
 
-            //Determines whether time is signable
-            bool time = !DateTime.now().isBefore(combineDate(DateTime.now(), diOpens));
+              DateTime now = DateTime.now().toUtc();
 
-            DateTime now = DateTime.now().toUtc();
+              UserEvent? di;
 
-            UserEvent? di;
+              Iterable<UserEvent> options = model.content.events
+                  .where((e) => e.type == EventType.di.name)
+                  .where(
+                      (e) => e.time.toUtc().difference(now).inHours.abs() < 24)
+                  .toList()
+                  .sortedKey(
+                      (e) => e.time.difference(DateTime.now()).inSeconds.abs());
 
-            Iterable<UserEvent> options = model.content.events
-                .where((e) => e.type == EventType.di.name)
-                .where((e) => e.time.toUtc().difference(now).inHours.abs() < 24)
-                .toList()
-                .sortedKey((e) => e.time.difference(DateTime.now()).inSeconds.abs());
+              UserStatus status;
 
-            UserStatus status;
+              if (options.isNotEmpty) {
+                di = options.first;
+                status = UserStatusNames.parse(di.status);
+              } else {
+                status = UserStatus.unsigned;
+              }
 
-            if (options.isNotEmpty) {
-              di = options.first;
-              status = UserStatusNames.parse(di.status);
-            }
+              bool signable = status == UserStatus.unsigned && senior && time;
 
-            else {
-              status = UserStatus.unsigned;
-            }
-
-            bool signable = status == UserStatus.unsigned && senior && time;
-
-            switch (status) {
-              case UserStatus.unassigned:
-                text = [
-                  Text(
-                    "User not assigned to DI Event",
-                    style: Theme.of(context).textTheme.headlineMedium,
-                  )
-                ];
-                break;
-              case UserStatus.leave:
-                text = [
-                  Text(
-                    "Cannot Sign DI on Leave",
-                    style: Theme.of(context).textTheme.headlineMedium,
-                  )
-                ];
-                break;
-              case UserStatus.signed:
-                text = [
-                  Text(
-                    "DI Signed by ${di?.signature_name ?? "Unknown"}",
-                    style: Theme.of(context).textTheme.headlineMedium,
-                  )
-                ];
-                break;
-              case UserStatus.out_returning:
-              case UserStatus.overdue:
-              case UserStatus.out:
-                text = [
-                  Text(
-                    "Close Pass to Sign DI",
-                    style: Theme.of(context).textTheme.headlineMedium,
-                  )
-                ];
-                break;
-              case UserStatus.excused:
-              case UserStatus.unsigned:
-                if (!time) {
-                  SchedulingService().schedule(id: "di", time: combineDate(DateTime.now(), diOpens), payload: "opened");
-                }
-
-                if (senior && time) {
+              switch (status) {
+                case UserStatus.unassigned:
                   text = [
                     Text(
-                      "DI is Open",
+                      "User not assigned to DI Event",
                       style: Theme.of(context).textTheme.headlineMedium,
                     )
                   ];
-                }
-                else if (!senior) {
+                  break;
+                case UserStatus.leave:
                   text = [
                     Text(
-                      "Cannot Sign Own DI",
+                      "Cannot Sign DI on Leave",
                       style: Theme.of(context).textTheme.headlineMedium,
                     )
                   ];
-                }
-                else {
+                  break;
+                case UserStatus.signed:
                   text = [
                     Text(
-                      "DI Opens at ${diOpens.hour}:${diOpens.minute}",
+                      "DI Signed by ${di?.signature_name ?? "Unknown"}",
                       style: Theme.of(context).textTheme.headlineMedium,
                     )
                   ];
-                }
-                break;
-            }
+                  break;
+                case UserStatus.out_returning:
+                case UserStatus.overdue:
+                case UserStatus.out:
+                  text = [
+                    Text(
+                      "Close Pass to Sign DI",
+                      style: Theme.of(context).textTheme.headlineMedium,
+                    )
+                  ];
+                  break;
+                case UserStatus.excused:
+                case UserStatus.unsigned:
+                  if (!time) {
+                    SchedulingService().schedule(
+                        id: "di",
+                        time: combineDate(DateTime.now(), diOpens),
+                        payload: "opened");
+                  }
 
-            //Sets content to card with info text
-            List<Widget> content = [
-              Card(
-                  color: signable
-                      ? Theme.of(context).focusColor
-                      : Theme.of(context).focusColor,
-                  child: Padding(
-                    padding: const EdgeInsets.all(20),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: text,
-                    ),
-                  )
-              ),
-            ];
-
-            //If signable, add button to sign di
-            if (signable) {
-              content.add(
-                ElevatedButton(
-                  //Dispatch sign di action
-                  onPressed: () => showDialog(
-                      context: context,
-                      builder: (context) => ConfirmationDialog(
-                          title: "Sign DI",
-                          description: "Confirm that you are at the location of your domicile. "
-                              "This action cannot be undone.",
-                          onConfirm: () => model.dispatch(SignAction(
-                              event: di!.event_id,
-                              onSucceed: () => messenger.showSnackBar(
-                                  const SnackBar(content: Text("DI Signed Successfully"))
-                              ),
-                              onFail: () => messenger.showSnackBar(
-                                  const SnackBar(content: Text("Failed to Sign DI"))
-                              )
-                          ))
+                  if (senior && time) {
+                    text = [
+                      Text(
+                        "DI is Open",
+                        style: Theme.of(context).textTheme.headlineMedium,
                       )
-                  ),
+                    ];
+                  } else if (!senior) {
+                    text = [
+                      Text(
+                        "Cannot Sign Own DI",
+                        style: Theme.of(context).textTheme.headlineMedium,
+                      )
+                    ];
+                  } else {
+                    text = [
+                      Text(
+                        "DI Opens at ${diOpens.hour}:${diOpens.minute}",
+                        style: Theme.of(context).textTheme.headlineMedium,
+                      )
+                    ];
+                  }
+                  break;
+              }
 
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 10),
-                    child: Text(
-                      'Sign',
-                      style: Theme.of(context).textTheme.labelLarge,
+              //Sets content to card with info text
+              List<Widget> content = [
+                Card(
+                    elevation: 0,
+                    color: signable
+                        ? Theme.of(context).focusColor
+                        : Theme.of(context).focusColor,
+                    child: Padding(
+                      padding: const EdgeInsets.all(20),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: text,
+                      ),
+                    )),
+              ];
+
+              //If signable, add button to sign di
+              if (signable) {
+                content.add(
+                  ElevatedButton(
+                    //Dispatch sign di action
+                    onPressed: () => showDialog(
+                        context: context,
+                        builder: (context) => ConfirmationDialog(
+                            title: "Sign DI",
+                            description:
+                                "Confirm that you are at the location of your domicile. "
+                                "This action cannot be undone.",
+                            onConfirm: () => model.dispatch(SignAction(
+                                event: di!.event_id,
+                                onSucceed: () => messenger.showSnackBar(
+                                    const SnackBar(
+                                        content:
+                                            Text("DI Signed Successfully"))),
+                                onFail: () => messenger.showSnackBar(
+                                    const SnackBar(
+                                        content:
+                                            Text("Failed to Sign DI"))))))),
+
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 10),
+                      child: Text(
+                        'Sign',
+                        style: Theme.of(context).textTheme.labelLarge,
+                      ),
                     ),
                   ),
-                ),
-              );
-            }
+                );
+              }
 
-            //Return Page Widget with given content
-            return PageWidget(title: title, children: content);
-          }
-        )
-    );
+              //Return Page Widget with given content
+              return PageWidget(title: title, children: content);
+            }));
   }
 }

@@ -12,17 +12,14 @@ import '../../Model/Database/User.dart';
 class PassStatus extends StatelessWidget {
   const PassStatus({super.key});
 
-
   @override
   Widget build(BuildContext context) {
     return Row(
       children: [
         Expanded(
           child: StoreConnector<GlobalState, ViewModel<User>>(
-              converter: (store) => ViewModel<User>(
-                  store: store,
-                  content: store.state.user
-              ),
+              converter: (store) =>
+                  ViewModel<User>(store: store, content: store.state.user),
               builder: (context, model) => ScheduledBuilder(
                   id: "pass",
                   builder: (context, payload) {
@@ -31,53 +28,51 @@ class PassStatus extends StatelessWidget {
                     bool expired = false;
                     bool closed = false;
 
-                    if (!(model.content.accountability?.current_leave?.departure_time.isAfter(DateTime.now()) ?? true)) {
+                    if (!(model.content.accountability?.current_leave
+                            ?.departure_time
+                            .isAfter(DateTime.now()) ??
+                        true)) {
                       status = "On Leave";
                       tooltip = "Cannot Sign-Out on Leave";
-                    }
-
-                    else if (model.content.accountability?.current_pass == null) {
-                      if (!(model.content.accountability?.effective_pass_status ?? true)) {
+                    } else if (model.content.accountability?.current_pass ==
+                        null) {
+                      if (!(model
+                              .content.accountability?.effective_pass_status ??
+                          true)) {
                         status = "Here";
                         tooltip = "Passes are Closed";
                         closed = true;
-                      }
-                      else {
+                      } else {
                         status = "Here";
                         tooltip = "Passes Are Open";
                       }
-                    }
-
-                    else {
+                    } else {
                       //If there is a current pass, display pass information
                       //Determine expiration message
-                      CadetPass pass = model.content.accountability!.current_pass!.toLocal();
+                      CadetPass pass =
+                          model.content.accountability!.current_pass!.toLocal();
                       var difference = pass.end_time.difference(DateTime.now());
                       status = pass.description;
 
                       if (difference.inSeconds <= 0) {
                         tooltip =
-                        "Expired: ${describeDate(pass.end_time)} ${describeTime(TimeOfDay.fromDateTime(pass.end_time))}";
+                            "Expired: ${describeDate(pass.end_time)} ${describeTime(TimeOfDay.fromDateTime(pass.end_time))}";
                         expired = true;
-                      }
-
-                      else if (difference.inHours < 24 && pass.end_time.weekday == DateTime.now().weekday) {
+                      } else if (difference.inHours < 24 &&
+                          pass.end_time.weekday == DateTime.now().weekday) {
                         tooltip =
-                        "Expires: ${describeTime(TimeOfDay.fromDateTime(pass.end_time))}";
-                      }
-
-                      else if (difference.inDays < 7) {
+                            "Expires: ${describeTime(TimeOfDay.fromDateTime(pass.end_time))}";
+                      } else if (difference.inDays < 7) {
                         tooltip =
-                        "Expires: ${formatWeekday(pass.end_time.weekday)}, ${describeTime(TimeOfDay.fromDateTime(pass.end_time))}";
-                      }
-
-                      else {
+                            "Expires: ${formatWeekday(pass.end_time.weekday)}, ${describeTime(TimeOfDay.fromDateTime(pass.end_time))}";
+                      } else {
                         tooltip =
-                        "Expires: ${describeDate(pass.end_time)}, ${describeTime(TimeOfDay.fromDateTime(pass.end_time))}";
+                            "Expires: ${describeDate(pass.end_time)}, ${describeTime(TimeOfDay.fromDateTime(pass.end_time))}";
                       }
                     }
                     //Display a gray card with expiration time/date
                     return Card(
+                      elevation: 0,
                       color: expired
                           ? Theme.of(context).colorScheme.error
                           : closed
@@ -96,26 +91,23 @@ class PassStatus extends StatelessWidget {
                                 style: Theme.of(context).textTheme.bodyLarge,
                               ),
                             ),
-
                             Text(
                               status,
                               style: Theme.of(context).textTheme.headlineLarge,
                             ),
-
                             Padding(
                               padding: const EdgeInsets.only(top: 10),
                               child: Text(
                                 tooltip,
-                                style: Theme.of(context).textTheme.headlineSmall,
+                                style:
+                                    Theme.of(context).textTheme.headlineSmall,
                               ),
                             ),
                           ],
                         ),
                       ),
                     );
-                  }
-              )
-          ),
+                  })),
         )
       ],
     );

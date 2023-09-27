@@ -23,6 +23,8 @@ class PageWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     //Returns a card with spacing between title and body and uniform spacing between body children
     return Card(
+      elevation: 5,
+      shadowColor: Colors.black.withOpacity(0.3),
       child: PaddedColumn(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         mainAxisSize: MainAxisSize.min,
