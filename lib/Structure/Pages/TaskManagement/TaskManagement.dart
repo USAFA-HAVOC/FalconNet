@@ -121,9 +121,11 @@ class TaskManagementState extends State<TaskManagement> {
         converter: (store) =>
             ViewModel<GlobalState>(store: store, content: store.state),
         builder: (context, model) {
-          return FNPage(
+          return FNPage.wrap(
               title: "Task Management",
-              children: buildTasks(model.content, context));
+              minWrapWidth: 700,
+              count: (MediaQuery.of(context).size.width / 400).round(),
+              wrapped: buildTasks(model.content, context));
         });
   }
 }

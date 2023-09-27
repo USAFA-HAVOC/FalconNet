@@ -7,8 +7,15 @@ import 'FNPage.dart';
 class AsyncPage<T> extends StatelessWidget {
   final String title;
   final Future<T> connection;
-  final List<Widget> Function(BuildContext, T) builder;
-  final List<Widget> placeholder;
+  final List<Widget> Function(BuildContext, T)? builder;
+  final double? minWrapWidth;
+  final List<Widget>? placeholder;
+  final List<Widget>? wrappedPlaceholder;
+  final List<Widget>? stackedPlaceholder;
+  final List<Widget> Function(BuildContext, T)? wrappedBuilder;
+  final List<Widget> Function(BuildContext, T)? stackedBuilder;
+  final bool wrap;
+  final int? count;
   final EdgeInsets padding;
 
   const AsyncPage({
@@ -18,7 +25,30 @@ class AsyncPage<T> extends StatelessWidget {
     required this.builder,
     this.placeholder = const [LoadingShimmer(height: 200,)],
     this.padding = const EdgeInsets.all(20)
-  });
+  }) :
+        wrap = false,
+        wrappedBuilder = null,
+        wrappedPlaceholder = null,
+        stackedBuilder = null,
+        stackedPlaceholder = null,
+        minWrapWidth = null,
+        count = null;
+
+  const AsyncPage.wrap({
+    super.key,
+    required this.title,
+    required this.connection,
+    this.minWrapWidth,
+    this.wrappedBuilder,
+    this.stackedBuilder,
+    this.count = 2,
+    this.wrappedPlaceholder = const [LoadingShimmer(height: 200,)],
+    this.stackedPlaceholder = const [],
+    this.padding = const EdgeInsets.all(20)
+  }) :
+        wrap = true,
+        placeholder = null,
+        builder = null;
 
   @override
   Widget build(BuildContext context) {
@@ -26,11 +56,22 @@ class AsyncPage<T> extends StatelessWidget {
         future: connection,
         builder: (context, snapshot) {
           if (snapshot.hasData) {
-            return FNPage(
-                title: title,
-                padding: padding,
-                children: builder(context, snapshot.data as T)
-            );
+            if (wrap) {
+              return FNPage.wrap(
+                  title: title,
+                  minWrapWidth: minWrapWidth,
+                  count: count,
+                  wrapped: wrappedBuilder?.call(context, snapshot.data as T),
+                  stacked: stackedBuilder?.call(context, snapshot.data as T),
+              );
+            }
+            else {
+              return FNPage(
+                  title: title,
+                  padding: padding,
+                  children: builder!(context, snapshot.data as T)
+              );
+            }
           }
           
           else if (snapshot.hasError) {
@@ -74,11 +115,23 @@ class AsyncPage<T> extends StatelessWidget {
           }
           
           else {
-            return FNPage(
-              title: title,
-              padding: padding,
-              children: placeholder,
-            );
+            if (wrap) {
+              return FNPage.wrap(
+                title: title,
+                padding: padding,
+                count: 1,
+                minWrapWidth: minWrapWidth,
+                wrapped: wrappedPlaceholder,
+                stacked: stackedPlaceholder,
+              );
+            }
+            else {
+              return FNPage(
+                title: title,
+                padding: padding,
+                children: placeholder,
+              );
+            }
           }
         }
     );

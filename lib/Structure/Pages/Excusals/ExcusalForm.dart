@@ -70,6 +70,7 @@ class ExcusalFormState extends State<ExcusalForm> {
               mainAxisSize: MainAxisSize.min,
               children: [
                 DropdownButtonFormField<String?>(
+                    isExpanded: true,
                     value: type,
                     decoration: InputDecoration(
                         labelStyle: Theme.of(context).textTheme.bodyLarge,
@@ -104,6 +105,7 @@ class ExcusalFormState extends State<ExcusalForm> {
                         emptyMessage: "Please enter a description"),
                   ),
                 DropdownButtonFormField<String?>(
+                  isExpanded: true,
                   value: event,
                   items: model.content.events
                           .toList()

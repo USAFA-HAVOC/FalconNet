@@ -1,4 +1,6 @@
+import 'package:falcon_net/Structure/Components/InfoBar.dart';
 import 'package:falcon_net/Utility/ListExtensions.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 import '../../../Model/Database/UserGrades.dart';
@@ -29,6 +31,40 @@ class GradePanelState extends State<GradePanel> {
         widget.ordered.length,
             (index) => MapEntry(widget.ordered[index].index, false)
     ));
+  }
+
+  ///Builds an extension panel for a particular grade with expansion state
+  ///Works for both sami and ami grades
+  Widget buildGradePanelWeb(BuildContext context, String description, Grade grade, bool expanded) {
+    return InfoBar(
+        children: [
+          Expanded(
+              flex: 1,
+              child: Text(
+                description,
+                style: Theme.of(context).textTheme.titleSmall,
+                textAlign: TextAlign.left,
+              ),
+          ),
+
+          Expanded(
+            flex: 5,
+              child: Text(
+                grade.description ?? "No description given",
+                style: Theme.of(context).textTheme.bodyMedium,
+                textAlign: TextAlign.left,
+              ),
+          ),
+
+          Expanded(
+            flex: 1,
+            child: Text(
+              grade.score.toString(),
+              style: Theme.of(context).textTheme.titleSmall,
+            ),
+          )
+        ]
+    );
   }
 
   ///Builds an extension panel for a particular grade with expansion state
@@ -85,7 +121,18 @@ class GradePanelState extends State<GradePanel> {
           ),
         ),
 
-        if (widget.ordered.isNotEmpty) ExpansionPanelList(
+        if (kIsWeb && widget.ordered.isNotEmpty) Column(
+          children: widget.ordered.map(
+                  (grade) => buildGradePanelWeb(
+                  context,
+                  "${widget.label} #${(grade.index + 1).toString()}",
+                  grade,
+                  extensions.entries.toList().firstWhere((element) => element.key == grade.index).value
+              )
+          ).toList(),
+        )
+
+        else if (widget.ordered.isNotEmpty) ExpansionPanelList(
 
           //Closes all panels other than current one
           expansionCallback: (index, status) {

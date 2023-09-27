@@ -125,6 +125,7 @@ class VehicleMethodSubformState extends State<VehicleMethodSubform> with SingleT
     return Column(
       children: [
         DropdownButtonFormField(
+          isExpanded: true,
           value: vehicleType,
           validator: InputValidation.override(
               InputValidation.dropdown(),

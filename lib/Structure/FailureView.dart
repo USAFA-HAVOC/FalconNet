@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:async_redux/async_redux.dart';
 import 'package:falcon_net/Model/Store/Actions/GlobalAction.dart';
 import 'package:falcon_net/Model/Store/GlobalState.dart';
@@ -37,7 +39,7 @@ class FailureView extends StatelessWidget {
                         children: [
                           Icon(
                             Icons.wifi_off,
-                            size: MediaQuery.of(context).size.width * 0.5,
+                            size: min(MediaQuery.of(context).size.width * 0.5, MediaQuery.of(context).size.height * 0.5),
                           ),
 
                           Text(
@@ -67,7 +69,7 @@ class FailureView extends StatelessWidget {
             children: [
               Icon(
                 Icons.error_outline_rounded,
-                size: MediaQuery.of(context).size.width * 0.5,
+                size: min(MediaQuery.of(context).size.width * 0.5, MediaQuery.of(context).size.height * 0.5),
               ),
 
               Text(

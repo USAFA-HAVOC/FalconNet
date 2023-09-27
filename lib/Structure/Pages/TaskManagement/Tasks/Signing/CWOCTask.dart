@@ -37,10 +37,11 @@ class CWOCTaskState extends State<CWOCTask> {
   }
 
   @override
-  Widget build(BuildContext context) => AsyncPage(
+  Widget build(BuildContext context) => AsyncPage.wrap(
       title: widget.label,
       connection: future,
-      builder: (context, data) {
+      minWrapWidth: 700,
+      wrappedBuilder: (context, data) {
         var applicable = data
             .where((e) => e.time.isAfter(DateTime.now().subtract(const Duration(days: 2))));
 
@@ -50,8 +51,6 @@ class CWOCTaskState extends State<CWOCTask> {
             child: Center(child: Text("No Signable Events"),),
           )];
         }
-
-        print(applicable);
 
         return applicable.map((event) =>
             PageWidget(
@@ -92,26 +91,26 @@ class CWOCTaskState extends State<CWOCTask> {
                       onPressed: () => showDialog(
                           context: context,
                           builder: (context) => Dialog(
-                            insetPadding: const EdgeInsets.only(top: 30, right: 10, left: 10, bottom: 10),
-                            child: ListView(
-                              shrinkWrap: true,
-                              children: [
-                                const Align(
-                                  alignment: Alignment.topLeft,
-                                  child: CloseButton(),
-                                ),
+                              insetPadding: const EdgeInsets.only(top: 30, right: 10, left: 10, bottom: 10),
+                              child: ListView(
+                                shrinkWrap: true,
+                                children: [
+                                  const Align(
+                                    alignment: Alignment.topLeft,
+                                    child: CloseButton(),
+                                  ),
 
-                                WingSigningEvent(
-                                  retrieve: () => Endpoints.getWing((StringRequestBuilder()..string = event.id!).build()),
-                                  label: event.name ?? (event.type == EventType.di.name ? "DI" : "Unnamed"),
-                                  event: event.id!,
-                                  refresh: 10,
-                                  padding: const EdgeInsets.only(left: 20, bottom: 20, right: 20),
-                                  excusable: event.type != EventType.di.name,
-                                  frozen: !(event.submission_start.isBefore(DateTime.now()) && event.submission_deadline.isAfter(DateTime.now())),
-                                ),
-                              ],
-                            )
+                                  WingSigningEvent(
+                                    retrieve: () => Endpoints.getWing((StringRequestBuilder()..string = event.id!).build()),
+                                    label: event.name ?? (event.type == EventType.di.name ? "DI" : "Unnamed"),
+                                    event: event.id!,
+                                    refresh: 10,
+                                    padding: const EdgeInsets.only(left: 20, bottom: 20, right: 20),
+                                    excusable: event.type != EventType.di.name,
+                                    frozen: !(event.submission_start.isBefore(DateTime.now()) && event.submission_deadline.isAfter(DateTime.now())),
+                                  ),
+                                ],
+                              )
                           )
                       ),
                       child: const Text("Open")

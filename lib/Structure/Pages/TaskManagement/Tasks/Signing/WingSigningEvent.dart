@@ -321,222 +321,72 @@ class WingSigningEventState extends State<WingSigningEvent> {
     );
   }
 
-  Widget buildStatusGrid(List<UnitSummary> units) {
+  List<Widget> buildStatusGrid(List<UnitSummary> units) {
     List<String> groups = Set<String>.from(units
         .where((unit) =>
             unit.unit.parent_units.length >= 2 && (unit.total ?? 0) > 0)
         .map((u) => u.unit.parent_units[1])).toList();
     groups.sort();
-
-    List<Widget> left = [];
-    List<Widget> right = [];
-    for (int g = 0; g < groups.length; g++) {
-      var group = groups[g];
-
-      (g % 2 == 0 ? left : right).addAll([
-        UnitStatusWidget.fromList(
-            units: units
-                .where((u) => u.unit.parent_units.contains(group))
-                .toList(),
-            label: group),
-        const SizedBox(
-          height: 20,
-        )
-      ]);
-    }
-
-    return Row(
-      children: [
-        Expanded(
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: left,
-          ),
-        ),
-        const SizedBox(
-          width: 20,
-        ),
-        Expanded(
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: right,
-          ),
-        ),
-      ],
-    );
+    return groups.map((group) => UnitStatusWidget.fromList(
+        units: units
+            .where((u) => u.unit.parent_units.contains(group))
+            .toList(),
+        label: group
+    )).toList();
   }
 
-  Widget buildStatusColumn(List<UnitSummary> units) {
+  List<Widget> buildStatusColumn(List<UnitSummary> units) {
     List<String> groups = Set<String>.from(units
         .where((unit) =>
             unit.unit.parent_units.length >= 2 && (unit.total ?? 0) > 0)
         .map((u) => u.unit.parent_units[1])).toList();
 
     groups.sort();
-
-    List<Widget> children = [];
-
-    for (var group in groups) {
-      children.addAll([
-        UnitStatusWidget.fromList(
-          label: group,
-          units: units
-              .where((u) => u.unit.parent_units.isNotEmpty)
-              .where((u) => u.unit.parent_units.last == group)
-              .toList(),
-        ),
-        const SizedBox(
-          height: 20,
-        ),
-      ]);
-    }
-
-    return Column(
-      children: children,
-    );
+    return groups.map((group) => UnitStatusWidget.fromList(
+      label: group,
+      units: units
+          .where((u) => u.unit.parent_units.isNotEmpty)
+          .where((u) => u.unit.parent_units.last == group)
+          .toList(),
+    )).toList();
   }
 
   @override
   Widget build(BuildContext context) {
-    return AsyncPage(
+    return AsyncPage.wrap(
       title: widget.label,
       connection: connection,
-      padding: widget.padding,
-      placeholder: [
-        LayoutBuilder(
-          builder: (context, constraints) {
-            //Displays a group data as grid if screen is wide enough
-            if (constraints.maxWidth > 700) {
-              return const Row(
-                children: [
-                  Expanded(
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      children: [
-                        LoadingShimmer(
-                          height: 200,
-                        ),
-                        SizedBox(
-                          height: 20,
-                        ),
-                        LoadingShimmer(
-                          height: 200,
-                        ),
-                        SizedBox(
-                          height: 20,
-                        ),
-                      ],
-                    ),
-                  ),
-                  SizedBox(
-                    width: 20,
-                  ),
-                  Expanded(
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      children: [
-                        LoadingShimmer(
-                          height: 200,
-                        ),
-                        SizedBox(
-                          height: 20,
-                        ),
-                        LoadingShimmer(
-                          height: 200,
-                        ),
-                        SizedBox(
-                          height: 20,
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
-              );
-            }
-
-            //Otherwise, displays in a simple column
-            else {
-              return const Column(
-                children: [
-                  LoadingShimmer(
-                    height: 200,
-                  ),
-                  SizedBox(
-                    height: 20,
-                  ),
-                  LoadingShimmer(
-                    height: 200,
-                  ),
-                  SizedBox(
-                    height: 20,
-                  ),
-                  LoadingShimmer(
-                    height: 200,
-                  ),
-                  SizedBox(
-                    height: 20,
-                  ),
-                  LoadingShimmer(
-                    height: 200,
-                  ),
-                  SizedBox(
-                    height: 20,
-                  ),
-                ],
-              );
-            }
-          },
-        )
-      ],
-      builder: (context, data) {
-        var units = data.units.where((u) => (u.total ?? 0) > 0).toList();
-        return [
-          LayoutBuilder(
-            builder: (context, constraints) {
-              //Displays a group data as grid if screen is wide enough
-              if (constraints.maxWidth > 700) {
-                return buildStatusGrid(units);
+      minWrapWidth: 700,
+      wrappedBuilder: (context, data) => buildStatusColumn(data.units.toList()),
+      stackedBuilder: (context, data) => [
+        if (kIsWeb)
+          ListView(
+            primary: true,
+            shrinkWrap: true,
+            children: data.units
+                .toList()
+                .map((unit) => buildWebPanel(context, data, unit))
+                .toList(),
+          )
+        else
+          ExpansionPanelList(
+            children: data.units
+                .toList()
+                .map((unit) => buildPanel(context, data, unit))
+                .toList(),
+            expansionCallback: (index, status) {
+              var unit = data.units.toList()[index];
+              if (!loaded.any((u) => unit.unit.name == u.unit.name) &&
+                  !status) {
+                loadUnit(unit.unit.name, ScaffoldMessenger.of(context));
               }
 
-              //Otherwise, displays in a simple column
-              else {
-                return buildStatusColumn(units);
-              }
+              setState(() {
+                expansions[unit.unit.name] = !status;
+              });
             },
-          ),
-          if (kIsWeb)
-            ListView(
-              primary: true,
-              shrinkWrap: true,
-              children: units
-                  .toList()
-                  .map((unit) => buildWebPanel(context, data, unit))
-                  .toList(),
-            )
-          else
-            ExpansionPanelList(
-              children: units
-                  .toList()
-                  .map((unit) => buildPanel(context, data, unit))
-                  .toList(),
-              expansionCallback: (index, status) {
-                var unit = units.toList()[index];
-                if (!loaded.any((u) => unit.unit.name == u.unit.name) &&
-                    !status) {
-                  loadUnit(unit.unit.name, ScaffoldMessenger.of(context));
-                }
-
-                setState(() {
-                  expansions[unit.unit.name] = !status;
-                });
-              },
-            )
-        ];
-      },
+          )
+      ],
     );
   }
 }

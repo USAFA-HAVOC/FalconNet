@@ -105,6 +105,8 @@ class LeaveMethodSubformState extends State<LeaveMethodSubform> {
                     : "Arrival Travel Method",
             ),
 
+            isExpanded: true,
+
             value: method,
 
             //Switches out submenu children
