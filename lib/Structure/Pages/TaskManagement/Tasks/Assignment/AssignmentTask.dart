@@ -60,7 +60,7 @@ class AssignmentTaskState extends State<AssignmentTask> {
   Future<bool> assign(UserDelegates assignee, List<String> units, String assigned, {ScaffoldMessengerState? messenger}) async {
     try {
       await Endpoints.setUnit(UnitAssignRequest((r) => r
-        ..user = assignee.id
+        ..user = assignee.user_id
         ..units = units.build().toBuilder()
         ..assigned_unit = assigned
       ));
@@ -68,7 +68,7 @@ class AssignmentTaskState extends State<AssignmentTask> {
       var data = await connection;
 
       setState(() {
-        var others = data.users.where((d) => d.id != assignee.id).toList();
+        var others = data.users.where((d) => d.user_id != assignee.user_id).toList();
         var modified = assignee.rebuild((d) => d..units = units.build().toBuilder());
         var full = others + [modified];
         connection = Future.value(AssignmentData(units: data.units, users: full));

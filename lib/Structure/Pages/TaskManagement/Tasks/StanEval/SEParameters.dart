@@ -15,6 +15,7 @@ class SEEventParameters {
   final GradeType type;
   final int index;
   final List<StanEvalUser> members;
+  final UnitGrades grades;
 
-  const SEEventParameters({required this.type, required this.index, required this.members});
+  const SEEventParameters({required this.type, required this.index, required this.members, required this.grades});
 }

@@ -58,7 +58,6 @@ class DelegationFormState extends State<DelegationForm> {
                     var index = roles.indexOf(role);
                     roles.removeAt(index);
                     roles.insert(index, change);
-                    widget.onSubmit?.call(roles);
                   }),
                 ),
             ),
@@ -78,7 +77,6 @@ class DelegationFormState extends State<DelegationForm> {
                       ),
                       onSubmit: (role) => setState(() {
                         roles.add(role);
-                        widget.onSubmit?.call(roles);
                       }),
                       applicable: widget.applicable,
                     )
@@ -90,7 +88,10 @@ class DelegationFormState extends State<DelegationForm> {
             Padding(
               padding: const EdgeInsets.all(10),
               child: ElevatedButton(
-                onPressed: widget.onCancel,
+                onPressed: () {
+                  widget.onSubmit!(roles);
+                  Navigator.of(context).pop();
+                },
                 child: const Padding(
                   padding: EdgeInsets.symmetric(vertical: 10),
                   child: Text("Done"),

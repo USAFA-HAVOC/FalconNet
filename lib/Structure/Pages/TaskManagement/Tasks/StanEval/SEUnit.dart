@@ -31,6 +31,7 @@ class SEUnitState extends State<SEUnit> {
       displayError(prefix: "S/E Unit", exception: error!);
       return UnitGrades();
     });
+
     super.initState();
   }
 
@@ -88,7 +89,8 @@ class SEUnitState extends State<SEUnit> {
                 extra: SEEventParameters(
                   type: type,
                   index: index,
-                  members: grades.members.toList()
+                  members: grades.members.toList(),
+                  grades: grades
                 )
               )
             )

@@ -20,9 +20,9 @@ class GradeBoard {
   GradeBoard({required this.amis, required this.samis, required this.pais});
 
   GradeBoard.fromUnitGrades({required UnitGrades unit}) :
-        amis = <int, Map<StanEvalUser, Grade>>{},
-        samis = <int, Map<StanEvalUser, Grade>>{},
-        pais = <int, Map<StanEvalUser, Grade>>{}
+        amis = Map.fromEntries(List.generate(7, (i) => MapEntry(i, {}))),
+        samis = Map.fromEntries(List.generate(2, (i) => MapEntry(i, {}))),
+        pais = Map.fromEntries(List.generate(2, (i) => MapEntry(i, {})))
   {
     var grades = unit.grades;
 
@@ -32,17 +32,14 @@ class GradeBoard {
 
     for (var user in grades.entries) {
       for (var ami in user.value.amis) {
-        amis.putIfAbsent(ami.index, () => {});
         amis[ami.index]!.putIfAbsent(findID(user.key), () => ami);
       }
 
       for (var sami in user.value.samis) {
-        samis.putIfAbsent(sami.index, () => {});
         samis[sami.index]!.putIfAbsent(findID(user.key), () => sami);
       }
 
       for (var pai in user.value.pais) {
-        pais.putIfAbsent(pai.index, () => {});
         pais[pai.index]!.putIfAbsent(findID(user.key), () => pai);
       }
     }
