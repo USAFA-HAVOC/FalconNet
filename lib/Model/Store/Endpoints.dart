@@ -219,6 +219,7 @@ class Endpoints {
 Future<void> login(String token) async {
   dio.options.headers = {"Authorization": "Bearer $token"};
   APIData().authenticated = true;
+  AuthService().token = token;
   await (await SharedPreferences.getInstance()).setBool("account", true);
 }
 

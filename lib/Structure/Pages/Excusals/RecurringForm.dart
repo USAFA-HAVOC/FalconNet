@@ -91,6 +91,7 @@ class RecurringFormState extends State<RecurringForm> {
               shrinkWrap: true,
               children: [
                 DropdownButtonFormField<String?>(
+                    isExpanded: true,
                     value: type,
                     decoration: InputDecoration(
                         labelStyle: Theme.of(context).textTheme.bodyLarge,
@@ -149,6 +150,7 @@ class RecurringFormState extends State<RecurringForm> {
                       .toList(),
                 ),
                 DropdownButtonFormField<String?>(
+                  isExpanded: true,
                   value: time,
                   items: RecurringExcusalType.values
                           .map((e) => DropdownMenuItem<String?>(

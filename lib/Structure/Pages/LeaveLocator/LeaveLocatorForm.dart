@@ -311,6 +311,7 @@ class LeaveLocatorFormState extends State<LeaveLocatorForm> {
               ],
             ),
             DropdownButtonFormField(
+              isExpanded: true,
               value: state,
               decoration: InputDecoration(
                   labelStyle: Theme.of(context).textTheme.bodyLarge,

@@ -18,6 +18,7 @@ import 'package:falcon_net/Structure/Pages/TaskManagement/Tasks/StanEval/SEAnaly
 import 'package:falcon_net/Structure/Pages/TaskManagement/Tasks/StanEval/SEEvent.dart';
 import 'package:falcon_net/Structure/Pages/TaskManagement/Tasks/UnitEditor/UnitEditorTask.dart';
 import 'package:falcon_net/Structure/Pages/TaskManagement/Tasks/UnitManagement/UnitManagementTask.dart';
+import 'package:falcon_net/Structure/PermanentParty/PassReport.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_analytics/observer.dart';
 import 'package:flutter/material.dart';
@@ -161,6 +162,10 @@ GoRouter fnRouter(GlobalKey<NavigatorState> key, SignState sign, bool party) =>
                             converter: (store) => store.state.user.assigned_unit!,
                             builder: (context, unit) => AccountabilityTask(unit: unit)
                           ))
+                      ),
+                      GoRoute(
+                          path: "pass-reports",
+                          pageBuilder: fullSlide(const PassReport())
                       ),
                       GoRoute(
                           path: "unit_management",

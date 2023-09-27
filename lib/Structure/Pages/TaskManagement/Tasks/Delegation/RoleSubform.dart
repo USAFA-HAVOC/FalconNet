@@ -116,6 +116,7 @@ class RoleSubformState extends State<RoleSubform> {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               DropdownButtonFormField<String>(
+                isExpanded: true,
                 value: value.name,
 
                 decoration: InputDecoration(
@@ -152,6 +153,7 @@ class RoleSubformState extends State<RoleSubform> {
 
               (requiresUnit(value.name))
                   ? DropdownButtonFormField<String>(
+                        isExpanded: true,
                         value: assignable.contains(value.unit!) ? value.unit! : ceiling,
                         items: assignable.map((u) => DropdownMenuItem<String>(
                             value: u,

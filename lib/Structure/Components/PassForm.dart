@@ -277,6 +277,7 @@ class PassFormState extends State<PassForm>
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 DropdownButtonFormField(
+                  isExpanded: true,
                   value: type,
                   decoration: InputDecoration(
                       labelStyle: Theme.of(context).textTheme.bodyLarge,
@@ -352,6 +353,7 @@ class PassFormState extends State<PassForm>
                 ),
 
                 DropdownButtonFormField(
+                  isExpanded: true,
                   value: state,
                   decoration: InputDecoration(
                       labelStyle: Theme.of(context).textTheme.bodyLarge,

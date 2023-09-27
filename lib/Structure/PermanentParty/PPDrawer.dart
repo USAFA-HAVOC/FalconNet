@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttericon/font_awesome5_icons.dart';
 
@@ -15,7 +16,7 @@ class PPDrawer extends StatelessWidget {
 
       //Sets height as exactly three quarters of screen in both dimensions
       //Change to loose to shrink to size of content
-      constraints: BoxConstraints.tight(Size(viewport.width * 0.75, viewport.height * 0.75)),
+      constraints: BoxConstraints.tight(Size(viewport.width * 0.75, viewport.height)),
       child: DecoratedBox(
           decoration: BoxDecoration(
             color: Theme.of(context).primaryColor,
@@ -40,6 +41,12 @@ class PPDrawer extends StatelessWidget {
                     icon: Icons.checklist,
                     title: "Accountability",
                     path: "/permanent_party/accountability"
+                ),
+
+                DrawerItem(
+                    icon: Icons.data_array,
+                    title: "Pass Reports",
+                    path: "/permanent_party/pass-reports"
                 ),
 
                 DrawerItem(

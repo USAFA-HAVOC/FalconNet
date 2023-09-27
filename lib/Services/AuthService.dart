@@ -19,6 +19,7 @@ class AuthService extends CoreOAuth {
   static final AuthService _authService = AuthService._internal();
   late final AuthStorage _authStorage;
   String? _code;
+  String? token;
   late final RequestCode? _requestCode;
   late final RequestToken _requestToken;
 
@@ -47,7 +48,7 @@ class AuthService extends CoreOAuth {
   /// both access and refresh tokens are invalid, the web gui will be used.
   @override
   Future<Either<Failure, Token>> login(
-      {bool refreshIfAvailable = true}) async {
+      {bool refreshIfAvailable = false}) async {
     await _removeOldTokenOnFirstLogin();
     return await _authorization(refreshIfAvailable: refreshIfAvailable);
   }
@@ -81,7 +82,7 @@ class AuthService extends CoreOAuth {
   /// will be returned, as long as we deem it still valid. In the event that
   /// both access and refresh tokens are invalid, the web gui will be used.
   Future<Either<Failure, Token>> _authorization(
-      {bool refreshIfAvailable = true}) async {
+      {bool refreshIfAvailable = false}) async {
     var token = await _authStorage.loadTokenFromCache();
 
     if (!refreshIfAvailable) {
