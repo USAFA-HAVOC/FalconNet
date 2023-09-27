@@ -1,14 +1,14 @@
+import 'package:falcon_net/Model/Database/UserDelegates.dart';
 import 'package:falcon_net/Structure/Pages/TaskManagement/Tasks/Delegation/RoleBar.dart';
 import 'package:flutter/material.dart';
 
 import '../../../../../Model/Database/Role.dart';
 import '../../../../../Model/Database/TimedRole.dart';
 import '../../../../../Model/Database/Unit.dart';
-import '../../../../../Model/Database/User.dart';
 import 'RoleSubform.dart';
 
 class DelegationForm extends StatefulWidget {
-  final User delegate;
+  final UserDelegates delegate;
   final List<TimedRole> applicable;
   final List<Unit> units;
   final void Function(List<TimedRole>)? onSubmit;

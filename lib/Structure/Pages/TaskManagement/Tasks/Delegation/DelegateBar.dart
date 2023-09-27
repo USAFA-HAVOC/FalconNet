@@ -1,12 +1,11 @@
+import 'package:falcon_net/Model/Database/UserDelegates.dart';
 import 'package:falcon_net/Structure/Components/InfoBar.dart';
 import 'package:flutter/material.dart';
 
-import '../../../../../Model/Database/User.dart';
-
 ///Displays a bar showing delegate name, current roles, and an assignment button
 class DelegateBar extends StatelessWidget {
-  final User delegate;
-  final void Function(User) onAssign;
+  final UserDelegates delegate;
+  final void Function(UserDelegates) onAssign;
 
   const DelegateBar({super.key, required this.delegate, required this.onAssign});
 
@@ -32,7 +31,7 @@ class DelegateBar extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                delegate.personal_info.full_name,
+                delegate.name,
                 style: Theme.of(context).textTheme.titleSmall,
                 textAlign: TextAlign.start,
               ),

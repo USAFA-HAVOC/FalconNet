@@ -1,5 +1,6 @@
 import 'package:built_collection/built_collection.dart';
 import 'package:falcon_net/Model/Database/RoleRequest.dart';
+import 'package:falcon_net/Model/Database/UserDelegates.dart';
 import 'package:falcon_net/Structure/Components/LoadingShimmer.dart';
 import 'package:falcon_net/Structure/Components/PageWidget.dart';
 import 'package:falcon_net/Utility/ErrorFormatting.dart';
@@ -16,7 +17,7 @@ import 'DelegateBar.dart';
 import 'DelegationForm.dart';
 
 class DelegationData {
-  final List<User> users;
+  final List<UserDelegates> users;
   final List<Unit> units;
 
   const DelegationData({required this.units, required this.users});
@@ -45,7 +46,7 @@ class DelegationTaskState extends State<DelegationTask> {
 
   Future<DelegationData> retrieveData() async {
     try {
-      var users = (await Endpoints.getUsers(null)).users.toList();
+      var users = (await Endpoints.delegableUsers(null)).users.toList();
       var units = (await Endpoints.listUnits(null)).units.toList();
       return DelegationData(units: units, users: users);
     }
@@ -57,7 +58,7 @@ class DelegationTaskState extends State<DelegationTask> {
 
   ///Assigns a delegate to a list of roles
   ///Makes api call and displays error message on failure
-  Future<bool> assign(User delegate, List<TimedRole> roles, {ScaffoldMessengerState? messenger}) async {
+  Future<bool> assign(UserDelegates delegate, List<TimedRole> roles, {ScaffoldMessengerState? messenger}) async {
     try {
       await Endpoints.setRoles(RoleRequest((r) => r
         ..user_id = delegate.id
@@ -93,7 +94,7 @@ class DelegationTaskState extends State<DelegationTask> {
   }
 
   ///Opens a dialog for the form for editing a delegates roles
-  void openDelegationForm(BuildContext context, User delegate, List<TimedRole> applicable, List<Unit> units) {
+  void openDelegationForm(BuildContext context, UserDelegates delegate, List<TimedRole> applicable, List<Unit> units) {
     showDialog(context: context, builder: (context) => Dialog(
       insetPadding: const EdgeInsets.all(10),
       child: Padding(
@@ -113,8 +114,8 @@ class DelegationTaskState extends State<DelegationTask> {
     ));
   }
 
-  List<User> search(List<User> applicable, String q) {
-    var mutable = applicable.map((u) => MapEntry(u, u.personal_info.full_name.similarityTo(q))).toList();
+  List<UserDelegates> search(List<UserDelegates> applicable, String q) {
+    var mutable = applicable.map((u) => MapEntry(u, u.name.similarityTo(q))).toList();
     mutable.sort((a, b) => -a.value.compareTo(b.value));
     return mutable.map((u) => u.key).toList();
   }

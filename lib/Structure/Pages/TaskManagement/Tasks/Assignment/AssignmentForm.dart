@@ -1,5 +1,6 @@
 import 'package:built_collection/built_collection.dart';
 import 'package:falcon_net/Model/Database/UnitAssignRequest.dart';
+import 'package:falcon_net/Model/Database/UserDelegates.dart';
 import 'package:falcon_net/Structure/Components/InfoBar.dart';
 import 'package:falcon_net/Structure/Pages/TaskManagement/Tasks/Assignment/AssignmentSubform.dart';
 import 'package:falcon_net/Utility/ErrorFormatting.dart';
@@ -11,7 +12,7 @@ import '../../../../../Model/Store/Endpoints.dart';
 import '../../../../Components/PaddedColumn.dart';
 
 class AssignmentForm extends StatefulWidget {
-  final User assignee;
+  final UserDelegates assignee;
   final List<String> owner;
   final List<Unit> units;
   final void Function(List<String>, String)? onSubmit;

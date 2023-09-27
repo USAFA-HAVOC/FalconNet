@@ -26,12 +26,22 @@ class _$UserSummarySerializer implements StructuredSerializer<UserSummary> {
       'status',
       serializers.serialize(object.status,
           specifiedType: const FullType(UserEventStatus)),
+      'class_year_idx',
+      serializers.serialize(object.class_year_idx,
+          specifiedType: const FullType(int)),
     ];
     Object? value;
     value = object.phone_number;
     if (value != null) {
       result
         ..add('phone_number')
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(String)));
+    }
+    value = object.room_number;
+    if (value != null) {
+      result
+        ..add('room_number')
         ..add(serializers.serialize(value,
             specifiedType: const FullType(String)));
     }
@@ -66,6 +76,14 @@ class _$UserSummarySerializer implements StructuredSerializer<UserSummary> {
           result.phone_number = serializers.deserialize(value,
               specifiedType: const FullType(String)) as String?;
           break;
+        case 'room_number':
+          result.room_number = serializers.deserialize(value,
+              specifiedType: const FullType(String)) as String?;
+          break;
+        case 'class_year_idx':
+          result.class_year_idx = serializers.deserialize(value,
+              specifiedType: const FullType(int))! as int;
+          break;
       }
     }
 
@@ -82,6 +100,10 @@ class _$UserSummary extends UserSummary {
   final UserEventStatus status;
   @override
   final String? phone_number;
+  @override
+  final String? room_number;
+  @override
+  final int class_year_idx;
 
   factory _$UserSummary([void Function(UserSummaryBuilder)? updates]) =>
       (new UserSummaryBuilder()..update(updates))._build();
@@ -90,11 +112,15 @@ class _$UserSummary extends UserSummary {
       {required this.user_id,
       required this.name,
       required this.status,
-      this.phone_number})
+      this.phone_number,
+      this.room_number,
+      required this.class_year_idx})
       : super._() {
     BuiltValueNullFieldError.checkNotNull(user_id, r'UserSummary', 'user_id');
     BuiltValueNullFieldError.checkNotNull(name, r'UserSummary', 'name');
     BuiltValueNullFieldError.checkNotNull(status, r'UserSummary', 'status');
+    BuiltValueNullFieldError.checkNotNull(
+        class_year_idx, r'UserSummary', 'class_year_idx');
   }
 
   @override
@@ -111,7 +137,9 @@ class _$UserSummary extends UserSummary {
         user_id == other.user_id &&
         name == other.name &&
         status == other.status &&
-        phone_number == other.phone_number;
+        phone_number == other.phone_number &&
+        room_number == other.room_number &&
+        class_year_idx == other.class_year_idx;
   }
 
   @override
@@ -121,6 +149,8 @@ class _$UserSummary extends UserSummary {
     _$hash = $jc(_$hash, name.hashCode);
     _$hash = $jc(_$hash, status.hashCode);
     _$hash = $jc(_$hash, phone_number.hashCode);
+    _$hash = $jc(_$hash, room_number.hashCode);
+    _$hash = $jc(_$hash, class_year_idx.hashCode);
     _$hash = $jf(_$hash);
     return _$hash;
   }
@@ -131,7 +161,9 @@ class _$UserSummary extends UserSummary {
           ..add('user_id', user_id)
           ..add('name', name)
           ..add('status', status)
-          ..add('phone_number', phone_number))
+          ..add('phone_number', phone_number)
+          ..add('room_number', room_number)
+          ..add('class_year_idx', class_year_idx))
         .toString();
   }
 }
@@ -156,6 +188,15 @@ class UserSummaryBuilder implements Builder<UserSummary, UserSummaryBuilder> {
   String? get phone_number => _$this._phone_number;
   set phone_number(String? phone_number) => _$this._phone_number = phone_number;
 
+  String? _room_number;
+  String? get room_number => _$this._room_number;
+  set room_number(String? room_number) => _$this._room_number = room_number;
+
+  int? _class_year_idx;
+  int? get class_year_idx => _$this._class_year_idx;
+  set class_year_idx(int? class_year_idx) =>
+      _$this._class_year_idx = class_year_idx;
+
   UserSummaryBuilder();
 
   UserSummaryBuilder get _$this {
@@ -165,6 +206,8 @@ class UserSummaryBuilder implements Builder<UserSummary, UserSummaryBuilder> {
       _name = $v.name;
       _status = $v.status.toBuilder();
       _phone_number = $v.phone_number;
+      _room_number = $v.room_number;
+      _class_year_idx = $v.class_year_idx;
       _$v = null;
     }
     return this;
@@ -194,7 +237,10 @@ class UserSummaryBuilder implements Builder<UserSummary, UserSummaryBuilder> {
               name: BuiltValueNullFieldError.checkNotNull(
                   name, r'UserSummary', 'name'),
               status: status.build(),
-              phone_number: phone_number);
+              phone_number: phone_number,
+              room_number: room_number,
+              class_year_idx: BuiltValueNullFieldError.checkNotNull(
+                  class_year_idx, r'UserSummary', 'class_year_idx'));
     } catch (_) {
       late String _$failedField;
       try {

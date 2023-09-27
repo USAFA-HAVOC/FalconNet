@@ -1,7 +1,7 @@
 import 'dart:async';
 
+import 'package:falcon_net/Model/Database/StringRequest.dart';
 import 'package:falcon_net/Structure/Components/AsyncPage.dart';
-import 'package:falcon_net/Structure/Components/InfoBar.dart';
 import 'package:falcon_net/Structure/Components/LoadingShimmer.dart';
 import 'package:falcon_net/Structure/Components/PageWidget.dart';
 import 'package:falcon_net/Structure/Components/UnitStatusWidget.dart';
@@ -17,7 +17,9 @@ import '../../../../Components/FNSearchBar.dart';
 import 'StatusDescription/StatusDescriptionWidget.dart';
 
 class AccountabilityTask extends StatefulWidget {
-  const AccountabilityTask({super.key});
+  final String unit;
+
+  const AccountabilityTask({super.key, required this.unit});
 
   @override
   State<StatefulWidget> createState() => AccountabilityTaskState();
@@ -25,6 +27,7 @@ class AccountabilityTask extends StatefulWidget {
 
 class AccountabilityTaskState extends State<AccountabilityTask> {
   String query = "";
+  late String unit;
   late Future<List<User>> connection;
   late Map<String, bool> expansions;
   late Timer timer;
@@ -32,9 +35,12 @@ class AccountabilityTaskState extends State<AccountabilityTask> {
   @override
   void initState() {
     super.initState();
-    connection = Endpoints.getUsers(null).then(
+    unit = widget.unit;
+    StringRequest request = (StringRequestBuilder()..string = unit).build();
+    connection = Endpoints.getUsers(request).then(
       (list) => list.users.where((u) => !u.roles.any((r) => r.name == Roles.permanent_party.name)).toList()
     );
+
     connection.then((users) => expansions = Map<String, bool>.fromIterables(
         users.map((m) => m.id!),
         List<bool>.filled(users.length, false)
@@ -42,7 +48,7 @@ class AccountabilityTaskState extends State<AccountabilityTask> {
 
     timer = Timer.periodic(const Duration(seconds: 10), (timer) {
       setState(() {
-        connection = Endpoints.getUsers(null).then(
+        connection = Endpoints.getUsers(request).then(
             (list) => list.users.where(
               (u) => !u.roles.any((r) => r.name == Roles.permanent_party.name)
             ).toList()

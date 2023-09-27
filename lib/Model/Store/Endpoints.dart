@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:built_collection/built_collection.dart';
 import 'package:built_value/serializer.dart';
 import 'package:dio/dio.dart';
 import 'package:falcon_net/Model/Database/AccountabilityEvent.dart';
@@ -32,6 +33,7 @@ import '../Database/Unit.dart';
 import '../Database/UnitAssignRequest.dart';
 import '../Database/UnitGrades.dart';
 import '../Database/UnitList.dart';
+import '../Database/UserDelegatesList.dart';
 import '../Database/UserList.dart';
 import '../Database/WingData.dart';
 import 'DemoData.dart';
@@ -173,7 +175,8 @@ class Endpoints {
 
   static Endpoint<void, UserSummaryList> getUserSummaries =
       Endpoint("/users/summaries");
-  static Endpoint<void, UserList> getUsers = Endpoint("/users/get", get: true);
+  static Endpoint<StringRequest, UserList> getUsers = Endpoint("/users/get");
+  static Endpoint<void, UserDelegatesList> delegableUsers = Endpoint("/users/delegation-list", get: true);
 
   static Endpoint<void, UnitList> listUnits = Endpoint("/unit/list");
   static Endpoint<Unit, Unit> createUnit = Endpoint("/unit/create");

@@ -18,6 +18,8 @@ import 'package:falcon_net/Model/Database/UnitDataRequest.dart';
 import 'package:falcon_net/Model/Database/UnitManagementThing.dart';
 import 'package:falcon_net/Model/Database/UnitOrder.dart';
 import 'package:falcon_net/Model/Database/User.dart';
+import 'package:falcon_net/Model/Database/UserDelegates.dart';
+import 'package:falcon_net/Model/Database/UserDelegatesList.dart';
 import 'package:falcon_net/Model/Database/UserEventExcusal.dart';
 import 'package:falcon_net/Model/Database/UserGrades.dart';
 import 'package:falcon_net/Model/Database/UserNotification.dart';
@@ -104,7 +106,9 @@ part 'Serializers.g.dart';
   UserEventExcusal,
   IndividualPassStatus,
   UnitManagementThing,
-  StanEvalUser
+  StanEvalUser,
+  UserDelegates,
+  UserDelegatesList
 ])
 
 
