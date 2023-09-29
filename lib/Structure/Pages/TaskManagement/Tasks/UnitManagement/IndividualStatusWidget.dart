@@ -21,7 +21,6 @@ class IndividualStatusWidget extends StatefulWidget {
 class IndividualStatusWidgetState extends State<IndividualStatusWidget> {
   String query = "";
   late Map<String, bool> status;
-  static const length = 10;
 
   @override
   void initState() {
@@ -48,7 +47,6 @@ class IndividualStatusWidgetState extends State<IndividualStatusWidget> {
               textAlign: TextAlign.start,
             )
         ),
-
         Expanded(
             flex: 2,
             child: Switch(
@@ -82,20 +80,7 @@ class IndividualStatusWidgetState extends State<IndividualStatusWidget> {
         .map((u) => MapEntry(u, u.name.similarityTo(query)))
         .toList();
     scores.sort((a, b) => -a.value.compareTo(b.value));
-    bool extended = length < scores.length;
-    var widgets = scores
-        .sublist(0, extended ? length : scores.length)
-        .map((s) => buildStatus(context, s.key))
-        .toList();
-    return [
-      ...widgets,
-
-      if (extended) Text(
-        "···",
-        style: Theme.of(context).textTheme.titleLarge,
-        textAlign: TextAlign.center,
-      )
-    ];
+    return scores.map((s) => buildStatus(context, s.key)).toList();
   }
 
   @override
@@ -104,7 +89,6 @@ class IndividualStatusWidgetState extends State<IndividualStatusWidget> {
       title: "Individual Status",
       children: [
         FNSearchBar(onChanged: (change) => setState(() => query = change)),
-
         ...buildAll(context)
       ]
     );
