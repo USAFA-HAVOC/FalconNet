@@ -6,7 +6,7 @@ import 'package:falcon_net/Structure/Components/PageWidget.dart';
 import 'package:falcon_net/Utility/ErrorFormatting.dart';
 import 'package:falcon_net/Utility/StringSearch.dart';
 import 'package:flutter/material.dart';
-import  'package:string_similarity/string_similarity.dart';
+import 'package:string_similarity/string_similarity.dart';
 
 import '../../../../../Model/Database/Unit.dart';
 import '../../../../../Model/Database/User.dart';
@@ -23,12 +23,10 @@ class AssignmentData {
   const AssignmentData({required this.units, required this.users});
 }
 
-///Applet for supervisors to assign time based roles to subordinates
-///Allows for both adding, removing, and editing of roles of subordinates
 class AssignmentTask extends StatefulWidget {
   final List<String> owner;
 
-  const AssignmentTask({super.key, required this.owner});
+  const AssignmentTask({Key? key, required this.owner}) : super(key: key);
 
   @override
   State<StatefulWidget> createState() => AssignmentTaskState();
@@ -45,78 +43,88 @@ class AssignmentTaskState extends State<AssignmentTask> {
   }
 
   Future<AssignmentData> retrieveData() async {
-    try {
-      var users = (await Endpoints.delegableUsers(null)).users.toList();
-      var units = (await Endpoints.listUnits(null)).units.toList();
-      return AssignmentData(units: units, users: users);
-    }
-    catch (e) {
-      displayError(prefix: "Delegation", exception: e);
-      return const AssignmentData(units: [], users: []);
-    }
+    var users = (await Endpoints.delegableUsers(null)).users.toList();
+    var units = (await Endpoints.listUnits(null)).units.toList();
+
+    // Debug: Print the list before sorting
+    print("Units before sorting: ${units.map((unit) => unit.name).toList()}");
+
+    units.sort((a, b) {
+      if (a.name == 'AFCW') return 1;
+      if (b.name == 'AFCW') return -1;
+
+      var regExp = RegExp(r'([a-zA-Z]+)(\d*)');
+      var aMatch = regExp.firstMatch(a.name);
+      var bMatch = regExp.firstMatch(b.name);
+
+      var aPrefix = aMatch?.group(1) ?? '';
+      var bPrefix = bMatch?.group(1) ?? '';
+
+      var aNum = int.tryParse(aMatch?.group(2) ?? '9999') ?? 9999; 
+      var bNum = int.tryParse(bMatch?.group(2) ?? '9999') ?? 9999; 
+
+      int prefixComparison = aPrefix.compareTo(bPrefix);
+      if (prefixComparison != 0) return prefixComparison;
+
+      return aNum.compareTo(bNum);
+    });
+
+    // Debug: Print the list after sorting
+    print("Units after sorting: ${units.map((unit) => unit.name).toList()}");
+
+    return AssignmentData(units: units, users: users);
   }
 
-  ///Assigns a delegate to a list of roles
-  ///Makes api call and displays error message on failure
-  Future<bool> assign(UserDelegates assignee, List<String> units, String assigned, {ScaffoldMessengerState? messenger}) async {
-    try {
-      await Endpoints.setUnit(UnitAssignRequest((r) => r
-        ..user = assignee.user_id
-        ..units = units.build().toBuilder()
-        ..assigned_unit = assigned
-      ));
+  Future<bool> assign(
+      UserDelegates assignee, List<String> units, String assigned,
+      {ScaffoldMessengerState? messenger}) async {
+    await Endpoints.setUnit(UnitAssignRequest((r) => r
+      ..user = assignee.user_id
+      ..units = units.build().toBuilder()
+      ..assigned_unit = assigned));
 
-      var data = await connection;
+    var data = await connection;
 
-      setState(() {
-        var others = data.users.where((d) => d.user_id != assignee.user_id).toList();
-        var modified = assignee.rebuild((d) => d..units = units.build().toBuilder());
-        var full = others + [modified];
-        connection = Future.value(AssignmentData(units: data.units, users: full));
-      });
+    setState(() {
+      var others =
+          data.users.where((d) => d.user_id != assignee.user_id).toList();
+      var modified =
+          assignee.rebuild((d) => d..units = units.build().toBuilder());
+      var full = others + [modified];
+      connection =
+          Future.value(AssignmentData(units: data.units, users: full));
+    });
 
-      messenger?.showSnackBar(
-          const SnackBar(
-              content: Text("Successfully Set Units")
-          )
-      );
-    }
-
-    catch (e) {
-      displayError(prefix: "Assignment", exception: e);
-      messenger?.showSnackBar(
-          const SnackBar(
-              content: Text("Failed to Modify Units")
-          )
-      );
-      return false;
-    }
+    messenger?.showSnackBar(
+        const SnackBar(content: Text("Successfully Set Units")));
     return true;
   }
 
-  ///Opens a dialog for the form for editing a delegates roles
-  void openAssignmentForm(BuildContext context, UserDelegates assignee, List<Unit> units) {
-    showDialog(context: context, builder: (context) => Dialog(
-      insetPadding: const EdgeInsets.all(10),
-      child: Padding(
-        padding: const EdgeInsets.all(10),
-
-        //Builds a delegation form with applicable roles
-        child: AssignmentForm(
-          units: units,
-          assignee: assignee,
-          owner: widget.owner,
-          onSubmit: (units, assigned) {
-            assign(assignee, units, assigned, messenger: ScaffoldMessenger.of(context));
-          },
-          onCancel: () => Navigator.of(context).pop(),
-        ),
-      ),
-    ));
+  void openAssignmentForm(
+      BuildContext context, UserDelegates assignee, List<Unit> units) {
+    showDialog(
+        context: context,
+        builder: (context) => Dialog(
+              insetPadding: const EdgeInsets.all(10),
+              child: Padding(
+                padding: const EdgeInsets.all(10),
+                child: AssignmentForm(
+                  units: units,
+                  assignee: assignee,
+                  owner: widget.owner,
+                  onSubmit: (units, assigned) {
+                    assign(assignee, units, assigned,
+                        messenger: ScaffoldMessenger.of(context));
+                  },
+                  onCancel: () => Navigator.of(context).pop(),
+                ),
+              ),
+            ));
   }
 
   List<UserDelegates> search(List<UserDelegates> applicable, String q) {
-    var mutable = applicable.map((u) => MapEntry(u, u.name.similarityTo(q))).toList();
+    var mutable =
+        applicable.map((u) => MapEntry(u, u.name.similarityTo(q))).toList();
     mutable.sort((a, b) => -a.value.compareTo(b.value));
     return mutable.map((u) => u.key).toList();
   }
@@ -127,34 +135,37 @@ class AssignmentTaskState extends State<AssignmentTask> {
         title: "Unit Assignment",
         connection: connection,
         placeholder: const [
-          LoadingShimmer(height: 700,)
+          LoadingShimmer(
+            height: 700,
+          )
         ],
         builder: (context, data) {
           var ordered = search(data.users, query);
-          return [
-            PageWidget(
-                title: "Members",
-                children: [
-                  ListView.builder(
-                      shrinkWrap: true,
-                      primary: false,
-                      itemCount: ordered.length + 1,
-                      itemBuilder: (context, index) {
-                        if (index == 0) {
-                          return FNSearchBar(onChanged: (q) => setState(() => query = q));
-                        }
 
-                        return AssigneeBar(
-                            units: data.units,
-                            assignee: ordered[index - 1],
-                            onAssign: (delegate) => openAssignmentForm(context, delegate, data.units)
-                        );
-                      }
-                  ),
-                ]
-            )
+          // Debug: Print the list just before rendering
+          print("Units before rendering: ${data.units.map((unit) => unit.name).toList()}");
+
+          return [
+            PageWidget(title: "Members", children: [
+              ListView.separated(
+                shrinkWrap: true,
+                primary: false,
+                itemCount: ordered.length,
+                separatorBuilder: (BuildContext context, int index) => Divider(),
+                itemBuilder: (context, index) {
+                  if (index == 0) {
+                    return FNSearchBar(onChanged: (q) => setState(() => query = q));
+                  }
+
+                  return AssigneeBar(
+                    units: data.units,
+                    assignee: ordered[index - 1],
+                    onAssign: (delegate) => openAssignmentForm(context, delegate, data.units)
+                  );
+                },
+              ),
+            ])
           ];
-        }
-    );
+        });
   }
 }
