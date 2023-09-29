@@ -1,5 +1,6 @@
 import 'package:built_value/built_value.dart';
 import 'package:built_value/serializer.dart';
+import 'package:falcon_net/Model/Database/TimedRole.dart';
 
 part 'UnitDataRequest.g.dart';
 

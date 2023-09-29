@@ -5,6 +5,7 @@ import 'package:falcon_net/Structure/Pages/TaskManagement/Tasks/Signing/UnitSign
 import 'package:flutter/material.dart';
 
 import '../../../../../Model/Database/AccountabilityEvent.dart';
+import '../../../../../Model/Database/Role.dart';
 import '../../../../../Model/Database/UserEvent.dart';
 import '../../../../../Model/Store/Endpoints.dart';
 import '../../../../Components/ViewModel.dart';
@@ -13,12 +14,12 @@ class SDOTask extends StatelessWidget {
   const SDOTask({super.key});
 
   @override
-  Widget build(BuildContext context) => StoreConnector<GlobalState, ViewModel<List<UserEvent>>>(
+  Widget build(BuildContext context) => StoreConnector<GlobalState, ViewModel<GlobalState>>(
       converter: (store) =>
-          ViewModel(store: store, content: store.state.events.toList()),
+          ViewModel(store: store, content: store.state),
       builder: (context, model) {
         return UnitSigningEvent(
-          retrieve: () => Endpoints.getUnit(UnitDataRequest.direct()),
+          retrieve: () => Endpoints.getUnit(UnitDataRequest.direct(unit: model.content.user.roles.where((r) => r.name == Roles.sdo.name).firstOrNull?.unit)),
           refresh: 10,
           label: "SDO",
           statusLabel: "Inspections",

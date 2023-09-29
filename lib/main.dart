@@ -120,6 +120,7 @@ class FNApp extends StatefulWidget {
 }
 
 final navigatorKey = GlobalKey<NavigatorState>();
+final ppNavigatorKey = GlobalKey<NavigatorState>();
 
 class FNAppState extends State<FNApp> {
   late GoRouter router;
@@ -133,14 +134,25 @@ class FNAppState extends State<FNApp> {
       }
     });
 
+    late Timer ppnuzzlerref = Timer.periodic(const Duration(days: 69), (timer) { });
+
+    Timer ppnuzzler = Timer.periodic(const Duration(seconds: 1), (timer) {
+      if (widget.store.state.user.roles.any((r) => r.name == Roles.permanent_party.name)) {
+        ppRouter.go("/permanent_party");
+        ppnuzzlerref.cancel();
+      }
+    });
+
+    ppnuzzlerref = ppnuzzler;
+
     attemptGetWebToken();
     if (APIData().authenticated) {
       router = fnRouter(navigatorKey, SignState.signed, false);
-      ppRouter = fnRouter(navigatorKey, SignState.signed, true);
+      ppRouter = fnRouter(ppNavigatorKey, SignState.signed, true);
     } else {
       router = fnRouter(navigatorKey,
           widget.account ? SignState.account : SignState.none, false);
-      ppRouter = fnRouter(navigatorKey,
+      ppRouter = fnRouter(ppNavigatorKey,
           widget.account ? SignState.account : SignState.none, true);
     }
 
@@ -169,6 +181,7 @@ class FNAppState extends State<FNApp> {
             loaded: store.state.status == AppStatus.nominal,
           ),
         ),
+
         builder: (context, model) {
           return Wiredash(
             projectId: 'faclonnet-97dwf3a',

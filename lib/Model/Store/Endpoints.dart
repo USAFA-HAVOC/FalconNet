@@ -129,12 +129,19 @@ class Endpoint<Req, Res> {
     Response res;
 
     if (get) {
-      res = await dio.get(path, queryParameters: data);
+      res = await dio.get(path,
+          queryParameters: data,
+          options: Options(
+            receiveTimeout: 0
+          )
+      );
     } else {
       res = await dio.post(path,
           data: data,
           options: Options(
-              headers: {HttpHeaders.contentTypeHeader: "application/json"}));
+            headers: {HttpHeaders.contentTypeHeader: "application/json"},
+            receiveTimeout: 0
+          ));
     }
 
     return serializers.deserialize(res.data, specifiedType: FullType(Res))
