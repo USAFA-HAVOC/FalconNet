@@ -43,8 +43,8 @@ class PassReportState extends State<PassReport> {
       path: "/admin/pass-report.pdf",
       queryParameters: {
         "token" : AuthService().token ?? "no_token_lol",
-        "start" : "${range.start.toUtc().toIso8601String()}Z",
-        "end" : "${range.end.toUtc().toIso8601String()}Z",
+        "start" : (range.start.toUtc().millisecondsSinceEpoch / 1000).round().toString(),
+        "end" : (range.end.toUtc().millisecondsSinceEpoch / 1000).round().toString(),
         "cadets" : selected.map((u) => u.user_id).join(",")
       }
     );
