@@ -136,9 +136,13 @@ class FNAppState extends State<FNApp> {
 
     late Timer ppnuzzlerref = Timer.periodic(const Duration(days: 69), (timer) { });
 
-    Timer ppnuzzler = Timer.periodic(const Duration(seconds: 1), (timer) {
+    Timer ppnuzzler = Timer.periodic(const Duration(milliseconds: 200), (timer) {
       if (widget.store.state.user.roles.any((r) => r.name == Roles.permanent_party.name)) {
         ppRouter.go("/permanent_party");
+        ppnuzzlerref.cancel();
+      }
+
+      if (widget.store.state.user.roles.any((r) => r.name == Roles.cadet.name)) {
         ppnuzzlerref.cancel();
       }
     });
@@ -171,16 +175,17 @@ class FNAppState extends State<FNApp> {
     return StoreProvider(
       store: widget.store,
       child: StoreConnector<GlobalState, ViewModel<RouterComponents>>(
-        converter: (store) => ViewModel(
-          store: store,
-          content: RouterComponents(
-            theme: store.state.settings.theme,
-            party: store.state.user.roles.any(
-              (r) => r.name == Roles.permanent_party.name,
+        converter: (store) =>
+            ViewModel(
+              store: store,
+              content: RouterComponents(
+                theme: store.state.settings.theme,
+                party: store.state.user.roles.any(
+                      (r) => r.name == Roles.permanent_party.name,
+                ),
+                loaded: store.state.status == AppStatus.nominal,
+              ),
             ),
-            loaded: store.state.status == AppStatus.nominal,
-          ),
-        ),
 
         builder: (context, model) {
           return Wiredash(
