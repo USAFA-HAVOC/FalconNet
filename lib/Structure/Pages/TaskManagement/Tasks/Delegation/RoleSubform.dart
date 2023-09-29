@@ -85,16 +85,12 @@ class RoleSubformState extends State<RoleSubform> {
     var earliest = scope.key;
     var latest = scope.value;
 
-    List<String> grandchildren(List<String> children) =>
-        children.map((e) => widget.units.where((u) => u.name == e))
-          .expand((s) => s
-            .expand((u) => [...grandchildren(u.sub_units.toList()), u.name])
-            .toList()
-          ).toList();
-
     var ceiling = widget.units.firstWhere((u) => u.parent_units.isEmpty).name;
 
-    var assignable = grandchildren(
+    List<String> grandchildrenReal(List<String> parents) => widget.units.where((u) => u.parent_units.any((p) => parents.any((e) => e == p))).map((e) => e.name).toList();
+
+
+    var assignable = grandchildrenReal(
         widget.applicable.where((r) => r.isAdmin())
             .map((r) => r.name == Roles.unit_admin.name
                 ? r.unit!

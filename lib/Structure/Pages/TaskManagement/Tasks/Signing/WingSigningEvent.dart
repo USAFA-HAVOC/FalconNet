@@ -156,7 +156,7 @@ class WingSigningEventState extends State<WingSigningEvent> {
       UnitData actual = await Endpoints.getUnit(
           UnitDataRequest.direct(unit: unit, event: widget.event));
       setState(() {
-        connection = Future.value(wing.set(actual));
+        //connection = Future.value(wing.set(actual));
         loaded.removeWhere((u) => u.unit.name == unit || u.total == 0);
         loaded.add(actual);
       });
