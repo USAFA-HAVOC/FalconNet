@@ -3,7 +3,6 @@ import 'package:falcon_net/Structure/Pages/TaskManagement/Tasks/Delegation/RoleS
 import 'package:falcon_net/Utility/TemporalFormatting.dart';
 import 'package:flutter/material.dart';
 
-import '../../../../../Model/Database/Role.dart';
 import '../../../../../Model/Database/Unit.dart';
 
 class RoleBar extends StatelessWidget {

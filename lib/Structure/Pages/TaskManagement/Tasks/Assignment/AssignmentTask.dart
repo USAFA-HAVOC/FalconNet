@@ -3,13 +3,10 @@ import 'package:falcon_net/Model/Database/UnitAssignRequest.dart';
 import 'package:falcon_net/Model/Database/UserDelegates.dart';
 import 'package:falcon_net/Structure/Components/LoadingShimmer.dart';
 import 'package:falcon_net/Structure/Components/PageWidget.dart';
-import 'package:falcon_net/Utility/ErrorFormatting.dart';
-import 'package:falcon_net/Utility/StringSearch.dart';
 import 'package:flutter/material.dart';
 import 'package:string_similarity/string_similarity.dart';
 
 import '../../../../../Model/Database/Unit.dart';
-import '../../../../../Model/Database/User.dart';
 import '../../../../../Model/Store/Endpoints.dart';
 import '../../../../Components/AsyncPage.dart';
 import '../../../../Components/FNSearchBar.dart';
@@ -151,7 +148,7 @@ class AssignmentTaskState extends State<AssignmentTask> {
                 shrinkWrap: true,
                 primary: false,
                 itemCount: ordered.length,
-                separatorBuilder: (BuildContext context, int index) => Divider(),
+                separatorBuilder: (BuildContext context, int index) => const Divider(),
                 itemBuilder: (context, index) {
                   if (index == 0) {
                     return FNSearchBar(onChanged: (q) => setState(() => query = q));

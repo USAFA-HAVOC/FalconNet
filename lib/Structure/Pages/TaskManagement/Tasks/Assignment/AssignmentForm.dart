@@ -1,14 +1,9 @@
-import 'package:built_collection/built_collection.dart';
-import 'package:falcon_net/Model/Database/UnitAssignRequest.dart';
 import 'package:falcon_net/Model/Database/UserDelegates.dart';
 import 'package:falcon_net/Structure/Components/InfoBar.dart';
 import 'package:falcon_net/Structure/Pages/TaskManagement/Tasks/Assignment/AssignmentSubform.dart';
-import 'package:falcon_net/Utility/ErrorFormatting.dart';
 import 'package:flutter/material.dart';
 
 import '../../../../../Model/Database/Unit.dart';
-import '../../../../../Model/Database/User.dart';
-import '../../../../../Model/Store/Endpoints.dart';
 import '../../../../Components/PaddedColumn.dart';
 
 class AssignmentForm extends StatefulWidget {
@@ -39,7 +34,7 @@ class AssignmentFormState extends State<AssignmentForm> {
   void initState() {
     super.initState();
     units = widget.assignee.units.toList();
-    assigned = widget.assignee.assigned_unit!;
+    assigned = widget.assignee.assigned_unit;
   }
   
   void removeUnit(BuildContext context, String base, {ScaffoldMessengerState? messenger}) async {
@@ -136,7 +131,7 @@ class AssignmentFormState extends State<AssignmentForm> {
                                   child: Padding(
                                     padding: const EdgeInsets.all(10),
                                     child: PaddedColumn(
-                                      padding: EdgeInsets.all(10),
+                                      padding: const EdgeInsets.all(10),
                                       mainAxisSize: MainAxisSize.min,
                                       crossAxisAlignment: CrossAxisAlignment.stretch,
                                       children: [

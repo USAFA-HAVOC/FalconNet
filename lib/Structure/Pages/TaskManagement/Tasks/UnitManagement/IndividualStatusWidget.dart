@@ -6,7 +6,6 @@ import 'package:falcon_net/Utility/ErrorFormatting.dart';
 import 'package:flutter/material.dart';
 import 'package:string_similarity/string_similarity.dart';
 
-import '../../../../../Model/Database/UserSummary.dart';
 import '../../../../../Model/Store/Endpoints.dart';
 import '../../../../Components/FNSearchBar.dart';
 

@@ -51,7 +51,7 @@ class DelegationTaskState extends State<DelegationTask> {
     }
     catch (e) {
       displayError(prefix: "Delegation", exception: e);
-      return DelegationData(units: [], users: []);
+      return const DelegationData(units: [], users: []);
     }
   }
 

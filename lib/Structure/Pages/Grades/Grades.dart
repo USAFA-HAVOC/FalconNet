@@ -25,7 +25,7 @@ class Grades extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return StoreConnector<GlobalState, ViewModel<UserGrades>>(
-      converter: (store) => ViewModel<UserGrades>(store: store, content: store.state.grades!),
+      converter: (store) => ViewModel<UserGrades>(store: store, content: store.state.grades),
       builder: (context, model) {
         return FNPage(
             title: "Grades",
