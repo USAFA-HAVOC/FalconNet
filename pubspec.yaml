@@ -1,0 +1,165 @@
+name: falcon_net
+description: A new FalconNet 2.0 Implementation.
+
+# The following line prevents the package from being accidentally published to
+# pub.dev using `flutter pub publish`. This is preferred for private packages.
+publish_to: "none" # Remove this line if you wish to publish to pub.dev
+
+# The following defines the version and build number for your application.
+# A version number is three numbers separated by dots, like 1.2.43
+# followed by an optional build number separated by a +.
+# Both the version and the builder number may be overridden in flutter
+# build by specifying --build-name and --build-number, respectively.
+# In Android, build-name is used as versionName while build-number used as versionCode.
+# Read more about Android versioning at https://developer.android.com/studio/publish/versioning
+# In iOS, build-name is used as CFBundleShortVersionString while build-number is used as CFBundleVersion.
+# Read more about iOS versioning at
+# https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
+# In Windows, build-name is used as the major, minor, and patch parts
+# of the product and file versions while build-number is used as the build suffix.
+version: 1.4.0+7
+
+environment:
+  sdk: ">=3.0.0"
+
+# Dependencies specify other packages that your package needs in order to work.
+# To automatically upgrade your package dependencies to the latest versions
+# consider running `flutter pub upgrade --major-versions`. Alternatively,
+# dependencies can be manually updated by changing the version numbers below to
+# the latest version available on pub.dev. To see which dependencies have newer
+# versions available, run `flutter pub outdated`.
+dependencies:
+  flutter:
+    sdk: flutter
+
+  flutter_web_plugins:
+    sdk: flutter
+
+  # The following adds the Cupertino Icons font to your application.
+  # Use with the CupertinoIcons class for iOS style icons.
+  cupertino_icons: ^1.0.2
+  async_redux: ^18.0.2
+  go_router: ^6.0.0
+  badges: ^2.0.3
+  popover: ^0.2.8+2
+  shimmer: ^2.0.0
+  dio: 4.0.4
+  built_value: ^8.6.1
+  shared_preferences: ^2.0.16
+  string_similarity: ^2.0.0
+  built_collection: ^5.1.1
+  universal_html: ^2.2.3
+  flutter_inappwebview:
+    # This fixes iOS 17 but breaks Web (don't ask)
+    # git:
+    #   url: https://github.com/Estrelio/flutter_inappwebview.git
+    #   ref: fix-xcode-17
+  aad_oauth: 0.4.2
+  webview_flutter: ^4.0.5
+  dartz: ^0.10.1
+  flutter_signin_button: ^2.0.0
+  flutter_time_picker_spinner: ^2.0.0
+  flutter_native_splash: any
+  fl_chart: ^0.61.0
+  flutter_local_notifications: ^8.2.0
+  timezone: ^0.8.0
+  fluttericon: ^2.0.0
+  flutter_image_slideshow: ^0.1.6
+  url_launcher: ^6.1.14
+  flutter_svg: ^2.0.7
+  bouncing_widget: ^2.0.0
+  firebase_core: ^2.16.0
+  firebase_analytics: ^10.5.0
+  firebase_crashlytics: ^3.3.6
+  wiredash: ^1.7.4
+  multi_select_flutter: ^4.1.3
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+  # The "flutter_lints" package below contains a set of recommended lints to
+  # encourage good coding practices. The lint set provided by the package is
+  # activated in the `analysis_options.yaml` file located at the root of your
+  # package. See that file for information about deactivating specific lint
+  # rules and activating additional ones.
+  flutter_lints: ^2.0.0
+  build_runner: ^2.4.6
+  built_value_generator:
+  flutter_launcher_icons: "^0.12.0"
+
+flutter_icons:
+  image_path: "assets/icon/FalconNet-IOS.png"
+  image_path_android: "assets/icon/FalconNet-Android.png"
+  android: true
+  image_path_ios: "assets/icon/FalconNet-IOS.png"
+  ios: true
+  min_sdk_android: 21 # android min sdk min:16, default 21
+  web:
+    generate: true
+    image_path: "assets/icon/FalconNet-Google-play.png"
+  windows:
+    generate: true
+    image_path: "assets/icon/FalconNet-Google-play.png"
+    icon_size: 48 # min:48, max:256, default: 48
+  macos:
+    generate: true
+    image_path: "assets/icon/FalconNet-Google-play.png"
+
+# For information on the generic Dart part of this file, see the
+# following page: https://dart.dev/tools/pub/pubspec
+
+# The following section is specific to Flutter packages.
+flutter:
+  uses-material-design: true
+
+  assets:
+    - assets/images/
+    - assets/splash_screens/
+    - assets/icon/
+
+  fonts:
+    - family: Roboto
+      fonts:
+        - asset: assets/fonts/roboto_regular.ttf
+        - asset: assets/fonts/roboto_bold.ttf
+        - asset: assets/fonts/roboto_italic.ttf
+          style: italic
+
+    # This is a custom family for the Proxima Nova Font
+    - family: ProximaNova
+      fonts:
+        - asset: assets/fonts/ProximaNova-Black.ttf
+        - weight: 900
+        - asset: assets/fonts/ProximaNova-ExtraBold.ttf
+        - weight: 800
+        - asset: assets/fonts/ProximaNova-Bold.ttf
+        - weight: 700
+        - asset: assets/fonts/ProximaNova-SemiBold.ttf
+        - weight: 600
+        - asset: assets/fonts/ProximaNova-Regular.ttf
+        - weight: 500
+
+flutter_native_splash:
+  # This package generates native code to customize Flutter's default white native splash screen
+  # with background color and splash image.
+  # Customize the parameters below, and run the following command in the terminal:
+  # flutter pub run flutter_native_splash:create
+  # To restore Flutter's default white splash screen, run the following command in the terminal:
+  # flutter pub run flutter_native_splash:remove
+
+  #! color or background_image is the only required parameter.  Use color to set the background
+  #! of your splash screen to a solid color.  Use background_image to set the background of your
+  #! splash screen to a png image.  This is useful for gradients. The image will be stretch to the
+  #! size of the app. Only one parameter can be used, color and background_image cannot both be set.
+  # color: "#ffffff"
+  # color_dark: "#000000"
+  background_image: "assets/splash_screens/iPhone_14__iPhone_13_Pro__iPhone_13__iPhone_12_Pro__iPhone_12_portrait.png"
+  ios: true
+  android: true
+  # Optional parameters are listed below.  To enable a parameter, uncomment the line by removing
+  # the leading # character.
+
+  # The image parameter allows you to specify an image used in the splash screen.  It must be a
+  # png file and should be sized for 4x pixel density.
+  # image: assets/icon/FalconNet-IOS-2.png
