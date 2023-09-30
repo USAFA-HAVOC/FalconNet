@@ -4,7 +4,6 @@ import 'package:built_value/serializer.dart';
 import 'package:falcon_net/Model/Database/StanEvalUser.dart';
 
 import 'UserGrades.dart';
-import 'UserSummary.dart';
 
 part 'UnitGrades.g.dart';
 

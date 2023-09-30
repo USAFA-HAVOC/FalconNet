@@ -71,9 +71,11 @@ abstract class ExcusalSpecifier {
 abstract class EventExcusal implements Built<EventExcusal, EventExcusalBuilder>, ExcusalSpecifier {
   static Serializer<EventExcusal> get serializer => _$eventExcusalSerializer;
 
+  @override
   String? get id;
   String get user_id;
   String get event_id;
+  @override
   Excusal get excusal;
 
   EventExcusal._();
@@ -83,11 +85,13 @@ abstract class EventExcusal implements Built<EventExcusal, EventExcusalBuilder>,
 abstract class RecurringExcusal implements Built<RecurringExcusal, RecurringExcusalBuilder>, ExcusalSpecifier {
   static Serializer<RecurringExcusal> get serializer => _$recurringExcusalSerializer;
 
+  @override
   String? get id;
   String get user_id;
   BuiltList<String> get event_types;
   String get recurring_excusal_type;
   BuiltList<bool>? get excused_days;
+  @override
   Excusal get excusal;
 
   RecurringExcusal._();

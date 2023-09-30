@@ -3,7 +3,6 @@ import 'package:async_redux/async_redux.dart';
 import 'package:falcon_net/Model/Database/IndividualPassStatus.dart';
 import 'package:falcon_net/Model/Database/PassStatusRequest.dart';
 import 'package:falcon_net/Model/Database/TimedRole.dart';
-import 'package:falcon_net/Model/Database/UnitDataRequest.dart';
 import 'package:falcon_net/Structure/Components/LoadingShimmer.dart';
 import 'package:falcon_net/Structure/Components/PageWidget.dart';
 import 'package:falcon_net/Structure/Pages/TaskManagement/Tasks/UnitManagement/IndividualStatusWidget.dart';
@@ -11,7 +10,6 @@ import 'package:falcon_net/Utility/ErrorFormatting.dart';
 import 'package:flutter/material.dart';
 
 import '../../../../../Model/Database/Role.dart';
-import '../../../../../Model/Database/UserSummary.dart';
 import '../../../../../Model/Store/Endpoints.dart';
 import '../../../../../Model/Store/GlobalState.dart';
 import '../../../../Components/AsyncPage.dart';

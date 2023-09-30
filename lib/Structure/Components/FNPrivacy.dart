@@ -25,7 +25,7 @@ class FNPrivacy extends StatelessWidget {
                     style: Theme.of(context).textTheme.titleMedium,
                   ),
 
-                  SizedBox(height: 20,),
+                  const SizedBox(height: 20,),
 
                   const Text(
                       """Authority: HQ UNITED STATES AIR FORCE ACADEMY MISSION DIRECTIVE 3, Commandant of Cadets, paragraphs 3.4 and 3.5; Privacy Act of 1974; AFCWI 36-3501 Cadet Standards and Duties

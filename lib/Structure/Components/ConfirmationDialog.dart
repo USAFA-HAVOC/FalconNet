@@ -1,7 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
-import '../../Theme/NegativeButtonTheme.dart';
 import 'PaddedColumn.dart';
 
 class ConfirmationDialog extends StatelessWidget {

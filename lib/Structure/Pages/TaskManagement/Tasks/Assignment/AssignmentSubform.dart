@@ -26,7 +26,7 @@ class AssignmentSubformState extends State<AssignmentSubform> {
   @override
   Widget build(BuildContext context) => Dialog(
     child: Padding(
-      padding: EdgeInsets.all(10),
+      padding: const EdgeInsets.all(10),
       child: PaddedColumn(
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.stretch,

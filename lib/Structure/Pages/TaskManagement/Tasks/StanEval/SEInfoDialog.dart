@@ -36,9 +36,9 @@ class SEInfoDialogState extends State<SEInfoDialog> {
               itemCount: widget.pairs.length + 3,
               itemBuilder: (context, index) {
                 if (index == 0) {
-                  return Row(
+                  return const Row(
                     mainAxisAlignment: MainAxisAlignment.end,
-                    children: const [
+                    children: [
                       CloseButton()
                     ],
                   );

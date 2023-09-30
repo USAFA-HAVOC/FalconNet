@@ -8,7 +8,6 @@ import 'package:url_launcher/url_launcher.dart';
 import '../../../../../Model/Database/Excusal.dart';
 import '../../../../../Model/Database/UserStatus.dart';
 import '../../../../../Model/Database/UserSummary.dart';
-import '../../../../Components/ConfirmationDialog.dart';
 import '../../../../Components/InfoBar.dart';
 import 'SigningDialog.dart';
 

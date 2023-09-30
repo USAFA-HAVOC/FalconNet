@@ -1,14 +1,9 @@
-import 'package:built_collection/built_collection.dart';
-import 'package:falcon_net/Model/Database/UnitAssignRequest.dart';
 import 'package:falcon_net/Model/Database/UserDelegates.dart';
 import 'package:falcon_net/Structure/Components/InfoBar.dart';
 import 'package:falcon_net/Structure/Pages/TaskManagement/Tasks/Assignment/AssignmentSubform.dart';
-import 'package:falcon_net/Utility/ErrorFormatting.dart';
 import 'package:flutter/material.dart';
 
 import '../../../../../Model/Database/Unit.dart';
-import '../../../../../Model/Database/User.dart';
-import '../../../../../Model/Store/Endpoints.dart';
 import '../../../../Components/PaddedColumn.dart';
 
 class AssignmentForm extends StatefulWidget {
@@ -39,7 +34,7 @@ class AssignmentFormState extends State<AssignmentForm> {
   void initState() {
     super.initState();
     units = widget.assignee.units.toList();
-    assigned = widget.assignee.assigned_unit!;
+    assigned = widget.assignee.assigned_unit;
   }
   
   void removeUnit(BuildContext context, String base, {ScaffoldMessengerState? messenger}) async {
@@ -71,7 +66,6 @@ class AssignmentFormState extends State<AssignmentForm> {
           child
         ];
 
-
     var retained = units + chain(base).where((u) => !units.contains(u)).toList();
 
     setState(() => units = retained);
@@ -84,9 +78,8 @@ class AssignmentFormState extends State<AssignmentForm> {
             (p) => widget.units
                 .where((o) => o.name == p)
                 .any((g) => g.parent_units.toList().contains(u))
-    )).toList();
+    )).toList()..sort((a, b) => a.compareTo(b)); // Sort the bases alphabetically
 
-    //Good luck, lol
     List<String> grandchildren(List<String> children) =>
         children.map((e) => widget.units.where((u) => u.name == e))
             .expand((s) => s
@@ -94,7 +87,7 @@ class AssignmentFormState extends State<AssignmentForm> {
                 .toList()
             ).toList();
 
-    var assignable = grandchildren(widget.owner.toList()).toSet().toList();
+    var assignable = grandchildren(widget.owner.toList()).toSet().toList()..sort((a, b) => a.compareTo(b));
 
     print(assignable);
     
@@ -136,7 +129,7 @@ class AssignmentFormState extends State<AssignmentForm> {
                                   child: Padding(
                                     padding: const EdgeInsets.all(10),
                                     child: PaddedColumn(
-                                      padding: EdgeInsets.all(10),
+                                      padding: const EdgeInsets.all(10),
                                       mainAxisSize: MainAxisSize.min,
                                       crossAxisAlignment: CrossAxisAlignment.stretch,
                                       children: [

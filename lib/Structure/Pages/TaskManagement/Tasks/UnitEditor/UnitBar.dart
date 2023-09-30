@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 
 import '../../../../../Model/Database/Unit.dart';
 import '../../../../Components/ConfirmationDialog.dart';
-import '../../../../Components/PaddedColumn.dart';
 import 'UnitForm.dart';
 
 class UnitBar extends StatelessWidget {

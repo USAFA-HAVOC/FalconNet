@@ -3,7 +3,6 @@ import 'package:built_collection/built_collection.dart';
 import 'package:falcon_net/Model/Database/Excusal.dart';
 import 'package:falcon_net/Model/Store/GlobalState.dart';
 import 'package:falcon_net/Structure/Components/ViewModel.dart';
-import 'package:falcon_net/Theme/NegativeButtonTheme.dart';
 import 'package:falcon_net/Utility/InputValidation.dart';
 import 'package:flutter/material.dart';
 
