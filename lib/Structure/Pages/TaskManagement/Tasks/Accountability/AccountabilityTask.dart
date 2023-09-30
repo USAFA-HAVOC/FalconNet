@@ -1,5 +1,4 @@
 import 'dart:async';
-
 import 'package:falcon_net/Model/Database/StringRequest.dart';
 import 'package:falcon_net/Structure/Components/AsyncPage.dart';
 import 'package:falcon_net/Structure/Components/LoadingShimmer.dart';
@@ -9,7 +8,6 @@ import 'package:falcon_net/Utility/ListExtensions.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:string_similarity/string_similarity.dart';
-
 import '../../../../../Model/Database/Role.dart';
 import '../../../../../Model/Database/User.dart';
 import '../../../../../Model/Store/Endpoints.dart';
@@ -18,9 +16,7 @@ import 'StatusDescription/StatusDescriptionWidget.dart';
 
 class AccountabilityTask extends StatefulWidget {
   final String unit;
-
   const AccountabilityTask({super.key, required this.unit});
-
   @override
   State<StatefulWidget> createState() => AccountabilityTaskState();
 }
@@ -31,6 +27,7 @@ class AccountabilityTaskState extends State<AccountabilityTask> {
   late Future<List<User>> connection;
   late Map<String, bool> expansions;
   late Timer timer;
+  int selectedYear = 0; // default to "All"
 
   @override
   void initState() {
@@ -40,10 +37,8 @@ class AccountabilityTaskState extends State<AccountabilityTask> {
     connection = Endpoints.getUsers(request).then((list) => list.users
         .where((u) => !u.roles.any((r) => r.name == Roles.permanent_party.name))
         .toList());
-
     connection.then((users) => expansions = Map<String, bool>.fromIterables(
         users.map((m) => m.id!), List<bool>.filled(users.length, false)));
-
     timer = Timer.periodic(const Duration(seconds: 10), (timer) {
       setState(() {
         connection = Endpoints.getUsers(request).then((list) => list.users
@@ -124,9 +119,7 @@ class AccountabilityTaskState extends State<AccountabilityTask> {
             ],
           ),
         ),
-        StatusDescriptionWidget(
-          user: user,
-        )
+        StatusDescriptionWidget(user: user)
       ]),
     );
   }
@@ -170,9 +163,7 @@ class AccountabilityTaskState extends State<AccountabilityTask> {
                 ],
               ),
             ),
-        body: StatusDescriptionWidget(
-          user: user,
-        ));
+        body: StatusDescriptionWidget(user: user));
   }
 
   @override
@@ -180,26 +171,36 @@ class AccountabilityTaskState extends State<AccountabilityTask> {
     return AsyncPage(
         title: "Unit Accountability",
         connection: connection,
-        placeholder: const [
-          LoadingShimmer(
-            height: 200,
-          ),
-          LoadingShimmer(
-            height: 500,
-          )
-        ],
         builder: (context, users) {
-          var ordered = users.toList()
+          var filteredUsers = query.isNotEmpty ? search(users) : users;
+          var ordered = filteredUsers
+              .where((user) =>
+                  selectedYear == 0 ||
+                  user.accountability!.class_year_idx == (4 - selectedYear))
+              .toList()
             ..sort((p0, p1) {
               String lastName0 = p0.personal_info.full_name.split(' ').last;
               String lastName1 = p1.personal_info.full_name.split(' ').last;
-
               return lastName0.compareTo(lastName1);
             });
 
           return [
             UnitStatusWidget.fromUsers(users: users),
             PageWidget(title: "Members", children: [
+              DropdownButton<int>(
+                value: selectedYear,
+                onChanged: (int? value) {
+                  setState(() {
+                    selectedYear = value!;
+                  });
+                },
+                items: [0, 1, 2, 3, 4]
+                    .map((int value) => DropdownMenuItem<int>(
+                          value: value,
+                          child: Text(value == 0 ? 'All' : 'C${value}C'),
+                        ))
+                    .toList(),
+              ),
               FNSearchBar(onChanged: (q) => setState(() => query = q)),
               if (kIsWeb)
                 ListView(
