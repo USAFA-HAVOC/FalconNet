@@ -94,23 +94,33 @@ class AccountabilityTaskState extends State<AccountabilityTask> {
           child: Row(
             children: [
               Expanded(
-                  flex: 5,
-                  child: Text(
-                    user.personal_info.full_name,
-                    style: Theme.of(context).textTheme.titleSmall,
-                    textAlign: TextAlign.left,
-                  )),
+                flex: 1,
+                child: Text(
+                  "C${4 - user.accountability!.class_year_idx}C ",
+                  style: Theme.of(context).textTheme.titleSmall,
+                  textAlign: TextAlign.left,
+                ),
+              ),
               Expanded(
-                  flex: 3,
-                  child: Text(
-                    user.accountability?.current_leave != null
-                        ? "On Leave"
-                        : user.accountability?.current_pass != null
-                            ? "Signed-Out"
-                            : "Here",
-                    style: Theme.of(context).textTheme.titleSmall,
-                    textAlign: TextAlign.center,
-                  )),
+                flex: 4,
+                child: Text(
+                  user.personal_info.full_name,
+                  style: Theme.of(context).textTheme.titleSmall,
+                  textAlign: TextAlign.left,
+                ),
+              ),
+              Expanded(
+                flex: 3,
+                child: Text(
+                  user.accountability?.current_leave != null
+                      ? "On Leave"
+                      : user.accountability?.current_pass != null
+                          ? "Signed-Out"
+                          : "Here",
+                  style: Theme.of(context).textTheme.titleSmall,
+                  textAlign: TextAlign.center,
+                ),
+              ),
             ],
           ),
         ),
@@ -130,23 +140,33 @@ class AccountabilityTaskState extends State<AccountabilityTask> {
               child: Row(
                 children: [
                   Expanded(
-                      flex: 5,
-                      child: Text(
-                        user.personal_info.full_name,
-                        style: Theme.of(context).textTheme.titleSmall,
-                        textAlign: TextAlign.left,
-                      )),
+                    flex: 1,
+                    child: Text(
+                      "C${4 - user.accountability!.class_year_idx}C ",
+                      style: Theme.of(context).textTheme.titleSmall,
+                      textAlign: TextAlign.left,
+                    ),
+                  ),
                   Expanded(
-                      flex: 3,
-                      child: Text(
-                        user.accountability?.current_leave != null
-                            ? "On Leave"
-                            : user.accountability?.current_pass != null
-                                ? "Signed-Out"
-                                : "Here",
-                        style: Theme.of(context).textTheme.titleSmall,
-                        textAlign: TextAlign.center,
-                      )),
+                    flex: 4,
+                    child: Text(
+                      user.personal_info.full_name,
+                      style: Theme.of(context).textTheme.titleSmall,
+                      textAlign: TextAlign.left,
+                    ),
+                  ),
+                  Expanded(
+                    flex: 3,
+                    child: Text(
+                      user.accountability?.current_leave != null
+                          ? "On Leave"
+                          : user.accountability?.current_pass != null
+                              ? "Signed-Out"
+                              : "Here",
+                      style: Theme.of(context).textTheme.titleSmall,
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
                 ],
               ),
             ),
