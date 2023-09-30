@@ -20,6 +20,12 @@ class _$InitialDataSerializer implements StructuredSerializer<InitialData> {
     final result = <Object?>[
       'user',
       serializers.serialize(object.user, specifiedType: const FullType(User)),
+      'pass_periods',
+      serializers.serialize(object.pass_periods,
+          specifiedType: const FullType(BuiltMap, const [
+            const FullType(String),
+            const FullType(BuiltList, const [const FullType.nullable(DateTime)])
+          ])),
     ];
     Object? value;
     value = object.grades;
@@ -107,6 +113,14 @@ class _$InitialDataSerializer implements StructuredSerializer<InitialData> {
                       BuiltList, const [const FullType(RecurringExcusal)]))!
               as BuiltList<Object?>);
           break;
+        case 'pass_periods':
+          result.pass_periods.replace(serializers.deserialize(value,
+              specifiedType: const FullType(BuiltMap, const [
+                const FullType(String),
+                const FullType(
+                    BuiltList, const [const FullType.nullable(DateTime)])
+              ]))!);
+          break;
       }
     }
 
@@ -127,6 +141,8 @@ class _$InitialData extends InitialData {
   final BuiltList<EventExcusal>? event_excusals;
   @override
   final BuiltList<RecurringExcusal>? recurring_excusals;
+  @override
+  final BuiltMap<String, BuiltList<DateTime?>> pass_periods;
 
   factory _$InitialData([void Function(InitialDataBuilder)? updates]) =>
       (new InitialDataBuilder()..update(updates))._build();
@@ -137,9 +153,12 @@ class _$InitialData extends InitialData {
       this.pass_history,
       this.events,
       this.event_excusals,
-      this.recurring_excusals})
+      this.recurring_excusals,
+      required this.pass_periods})
       : super._() {
     BuiltValueNullFieldError.checkNotNull(user, r'InitialData', 'user');
+    BuiltValueNullFieldError.checkNotNull(
+        pass_periods, r'InitialData', 'pass_periods');
   }
 
   @override
@@ -158,7 +177,8 @@ class _$InitialData extends InitialData {
         pass_history == other.pass_history &&
         events == other.events &&
         event_excusals == other.event_excusals &&
-        recurring_excusals == other.recurring_excusals;
+        recurring_excusals == other.recurring_excusals &&
+        pass_periods == other.pass_periods;
   }
 
   @override
@@ -170,6 +190,7 @@ class _$InitialData extends InitialData {
     _$hash = $jc(_$hash, events.hashCode);
     _$hash = $jc(_$hash, event_excusals.hashCode);
     _$hash = $jc(_$hash, recurring_excusals.hashCode);
+    _$hash = $jc(_$hash, pass_periods.hashCode);
     _$hash = $jf(_$hash);
     return _$hash;
   }
@@ -182,7 +203,8 @@ class _$InitialData extends InitialData {
           ..add('pass_history', pass_history)
           ..add('events', events)
           ..add('event_excusals', event_excusals)
-          ..add('recurring_excusals', recurring_excusals))
+          ..add('recurring_excusals', recurring_excusals)
+          ..add('pass_periods', pass_periods))
         .toString();
   }
 }
@@ -221,6 +243,12 @@ class InitialDataBuilder implements Builder<InitialData, InitialDataBuilder> {
   set recurring_excusals(ListBuilder<RecurringExcusal>? recurring_excusals) =>
       _$this._recurring_excusals = recurring_excusals;
 
+  MapBuilder<String, BuiltList<DateTime?>>? _pass_periods;
+  MapBuilder<String, BuiltList<DateTime?>> get pass_periods =>
+      _$this._pass_periods ??= new MapBuilder<String, BuiltList<DateTime?>>();
+  set pass_periods(MapBuilder<String, BuiltList<DateTime?>>? pass_periods) =>
+      _$this._pass_periods = pass_periods;
+
   InitialDataBuilder();
 
   InitialDataBuilder get _$this {
@@ -232,6 +260,7 @@ class InitialDataBuilder implements Builder<InitialData, InitialDataBuilder> {
       _events = $v.events?.toBuilder();
       _event_excusals = $v.event_excusals?.toBuilder();
       _recurring_excusals = $v.recurring_excusals?.toBuilder();
+      _pass_periods = $v.pass_periods.toBuilder();
       _$v = null;
     }
     return this;
@@ -261,7 +290,8 @@ class InitialDataBuilder implements Builder<InitialData, InitialDataBuilder> {
               pass_history: _pass_history?.build(),
               events: _events?.build(),
               event_excusals: _event_excusals?.build(),
-              recurring_excusals: _recurring_excusals?.build());
+              recurring_excusals: _recurring_excusals?.build(),
+              pass_periods: pass_periods.build());
     } catch (_) {
       late String _$failedField;
       try {
@@ -277,6 +307,8 @@ class InitialDataBuilder implements Builder<InitialData, InitialDataBuilder> {
         _event_excusals?.build();
         _$failedField = 'recurring_excusals';
         _recurring_excusals?.build();
+        _$failedField = 'pass_periods';
+        pass_periods.build();
       } catch (e) {
         throw new BuiltValueNestedFieldError(
             r'InitialData', _$failedField, e.toString());

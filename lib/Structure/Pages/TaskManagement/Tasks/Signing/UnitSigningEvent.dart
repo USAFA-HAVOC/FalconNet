@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:falcon_net/Model/Database/UserEventStatus.dart';
 import 'package:falcon_net/Model/Store/Endpoints.dart';
 import 'package:falcon_net/Structure/Components/UnitStatusWidget.dart';
+import 'package:falcon_net/Utility/TemporalFormatting.dart';
 import 'package:flutter/material.dart';
 
 import '../../../../../Model/Database/SignRequest.dart';
@@ -168,6 +169,13 @@ class UnitSigningEventState extends State<UnitSigningEvent> {
         PageWidget(
           title: widget.statusLabel,
           children: [
+            if (data.event.submission_deadline.isAfter(DateTime.now())) Text(
+              "Signing is closed",
+              style: Theme.of(context).textTheme.titleMedium!.copyWith(color: Colors.red)
+            )
+
+            else Text("Signing closes at ${describeDate(data.event.submission_deadline.toLocal())} ${describeTime(TimeOfDay.fromDateTime(data.event.submission_deadline.toLocal()))}"),
+            
             SigningWidget(
               status: data,
               event: widget.event,

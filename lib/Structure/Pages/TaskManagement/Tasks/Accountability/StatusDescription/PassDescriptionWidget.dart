@@ -1,3 +1,4 @@
+import 'package:falcon_net/Model/Database/PassType.dart';
 import 'package:falcon_net/Utility/TemporalFormatting.dart';
 import 'package:flutter/material.dart';
 
@@ -19,6 +20,8 @@ class PassDescriptionWidget extends StatelessWidget {
           Text("Pass Type: ${pass.pass_type}"),
 
           Text("Description: ${pass.description}"),
+
+          if (pass.pass_type == PassType.sca.name) Text("SCA: ${[pass.sca_number!]}"),
 
           Text("City: ${pass.city}"),
 

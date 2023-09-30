@@ -115,5 +115,6 @@ part 'Serializers.g.dart';
 final Serializers serializers = (
     _$serializers.toBuilder()
       ..add(FNDateTimeSerializer())
+      ..addBuilderFactory(const FullType(BuiltList, [FullType.nullable(DateTime)]), () => ListBuilder<DateTime?>())
       ..addPlugin(StandardJsonPlugin())
 ).build();

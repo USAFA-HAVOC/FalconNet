@@ -97,7 +97,7 @@ class SignBox extends StatelessWidget {
                 UserStatusNames.parse(user.status.status).display(),
                 style: TextStyle(
                     fontSize: Theme.of(context).textTheme.bodyLarge!.fontSize,
-                    color: Colors.red
+                    color: [UserStatus.out_returning.name, UserStatus.overdue.name].contains(user.status.status) ? Colors.red : null
                 ),
                 textAlign: TextAlign.center,
               ),
@@ -138,7 +138,10 @@ class SignBox extends StatelessWidget {
             flex: 2,
             child: Text(
               UserStatusNames.parse(user.status.status).display(),
-              style: Theme.of(context).textTheme.bodyLarge,
+              style: TextStyle(
+                  fontSize: Theme.of(context).textTheme.bodyLarge!.fontSize,
+                  color: user.status.status == UserStatus.unsigned.name ? Colors.red : null
+              ),
               textAlign: TextAlign.center,
             ),
         ),

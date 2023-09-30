@@ -38,6 +38,7 @@ class GlobalAction extends ReduxAction<GlobalState> {
 
         var sb = state.toBuilder();
         sb.user = data.user.toBuilder();
+        sb.pass_periods = data.pass_periods.toBuilder();
 
         if (!data.user.roles.any((r) => r.name == Roles.permanent_party.name)) {
           sb.grades = data.grades?.toBuilder();

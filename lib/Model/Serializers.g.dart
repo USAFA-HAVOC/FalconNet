@@ -80,6 +80,12 @@ Serializers _$serializers = (new Serializers().toBuilder()
           const FullType(BuiltList, const [const FullType(RecurringExcusal)]),
           () => new ListBuilder<RecurringExcusal>())
       ..addBuilderFactory(
+          const FullType(BuiltMap, const [
+            const FullType(String),
+            const FullType(BuiltList, const [const FullType.nullable(DateTime)])
+          ]),
+          () => new MapBuilder<String, BuiltList<DateTime?>>())
+      ..addBuilderFactory(
           const FullType(BuiltList, const [const FullType(FormOneData)]),
           () => new ListBuilder<FormOneData>())
       ..addBuilderFactory(

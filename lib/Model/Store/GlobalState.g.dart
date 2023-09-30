@@ -23,6 +23,8 @@ class _$GlobalState extends GlobalState {
   final BuiltList<RecurringExcusal> recurring;
   @override
   final BuiltList<EventExcusal> excusals;
+  @override
+  final BuiltMap<String, BuiltList<DateTime?>> pass_periods;
 
   factory _$GlobalState([void Function(GlobalStateBuilder)? updates]) =>
       (new GlobalStateBuilder()..update(updates))._build();
@@ -35,7 +37,8 @@ class _$GlobalState extends GlobalState {
       required this.grades,
       required this.events,
       required this.recurring,
-      required this.excusals})
+      required this.excusals,
+      required this.pass_periods})
       : super._() {
     BuiltValueNullFieldError.checkNotNull(status, r'GlobalState', 'status');
     BuiltValueNullFieldError.checkNotNull(user, r'GlobalState', 'user');
@@ -46,6 +49,8 @@ class _$GlobalState extends GlobalState {
     BuiltValueNullFieldError.checkNotNull(
         recurring, r'GlobalState', 'recurring');
     BuiltValueNullFieldError.checkNotNull(excusals, r'GlobalState', 'excusals');
+    BuiltValueNullFieldError.checkNotNull(
+        pass_periods, r'GlobalState', 'pass_periods');
   }
 
   @override
@@ -66,7 +71,8 @@ class _$GlobalState extends GlobalState {
         grades == other.grades &&
         events == other.events &&
         recurring == other.recurring &&
-        excusals == other.excusals;
+        excusals == other.excusals &&
+        pass_periods == other.pass_periods;
   }
 
   @override
@@ -80,6 +86,7 @@ class _$GlobalState extends GlobalState {
     _$hash = $jc(_$hash, events.hashCode);
     _$hash = $jc(_$hash, recurring.hashCode);
     _$hash = $jc(_$hash, excusals.hashCode);
+    _$hash = $jc(_$hash, pass_periods.hashCode);
     _$hash = $jf(_$hash);
     return _$hash;
   }
@@ -94,7 +101,8 @@ class _$GlobalState extends GlobalState {
           ..add('grades', grades)
           ..add('events', events)
           ..add('recurring', recurring)
-          ..add('excusals', excusals))
+          ..add('excusals', excusals)
+          ..add('pass_periods', pass_periods))
         .toString();
   }
 }
@@ -141,6 +149,12 @@ class GlobalStateBuilder implements Builder<GlobalState, GlobalStateBuilder> {
   set excusals(ListBuilder<EventExcusal>? excusals) =>
       _$this._excusals = excusals;
 
+  MapBuilder<String, BuiltList<DateTime?>>? _pass_periods;
+  MapBuilder<String, BuiltList<DateTime?>> get pass_periods =>
+      _$this._pass_periods ??= new MapBuilder<String, BuiltList<DateTime?>>();
+  set pass_periods(MapBuilder<String, BuiltList<DateTime?>>? pass_periods) =>
+      _$this._pass_periods = pass_periods;
+
   GlobalStateBuilder();
 
   GlobalStateBuilder get _$this {
@@ -154,6 +168,7 @@ class GlobalStateBuilder implements Builder<GlobalState, GlobalStateBuilder> {
       _events = $v.events.toBuilder();
       _recurring = $v.recurring.toBuilder();
       _excusals = $v.excusals.toBuilder();
+      _pass_periods = $v.pass_periods.toBuilder();
       _$v = null;
     }
     return this;
@@ -186,7 +201,8 @@ class GlobalStateBuilder implements Builder<GlobalState, GlobalStateBuilder> {
               grades: grades.build(),
               events: events.build(),
               recurring: recurring.build(),
-              excusals: excusals.build());
+              excusals: excusals.build(),
+              pass_periods: pass_periods.build());
     } catch (_) {
       late String _$failedField;
       try {
@@ -204,6 +220,8 @@ class GlobalStateBuilder implements Builder<GlobalState, GlobalStateBuilder> {
         recurring.build();
         _$failedField = 'excusals';
         excusals.build();
+        _$failedField = 'pass_periods';
+        pass_periods.build();
       } catch (e) {
         throw new BuiltValueNestedFieldError(
             r'GlobalState', _$failedField, e.toString());

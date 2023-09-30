@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'package:falcon_net/Model/Database/StringRequest.dart';
 import 'package:falcon_net/Structure/Components/AsyncPage.dart';
-import 'package:falcon_net/Structure/Components/LoadingShimmer.dart';
 import 'package:falcon_net/Structure/Components/PageWidget.dart';
 import 'package:falcon_net/Structure/Components/UnitStatusWidget.dart';
 import 'package:falcon_net/Utility/ListExtensions.dart';
@@ -69,8 +68,9 @@ class AccountabilityTaskState extends State<AccountabilityTask> {
     scores.sort((a, b) {
       var relation = -a.value.compareTo(b.value);
       if (relation == 0) {
-        return a.key.personal_info.full_name
-            .compareTo(b.key.personal_info.full_name);
+        String lastName0 = a.key.personal_info.full_name.split(' ').last;
+        String lastName1 = b.key.personal_info.full_name.split(' ').last;
+        return lastName0.compareTo(lastName1);
       }
       return relation;
     });
@@ -133,17 +133,9 @@ class AccountabilityTaskState extends State<AccountabilityTask> {
               child: Row(
                 children: [
                   Expanded(
-                    flex: 1,
-                    child: Text(
-                      "C${4 - user.accountability!.class_year_idx}C ",
-                      style: Theme.of(context).textTheme.titleSmall,
-                      textAlign: TextAlign.left,
-                    ),
-                  ),
-                  Expanded(
                     flex: 4,
                     child: Text(
-                      user.personal_info.full_name,
+                      "C${4 - user.accountability!.class_year_idx}C ${user.personal_info.full_name}",
                       style: Theme.of(context).textTheme.titleSmall,
                       textAlign: TextAlign.left,
                     ),
@@ -173,19 +165,16 @@ class AccountabilityTaskState extends State<AccountabilityTask> {
         connection: connection,
         builder: (context, users) {
           var filteredUsers = query.isNotEmpty ? search(users) : users;
-          var ordered = filteredUsers
+          var ordered = search(filteredUsers
               .where((user) =>
                   selectedYear == 0 ||
                   user.accountability!.class_year_idx == (4 - selectedYear))
               .toList()
-            ..sort((p0, p1) {
-              String lastName0 = p0.personal_info.full_name.split(' ').last;
-              String lastName1 = p1.personal_info.full_name.split(' ').last;
-              return lastName0.compareTo(lastName1);
-            });
+            );
 
           return [
             UnitStatusWidget.fromUsers(users: users),
+
             PageWidget(title: "Members", children: [
               DropdownButton<int>(
                 value: selectedYear,
@@ -201,6 +190,7 @@ class AccountabilityTaskState extends State<AccountabilityTask> {
                         ))
                     .toList(),
               ),
+
               FNSearchBar(onChanged: (q) => setState(() => query = q)),
               if (kIsWeb)
                 ListView(

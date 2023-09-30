@@ -14,6 +14,7 @@ import 'PassForm.dart';
 
 ///Page Widget for displaying current pass status and pass management ui
 class PassWidget extends StatelessWidget {
+
   //Title of widget, defaults to "Pass Management"
   final String title;
 
@@ -33,13 +34,9 @@ class PassWidget extends StatelessWidget {
               !(model.content.accountability?.current_leave?.departure_time
                       .isAfter(DateTime.now()) ??
                   true)) {
-            children = const [PassStatus()];
-          }
-
-          //If no current pass, display status and new pass button
-          else if (model.content.accountability?.current_pass == null) {
             children = [
               const PassStatus(),
+
               ElevatedButton(
                 //Opens a pass form dialog
                 onPressed: () {
@@ -60,6 +57,80 @@ class PassWidget extends StatelessWidget {
                         child: Padding(
                           padding: const EdgeInsets.only(left: 20, right: 20, top: 10),
                           child: PassForm(
+                            restricted: true,
+
+                            accountability: model.content.accountability!,
+
+                            //Closes dialog and dispatches open pass action
+                            onSubmit: (pass) {
+                              Navigator.of(context).pop();
+                              model.dispatch(PassAction.open(
+                                pass,
+                                onFail: () {
+                                  FirebaseAnalytics.instance
+                                      .logEvent(name: 'new-pass-fail');
+                                  messenger.showSnackBar(const SnackBar(
+                                    content: Text("Unable to Open Pass"),
+                                  ));
+                                },
+                                onSucceed: () {
+                                  FirebaseAnalytics.instance
+                                      .logEvent(name: 'new-pass-success');
+                                  messenger.showSnackBar(const SnackBar(
+                                    content: Text("Pass Opened Successfully"),
+                                  ));
+                                },
+                              ));
+                            },
+
+                            //Closes dialog
+                            onCancel: () {
+                              Navigator.of(context).pop();
+                            },
+                          ),
+                        ),
+                      ),
+                    ),
+                  );
+                },
+                style: Theme.of(context).elevatedButtonTheme.style,
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 12),
+                  child: Text(
+                    "New SCA Pass",
+                    style: Theme.of(context).textTheme.labelLarge,
+                  ),
+                ),
+              ),
+            ];
+          }
+
+          //If no current pass, display status and new pass button
+          else if (model.content.accountability?.current_pass == null) {
+            children = [
+              const PassStatus(),
+
+              ElevatedButton(
+                //Opens a pass form dialog
+                onPressed: () {
+                  showDialog(
+                    context: context,
+                    builder: (context) => Dialog(
+                      insetPadding: const EdgeInsets.all(20),
+                      backgroundColor: Theme.of(context).cardTheme.color,
+                      shape: const RoundedRectangleBorder(
+                        borderRadius: BorderRadius.all(
+                          Radius.circular(12),
+                        ),
+                      ),
+                      child: ConstrainedBox(
+                        constraints: kIsWeb
+                            ? const BoxConstraints(maxWidth: 450)
+                            : const BoxConstraints(),
+                        child: Padding(
+                          padding: const EdgeInsets.only(left: 20, right: 20, top: 10),
+                          child: PassForm(
+                            restricted: false,
                             accountability: model.content.accountability!,
 
                             //Closes dialog and dispatches open pass action
@@ -123,6 +194,7 @@ class PassWidget extends StatelessWidget {
                                   child: Padding(
                                     padding: const EdgeInsets.all(10),
                                     child: PassForm(
+                                      restricted: false,
                                       accountability:
                                           model.content.accountability!,
 

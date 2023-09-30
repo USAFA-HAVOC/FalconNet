@@ -43,32 +43,6 @@ class AssignmentTaskState extends State<AssignmentTask> {
     var users = (await Endpoints.delegableUsers(null)).users.toList();
     var units = (await Endpoints.listUnits(null)).units.toList();
 
-    // Debug: Print the list before sorting
-    print("Units before sorting: ${units.map((unit) => unit.name).toList()}");
-
-    units.sort((a, b) {
-      if (a.name == 'AFCW') return 1;
-      if (b.name == 'AFCW') return -1;
-
-      var regExp = RegExp(r'([a-zA-Z]+)(\d*)');
-      var aMatch = regExp.firstMatch(a.name);
-      var bMatch = regExp.firstMatch(b.name);
-
-      var aPrefix = aMatch?.group(1) ?? '';
-      var bPrefix = bMatch?.group(1) ?? '';
-
-      var aNum = int.tryParse(aMatch?.group(2) ?? '9999') ?? 9999; 
-      var bNum = int.tryParse(bMatch?.group(2) ?? '9999') ?? 9999; 
-
-      int prefixComparison = aPrefix.compareTo(bPrefix);
-      if (prefixComparison != 0) return prefixComparison;
-
-      return aNum.compareTo(bNum);
-    });
-
-    // Debug: Print the list after sorting
-    print("Units after sorting: ${units.map((unit) => unit.name).toList()}");
-
     return AssignmentData(units: units, users: users);
   }
 

@@ -19,6 +19,7 @@ abstract class InitialData implements Built<InitialData, InitialDataBuilder> {
   BuiltList<UserEvent>? get events;
   BuiltList<EventExcusal>? get event_excusals;
   BuiltList<RecurringExcusal>? get recurring_excusals;
+  BuiltMap<String, BuiltList<DateTime?>> get pass_periods;
 
   InitialData._();
   factory InitialData([void Function(InitialDataBuilder) updates]) = _$InitialData;

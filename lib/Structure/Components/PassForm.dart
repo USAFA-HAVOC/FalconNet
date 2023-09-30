@@ -1,6 +1,7 @@
 import 'dart:core';
 
 import 'package:async_redux/async_redux.dart';
+import 'package:built_collection/built_collection.dart';
 import 'package:falcon_net/Model/Database/CadetAccountability.dart';
 import 'package:falcon_net/Model/Database/CadetPass.dart';
 import 'package:falcon_net/Model/Store/GlobalState.dart';
@@ -17,8 +18,9 @@ import '../../Model/Database/User.dart';
 class PassParameters {
   final User user;
   final List<CadetPass> history;
+  final BuiltMap<String, BuiltList<DateTime?>> periods;
 
-  const PassParameters({required this.user, required this.history});
+  const PassParameters({required this.user, required this.history, required this.periods});
 }
 
 ///Form for submitting or editing a pass
@@ -31,13 +33,17 @@ class PassForm extends StatefulWidget {
 
   //Existing pass to be edited
   final CadetPass? existing;
+  
+  final bool restricted;
 
-  PassForm(
-      {super.key,
+  PassForm({
+    super.key,
       required this.onSubmit,
       required this.onCancel,
       required this.accountability,
-      CadetPass? editing})
+      required this.restricted,
+      CadetPass? editing
+  })
       : existing = editing?.toLocal();
 
   @override
@@ -101,12 +107,14 @@ class PassFormState extends State<PassForm>
     animationController.dispose();
     super.dispose();
   }
+  
+  DateTime? latestReturn(PassType type, PassParameters parameters) => 
+      parameters.periods.toMap()[type.name]?[parameters.user.accountability!.class_year_idx]?.toLocal();
 
   ///Maximizes pass duration based on pass type and current time
-  void maximizePass() {
+  void maximizePass(PassParameters parameters) {
     //Implement a model call to determine latest possible time
-    var last = PassTypeNames.parse(type)
-        .duration(widget.accountability.class_year_idx);
+    var last = latestReturn(PassTypeNames.parse(type), parameters);
 
     if (last != null) {
       setState(() {
@@ -142,41 +150,29 @@ class PassFormState extends State<PassForm>
   }
 
   ///Builds type options based on current date
-  List<DropdownMenuItem<String>> buildTypeOptions(
-      CadetAccountability accountability) {
+  List<DropdownMenuItem<String>> buildTypeOptions(CadetAccountability accountability, PassParameters parameters) {
     Map<String, String> options = <String, String>{
-      PassType.discretionary.description(): PassType.discretionary.name,
-      PassType.sca.description(): PassType.sca.name,
-      PassType.esss.description(): PassType.esss.name,
+      PassType.discretionary.name : PassType.discretionary.description(),
+      PassType.sca.name : PassType.sca.description(),
+      PassType.esss.name : PassType.esss.description(),
     };
 
-    if (DateTime.now().weekday < DateTime.friday) {
-      options.addAll({PassType.day.description(): PassType.day.name});
-      if ((accountability.weekday_overnight_passes ?? 1) > 0 &&
-          accountability.class_year_idx != 0) {
-        options.addAll({
-          PassType.weekday_overnight.description():
-              PassType.weekday_overnight.name
-        });
-      }
-    } else {
-      if (accountability.class_year_idx == 0 &&
-          DateTime.now().weekday == DateTime.sunday) {
-        options.addAll({PassType.sunday.description(): PassType.sunday.name});
-      }
-      if ((accountability.weekend_overnight_passes ?? 1) > 0) {
-        options.addAll({PassType.weekend.description(): PassType.weekend.name});
+    if (!widget.restricted) {
+      for (var entry in parameters.periods.entries) {
+        if (entry.value[parameters.user.accountability!.class_year_idx] != null) {
+          options.putIfAbsent(entry.key, () => PassTypeNames.parse(entry.key).description());
+        }
       }
     }
 
     return options
         .map(
           (key, value) => MapEntry(
-            key,
+            value,
             DropdownMenuItem<String>(
-              value: value,
+              value: key,
               child: Text(
-                key,
+                value,
                 style: Theme.of(context).textTheme.bodyLarge,
               ),
             ),
@@ -264,6 +260,7 @@ class PassFormState extends State<PassForm>
         content: PassParameters(
           user: store.state.user,
           history: store.state.history.toList(),
+          periods: store.state.pass_periods
         ),
       ),
       builder: (context, model) => Form(
@@ -281,7 +278,8 @@ class PassFormState extends State<PassForm>
                   value: type,
                   decoration: InputDecoration(
                       labelStyle: Theme.of(context).textTheme.bodyLarge,
-                      labelText: "Pass Type"),
+                      labelText: "Pass Type"
+                  ),
 
                   //Called when a new type options is selected
                   onChanged: (value) {
@@ -299,7 +297,7 @@ class PassFormState extends State<PassForm>
                     //Set value
                     type = value!;
                   },
-                  items: buildTypeOptions(widget.accountability),
+                  items: buildTypeOptions(widget.accountability, model.content),
                 ),
 
                 const SizedBox(
@@ -324,9 +322,15 @@ class PassFormState extends State<PassForm>
                         //Requires input only if selected pass type is sca
                         validator: (content) {
                           if (type == PassType.sca.name) {
-                            return InputValidation.stringLength(
-                                emptyMessage:
-                                    "Please enter an SCA number")(content);
+                            if (double.tryParse(content ?? "b") != null) {
+                              if (content!.length != 9) {
+                                return "SCA number must be 9 numbers";
+                              }
+
+                              return null;
+                            }
+
+                            return "Please enter a number";
                           }
                           return null;
                         },
@@ -394,8 +398,7 @@ class PassFormState extends State<PassForm>
                         value: dateValue,
                         label: "Return Date",
                         validator: (date) {
-                          var max = PassTypeNames.parse(type)
-                              .duration(widget.accountability.class_year_idx);
+                          var max = latestReturn(PassTypeNames.parse(type), model.content);
                           if (max != null && date != null) {
                             if (combineDate(
                                     parseDate(date), parseTime(timeValue))
@@ -419,8 +422,7 @@ class PassFormState extends State<PassForm>
                         value: timeValue,
                         label: "Return Time",
                         validator: (time) {
-                          var max = PassTypeNames.parse(type)
-                              .duration(widget.accountability.class_year_idx);
+                          var max = latestReturn(PassTypeNames.parse(type), model.content);
                           if (max != null && time != null) {
                             if (combineDate(
                                     parseDate(dateValue), parseTime(time))
@@ -448,9 +450,7 @@ class PassFormState extends State<PassForm>
                       Colors.white,
                     ),
                   ),
-                  onPressed: () {
-                    maximizePass();
-                  },
+                  onPressed: () => maximizePass(model.content),
                   child: Padding(
                     padding: const EdgeInsets.symmetric(vertical: 12),
                     child: Text(

@@ -105,7 +105,8 @@ class DIWidget extends StatelessWidget {
                     SchedulingService().schedule(
                         id: "di",
                         time: combineDate(DateTime.now(), diOpens),
-                        payload: "opened");
+                        payload: "opened"
+                    );
                   }
 
                   if (senior && time) {
