@@ -84,6 +84,10 @@ class PassFormState extends State<PassForm>
             ? PassType.day.name
             : PassType.weekend.name);
 
+    if (widget.restricted) {
+      type = PassType.sca.name;
+    }
+
     if (widget.existing != null) {
       dateValue = describeDate(widget.existing!.end_time);
       timeValue =
@@ -160,6 +164,7 @@ class PassFormState extends State<PassForm>
     if (!widget.restricted) {
       for (var entry in parameters.periods.entries) {
         if (entry.value[parameters.user.accountability!.class_year_idx] != null) {
+          print(entry);
           options.putIfAbsent(entry.key, () => PassTypeNames.parse(entry.key).description());
         }
       }

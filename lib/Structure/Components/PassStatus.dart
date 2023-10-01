@@ -28,14 +28,12 @@ class PassStatus extends StatelessWidget {
                     bool expired = false;
                     bool closed = false;
 
-                    if (!(model.content.accountability?.current_leave
-                            ?.departure_time
+                    if (!(model.content.accountability?.current_leave?.departure_time
                             .isAfter(DateTime.now()) ??
                         true)) {
                       status = "On Leave";
                       tooltip = "Cannot Sign-Out on Leave";
-                    } else if (model.content.accountability?.current_pass ==
-                        null) {
+                    } else if (model.content.accountability?.current_pass == null) {
                       if (!(model
                               .content.accountability?.effective_pass_status ??
                           true)) {
