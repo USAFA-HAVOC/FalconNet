@@ -122,18 +122,51 @@ class FNApp extends StatefulWidget {
 final navigatorKey = GlobalKey<NavigatorState>();
 final ppNavigatorKey = GlobalKey<NavigatorState>();
 
-class FNAppState extends State<FNApp> {
+class FNAppState extends State<FNApp> with WidgetsBindingObserver {
   late GoRouter router;
   late GoRouter ppRouter;
+  List<Timer> timers = <Timer>[];
 
   @override
   void initState() {
-    Timer.periodic(const Duration(minutes: 1), (timer) {
-      if (APIData().authenticated) {
-        widget.store.dispatch(GlobalAction.initialize());
-      }
-    });
+    WidgetsBinding.instance.addObserver(this);
+    initializeTimers();
 
+    attemptGetWebToken();
+    if (APIData().authenticated) {
+      router = fnRouter(navigatorKey, SignState.signed, false);
+      ppRouter = fnRouter(ppNavigatorKey, SignState.signed, true);
+    } else {
+      router = fnRouter(navigatorKey,
+          widget.account ? SignState.account : SignState.none, false);
+      ppRouter = fnRouter(ppNavigatorKey,
+          widget.account ? SignState.account : SignState.none, true);
+    }
+
+    super.initState();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (state == AppLifecycleState.resumed) {
+      initializeTimers();
+    }
+    if (state == AppLifecycleState.paused) {
+      cancelTimers();
+    }
+
+    super.didChangeAppLifecycleState(state);
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+
+    cancelTimers();
+    WidgetsBinding.instance.removeObserver(this);
+  }
+
+  void initializeTimers() {
     late Timer ppnuzzlerref = Timer.periodic(const Duration(days: 69), (timer) { });
 
     Timer ppnuzzler = Timer.periodic(const Duration(milliseconds: 200), (timer) {
@@ -149,18 +182,21 @@ class FNAppState extends State<FNApp> {
 
     ppnuzzlerref = ppnuzzler;
 
-    attemptGetWebToken();
-    if (APIData().authenticated) {
-      router = fnRouter(navigatorKey, SignState.signed, false);
-      ppRouter = fnRouter(ppNavigatorKey, SignState.signed, true);
-    } else {
-      router = fnRouter(navigatorKey,
-          widget.account ? SignState.account : SignState.none, false);
-      ppRouter = fnRouter(ppNavigatorKey,
-          widget.account ? SignState.account : SignState.none, true);
+    var refresh = Timer.periodic(const Duration(minutes: 1), (timer) {
+      if (APIData().authenticated) {
+        widget.store.dispatch(GlobalAction.initialize());
+      }
+    });
+
+    timers.addAll([ppnuzzler, refresh]);
+  }
+
+  void cancelTimers() {
+    for (var timer in timers) {
+      timer.cancel();
     }
 
-    super.initState();
+    timers = [];
   }
 
   @override

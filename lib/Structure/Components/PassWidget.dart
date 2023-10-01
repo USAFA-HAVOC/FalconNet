@@ -30,10 +30,7 @@ class PassWidget extends StatelessWidget {
           //List of children to filled
           List<Widget> children;
 
-          if (!(model.content.accountability?.effective_pass_status ?? true) ||
-              !(model.content.accountability?.current_leave?.departure_time
-                      .isAfter(DateTime.now()) ??
-                  true)) {
+          if ((!(model.content.accountability?.effective_pass_status ?? true) || !(model.content.accountability?.current_leave?.departure_time.isAfter(DateTime.now()) ?? true)) && model.content.accountability?.current_pass == null) {
             children = [
               const PassStatus(),
 
@@ -97,7 +94,7 @@ class PassWidget extends StatelessWidget {
                 child: Padding(
                   padding: const EdgeInsets.symmetric(vertical: 12),
                   child: Text(
-                    "New SCA Pass",
+                    "Open Exceptional Pass",
                     style: Theme.of(context).textTheme.labelLarge,
                   ),
                 ),
