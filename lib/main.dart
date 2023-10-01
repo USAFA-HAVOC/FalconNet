@@ -163,6 +163,7 @@ class FNAppState extends State<FNApp> with WidgetsBindingObserver {
     super.dispose();
 
     cancelTimers();
+    WidgetsBinding.instance.removeObserver(this);
   }
 
   void initializeTimers() {
