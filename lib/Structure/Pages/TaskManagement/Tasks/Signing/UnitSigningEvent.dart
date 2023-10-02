@@ -169,7 +169,7 @@ class UnitSigningEventState extends State<UnitSigningEvent> {
         PageWidget(
           title: widget.statusLabel,
           children: [
-            if (data.event.submission_deadline.isAfter(DateTime.now())) Text(
+            if (data.event.submission_deadline.isBefore(DateTime.now())) Text(
               "Signing is closed",
               style: Theme.of(context).textTheme.titleMedium!.copyWith(color: Colors.red)
             )
