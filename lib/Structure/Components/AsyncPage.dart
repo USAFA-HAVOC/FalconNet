@@ -55,7 +55,7 @@ class AsyncPage<T> extends StatelessWidget {
     return FutureBuilder(
         future: connection,
         builder: (context, snapshot) {
-          if (snapshot.hasData) {
+          if (snapshot.hasData && snapshot.connectionState == ConnectionState.done) {
             if (wrap) {
               return FNPage.wrap(
                   title: title,

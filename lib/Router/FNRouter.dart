@@ -23,6 +23,7 @@ import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import '../Model/Database/TimedRole.dart';
+import '../Model/Database/User.dart';
 import '../Model/Store/Actions/GlobalAction.dart';
 import '../Model/Store/Endpoints.dart';
 import '../Model/Store/GlobalState.dart';
@@ -168,7 +169,10 @@ GoRouter fnRouter(GlobalKey<NavigatorState> key, SignState sign, bool party) =>
                       ),
                       GoRoute(
                           path: "unit_management",
-                          pageBuilder: fullSlide(const UnitManagementTask())),
+                          pageBuilder: fullSlide(StoreConnector<GlobalState, ViewModel<User>>(
+                              converter: (store) => ViewModel(store: store, content: store.state.user),
+                              builder: (context, model) => UnitManagementTask(user: model.content)
+                          ))),
                       GoRoute(
                           path: "delegation",
                           pageBuilder: fullSlide(StoreConnector<GlobalState,
@@ -298,7 +302,10 @@ GoRouter fnRouter(GlobalKey<NavigatorState> key, SignState sign, bool party) =>
                             GoRoute(
                               path: "unit_management",
                               pageBuilder:
-                                  fullSlide(const UnitManagementTask()),
+                                  fullSlide(StoreConnector<GlobalState, ViewModel<User>>(
+                                    converter: (store) => ViewModel(store: store, content: store.state.user),
+                                    builder: (context, model) => UnitManagementTask(user: model.content)
+                                  )),
                             ),
                             GoRoute(
                               path: "delegation",
