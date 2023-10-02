@@ -1,5 +1,6 @@
 import 'package:async_redux/async_redux.dart';
 import 'package:falcon_net/Model/Database/User.dart';
+import 'package:falcon_net/Model/Database/UserPersonalInfo.dart';
 import 'package:falcon_net/Model/Store/GlobalState.dart';
 import 'package:falcon_net/Structure/Components/FNPage.dart';
 import 'package:falcon_net/Structure/Components/PaddedColumn.dart';
@@ -28,8 +29,8 @@ class ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
     const Tab(text: "Settings"),
   ];
 
-  late List<Widget> pages = [
-    const CadetInfo(),
+  List<Widget> buildPages(UserPersonalInfo info) => [
+    CadetInfo(existing: info),
     if (!widget.party) const PassHistory(),
     const Settings(),
   ];
@@ -54,6 +55,10 @@ class ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
+    var ancestor = context.dependOnInheritedWidgetOfExactType<StoreProvider<GlobalState>>();
+    var info = StoreProvider.of<GlobalState>(context, null).state.user.personal_info;
+    final pages = buildPages(info);
+
     return FNPage(title: "Profile", children: [
       Card(
         elevation: 5,

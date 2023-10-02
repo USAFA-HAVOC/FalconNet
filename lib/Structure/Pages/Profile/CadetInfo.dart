@@ -3,18 +3,29 @@ import 'package:falcon_net/Model/Database/User.dart';
 import 'package:falcon_net/Model/Store/GlobalState.dart';
 import 'package:falcon_net/Structure/Components/ViewModel.dart';
 import 'package:flutter/material.dart';
+import '../../../Model/Database/UserPersonalInfo.dart';
 import '../../../Model/Store/Actions/InfoAction.dart';
 
 class CadetInfo extends StatefulWidget {
-  const CadetInfo({Key? key}) : super(key: key);
+  final UserPersonalInfo existing;
+
+  const CadetInfo({Key? key, required this.existing}) : super(key: key);
 
   @override
-  _CadetInfoState createState() => _CadetInfoState();
+  CadetInfoState createState() => CadetInfoState();
 }
 
-class _CadetInfoState extends State<CadetInfo> {
-  String buildingSelection = 'SIJAN';
-  TextEditingController roomController = TextEditingController();
+class CadetInfoState extends State<CadetInfo> {
+  late String building;
+  late TextEditingController room;
+
+  @override
+  void initState() {
+    super.initState();
+    var def = widget.existing.room_number ?? "AWAY";
+    room = TextEditingController(text: def.split(" ").sublist(1).join(" "));
+    building = def.split(" ").first;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -47,23 +58,40 @@ class _CadetInfoState extends State<CadetInfo> {
               Row(
                 children: [
                   Expanded(
-                    child: DropdownButton<String>(
-                      value: buildingSelection,
+                    child: DropdownButtonFormField<String>(
+                      decoration: InputDecoration(
+                        label: Text(
+                          "Building",
+                          style: Theme.of(context).textTheme.bodyMedium,
+                        ),
+                        errorBorder: OutlineInputBorder(
+                          borderSide: BorderSide(
+                            color: Theme.of(context).errorColor,
+                          ),
+                        ),
+                        border: const OutlineInputBorder(),
+                        filled: true,
+                        fillColor: Theme.of(context).highlightColor,
+                      ),
+                      value: building,
                       onChanged: (String? newValue) {
                         setState(() {
-                          buildingSelection = newValue ?? 'SIJAN';
-                          if (buildingSelection == 'AWAY') {
-                            roomController.clear();
+                          building = newValue ?? 'SIJAN';
+                          if (building == 'AWAY') {
+                            room.clear();
                             model.dispatch(InfoAction(
                                 modify: (b) => b..personal_info.room_number = 'AWAY'));
                           }
                         });
                       },
-                      items: <String>['SIJAN', 'VANDY', 'AWAY']
+                      items: <String>['SIJAN', 'VANDY', 'AWAY', if (!['SIJAN', 'VANDY', 'AWAY'].contains(building)) building]
                           .map<DropdownMenuItem<String>>(
                             (String value) => DropdownMenuItem<String>(
                               value: value,
-                              child: Text(value),
+                              child: Text(
+                                  value,
+                                style: Theme.of(context).textTheme.titleSmall,
+                              ),
                             ),
                           )
                           .toList(),
@@ -72,17 +100,17 @@ class _CadetInfoState extends State<CadetInfo> {
                   const SizedBox(width: 10),
                   Expanded(
                     child: InputBlock(
-                      controller: roomController,
+                      controller: room,
                       label: "Room Number",
-                      disabled: buildingSelection == 'AWAY',
+                      disabled: building == 'AWAY',
+                      initial: model.content.personal_info.room_number,
                       onSubmit: (value) {
-                        if (buildingSelection != 'AWAY') {
+                        if (building != 'AWAY') {
                           model.dispatch(InfoAction(
                               modify: (b) => b..personal_info.room_number =
-                                  '$buildingSelection ${value?.trim().toUpperCase()}'));
+                                  '$building ${value?.trim().toUpperCase()}'));
                         }
                       },
-                      initial: model.content.personal_info.room_number,
                     ),
                   ),
                 ],
@@ -158,8 +186,9 @@ class InputBlockState extends State<InputBlock> {
           readOnly: widget.disabled,
           controller: controller,
           onChanged: (change) => setState(() => value = change),
-          style: Theme.of(context).textTheme.bodyText1,
+          style: Theme.of(context).textTheme.bodyMedium,
           decoration: InputDecoration(
+            contentPadding: EdgeInsets.symmetric(vertical: 23.5, horizontal: 10),
             labelText: widget.label,
             hintText: widget.hint,
             errorText: widget.validator?.call(value),
