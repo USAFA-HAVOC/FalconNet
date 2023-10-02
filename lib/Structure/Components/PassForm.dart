@@ -87,6 +87,14 @@ class PassFormState extends State<PassForm>
     if (widget.restricted) {
       type = PassType.sca.name;
     }
+    else {
+      if (DateTime.now().weekday < 5) {
+        type = PassType.day.name;
+      }
+      else {
+        type = PassType.weekend.name;
+      }
+    }
 
     if (widget.existing != null) {
       dateValue = describeDate(widget.existing!.end_time);

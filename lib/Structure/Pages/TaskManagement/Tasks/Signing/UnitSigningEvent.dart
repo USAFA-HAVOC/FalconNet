@@ -52,8 +52,6 @@ class UnitSigningEventState extends State<UnitSigningEvent> {
   void initState() {
     super.initState();
 
-    print(widget.event);
-
     future = Future.value(widget.retrieve())
         .catchError((error, stackTrace) {
           displayError(prefix: "Signing", exception: error);
