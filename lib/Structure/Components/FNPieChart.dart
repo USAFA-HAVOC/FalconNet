@@ -112,7 +112,7 @@ class FNPieChartState extends State<FNPieChart> {
                     ),
 
                     Text(
-                      "${(100 * primary / total).toStringAsFixed(0)}%",
+                      "${(100 * primary / total).floor()}%",
                       style: Theme.of(context).textTheme.titleSmall,
                     ),
                   ],
