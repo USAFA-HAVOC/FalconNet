@@ -33,9 +33,9 @@ class FNPieChartState extends State<FNPieChart> {
       return PieChartSectionData(
         color: widget.values[i].color,
         value: widget.values[i].value,
-        title: widget.values[i].value.toStringAsFixed(0),
+        //title: widget.values[i].value.toStringAsFixed(0),
         radius: radius,
-        showTitle: widget.values[i].value != total,
+        showTitle: false,//widget.values[i].value != total,
         titleStyle: TextStyle(
           fontSize: fontSize,
           fontWeight: FontWeight.bold,
@@ -54,6 +54,7 @@ class FNPieChartState extends State<FNPieChart> {
       indicators.addAll([
         Indicator(
           color: widget.values[index].color,
+          prefixText: widget.values[index].value.round().toString(),
           text: value.label,
           isSquare: true
         ),
@@ -73,7 +74,7 @@ class FNPieChartState extends State<FNPieChart> {
       child: Row(
         children: <Widget>[
           Expanded(
-            flex: 6,
+            flex: 5,
             child: AspectRatio(
                 aspectRatio: 1,
                 child: Stack(
@@ -122,7 +123,7 @@ class FNPieChartState extends State<FNPieChart> {
           const Spacer(flex: 1,),
 
           Expanded(
-            flex: 4,
+            flex: 5,
             child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 crossAxisAlignment: CrossAxisAlignment.stretch,
