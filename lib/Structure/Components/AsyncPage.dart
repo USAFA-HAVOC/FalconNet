@@ -16,6 +16,7 @@ class AsyncPage<T> extends StatelessWidget {
   final List<Widget> Function(BuildContext, T)? stackedBuilder;
   final bool wrap;
   final int? count;
+  final bool reloadable;
   final EdgeInsets padding;
 
   const AsyncPage({
@@ -24,7 +25,8 @@ class AsyncPage<T> extends StatelessWidget {
     required this.connection,
     required this.builder,
     this.placeholder = const [LoadingShimmer(height: 200,)],
-    this.padding = const EdgeInsets.all(20)
+    this.padding = const EdgeInsets.all(20),
+    this.reloadable = false
   }) :
         wrap = false,
         wrappedBuilder = null,
@@ -44,7 +46,8 @@ class AsyncPage<T> extends StatelessWidget {
     this.count = 2,
     this.wrappedPlaceholder = const [LoadingShimmer(height: 200,)],
     this.stackedPlaceholder = const [],
-    this.padding = const EdgeInsets.all(20)
+    this.padding = const EdgeInsets.all(20),
+    this.reloadable = false
   }) :
         wrap = true,
         placeholder = null,
@@ -55,7 +58,7 @@ class AsyncPage<T> extends StatelessWidget {
     return FutureBuilder(
         future: connection,
         builder: (context, snapshot) {
-          if (snapshot.hasData && snapshot.connectionState == ConnectionState.done) {
+          if (snapshot.hasData && (snapshot.connectionState == ConnectionState.done || !reloadable)) {
             if (wrap) {
               return FNPage.wrap(
                   title: title,

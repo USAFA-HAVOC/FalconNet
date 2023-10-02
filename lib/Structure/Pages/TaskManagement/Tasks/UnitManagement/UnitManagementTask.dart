@@ -106,6 +106,7 @@ class UnitManagementTaskState extends State<UnitManagementTask> {
         converter: (store) =>
             ViewModel(store: store, content: store.state.user),
         builder: (context, model) => AsyncPage(
+            reloadable: true,
             title: "Unit Management",
             connection: connection,
             placeholder: [
