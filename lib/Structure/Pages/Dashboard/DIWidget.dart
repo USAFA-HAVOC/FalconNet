@@ -38,8 +38,8 @@ class DIWidget extends StatelessWidget {
                   .any((role) => role.name == Roles.signable.name);
 
               //Determines whether time is signable
-              bool time = !DateTime.now()
-                  .isBefore(combineDate(DateTime.now(), diOpens));
+              // bool time = !DateTime.now()
+              //     .isBefore(combineDate(DateTime.now(), diOpens));
 
               DateTime now = DateTime.now().toUtc();
 
@@ -54,15 +54,27 @@ class DIWidget extends StatelessWidget {
                       (e) => e.time.difference(DateTime.now()).inSeconds.abs());
 
               UserStatus status;
+              bool diTime;
+              String diTimeStr;
 
               if (options.isNotEmpty) {
                 di = options.first;
+                diTime = di.submission_start.isBefore(now) && di.submission_deadline.isAfter(now);
+                if (di.submission_start.isAfter(now)) {
+                  diTimeStr = "DI Opens at ${di.submission_start.toLocal().hour}:${di.submission_start.toLocal().minute}";
+                } else if (di.submission_deadline.isAfter(now)) {
+                  diTimeStr = "DI is due at ${di.submission_start.toLocal().hour}:${di.submission_start.toLocal().minute}, please sign in or out";
+                } else {
+                  diTimeStr = "DI is closed";
+                }
                 status = UserStatusNames.parse(di.status);
               } else {
                 status = UserStatus.unsigned;
+                diTime = false;
+                diTimeStr = "unable to find DI event";
               }
 
-              bool signable = status == UserStatus.unsigned && senior && time;
+              bool signable = status == UserStatus.unsigned && senior && diTime;
 
               switch (status) {
                 case UserStatus.unassigned:
@@ -76,7 +88,7 @@ class DIWidget extends StatelessWidget {
                 case UserStatus.leave:
                   text = [
                     Text(
-                      "Cannot Sign DI on Leave",
+                      "Currently on Leave",
                       style: Theme.of(context).textTheme.headlineMedium,
                     )
                   ];
@@ -90,47 +102,37 @@ class DIWidget extends StatelessWidget {
                   ];
                   break;
                 case UserStatus.out_returning:
+                  text = [
+                    Text(
+                      "Pass ends before Taps, you must sign in and get accounted for tonight",
+                      style: Theme.of(context).textTheme.headlineMedium,
+                    )
+                  ];
+                  break;
                 case UserStatus.overdue:
                 case UserStatus.out:
                   text = [
                     Text(
-                      "Close Pass to Sign DI",
+                      "Signed out for the night",
                       style: Theme.of(context).textTheme.headlineMedium,
                     )
                   ];
                   break;
                 case UserStatus.excused:
+                  text = [
+                    Text(
+                      "Excused from DI",
+                      style: Theme.of(context).textTheme.headlineMedium,
+                    )
+                  ];
+                  break;
                 case UserStatus.unsigned:
-                  if (!time) {
-                    SchedulingService().schedule(
-                        id: "di",
-                        time: combineDate(DateTime.now(), diOpens),
-                        payload: "opened"
-                    );
-                  }
-
-                  if (senior && time) {
-                    text = [
-                      Text(
-                        "DI is Open",
-                        style: Theme.of(context).textTheme.headlineMedium,
-                      )
-                    ];
-                  } else if (!senior) {
-                    text = [
-                      Text(
-                        "Cannot Sign Own DI",
-                        style: Theme.of(context).textTheme.headlineMedium,
-                      )
-                    ];
-                  } else {
-                    text = [
-                      Text(
-                        "DI Opens at ${diOpens.hour}:${diOpens.minute}",
-                        style: Theme.of(context).textTheme.headlineMedium,
-                      )
-                    ];
-                  }
+                  text = [
+                    Text(
+                      diTimeStr,
+                      style: Theme.of(context).textTheme.headlineMedium,
+                    )
+                  ];
                   break;
               }
 

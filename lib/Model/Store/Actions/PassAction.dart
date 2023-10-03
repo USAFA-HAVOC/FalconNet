@@ -1,5 +1,6 @@
 import 'package:async_redux/async_redux.dart';
 import 'package:falcon_net/Model/Database/CadetPass.dart';
+import 'package:falcon_net/Model/Database/Role.dart';
 import 'package:falcon_net/Model/Store/Endpoints.dart';
 import 'package:falcon_net/Model/Store/GlobalState.dart';
 import 'package:falcon_net/Services/NotificationService.dart';
@@ -24,6 +25,20 @@ class PassAction extends ReduxAction<GlobalState> {
     try {
       if (pass == null) {
         await Endpoints.closePass(null);
+
+        // Bruh moment
+        var sb = state.toBuilder();
+        var data = await Endpoints.initial(null);
+        sb.user = data.user.toBuilder();
+        sb.pass_periods = data.pass_periods.toBuilder();
+        if (!data.user.roles.any((r) => r.name == Roles.permanent_party.name)) {
+          sb.grades = data.grades?.toBuilder();
+          sb.history = data.pass_history?.toBuilder();
+          sb.events = data.events?.toBuilder();
+          sb.excusals = data.event_excusals?.toBuilder();
+          sb.recurring = data.recurring_excusals?.toBuilder();
+        }
+
         onSucceed?.call();
         
         if (state.user.accountability?.current_pass?.id !=  null) {
@@ -33,13 +48,26 @@ class PassAction extends ReduxAction<GlobalState> {
         if (state.settings.diPush) {
           NotificationService().scheduleDINotification();
         }
-        return (state.toBuilder()..user.accountability.current_pass=null).build();
+        return (sb..user.accountability.current_pass=null).build();
       }
 
       var sb = state.toBuilder();
 
       if (updated) {
         await Endpoints.updatePass(pass!);
+
+        // Bruh moment
+        var data = await Endpoints.initial(null);
+        sb.user = data.user.toBuilder();
+        sb.pass_periods = data.pass_periods.toBuilder();
+        if (!data.user.roles.any((r) => r.name == Roles.permanent_party.name)) {
+          sb.grades = data.grades?.toBuilder();
+          sb.history = data.pass_history?.toBuilder();
+          sb.events = data.events?.toBuilder();
+          sb.excusals = data.event_excusals?.toBuilder();
+          sb.recurring = data.recurring_excusals?.toBuilder();
+        }
+
         SchedulingService().schedule(id: "pass", time: pass!.end_time, payload: "expired");
         NotificationService().cancel(id: state.user.accountability!.current_pass!.id!);
         if (state.settings.passPush) {
@@ -56,6 +84,19 @@ class PassAction extends ReduxAction<GlobalState> {
 
       else {
         var assigned = await Endpoints.createPass(pass!);
+
+        // Bruh moment
+        var data = await Endpoints.initial(null);
+        sb.user = data.user.toBuilder();
+        sb.pass_periods = data.pass_periods.toBuilder();
+        if (!data.user.roles.any((r) => r.name == Roles.permanent_party.name)) {
+          sb.grades = data.grades?.toBuilder();
+          sb.history = data.pass_history?.toBuilder();
+          sb.events = data.events?.toBuilder();
+          sb.excusals = data.event_excusals?.toBuilder();
+          sb.recurring = data.recurring_excusals?.toBuilder();
+        }
+
         SchedulingService().schedule(id: "pass", time: assigned.end_time, payload: "expired");
         NotificationService().cancelDINotification();
         if (state.settings.passPush) {
