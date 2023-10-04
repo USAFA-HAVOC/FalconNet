@@ -63,7 +63,7 @@ class DIWidget extends StatelessWidget {
                 if (di.submission_start.isAfter(now)) {
                   diTimeStr = "DI Opens at ${di.submission_start.toLocal().hour}:${di.submission_start.toLocal().minute}";
                 } else if (di.submission_deadline.isAfter(now)) {
-                  diTimeStr = "DI is due at ${di.submission_start.toLocal().hour}:${di.submission_start.toLocal().minute}, please sign in or out";
+                  diTimeStr = "DI is due at ${di.time.toLocal().hour}:${di.time.toLocal().minute}, please sign in or out";
                 } else {
                   diTimeStr = "DI is closed";
                 }
