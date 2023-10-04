@@ -82,6 +82,7 @@ class DIWidget extends StatelessWidget {
                     Text(
                       "User not assigned to DI Event",
                       style: Theme.of(context).textTheme.headlineMedium,
+                      textAlign: TextAlign.center,
                     )
                   ];
                   break;
@@ -90,6 +91,7 @@ class DIWidget extends StatelessWidget {
                     Text(
                       "Currently on Leave",
                       style: Theme.of(context).textTheme.headlineMedium,
+                      textAlign: TextAlign.center,
                     )
                   ];
                   break;
@@ -98,14 +100,16 @@ class DIWidget extends StatelessWidget {
                     Text(
                       "DI Signed by ${di?.signature_name ?? "Unknown"}",
                       style: Theme.of(context).textTheme.headlineMedium,
+                      textAlign: TextAlign.center,
                     )
                   ];
                   break;
                 case UserStatus.out_returning:
                   text = [
                     Text(
-                      "Pass ends before Taps, you must sign in and get accounted for tonight",
+                      "Pass ends before TAPs\nSign DI before TAPs",
                       style: Theme.of(context).textTheme.headlineMedium,
+                      textAlign: TextAlign.center,
                     )
                   ];
                   break;
@@ -113,8 +117,9 @@ class DIWidget extends StatelessWidget {
                 case UserStatus.out:
                   text = [
                     Text(
-                      "Signed out for the night",
+                      "Signed-Out",
                       style: Theme.of(context).textTheme.headlineMedium,
+                      textAlign: TextAlign.center,
                     )
                   ];
                   break;
@@ -123,6 +128,7 @@ class DIWidget extends StatelessWidget {
                     Text(
                       "Excused from DI",
                       style: Theme.of(context).textTheme.headlineMedium,
+                      textAlign: TextAlign.center,
                     )
                   ];
                   break;
@@ -131,6 +137,7 @@ class DIWidget extends StatelessWidget {
                     Text(
                       diTimeStr,
                       style: Theme.of(context).textTheme.headlineMedium,
+                      textAlign: TextAlign.center,
                     )
                   ];
                   break;
