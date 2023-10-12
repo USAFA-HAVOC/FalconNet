@@ -1,3 +1,4 @@
+//AMI Grading Rubric
 Map<String, int> roomDeductions = {
   "Hat Shelf": -2,
   "Hangers/Hooks": -2,
@@ -15,6 +16,7 @@ Map<String, int> roomDeductions = {
   "Alcove/Exterior": -3,
   "Walls/Carpet": -2,
   "Trash Can": -3,
+  "Recycling Bin": -2, // May or may not have been added by G-0
   "Lights": -2,
   "Windows/Runner": -2,
   "Door Closed": -10,
@@ -23,7 +25,7 @@ Map<String, int> roomDeductions = {
   "Unauthorized Room Arrangement": -20,
   "Security Violation": -25
 };
-
+//PAI Grading Rubric
 Map<String, int> paiDeductions = {
   "Appropriate Uniform": -100,
   "Proxy Card": -10,
@@ -43,4 +45,108 @@ Map<String, int> paiDeductions = {
   "Gig Line": -2,
   "Socks": -2,
   "Shoes": -2,
+};
+
+//SAMI Grading Card Rubric
+Map<String, int> samiDeductions = { 
+  //Outside Room 
+  "Alcove/Doorway Cleanliness/Lightbulb in Place" : -2,
+  "Door Display (Open/Closed)" : -50,
+  "Name Plate Display" : -2,
+  //Overall Room:
+  "Not SAMI Order": -100,
+  "Bearing not IAW SAMI Procedure" : -20,
+  "Wall Cleanliness": -2,
+  "Floors": -4,
+  "Lights On": -2,
+  "Ceiling Cleanliness" : -2, 
+  //Valet
+  "Items on Countertop": -4,
+  "Rifle Rack": -4, 
+  "Trash Can": -4,
+  "Sink": -4,
+  "Mirror/Mirror Cabinets": -4,
+  "Mirror Forms (Missing Items, Discrepencies, Form 226)": -4, 
+  "Sink Cabinets Cleanliness": -2,
+  "Laundry" :-2,
+  "Towels and Washcloths": -2,
+  "Lightswitch": -2,
+  "Thermostat":-2,
+  //Overhead Storage
+  "Overhead Storage":-2,
+  //Closet-HatShelf
+  "Order of Display (Closet)": -4, 
+  "Cleanliness (Closet)": -4, 
+  "Flight Cap": -2,
+  "OCP Cap/Beret": -2,
+  "Parade Cap": -2, 
+  "Service Cap & Eagle": -2,
+  //Closet-Uniforms
+  "Order of Display (Uniforms)": -4, 
+  "Cleanliness (Uniforms)": -4,
+  "Bathrobe": -2, 
+  "Athletic Jacket": -2,
+  "Light Blues Shirt (trousers over crossbar)": -2,
+  "Service Dress (trousers over crossbar)": -2, 
+  "Optional Service Uniform Clothing Items": -2,
+  "Mess Dress": -2,
+  "Mess Dress Shirt": -2,
+  "Flight Duty Uniform with Jacket": -2,
+  "OCP APECS Jacket with Rank": -2,
+  "Coyote Brown Fleece (Nametape, USAF, Rank)": -2,
+  "OCP Blouse (trousers over crossbar)": -2,
+  "Parka (scarf over crossbar; watch cap in outside pocket)": -2, 
+  "Raincoat": -2,
+  "Overcoat": -2,
+  "USAFA Running Top (bottoms over corssbar)": -2, 
+  "Cadet Informal Uniform": -2,
+  "Empty Hangers (not required but must be right location)": -2,
+  "Civilian Clothes": -2,
+  //Closet-Shoe Rack
+  "Order of Display (Shoe Rack)": -4,
+  "Cleanliness (Shoe Rack)": -4, 
+  "Low Quarters": -2,
+  "OCP Boots":-2, 
+  "Pumps": -2,
+  "Cadet Informal Uniform Shoes": -2,
+  "Civilian Shoes": -2,
+  "Heels Aligned": -2,
+  "Laces Tucked": -2,
+  //Bed
+  "Cleanliness/Display (Bed)": -4,
+  "E-Fold": -4,
+  "Hospital Corners": -4,
+  "18 in. to Collar": -4,
+  "6 in. Collar": -4,
+  "Pillow Display": -4,
+  //Bed-Drawers
+  "Cleanliness (Drawers)": -4,
+  "Drawers Open at 8 in. Top, 12 in. Bottom": -2,
+  //Bed-Military Drawer
+  "V-Neck (male only)": -2,
+  "PC Shirts": -2,
+  "Ranks": -2,
+  "Belts": -2,
+  "Athletic Shorts & Swimsuit": -2,
+  "Intramural Jersey": -2,
+  "Black Gloves w/ White Gloves on Top": -2,
+  "Coyote Brown Undershirt": -2,
+  "Ties, Tie Tab": -2,
+  "Additional Authorized Items": -2,
+  //Desk and BookCase
+  "Cleanliness (Desk/Bookcase)": -4,
+  "'V' Display": -2,
+  "No Extraneous Papers": -2,
+  "Desk Chair Pushed In": -2,
+  "Wires Neatly Bundled": -2,
+  "Bulletin Board has 4 Corners Tacked on Items": -2,
+  "Memorabilia": -2,
+  "Underneath Desk is Cleared": -2,
+  "Items on Top of Desk Bookshelf": -2,
+  //Windows
+  "Free of Objects": -2,
+  "Curtain Display": -2,
+  "Window Runner": -2,
+  "Window Closed": -2,
+  "Screen in Place": -2
 };

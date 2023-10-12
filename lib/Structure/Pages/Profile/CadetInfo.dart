@@ -66,7 +66,7 @@ class CadetInfoState extends State<CadetInfo> {
                         ),
                         errorBorder: OutlineInputBorder(
                           borderSide: BorderSide(
-                            color: Theme.of(context).errorColor,
+                            color: Theme.of(context).colorScheme.error,
                           ),
                         ),
                         border: const OutlineInputBorder(),
@@ -188,16 +188,16 @@ class InputBlockState extends State<InputBlock> {
           onChanged: (change) => setState(() => value = change),
           style: Theme.of(context).textTheme.bodyMedium,
           decoration: InputDecoration(
-            contentPadding: EdgeInsets.symmetric(vertical: 23.5, horizontal: 10),
+            contentPadding: const EdgeInsets.symmetric(vertical: 23.5, horizontal: 10),
             labelText: widget.label,
             hintText: widget.hint,
             errorText: widget.validator?.call(value),
             errorBorder: OutlineInputBorder(
               borderSide: BorderSide(
-                color: Theme.of(context).errorColor,
+                color: Theme.of(context).colorScheme.error,
               ),
             ),
-            border: OutlineInputBorder(),
+            border: const OutlineInputBorder(),
             filled: !selected || widget.disabled,
             fillColor: widget.disabled
                 ? Theme.of(context).disabledColor

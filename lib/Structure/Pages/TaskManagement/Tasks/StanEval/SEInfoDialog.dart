@@ -7,8 +7,9 @@ import '../../../../Components/InfoBar.dart';
 class SEInfoDialog extends StatefulWidget {
   final Map<String, String> pairs;
   final String title;
+  final void Function(MapEntry<String, String>)? onSelection;
 
-  const SEInfoDialog({super.key, required this.title, required this.pairs});
+  const SEInfoDialog({super.key, required this.title, required this.pairs, this.onSelection});
 
   @override
   State<SEInfoDialog> createState() => SEInfoDialogState();
@@ -57,7 +58,10 @@ class SEInfoDialogState extends State<SEInfoDialog> {
                 }
                 else {
                   var grade = ordered[index - 3];
-                  return InfoBar(
+                  return GestureDetector(
+                    // When tapped, handle selection
+                    onTap: () => widget.onSelection?.call(grade),
+                    child: InfoBar(
                      children: [
                        Expanded(
                          flex: 5,
@@ -77,6 +81,7 @@ class SEInfoDialogState extends State<SEInfoDialog> {
                            )
                        )
                      ],
+                  ),
                   );
                 }
               }
