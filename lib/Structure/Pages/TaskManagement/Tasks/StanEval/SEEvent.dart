@@ -13,6 +13,7 @@ import 'package:falcon_net/Structure/Pages/TaskManagement/Tasks/StanEval/SEScori
 import 'package:falcon_net/Structure/Pages/TaskManagement/Tasks/StanEval/SESelectionDialog.dart';
 import 'package:falcon_net/Utility/ErrorFormatting.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 import '../../../../../Model/Database/UnitGrades.dart';
 import '../../../../../Model/Database/UserGrades.dart';
@@ -35,7 +36,7 @@ class SEEvent extends StatefulWidget {
 }
 
 class SEEventState extends State<SEEvent> {
-  TextEditingController score = TextEditingController();
+  TextEditingController score = TextEditingController(text: "100");
   TextEditingController description = TextEditingController();
   List<StanEvalUser> gradees = [];
   String? scoreError;
@@ -259,10 +260,29 @@ class SEEventState extends State<SEEvent> {
                             showDialog(
                               context: context,
                               builder: (context) => SEInfoDialog(
+                                // Determine which scoring guide map to use
+                                // IF, ELSE: (IF, ELSE)
                                 title: widget.type == GradeType.pai
                                     ? "PAI Scoring Guide"
-                                    : "Room Scoring Guide",
-                                pairs: (widget.type == GradeType.pai ? paiDeductions : roomDeductions)
+                                    : (widget.type == GradeType.sami
+                                       ? "SAMI Scoring Guide"
+                                       : "AMI Scoring Guide" ),
+                                onSelection: (entry) {
+                                  setState(() {
+                                    // Update current score
+                                    score.text = ((int.tryParse(score.text) ?? 100) + (int.tryParse(entry.value) ?? 0)).toString();
+                                    // Updates the description
+                                    description.text += "${entry.key} (${entry.value}), ";
+                                  });
+
+                                  // Close deduction selection
+                                  Navigator.of(context).pop();
+                                },
+                                pairs: (widget.type == GradeType.pai 
+                                        ? paiDeductions 
+                                        : (widget.type == GradeType.sami
+                                            ? samiDeductions
+                                            : roomDeductions))
                                     .map((key, value) => MapEntry(key, value.toString())),
                               ),
                             );

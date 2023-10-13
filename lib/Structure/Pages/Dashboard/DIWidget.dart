@@ -8,12 +8,10 @@ import 'package:falcon_net/Structure/Components/ConfirmationDialog.dart';
 import 'package:falcon_net/Structure/Components/PageWidget.dart';
 import 'package:falcon_net/Structure/Components/ViewModel.dart';
 import 'package:falcon_net/Utility/ListExtensions.dart';
-import 'package:falcon_net/Utility/TemporalFormatting.dart';
 import 'package:flutter/material.dart';
 
 import '../../../Model/Database/AccountabilityEvent.dart';
 import '../../../Model/Database/Role.dart';
-import '../../../Utility/FNConstants.dart';
 
 ///Page widget for displaying DI information with signing ui
 class DIWidget extends StatelessWidget {

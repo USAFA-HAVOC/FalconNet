@@ -114,6 +114,9 @@ class SEAnalytics extends StatelessWidget {
             onTap: (name, grades) {
               showDialog(context: context, builder: (context) => SEInfoDialog(
                 title: name,
+                onSelection: (entry) {
+                  
+                },
                 pairs: grades.map((key, value) => MapEntry(key.name, value.score.toString()))
               ));
             })

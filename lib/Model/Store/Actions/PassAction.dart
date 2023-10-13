@@ -1,6 +1,5 @@
 import 'package:async_redux/async_redux.dart';
 import 'package:falcon_net/Model/Database/CadetPass.dart';
-import 'package:falcon_net/Model/Database/Role.dart';
 import 'package:falcon_net/Model/Store/Endpoints.dart';
 import 'package:falcon_net/Model/Store/GlobalState.dart';
 import 'package:falcon_net/Services/NotificationService.dart';
@@ -9,7 +8,6 @@ import 'package:falcon_net/Utility/ListExtensions.dart';
 
 import '../../../Utility/ErrorFormatting.dart';
 import '../../Database/AccountabilityEvent.dart';
-import '../../Database/UserEventStatus.dart';
 
 class PassAction extends ReduxAction<GlobalState> {
   final CadetPass? pass;
