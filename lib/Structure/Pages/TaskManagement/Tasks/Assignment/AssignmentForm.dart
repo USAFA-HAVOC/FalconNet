@@ -88,8 +88,7 @@ class AssignmentFormState extends State<AssignmentForm> {
             ).toList();
 
     var assignable = grandchildren(widget.owner.toList()).toSet().toList()..sort((a, b) => a.compareTo(b));
-
-    print(assignable);
+    assignable = widget.units.map((u) => u.name).toList();
     
     return Padding(
       padding: const EdgeInsets.all(10),

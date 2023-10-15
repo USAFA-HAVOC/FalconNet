@@ -113,9 +113,6 @@ class AssignmentTaskState extends State<AssignmentTask> {
         builder: (context, data) {
           var ordered = search(data.users, query);
 
-          // Debug: Print the list just before rendering
-          print("Units before rendering: ${data.units.map((unit) => unit.name).toList()}");
-
           return [
             PageWidget(title: "Members", children: [
               ListView.separated(
