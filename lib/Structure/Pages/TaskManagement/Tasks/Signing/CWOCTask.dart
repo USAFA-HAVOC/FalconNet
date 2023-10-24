@@ -23,6 +23,7 @@ class CWOCTask extends StatefulWidget {
 
 class CWOCTaskState extends State<CWOCTask> {
   late Future<List<AccountabilityEvent>> future;
+  bool showAllEvents = false;
 
   @override
   void initState() {
@@ -42,7 +43,7 @@ class CWOCTaskState extends State<CWOCTask> {
       connection: future,
       minWrapWidth: 700,
       wrappedBuilder: (context, data) {
-        var applicable = data
+        var applicable = showAllEvents ? data : data
             .where((e) => e.time.isAfter(DateTime.now().subtract(const Duration(days: 2))));
 
         if (applicable.isEmpty) {
@@ -52,7 +53,7 @@ class CWOCTaskState extends State<CWOCTask> {
           )];
         }
 
-        return applicable.map((event) =>
+        List<Widget> l = applicable.map((event) =>
             PageWidget(
                 title: event.name ?? (event.type == EventType.di.name ? "DI ${describeDate(event.time.toLocal())}" : "Unnamed"),
                 children: [
@@ -118,6 +119,18 @@ class CWOCTaskState extends State<CWOCTask> {
                 ]
             )
         ).toList();
+
+        l.insert(0, PageWidget(title: "Settings", children: [
+          CheckboxListTile(
+            title: const Text("Show Past Events"),
+            value: showAllEvents,
+            onChanged: (newValue) { setState(() {
+              showAllEvents = newValue ?? false;
+            }); },
+          )
+        ]));
+
+        return l;
       }
   );
 }
